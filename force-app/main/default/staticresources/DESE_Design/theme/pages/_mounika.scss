@@ -1,0 +1,114 @@
+.signature-btn {
+    .slds-button.slds-button_brand {
+        width: fit-content;
+        height: 4rem;
+        border-radius: 8px;
+    }   
+}
+.slds-file-selector_files .slds-file-selector__body{
+    font-size: 1.4rem;
+}
+lightning-file-upload {
+    .slds-form-element__label {
+        font-size: 1.4rem;
+    }
+}
+.paragraph {
+    svg.slds-icon.slds-icon-text-default.slds-icon_xx-small {
+        top: -4px;
+        left: -16px;
+        width: 2rem;
+        height: 2rem;
+        position: absolute;
+    }
+}
+.program-purpose{
+    padding: 2rem 3rem;
+    background: var(  --background-grey);
+    border-radius: 5px;
+    border:none;
+    .heading{
+        font-size: 1.5rem;
+        font-weight: 500;
+        text-decoration: underline;
+        color:var( --textcolor);   
+    }
+    &__data{
+        font-size: 1.5rem;         
+        color:var( --textcolor);
+        list-style: unset;
+        padding-left: 2rem;
+    }   
+}
+.uploadedFilesList {
+    margin-top: 1rem;
+    h4.box-header-small {
+        font-size: 1.4rem;
+    }
+    .slds-var-p-around_small {
+        font-size: 1.4rem;
+    }
+    svg.slds-button__icon.slds-button__icon_right {
+        width: 2rem;
+        height: 2rem;
+    }
+    .slds-button {
+        padding-left: 0;
+    }
+}
+
+
+//document library component's css
+.lgc-bg{
+    .note {
+        font-size: 1.4rem;
+    }
+    svg.slds-icon.slds-icon-text-default.slds-icon_small {
+        width: 3rem;
+        height: 3rem;
+    }
+}
+.header-grid{
+    .button-blue {
+        .slds-button_brand{
+            font-size: 1.5rem;
+            height: 4rem;
+            border-radius: 6px;
+        }      
+    }
+}
+
+.slds-table.slds-table_cell-buffer.slds-table_bordered.slds-table_col-bordered.program-info-table {
+    border: 1px solid rgba(20, 85, 143, 0.3);
+}
+h4.header-pane-title {
+    color:#14558F;
+}
+.program-info-table.slds-table thead th {
+    background: #F3F6F9;
+    font-size: 1rem;
+    color: black;
+}
+
+.content-container .report-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    padding: 3rem 2rem;
+    background: var( --light-blue);
+    gap: 2rem;
+    .grid-item{
+        .head {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: var(--black-medium);
+        }
+        .body{
+            font-weight: 500;
+            font-size: 1.6rem;
+            color: var(--dark-grey);
+            span {
+                padding-left: 1rem;
+            }
+        }
+    }
+}

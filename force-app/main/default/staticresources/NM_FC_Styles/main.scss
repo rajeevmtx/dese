@@ -1,0 +1,299 @@
+// html,body {
+//     height: 100%;
+// }
+.content-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar-primary .logo {
+    height: 40px;
+}
+
+.site-footer {
+    margin-top: auto;
+    font-size: 0.8rem;
+    background-color: #526475;
+    display: flex;
+    justify-content: center;
+    color: white;
+    height: 2rem;
+    bottom: 0;
+    align-items: center;
+}
+
+.app-content {
+    padding: 1.5rem !important;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+    flex: 1;
+    background: white;
+    margin-bottom: 3rem;
+}
+.container {
+    
+    margin: 0 auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+.app-container {
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 1rem;
+}
+.app-sidebar {
+    min-width: 14rem;    
+}
+.app-title {
+    font-size: 1.5rem;
+}
+
+.has-shadow {
+    margin-bottom: 1rem;
+    padding: 1rem 0;
+    background-color: #fff;
+    box-shadow: 4px 1px 2px 1px rgba(0,0,0,.05);
+}
+
+
+.navbar-primary {
+    background-color: #115AB1;
+    width: 100%;
+    border-bottom: 0px solid transparent;
+}
+.navbar-primary .logo {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+    .navbar-primary .container {
+        display: flex;
+    }
+    .navbar-primary nav {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+    }
+    .navbar-primary nav a:hover,
+    .navbar-primary nav a:active,
+    .navbar-primary nav a:focus {
+        box-shadow: inset 0 -4px 0 rgba(255,255,255,0.5);
+        text-decoration: none;
+        color: white;
+    }
+    .navbar-primary nav a.active {
+        box-shadow: inset 0 -4px 0 rgba(255,255,255,0.5);
+        text-decoration: none;
+        color: white;
+        font-weight: 600;
+    }
+}
+
+.navbar-primary nav a {
+    color: rgba(255,255,255,0.7);
+    padding: 0 1rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    @media (max-width: 768px) {
+        padding: 1rem 0rem;
+      }
+}
+
+
+.nys-registration-button button {
+    background: rgb(119, 67, 149);
+    min-height: 60px;
+    width: 100%;
+    box-shadow: none;
+    border-radius: 4px;
+    color: white;
+    font-weight: 500;
+    letter-spacing: 1.25px;
+    line-height: 16px;
+    text-transform: uppercase;
+    margin-top: 1.75rem;
+  &:hover {
+    width: 100%;
+    background: white;
+    height: 60px;
+    color: rgb(119, 67, 149);
+    letter-spacing: 1.25px; 
+    line-height: 16px;
+    text-transform: uppercase;
+    margin-top: 1.75rem;
+    font-weight: 500;
+    border: 1px solid rgb(119, 67, 149);
+  } 
+}
+
+
+// Login SCSS Need to clean up
+
+.login-form-wrap {
+  
+    background-color: #f8f8f8;
+    min-height: calc(100% - 64px);
+    @media (max-width: 767px) {
+      padding-top: 0;
+    }
+    @media (min-width: 1025px) {
+      padding-top: 64px;
+    }
+    
+  }
+  
+  .login-container {
+    margin: 0 auto;
+    max-width: 1024px;
+    width: 100%;
+    //min-height: 550px;
+    background:white;
+    border-radius: 2px;
+    > div {
+      height: 100%;
+    }
+  }
+  .login-card {
+    display: flex;
+    @media (max-width:767px) {
+      flex-direction: column;
+    }
+    @media (width: 768px) and (height: 1024px){
+      height: calc(1024px - 64px);
+    }
+    @media (width: 1024px) and (height: 768px){
+      height: calc(768px - 64px);
+    }
+  }
+  
+  
+  .login-form {
+    width: 100%;
+    @media (max-width:767px) {
+      order: 1;
+    }
+    @media (min-width: 768px) {
+      flex: 1;
+    }
+}
+  
+  .card-photo {
+    background-size: cover;
+    background-color: #774395;
+    
+    overflow: hidden;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    position: relative;
+    @media (min-width: 768px) {
+      max-height: 700px;
+    }
+    @media (width: 768px) and (height: 1024px){
+      max-height: 100%;
+    }
+    .login-photo {
+      width: auto;
+    }
+    @media (max-width:767px) {
+      order: 2;
+    }
+    .logo {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 2rem;
+      height: 80px;
+      max-width: 100%;
+      width: auto;
+      
+    }
+  }
+  
+  .card-header {
+    .intro {
+      color: rgb(102, 102, 102);
+      font-size: 18px;
+      margin-bottom: 0.25rem;
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: 500;
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+    .description {
+        margin-top: 1.875rem;
+      color: rgb(98, 98, 98);
+      font-size: 16px;
+    }
+    .logo {
+      margin-bottom: 24px;
+      height: 90px;
+    }
+  }
+  
+  .agreement {
+    margin-top: 1.875rem;
+    color: rgb(98, 98, 98);
+    line-height: 1.5;
+  }
+  
+  
+  .content-rule {
+    width: 100%;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    opacity: 0.2;
+  }
+  
+  .note {
+    display: flex;
+    align-items: flex-start;
+    .icon {
+      width: 20px;
+      margin-right: 1rem;
+    }
+    .copy {
+      font-size: 0.9rem;
+      color: rgb(98, 98, 98);
+      flex: 1;
+    }
+  }
+  
+  .spinner-wrap {
+    height: 50px;
+  }
+  
+  .loading-button {
+    padding: 8px;
+    padding-left: 22px;
+  }
+  
+  
+  .already-login {
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .success-button {
+    background-color: #115bb1;
+    color: #fff;
+    width: 380px;
+  }
+  
+  .displayBlock {
+    display: block;
+  }
+
+  lightning-map .slds-map_container .slds-p-around_medium .slds-button_brand {
+    display: none !important;
+}
+.doh-card-heading{
+  margin-bottom: 0px;
+  background: #E0E0E0;
+  padding: 1rem 0 .2rem 1rem;
+  margin: 0 -2rem 1rem;
+}

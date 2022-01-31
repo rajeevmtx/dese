@@ -1,0 +1,236 @@
+.narrative-content {
+    
+    .tabset {
+        .instructions__data.list{
+            list-style: unset;
+        }
+        .slds-tabs_default__nav {
+            justify-content: space-between;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: rgba(85, 85, 85, 0.5);
+        }
+        .slds-tabs_default__item {
+            padding: 0;
+        }
+        .slds-tabs_default__item.slds-is-active {
+            color: var(--blue);
+        }
+        .slds-tabs_default__item.slds-is-active .slds-tabs_default__link {
+            font-weight: 600;
+        }
+    }
+    .narrative-box{
+        padding: 2rem;
+        background: var(--light-blue);
+        
+        .readmore{
+            border:none;
+            background: none;
+            .slds-button.slds-button_brand {
+                height: 0;
+                border-radius: 0;
+                width:10rem;
+                font-size: 1.2rem;
+                text-decoration: underline;
+            }
+            .slds-button {
+                color:var( --textcolor);
+                border:none;
+            background: none;
+            padding-left: 0;
+            }
+        }
+        .box-header-small{
+            font-weight: 500;
+            font-size: 1.4rem;
+            color: var(--dark-grey);
+        }
+        .box-header-medium {
+            font-weight: 500;
+            font-size: 1.6rem;
+            color: var(--textcolor);
+        }
+        
+        .sample-box {
+            .slds-input {
+                height: 4rem;
+                border: 1px solid rgba(20, 85, 143, 0.3);
+                border-radius: 6px;
+            }
+            .slds-form-element__control {
+                font-size: 1.6rem;
+            }
+            .slds-input {
+                border: 1px solid var(--lightest-grey);
+                box-sizing: border-box;
+                border-radius: 6px;
+                font-size: 1.6rem;
+                height: 4.2rem;
+            }
+        }
+       .describe-head{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+       }
+        .describe-btn{
+            .slds-button.slds-button_outline-brand {
+                height: 3.4rem;
+                width: 12.7rem;
+                font-size: 1.6rem;
+                border: 1px solid var(--blue);
+                border-radius: 5px;
+                background: var(--light-blue);
+            }
+        }
+        .slds-form-element__label {
+            font-size: 1.5rem;
+            font-weight: 600;color: var(--textcolor);
+        }
+        
+    }
+    .describe-box {
+        .slds-textarea {
+            height: 10rem;
+            font-weight: 500;
+            font-size: 1.6rem;
+            color: var(--dark-grey);
+            border: 1px solid rgba(20, 85, 143, 0.3);
+            border-radius: 6px;
+        }
+        
+    }
+    .slds-checkbox .slds-checkbox__label .slds-form-element__label {
+        font-size: 1.6rem;
+        color: var(--black-medium);
+    }
+    .slds-form-element .slds-checkbox [type=checkbox]+.slds-checkbox__label .slds-checkbox_faux {
+        width: 2rem;
+        height: 2rem;
+        border: 1px solid var(--blue);
+        border-radius: 4px;
+    }
+    .slds-checkbox [type=checkbox]:checked+.slds-checkbox__label .slds-checkbox_faux:after {
+        width: 1rem;
+        height: 0.5rem;
+    }
+}
+ 
+.multiselect {
+
+    .slds-form-element {
+        width:30%;
+    }
+    .close{
+        .slds-icon_container {
+            position: absolute;
+            left: 300px;
+            top: 10px;
+        }
+    }
+    .closed{
+        .slds-icon_container {
+            position: relative;
+            right: 40px;
+            top: 10px;
+        }
+    }
+    
+}
+
+div.multiselect {
+    display: flex;
+    top: -55px;
+    position: relative;
+    padding-left: 1rem;
+    gap:1rem;
+    .slds-input {
+        height: 3rem;
+        font-size: 1.6rem;
+        background: var(--light-blue);
+    border-radius: 5px;
+    border: 1px solid rgba(20, 85, 143, 0.3);
+    }
+}
+
+.note-grid {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    padding: 3rem 2rem;
+    background: var( --background-grey);
+    gap: 2rem;
+    .grid-item{
+        .head {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: var(--black-medium);
+        }
+        .body{
+            font-weight: 500;
+            font-size: 1.6rem;
+            color: var(--dark-grey);
+            span {
+                padding-left: 1rem;
+            }
+        }
+    }
+}
+.note-card{
+
+    background: var( --background-grey);
+    padding:2rem;
+    .note_header {
+        font-weight: 600;
+        font-size: 1.5rem;
+        color: var( --dark-grey);
+    }
+    .note_body {
+        font-weight: normal;
+        font-size: 1.5rem;
+        color: var(--textcolor);
+    }
+
+}
+
+.headless-table {
+    .slds-table_cell-buffer tr>td:first-child {
+        width: 70%;
+    }
+    .slds-table_bordered tbody td {
+        height: 5rem;
+        border: 1px solid rgba(20, 85, 143, 0.3);
+    }
+    .slds-input {
+        height: 3rem;
+        border: 1px solid rgba(20, 85, 143, 0.3);
+        border-radius: 5px;
+        font-size: 1.5rem;
+        text-align: right;
+    }
+    .slds-input::placeholder{
+        text-align: right;
+    }
+    .slds-form-element__control {
+        width: 90%;
+        padding-left: 1rem;
+    }
+    .slds-truncate {
+        font-size: 1.5rem;
+        font-weight: 500;
+        color: var(--textcolor);
+    }
+    .input-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+    .input-box.blue-row {
+        justify-content: flex-end;
+        gap:7rem;
+        padding-right: 2rem;
+    }
+    .blue-row {
+        background: var(--light-blue);
+    }
+}

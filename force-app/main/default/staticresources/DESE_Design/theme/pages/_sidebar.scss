@@ -1,0 +1,66 @@
+.app-main{
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    height: 100vh;
+}
+.sidebar{
+    height:100vh;
+    position: fixed;
+    
+    .slds-progress__item.slds-is-active .slds-progress__marker {
+        background-color: var(--medium-blue);
+        border: none;
+        box-shadow: none;
+        height: 4rem;
+        width: 4rem;
+        color:var( --white);
+        transform: translate(-35%);
+    }
+    
+    .slds-progress__item.slds-is-completed .slds-progress__marker {
+        background-color: var(--green);
+        border: none;
+        box-shadow: none;
+        height: 4rem;
+        width: 4rem;
+        color:var( --white);
+        transform: translate(-35%);
+    }
+    
+    .slds-progress__item .slds-progress__marker {
+        background-color: var( --light-grey);
+        border: none;
+        box-shadow: none;
+        height: 4rem;
+        width: 4rem;
+        color: var(--dark-grey);
+        transform: translate(-35%);
+    }
+    
+    .slds-progress__item_content{
+        font-size: 16px;
+        line-height: 24px;
+        color: var(--dark-grey);
+    }
+    
+    .slds-progress_vertical .slds-progress__item_content {
+        margin-top: var(--lwc-spacingLarge,0.75rem);
+        padding-bottom: var(--lwc-spacingXLarge,0.75rem);
+    }
+    .slds-progress_vertical .slds-is-active .slds-progress__item_content{
+        color: var(--medium-blue);
+        font-weight: 600;
+    }
+    
+    .slds-progress_vertical .slds-is-completed .slds-progress__item_content{
+        color: var(--green);
+        font-weight: 600;
+    }
+    
+    .slds-progress__marker span{
+        font-size: 16px;
+        align-self: center;
+    }
+}
+
+

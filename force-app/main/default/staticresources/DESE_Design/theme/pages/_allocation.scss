@@ -1,0 +1,134 @@
+.allocation-header{
+    font-size: 2.4rem;
+    font-weight: bold;
+    color:var(--textcolor);
+}
+.allocation-subheader{
+    font-size: 1.8rem;
+    font-weight: bold;
+    color:var( --blue);
+}
+
+
+.allocation-content{
+    .slds-table_bordered{
+        height: 30rem;
+        border-radius: 3px;
+        border: 1px solid rgba(20, 85, 143, 0.3);
+    }
+    .slds-truncate {
+        font-size: 1.4rem;
+        text-align: center;
+    }
+    .slds-table thead th {
+        font-weight: bold;
+        color:var( --textcolor);
+        background: var( --light-blue);
+    }
+    .slds-table_bordered tbody th{
+        height:5.6rem;
+    }
+    .slds-table_cell-buffer tr>th:first-child{
+        width:40rem;
+        height: 3.5rem;
+    }
+    .slds-table_cell-buffer tr>td:last-child{
+        width:40rem;
+        padding: 0;
+        padding-right: 3rem;
+        padding-left: 3rem;
+    }
+    .slds-table_col-bordered th+td{
+        width:20rem;
+    }
+    .slds-table_col-bordered td+td,{
+        width:20rem;
+    }
+    .slds-input {
+        height:3.5rem;
+        border: 1px solid rgba(20, 85, 143, 0.3);
+        border-radius: 5px;
+        font-size:1.4rem;
+        text-align:right;
+        font-weight: 500;
+        color:var(--textcolor);
+    }
+    .slds-input::placeholder{
+        font-size: 1.4rem;
+        color: var(--textcolor);
+    }
+    .line{
+        border-top: 2px solid var( --background-grey);
+    }
+    
+    
+  
+}
+.instructions-section.slds-box{
+    padding: 2rem 3rem;
+    background: var( --light-yellow);
+    border-radius: 5px;
+    border:none;
+    .instructions{
+        font-size: 1.6rem;
+        font-weight: bold;
+        text-decoration: underline;
+        color:var( --dark-yellow);
+        &__data{
+            font-size: 1.3rem;
+            font-weight: 500;
+            color:var( --dark-yellow);
+            padding-right: 5rem;
+        }      
+    }
+    .readmore{
+        border:none;
+        background: none;
+        .slds-button.slds-button_brand {
+            height: 0;
+            border-radius: 0;
+            width:10rem;
+            font-size: 1.3rem;
+            text-decoration: underline;
+        }
+        .slds-button {
+            color:var( --dark-yellow);
+            border:none;
+        background: none;
+        padding-left: 0;
+        }
+    }
+}
+.allocation-accordion{
+    margin-bottom:7rem;
+    // .slds-accordion__section.slds-is-open{
+    //     width:70.6vw;
+    // }
+    // .slds-accordion__section{
+    //     width:70.6vw;
+    // }
+}
+.allocation-accordion-content{
+    padding: 3rem;
+    
+    .slds-table_header-hidden{
+        height:25rem;  
+    }
+    .slds-table_cell-buffer tr > th:first-child {
+        width: 70%;
+    }
+    .slds-table_bordered tbody td{
+        border-left: 1px solid rgba(20, 85, 143, 0.3);
+    }
+    .slds-truncate {
+        text-align: left;
+        color:var(--textcolor);
+    }
+    .slds-truncate.last-row {
+        text-align: right;
+        font-weight: bold;
+    }
+    tr:nth-child(even) {
+        background-color: var(--light-blue);
+    }
+}

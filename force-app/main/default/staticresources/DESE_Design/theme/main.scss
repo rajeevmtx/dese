@@ -1,0 +1,490 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;600;700;800&display=swap');
+@import "base/variables";
+@import "base/helpers";
+@import "pages/header";
+@import "pages/sidebar";
+@import "pages/global";
+@import "pages/overview";
+@import "pages/contact";
+@import "pages/allocation";
+@import "pages/privateschool";
+@import "pages/titlenarrative";
+@import "pages/modalwindow";
+@import "pages/mounika";
+@import "pages/juhi";
+
+
+.grantsDashboardSideBar {
+    background: var(--white);
+    font-size: 1.4rem;
+    position: fixed;
+    left: 0px;
+    top: 146px;
+    width: inherit;
+    bottom: 0px;
+
+    svg {
+        width: 20px;
+        height: 20px;
+        float: left;
+    }
+
+    .pointer-event-none .slds-size_1-of-12 {
+        margin-right: 10px;
+    }
+}
+
+.grantsDashboardBody {
+    font-size: 1.4rem;
+
+    .tab_title {
+        font-size: 14px !important;
+    }
+
+    .tab {
+        background: var(--white);
+    }
+
+    .tab_desc {
+        font-weight: 600 !important;
+    }
+
+    .tab .active .tab_desc {
+        color: #2574A9;
+    }
+
+
+    .tab-button {
+        border-right: 2px solid #f3f3f3;
+    }
+
+
+
+    .permits_header {
+        margin-top: 0px !important;
+    }
+
+    .card-sidecolor-orange {
+        background: var(--white) !important;
+        border-left: 4px solid #ff7b00;
+    }
+
+
+    .card-sidecolor-green {
+        background: var(--white) !important;
+        border-left: 4px solid #00a82a;
+    }
+
+
+    .card-sidecolor-pink {
+        background: var(--white) !important;
+        border-left: 4px solid #ff3c9e;
+    }
+
+
+    .card-sidecolor-blue {
+        background: var(--white) !important;
+        border-left: 4px solid #0084ff;
+    }
+}
+
+
+
+
+.cDESE_New_Theme header {
+    position: sticky;
+    top: 0px;
+    z-index: 99;
+}
+
+
+header .userRegisterBtn button {
+    width: 10rem !important;
+}
+
+header .userRegisterBtn button:hover,
+header .userLoginBtn button:hover {
+    border: 1px solid #fff;
+    background: #14558F;
+    color: #fff;
+}
+
+header .userLoginBtn button {
+    width: 10rem !important;
+    margin-top: 6px;
+}
+
+.userRegContainer {
+    padding: 1.6rem 8rem;
+}
+
+.userRegContainer .formContainer {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    font-size: 1.4rem;
+}
+
+.userRegContainer .formContainer label {
+    font-size: 1.4rem;
+    margin-top: 10px;
+    line-height: 36px;
+}
+
+.userRegContainer .formContainer input {
+    padding: 6px 10px;
+}
+
+.userRegContainer legend {
+    font-weight: normal;
+    font-size: 1.4rem;
+    color: #777777
+}
+
+.userRegContainer lightning-lookup-address {
+    margin-top: -40px;
+    margin-bottom: 16px;
+}
+
+.userRegContainer legend label {
+    display: none
+}
+
+.userRegContainer legend button {
+    background: none;
+    margin-top: 0px;
+}
+
+
+.userRegContainer button {
+    background: #15558f;
+    margin: 16px 0px
+}
+
+
+/* New Register Page */
+
+
+.regContainerPage {
+    position: fixed;
+    background: #f4f7fa;
+    top: 0px;
+    bottom: 0px;
+    z-index: 99;
+    right: 0px;
+    width: 100%;
+    display: flex;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+}
+
+.regContainerPage .loginImages {
+    max-width: 60%;
+    height: auto;
+    color: #fff;
+    font-size: 1.4rem;
+    position: relative;
+}
+
+
+
+.regContainerPage .loginImages h3 {
+    font-size: 1.8rem;
+}
+
+.submitForm h3 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 5px;
+
+}
+
+.submitForm p {
+    color: #AEAEAE;
+}
+
+
+
+.regContainerPage .slds-grid {
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    width: 800px;
+
+}
+
+.welcomeText {
+    position: absolute;
+    z-index: 9;
+    top: 17%;
+    left: 10%;
+    width: 70%;
+}
+
+
+.welcomeText h3 {
+    font-size: 1.8rem;
+    display: block !important;
+    width: 100% ! important;
+    clear: both;
+    margin-bottom: 5px;
+
+}
+
+.powered {
+    position: absolute;
+    bottom: 3%;
+    text-align: center;
+    width: 100%;
+    font-size: 11px;
+    color: #333;
+}
+
+
+.submitForm {
+    padding: 1.6rem 5rem 1.6rem 5rem;
+    font-size: 1.4rem;
+}
+
+.submitForm .lightning-button button {
+    background: #15558f;
+    margin: 16px 0px;
+    width: 100% !important;
+
+}
+
+.submitForm label {
+    font-size: 1.4rem;
+    margin-top: 10px;
+    color: #14558F;
+    margin-top: 10px;
+    line-height: 36px;
+}
+
+.submitForm input {
+    padding: 6px 10px;
+    margin-top: -10px;
+    border: 1px solid #B9CCDD;
+    border-radius: 4px;
+}
+
+.submitForm .clear {
+    clear: both;
+    height: 10px;
+}
+
+.submitForm button {
+    width: 100% !important;
+}
+
+.submitForm .slds-form-element__label {
+    display: none;
+
+}
+
+.signInText p span {
+    color: #7B7B7B;
+}
+
+.signInText p {
+    color: #000000;
+}
+
+.signInText {
+    text-align: center;
+}
+
+
+.signInText p a {
+    color: #14558F;
+    font-weight: bold;
+}
+
+.signInText img {
+    width: 40px;
+    height: 40px;
+    margin: 16px 10px;
+}
+
+
+/*# sourceMappingURL=main.css.map */
+/* K Ravi 24 Jan */
+.daseTitle2 .narrative-box li,
+.daseTitle3 .narrative-box li,
+.daseTitle4 .narrative-box li {
+    font-size: 1.6rem;
+    margin: 16px 0px
+}
+
+.daseTitle2 .slds-text-heading_medium,
+.daseTitle2 .box-header-small,
+.daseTitle3 .box-header-small {
+    font-size: 1.6rem;
+    margin: 8px 0px;
+
+}
+
+.daseTitle2 .slds-combobox__input {
+    font-size: 1.6rem;
+    padding: 10px 16px;
+    text-align: left;
+    display: block;
+    border-radius: 4px;
+    border: 1px solid #a9a9a9;
+}
+
+// .daseTitle2 p,
+// .daseTitle3 .paragraph,
+// .daseTitle4 .paragraph,
+// .titleI .paragraph {
+//     margin: 16px 0px;
+// }
+
+.titleI .describe-head .describe-headings {
+    font-size: 1.6rem !important;
+    font-weight: bold;
+}
+
+.daseTitle1 .slds-radio,
+.daseTitle2 .slds-radio,
+.daseTitle3 .slds-radio,
+.daseTitle4 .slds-radio {
+    margin-right: 16px;
+}
+
+.daseTitle2 .body,
+.daseTitle3 .narrative-box,
+.daseTitle4 .narrative-box {
+    font-size: 1.6rem !important;
+}
+
+.daseTitle2 .body,
+.daseTitle3 .body,
+.daseTitle4 .body,
+.titleI .body {
+    font-size: 1.6rem !important;
+    margin-bottom: 20px;
+}
+
+.daseTitle2 .head,
+.daseTitle3 .head,
+.daseTitle4 .head,
+.titleI .head {
+    font-size: 1.6rem !important;
+    font-weight: bold;
+}
+
+
+.daseTitle2 .slds-tabs_default__item a,
+.daseTitle3 .slds-tabs_default__item a,
+.daseTitle4 .slds-tabs_default__item a,
+.titleI .slds-tabs_default__item a {
+    height: 40px;
+}
+
+.daseTitle3 .note_header,
+.daseTitle3 .narrative-box .slds-text-heading_medium,
+.daseTitle3 .narrative-box .slds-text-heading_medium {
+    font-size: 1.6rem !important;
+}
+
+
+.daseTitle1 .slds-text-heading_medium,
+.daseTitle2 .slds-text-heading_medium,
+.daseTitle3 .slds-text-heading_medium,
+.daseTitle4 .slds-text-heading_medium {
+    font-size: 1.6rem !important;
+}
+
+
+.titleList li {
+    margin: 8px 0px;
+}
+
+.dasePagePadding,
+.daseDistrictwide,
+.privateSchoolServices,
+.titleI,
+.daseTitle2 {
+    padding: 1.7rem 0 4rem;
+}
+
+.dasePagePadding .slds-radio,
+.privateSchoolServices .slds-form-element__control .slds-radio,
+.daseDistrictwide .slds-form-element__control .slds-radio {
+    margin-right: 16px !important;
+}
+
+
+.slds-accordion td input {
+    margin-left: 8px;
+}
+
+.privateschool-content .slds-radio {
+    margin-right: 16px;
+}
+
+.daseDistrictwide .slds-checkbox {
+    margin: 8px 0px;
+}
+
+// .daseDistrictwide .slds-form-element__control {
+//     padding: 10px 0px;
+// }
+
+.readmore button {
+    color: var(--medium-blue);
+    font-weight: 600;
+}
+
+.daseDistrictwide .slds-form-element__control .slds-checkbox {
+    margin-bottom: 16px;
+}
+
+.checkboxGroup .slds-checkbox {
+    margin: 14px 0px !important;
+}
+
+.checkboxGroup .slds-checkbox_faux,
+.titleI .slds-checkbox_faux {
+    width: 20px !important;
+    height: 20px !important;
+    margin-right: 10px ! important;
+
+}
+
+
+.privateSchoolServices table td label {
+    display: none;
+}
+
+.siteforceContentArea .comm-layout-column:not(:empty) {
+    padding-top: 0;
+}
+
+
+
+// Standard Contract Form
+
+.attachAgreement{
+    margin: 10px 0px;
+    lightning-primitive-file-droppable-zone{
+        width: 100%;
+        padding: 10px;
+    }
+    label{
+        background: #fff;
+        padding: 10px;
+    }
+    .slds-file-selector__button {
+        border: none;
+    }
+}
+
+.slds-spinner_container{
+    position: fixed;   
+}
+
+
+

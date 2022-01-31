@@ -1,0 +1,218 @@
+header {   
+    .main-header{
+        height:40px;
+        background-color:  var(--green);
+        color:var( --white);
+        font-size: 1.3rem;
+        padding-top: 1rem;
+        padding-left: 8rem;
+        @media only screen and (max-width:1024px) {    
+            padding-left:4rem;   
+        }
+        @media (max-width:480px){
+            padding-left: 2rem;
+            padding-top: 0;         
+        }
+    }
+    .header-nav { 
+        height:10rem;
+        background-color:var( --white) ;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding:1.6rem 8rem;
+        @media only screen and (max-width:1024px) {    
+            padding:1.6rem 4rem;
+         }
+         @media (max-width:480px){
+             padding:1rem 2rem;
+         }
+        .logo {            
+            img{
+                width:20rem;
+                height:10rem;
+                @media (max-width:480px){
+                    width:10rem;
+                    height:5rem;
+                }
+            }   
+        }
+        .nav {
+            width:50rem;
+            display: flex;
+            align-items: center;
+            justify-content:space-between; 
+            font-weight: normal;
+            @media (max-width:480px){
+                width:25rem;
+            }  
+            .home{
+                font-size:1.6rem;
+                color:var(--textcolor);
+                @media (max-width:480px){
+                    font-size: 1.4rem;
+                }
+            }  
+            .support{
+                font-size:1.6rem;
+                color:var(--textcolor);
+                @media (max-width:480px){
+                    font-size: 1.4rem;
+                }
+            }     
+            .profile{
+                display: flex;
+                align-items: center;
+                justify-content: space-evenly;
+                width: 15rem;
+                height: 5rem;
+                border-radius: 0.6rem;
+                background: var(--grey-medium);
+                &__avatar{
+                    height:4.2rem;
+                    width:3.2rem;
+                }
+                &__name{
+                    font-weight: 500;
+                    font-size: 1.6rem;
+                    color:var(--textcolor);
+                }
+                &__vector{
+                    img{
+                        height: 0.7rem;
+                        width: 1.2rem;
+                    }    
+                    .slds-button_icon-border {
+                        border:none;
+                        color:var(--white);
+                    }    
+                    .slds-button__icon {
+                        height: 1.6rem;
+                        width: 2rem;
+                    }     
+                    .slds-button_icon-border {
+                        height: 5rem;
+                    }      
+                    .slds-dropdown-trigger_click .slds-dropdown {
+                        width:10rem;
+                    }
+                    .slds-dropdown__item {
+                        font-size: 1.5rem;
+                    }
+                }
+            }
+            .line{
+                border-left: 0.1rem solid var( --black);
+                height: 4.3rem;
+                opacity: 0.1;
+            }
+            .language{
+                width:10rem;
+                display: flex;
+                align-items: center;
+                gap:1rem;
+                .slds-input_faux {
+                    background: none;                  
+                }
+                .slds-input_faux:not(.slds-combobox__input-value) {
+                    color: var(--white);
+                }
+                .slds-truncate{
+                    font-size: 1.6rem;
+                }
+                svg.slds-icon.slds-icon-text-default.slds-icon_xx-small {
+                    width: 2rem;
+                    height: 1.6rem;
+                }
+                .slds-input-has-icon .slds-input__icon{
+                    top:0;
+                }
+                &__translate{
+                    width:2rem;
+                }
+               &__select{
+                   width:6rem;
+                   height:5rem;
+               }           
+            }
+        }
+    }
+    .warning {
+        height:4.5rem;
+        background-color: var(--yellow);
+        padding-left: 8rem;
+        display: flex;
+        align-items: center;
+        gap:1.5rem;  
+        @media only screen and (max-width:1024px) {    
+           padding-left:4rem;    
+    }  
+        &__icon{
+            height: 4rem;
+            width:1.8rem;
+        }
+        &__text {
+            font-size: 1.6rem;
+            color:var(--textcolor);
+            font-weight:600;
+            @media only screen and (max-width:1024px) {    
+                font-size: 1.4rem;  
+        }
+        }
+    }
+    .header-info {
+        height:9rem;
+        background-color: var(--blue);
+       
+        padding:2rem 8rem;
+        @media only screen and (max-width:1024px) {    
+            padding-left: 4rem;  
+    }
+        .info{
+            &__main{
+                font-size: 2.4rem;
+                font-weight: bold;
+                color:var( --white);
+                @media only screen and (max-width:768px) {    
+                      font-size:2rem;
+            }
+            }
+            &__sub{
+                font-size: 1.6rem;
+                color: var( --background-grey);
+                font-weight: normal;
+            }
+        }
+        .date{
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            &__due {
+                font-size: 1.6rem;
+                color: var( --background-grey);
+                font-weight: normal;
+            }
+            &__format {
+                font-size: 1.8rem;
+                font-weight: bold;
+                color:var( --white);
+                @media only screen and (max-width:768px) {    
+                   font-size: 1.4rem;   
+            }
+            }
+        }
+    }
+    
+}
+.slds-input_faux{
+    height:fit-content;
+    border: none;
+    
+}
+
+.information{
+    width:100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

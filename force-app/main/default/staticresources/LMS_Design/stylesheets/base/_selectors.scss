@@ -1,0 +1,134 @@
+// setup the css4 variable definitions
+@if $enable-css-variables == true {
+  :root {
+    @each $var-map-name, $var-map in $var-maps {
+      @each $var, $val in $var-map {
+        // if it is a map, go another level deep
+        @if type-of($val) == map {
+          @each $var-n, $val-n in $val {
+            #{--$var-map-name}-#{$var}-#{$var-n}: $val-n;
+          }
+        } @else {
+          #{--$var-map-name}-#{$var}: $val;
+        }
+      }
+    }
+  }
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+html {
+  position:relative;
+  height:100%;
+  box-sizing: border-box;
+  @include v(font-size, body);
+  @media (min-width:$screen-lg) {
+    font-size: $font-size-base + 2px;
+  }
+}
+
+body {
+  margin:0;
+  padding:0;
+  @include font-smoothing;
+  @include v(font-family, body);
+  @include v(line-height, body);
+  @include v(background-color, background);
+  @include v(color, text, null);
+}
+
+a {
+  cursor:pointer;
+  text-decoration:none;
+  @include v(color, link);
+  &:hover,&:focus,&:active {
+    @include v(color, link-active);
+  }
+  // If there isn't a class, give it an underline
+  // &[href]:not([class]) {
+  //   text-decoration:underline;
+  // }
+}
+
+hr {
+  background-color: $border-lt;
+  border: 0;
+  display: block;
+  height: 0.125rem;
+  margin-bottom: $gap;
+  margin-top: $gap;
+}
+
+// Show a really annoying broken image
+img {
+  display:block;
+  height:auto;
+  position:relative;
+  text-align:center;
+  max-width:100%;
+  height:auto;
+  &:before,&:after {
+    display:block;
+  }
+  &:before {
+    content:"img not found";
+  }
+  &:after {
+    content:"(url: " attr(src) ")";
+  }
+}
+
+article,aside,section,header,footer {
+  display:block;
+}
+
+blockquote {
+  display:block;
+  width:100%;
+  margin:0;
+  padding:0;
+}
+
+// Avoid iOS browsers from zooming on form element focus.
+@media screen and (-webkit-min-device-pixel-ratio:0) and (max-device-width:1024px) {
+  input,
+  select,
+  textarea {
+    font-size: $font-size-base;
+    &:focus {
+      font-size: $font-size-base;
+    }
+  }
+}
+
+h1,h2,h3,h4,h5,h6 {
+  line-height:1.1;
+  @include v(font-family, head);
+  @include v(font-weight, head);
+}
+
+h1 {
+  @include v(font-size, h1);
+}
+h2 {
+  @include v(font-size, h2);
+}
+h3 {
+  @include v(font-size, h3);
+}
+h4 {
+  @include v(font-size, h4);
+}
+h5 {
+  @include v(font-size, h5);
+}
+h6 {
+  @include v(font-size, h6);
+}
+
+label {
+  @include font-semibold;
+}

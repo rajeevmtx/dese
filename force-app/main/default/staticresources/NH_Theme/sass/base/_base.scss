@@ -1,0 +1,30 @@
+*,
+::after,
+::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html {
+    background: $body-background;
+    //This define what 1rem is according to the browser font size...
+    font-size: 16px;
+    @include respond(phone) {
+        font-size: 50%;
+    }
+    @include respond(tab-p) {
+        font-size: 60%;
+    }
+    @include respond(tab-l) {
+        font-size: 70%;
+    }
+    @include respond(b-desktop) {
+        font-size: 80%;
+    }
+}
+
+body {
+    box-sizing: border-box;
+    margin: 10rem 0;
+}

@@ -1,0 +1,40 @@
+extends ../layouts/default.pug
+
+block active_link
+  - var currentPage = 'index';
+
+block title
+  title New Page
+
+block stylesheets
+
+block content
+  mixin course(status,title,description)
+    .course
+      .content
+        .status= status
+        h2.course-title= title
+        .description= description
+        .controls
+          a.btn.btn-primary Launch Course
+
+  svg(xmlns='http://www.w3.org/2000/svg', style="display: none;")
+    defs
+      symbol#arrow(viewBox='0 0 16 16')
+        polyline(fill='none', stroke='currentColor', stroke-linecap='round', stroke-linejoin='round', stroke-miterlimit='10', points='3.5,6.5 8,11 12.5,6.5 ')
+
+  main
+    .page-heading
+      a.btn.btn-back(href="#") Back to course list
+      h1  Architecto ad optio, consectetur mollitia dolore odit tempore
+      .description Aperiam aspernatur eos fugiat enim maiores obcaecati, soluta deserunt, atque corporis, nostrum quod repellat adipisci minus dignissimos natus?
+    .course-detail-list
+      +course("Incomplete", "Commodi ut corrupti aspernatur minus", "Explicabo placeat, corrupti dolorum beatae expedita blanditiis deserunt provident autem nihil a, dicta voluptas molestias laudantium voluptatum tempora!")
+      +course("Incomplete", "Nisi culpa optio accusantium", "Voluptates dolores perferendis autem enim sunt unde, ullam vero pariatur, cupiditate eaque consectetur voluptate reprehenderit nisi praesentium harum?")
+      +course("Incomplete", "Assumenda illum iusto Maxime dicta obcaecati molestias at", "Autem, distinctio, aperiam. In modi, quas dolor odio saepe voluptatem vel eveniet eaque dicta inventore est quam officia?")
+      +course("Incomplete", "Cumque ullam saepe provident facere nobis", "Qui placeat praesentium itaque, aperiam natus fugit quas animi laborum commodi, sed dolores. Optio assumenda, pariatur. Inventore, qui.")
+
+
+
+
+block scripts

@@ -1,0 +1,6 @@
+.customSlider .slds-slider {
+    margin-top: -20px;
+}
+.customSlider span.slds-slider-label {
+    visibility: hidden;
+}

@@ -1,0 +1,87 @@
+.page-content{
+    height:auto;
+    background-color:var(--white);
+    padding: 1.7rem 4rem;
+    display:grid;
+    border-radius: 5px;
+}
+.overview-content{
+
+    .header{
+        font-size: 2.4rem;
+        font-weight: bold;
+        color:var(--textcolor);
+    }
+    .paragraph{
+        font-size: 1.4rem;
+        color:var(--textcolor);
+        line-height: 2.6rem;
+    }
+    .list{
+        font-size: 1.4rem;
+        color:var(--textcolor);
+        line-height: 2.6rem;
+        font-weight: bold;
+        list-style: unset;
+        padding-left: 2rem;
+    }
+    .sub-header{
+        font-size: 1.8rem;
+        font-weight: 600;
+        line-height: 2.5rem;
+    }
+    a{
+        text-decoration: underline;
+    }
+}
+.note{
+    background-color:var(--light-yellow);
+    padding: 2rem 3rem;
+    border: 1px solid #EACB6A;
+    border-radius: 5px;
+    &__header{
+        font-size: 1.6rem;
+        font-weight: bold;
+        line-height: 2rem;
+        text-decoration-line: underline;
+        color:var(--dark-yellow);
+    }
+    &__list{
+        font-size: 1.3rem;
+        font-weight: 500;
+        line-height: 2rem;
+        color:var(--dark-yellow);
+        list-style: unset;
+        li{
+            padding-bottom: 1rem;
+        }
+    }
+}
+
+
+
+
+//card footer
+.slds-card__footer{
+    height: 10rem;
+    border-top: 2px solid var(--border-grey);
+    .button {
+        display: flex;
+        height: 9rem;
+        justify-content: space-between;
+        align-items: center;  
+        padding: 2rem;
+    }
+    .slds-button.slds-button_outline-brand {
+        height: 4rem;
+        width: 10rem;
+        font-size: 1.5rem;
+        border-radius: 8px;
+    }
+    .slds-button.slds-button_brand {
+        font-size: 1.5rem;
+        height: 4rem;
+        border-radius: 8px;
+        width: 10rem;
+    }
+}

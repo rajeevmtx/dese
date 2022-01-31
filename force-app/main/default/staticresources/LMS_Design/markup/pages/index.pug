@@ -1,0 +1,92 @@
+extends ../layouts/default.pug
+
+block active_link
+  - var currentPage = 'index';
+
+block title
+  title New Page
+
+block stylesheets
+
+block content
+  mixin course(status,items_complete,items,title,likes,id)
+    .item-card
+      input.hide-details.sr-only(type="checkbox", id= id + '_hide')
+      div(class= 'status ' + status)
+        .icon
+        .note= status
+        .info
+          .items
+            span.full= items_complete
+            span= '/' + items
+          .note Completed
+      .content
+        label.toggle-collapse(for= id + '_hide', aria-hidden="true")
+          span.title Hide
+          svg(aria-hidden='true', xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink')
+            use(xlink:href="#arrow")
+        a.title(href="/course-detail.html")= title
+        input.read-toggle.sr-only(id= id, type="checkbox")
+        block
+        label.read-toggle-label(for= id) Read more
+        .tags
+          a.tag(href="#") Lorem training
+          a.tag(href="#") Ipsum Lorem
+          a.tag(href="#") Solor topic
+        .controls
+          .item
+            .icon
+            .name= likes + ' likes'
+          a.item(href="#")
+            .icon
+            .name Follow
+
+  svg(xmlns='http://www.w3.org/2000/svg', style="display: none;")
+    defs
+      symbol#arrow(viewBox='0 0 16 16')
+        polyline(fill='none', stroke='currentColor', stroke-linecap='round', stroke-linejoin='round', stroke-miterlimit='10', points='3.5,6.5 8,11 12.5,6.5 ')
+
+  main
+    .page-heading
+      h1  My Training
+      nav.subnav(aria-labelledby="trainingSubnav")
+        .sr-only#trainingSubnav Training Navigation
+        a.active(href="#") My Curriculum
+        a(href="#") Recommended Training
+        a(href="#") All Training
+    .training-content
+      +course("completed", "5", "5", "Architecto ad optio, consectetur mollitia dolore odit tempore", "43", "course01")
+        .description Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ad rem mollitia porro tempora itaque aliquid fugit recusandae incidunt? Accusantium est deleniti atque tempora enim vel qui laborum dolor impedit accusamus voluptatum et expedita, beatae tenetur voluptas cumque, culpa mollitia dignissimos alias porro neque repellendus omnis, quo dicta! Dolores, laborum deleniti.
+      +course("in-progress", "2", "5", "Nulla esse ipsam quam nesciunt molestias", "122", "course02")
+        .description Rem beatae iste explicabo, recusandae rerum alias ad vitae, similique natus atque hic! Obcaecati repudiandae, quasi tenetur omnis odit sit ad ducimus nulla voluptatum. Necessitatibus aliquid, minus tempore recusandae consequuntur.
+      +course("enrolled", "0", "3", "Consequatur aspernatur eligendi quibusdam", "12", "course03")
+        .description Nostrum enim molestias veniam cum maxime. Deserunt nesciunt placeat atque perferendis. Quas inventore, fugiat vitae. Facilis incidunt adipisci facere nihil consequuntur quo nulla quaerat. Voluptatum, possimus, delectus?
+      +course("not-enrolled", "0", "3", "Quaerat, tempora commodi, eveniet asperiores excepturi aperiam dolore.", "32", "course04")
+        .description Mollitia expedita dignissimos dicta fuga architecto ipsam sunt similique perspiciatis! Sint labore libero eveniet, placeat? A sapiente hic laboriosam minima maxime sit recusandae, rerum, nulla natus, facilis, libero in.
+
+
+
+block sidebar-left
+  .sidebar
+
+block sidebar-right
+  .sidebar-right
+    .subnav.badge-card
+      .card-title My Badges
+      .badges
+        .item
+          img(src="/images/badge_beginner.svg")
+          span.name First Course
+        .item
+          img(src="/images/badge_muscle.svg")
+          span.name Master of Courses
+        .item
+          img(src="/images/badge_certificate.svg")
+          span.name First Try
+        .item
+          img(src="/images/badge_trophy.svg")
+          span.name Certificate Collector
+
+
+
+block scripts

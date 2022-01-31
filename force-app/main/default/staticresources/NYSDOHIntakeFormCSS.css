@@ -1,0 +1,7 @@
+c-nys-doh-intake-request-parent .slds-radio{
+    display:inline !important;
+}
+
+.hideLWCLabel fieldset legend{
+    display:none !important;
+}

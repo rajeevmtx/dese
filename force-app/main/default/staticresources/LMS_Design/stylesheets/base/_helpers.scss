@@ -1,0 +1,41 @@
+.txt-underline {
+  text-decoration:underline;
+}
+.txt-ucase {
+  text-transform:uppercase;
+}
+.txt-read {
+  max-width:60rem;
+}
+.txt-lg {
+  font-size:3rem;
+  line-height:1;
+  @include font-bold;
+}
+.txt-md {
+  font-size:1.5rem;
+  line-height:1.2;
+}
+
+.icon-stroke {
+  stroke:currentColor;
+}
+.icon-fill {
+  fill:currentColor;
+}
+.icon-sm {
+  width:$gap-sm;
+  height:$gap-sm;
+}
+.icon-md {
+  width:$gap-md;
+  height:$gap-md;
+}
+.icon-lg {
+  width:$gap-lg;
+  height:$gap-lg;
+}
+
+.sr-only {
+  @include sr-only;
+}

@@ -1,0 +1,148 @@
+
+.slds-card {
+    width:100%;
+    height: auto;
+    background:var(--white);
+    padding: 2rem 3rem;
+}
+
+.contact-header{
+    font-weight: bold;
+    font-size: 2.4rem;
+    line-height: 3.3rem;
+    color:var(--textcolor);
+}
+.contact-subheader{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.6rem;
+    line-height: 2.2rem;
+    color:var(--dark-grey);
+    padding-top: 1rem;
+}
+
+    .slds-accordion__section {
+        padding-top: 1.6rem;
+        width: 100%;
+    }
+    
+    
+    // Accordion name
+    .slds-button_reset, .slds-button--reset {
+        font-size: 1.6rem;
+        font-weight: normal;
+        color:var(--dark-grey);
+    }
+    
+    // Accordion icon
+    .slds-is-open>.slds-accordion__summary .slds-accordion__summary-action-icon {
+        transform: rotate(180deg);
+    }
+    
+    .slds-accordion__summary-action-icon {
+        transform: rotate(0deg);
+    }
+    
+    .slds-accordion__summary-action{
+        height: 7rem;
+        width: 100%;
+        background: var(--white);
+        border-left: 5px solid var(--light-grey);
+        border-top: 1px solid var(--lighter-grey);
+        border-right: 1px solid var(--lighter-grey);
+        border-bottom: 1px solid var(--lighter-grey);
+        border-radius: 5px;
+    }
+    .slds-accordion__list-item {
+        border-style: none;
+        padding-bottom: 1rem;
+    }
+    
+    
+    
+    
+    //Accordion when it is open
+    .slds-accordion__section.slds-is-open {
+        height: auto;
+        width: 100%;
+        border: 2px solid rgba(20, 85, 143, 0.3);
+        border-radius: 5px;
+        border-left: 5px solid var(--blue);
+        padding-top: 0.6rem;
+        margin-top: 1rem;
+        .slds-button_reset, .slds-button--reset{
+            color: var(--blue);
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .slds-accordion__summary-action{
+            background:var(--light-blue);
+            border: none;
+            border-top:2px solid rgba(20, 85, 143, 0.3) ;
+        }
+    }
+    
+    //Accordion content
+    .accordion-content{
+        padding:0 1.6rem;
+        height:25rem;
+        width:100%;
+        .slds-form-element{
+            padding-top:1rem;
+        }
+        .slds-input {
+            border: 1px solid var(--lightest-grey);
+            border-radius: 6px;
+            height: 4.2rem;
+            font-size: 1.6rem;
+        }
+        .slds-form-element__label {
+            font-size: 1.6rem;
+            color: var( --textcolor);
+            font-weight: 600;
+        }
+        .slds-input::placeholder{
+            font-size: 1.6rem;
+            color: var(--black-medium);
+    
+        }
+        span.slds-form-element__label {
+            font-weight: 500;
+        }
+    }
+
+    .slds-form-element__control .slds-radio{
+        display: inline-flex;
+    }
+    .slds-form-element__control {
+        padding-top: 0.5rem;
+    }
+    .slds-radio .slds-radio_faux{
+        width:2rem;
+        height:2rem;
+    }
+    .slds-radio [type=radio]:checked+.slds-radio__label .slds-radio_faux{
+        width:2rem;
+        height:2rem;
+    }
+    .slds-radio [type=radio]:checked+.slds-radio__label .slds-radio_faux:after{
+        width:1rem;
+        height:1rem;
+    }
+    .slds-radio__label {
+        span{
+            color:var(--dark-grey);
+            font-weight: normal;
+        }
+    }
+    
+
+
+svg.slds-accordion__summary-action-icon.slds-button__icon.slds-button__icon_left.slds-icon.slds-icon-text-default.slds-icon_x-small {
+    width: 1.6rem;
+    height: 2rem;
+}
+button{
+    flex-direction: row-reverse;
+    justify-content: space-between;
+}

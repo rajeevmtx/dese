@@ -1,0 +1,14 @@
+.field-horizontal {
+    margin-bottom: 1rem;
+}
+.field-horizontal fieldset>div {
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.field-horizontal fieldset>div .slds-radio+.slds-radio {
+    margin-left: 1rem;
+}
+.hor-radio .slds-radio{
+    display: inline-block !important;
+  }

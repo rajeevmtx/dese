@@ -1,0 +1,43 @@
+include ../partials/global-includes.pug
+
+block variables
+  - var siteName = 'LMS Boilerplate'
+  - var pageName = 'Home'
+  - var pageDescription = 'A simple boilerplate for LMS projects'
+
+block PrimaryNavigation
+  - var PrimaryNavItems = [{'url':'home','title':'Home'}];
+
+block active_link
+  - var currentPage = 'home';
+
+doctype transitional
+html(lang="en", xmlns="http://www.w3.org/2000/svg", xmlns:xlink="http://www.w3.org/1999/xlink")
+  head
+    block base_url
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='description', content= pageDescription)
+
+    block title
+      title= pageName + ' / ' + siteName
+
+    include ../partials/stylesheets.pug
+    block stylesheets
+
+  body
+    a.skip-link(href="#main-content",z-index="1") Skip to main content
+    block modals
+    .page-container
+      .content-container
+        block sidebar-left
+        .page-content(id="main-content")
+          block content
+        block sidebar-right
+      footer.site-footer
+
+    include ../partials/scripts.pug
+
+    block scripts
+

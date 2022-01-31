@@ -1,0 +1,175 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="241" height="605" viewBox="0 0 241 605">
+  <defs>
+    <filter id="a" width="110.3%" height="114.4%" x="-5.2%" y="-7.2%" filterUnits="objectBoundingBox">
+      <feOffset dy="2" in="SourceAlpha" result="shadowOffsetOuter1"/>
+      <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"/>
+      <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0" in="shadowBlurOuter1" result="shadowMatrixOuter1"/>
+      <feMerge>
+        <feMergeNode in="shadowMatrixOuter1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="b" width="110.3%" height="115.8%" x="-5.2%" y="-7.9%" filterUnits="objectBoundingBox">
+      <feOffset dy="2" in="SourceAlpha" result="shadowOffsetOuter1"/>
+      <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"/>
+      <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0" in="shadowBlurOuter1" result="shadowMatrixOuter1"/>
+      <feMerge>
+        <feMergeNode in="shadowMatrixOuter1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="c" width="110.3%" height="109.4%" x="-5.2%" y="-4.7%" filterUnits="objectBoundingBox">
+      <feOffset dy="2" in="SourceAlpha" result="shadowOffsetOuter1"/>
+      <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"/>
+      <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0" in="shadowBlurOuter1" result="shadowMatrixOuter1"/>
+      <feMerge>
+        <feMergeNode in="shadowMatrixOuter1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <g fill="none" fill-rule="evenodd" transform="translate(4 2)">
+    <g filter="url(#a)">
+      <rect width="233" height="45" fill="#555555"/>
+      <rect width="233" height="125" y="42" fill="#FFFFFF"/>
+      <text fill="#FFFFFF" font-family="Helvetica-Bold, Helvetica" font-size="14" font-weight="bold">
+        <tspan x="12" y="26">Attendees</tspan>
+      </text>
+      <polygon fill="#FFFFFF" points="214.5 25 209 19.441 210.426 18 214.5 22.118 218.574 18 220 19.441"/>
+      <text fill="#000000" font-family="Helvetica" font-size="13">
+        <tspan x="32" y="61">Roy Wilkinson</tspan>
+      </text>
+      <rect width="233" height="28" y="70" fill="#F5F5F5"/>
+      <g fill="#06B027" transform="translate(200 50)">
+        <path fill-rule="nonzero" d="M6,7.5 C7.65,7.5 9,6.15 9,4.5 L9,3 C9,1.35 7.65,0 6,0 C4.35,0 3,1.35 3,3 L3,4.5 C3,6.15 4.35,7.5 6,7.5 Z M4.5,3 C4.5,2.175 5.175,1.5 6,1.5 C6.825,1.5 7.5,2.175 7.5,3 L7.5,4.5 C7.5,5.325 6.825,6 6,6 C5.175,6 4.5,5.325 4.5,4.5 L4.5,3 Z"/>
+        <path d="M11.8615696,4.83656959 C11.9365696,4.46156959 11.6365696,4.08656959 11.2615696,4.01156959 C10.8865696,3.93656959 10.4365696,4.23656959 10.4365696,4.61156959 C10.0615696,6.86156959 8.18656959,8.51156959 5.93656959,8.51156959 C3.68656959,8.51156959 1.81156959,6.86156959 1.51156959,4.68656959 C1.43656959,4.23656959 1.06156959,3.93656959 0.61156959,4.01156959 C0.23656959,4.08656959 -0.0634304101,4.46156959 0.0115695899,4.83656959 C0.38656959,7.53656959 2.56156959,9.56156959 5.18656959,9.93656959 L5.18656959,11.5115696 L6.68656959,11.5115696 L6.68656959,9.93656959 C9.31156959,9.63656959 11.4865696,7.53656959 11.8615696,4.83656959 Z"/>
+      </g>
+      <g transform="translate(200 78)">
+        <path fill="#B2B2B2" fill-rule="nonzero" d="M6,7.5 C7.65,7.5 9,6.15 9,4.5 L9,3 C9,1.35 7.65,0 6,0 C4.35,0 3,1.35 3,3 L3,4.5 C3,6.15 4.35,7.5 6,7.5 Z M4.5,3 C4.5,2.175 5.175,1.5 6,1.5 C6.825,1.5 7.5,2.175 7.5,3 L7.5,4.5 C7.5,5.325 6.825,6 6,6 C5.175,6 4.5,5.325 4.5,4.5 L4.5,3 Z"/>
+        <path fill="#B2B2B2" d="M11.8615696,4.83656959 C11.9365696,4.46156959 11.6365696,4.08656959 11.2615696,4.01156959 C10.8865696,3.93656959 10.4365696,4.23656959 10.4365696,4.61156959 C10.0615696,6.86156959 8.18656959,8.51156959 5.93656959,8.51156959 C3.68656959,8.51156959 1.81156959,6.86156959 1.51156959,4.68656959 C1.43656959,4.23656959 1.06156959,3.93656959 0.61156959,4.01156959 C0.23656959,4.08656959 -0.0634304101,4.46156959 0.0115695899,4.83656959 C0.38656959,7.53656959 2.56156959,9.56156959 5.18656959,9.93656959 L5.18656959,11.5115696 L6.68656959,11.5115696 L6.68656959,9.93656959 C9.31156959,9.63656959 11.4865696,7.53656959 11.8615696,4.83656959 Z"/>
+        <path stroke="#B2B2B2" d="M10.8731392,0 L0,10.5" stroke-linecap="square"/>
+      </g>
+      <path fill="#F5A623" fill-rule="nonzero" d="M23.9409598,51.0799558 C23.8688683,50.9323771 23.7376855,50.8221306 23.5787297,50.774882 L17.6695922,49.0249367 C17.5585005,48.9916878 17.4409086,48.9916878 17.3304078,49.0249367 L11.4212703,50.774882 C11.2617236,50.8221306 11.1311317,50.9323771 11.0590402,51.0799558 C10.9869487,51.2275346 10.9804487,51.3978626 11.0419037,51.5501078 L12.1817763,54.3628532 L12.1817763,57.7501641 C12.1817763,60.6451569 14.5672951,63 17.5,63 C20.4327049,63 22.8182237,60.6451569 22.8182237,57.7501641 L22.8182237,54.3628532 L23.9580963,51.5501078 C24.0195513,51.3978626 24.0130513,51.2275346 23.9409598,51.0799558 Z M17.5,51.917013 C18.1529597,51.917013 18.6818275,52.43908 18.6818275,53.0836432 C18.6818275,53.7282064 18.1529597,54.2502734 17.5,54.2502734 C16.8470403,54.2502734 16.3181725,53.7282064 16.3181725,53.0836432 C16.3181725,52.43908 16.8470403,51.917013 17.5,51.917013 Z M21.6363962,57.7501641 C21.6363962,60.001177 19.7803361,61.8333698 17.5,61.8333698 C15.2196639,61.8333698 13.3636038,60.001177 13.3636038,57.7501641 L13.3636038,56.5835338 L21.6363962,56.5835338 L21.6363962,57.7501641 Z"/>
+      <text fill="#000000" font-family="Helvetica" font-size="13">
+        <tspan x="32" y="89">Angela Turner</tspan>
+      </text>
+      <rect width="233" height="28" y="126" fill="#F5F5F5"/>
+      <g transform="translate(200 134)">
+        <path fill="#B2B2B2" fill-rule="nonzero" d="M6,7.5 C7.65,7.5 9,6.15 9,4.5 L9,3 C9,1.35 7.65,0 6,0 C4.35,0 3,1.35 3,3 L3,4.5 C3,6.15 4.35,7.5 6,7.5 Z M4.5,3 C4.5,2.175 5.175,1.5 6,1.5 C6.825,1.5 7.5,2.175 7.5,3 L7.5,4.5 C7.5,5.325 6.825,6 6,6 C5.175,6 4.5,5.325 4.5,4.5 L4.5,3 Z"/>
+        <path fill="#B2B2B2" d="M11.8615696,4.83656959 C11.9365696,4.46156959 11.6365696,4.08656959 11.2615696,4.01156959 C10.8865696,3.93656959 10.4365696,4.23656959 10.4365696,4.61156959 C10.0615696,6.86156959 8.18656959,8.51156959 5.93656959,8.51156959 C3.68656959,8.51156959 1.81156959,6.86156959 1.51156959,4.68656959 C1.43656959,4.23656959 1.06156959,3.93656959 0.61156959,4.01156959 C0.23656959,4.08656959 -0.0634304101,4.46156959 0.0115695899,4.83656959 C0.38656959,7.53656959 2.56156959,9.56156959 5.18656959,9.93656959 L5.18656959,11.5115696 L6.68656959,11.5115696 L6.68656959,9.93656959 C9.31156959,9.63656959 11.4865696,7.53656959 11.8615696,4.83656959 Z"/>
+        <path stroke="#B2B2B2" d="M10.8731392,0 L0,10.5" stroke-linecap="square"/>
+      </g>
+      <text fill="#000000" font-family="Helvetica" font-size="13">
+        <tspan x="32" y="145">Francesca K.</tspan>
+      </text>
+      <rect width="233" height="28" y="98"/>
+      <rect width="233" height="28" y="42"/>
+      <g transform="translate(200 106)">
+        <path fill="#B2B2B2" fill-rule="nonzero" d="M6,7.5 C7.65,7.5 9,6.15 9,4.5 L9,3 C9,1.35 7.65,0 6,0 C4.35,0 3,1.35 3,3 L3,4.5 C3,6.15 4.35,7.5 6,7.5 Z M4.5,3 C4.5,2.175 5.175,1.5 6,1.5 C6.825,1.5 7.5,2.175 7.5,3 L7.5,4.5 C7.5,5.325 6.825,6 6,6 C5.175,6 4.5,5.325 4.5,4.5 L4.5,3 Z"/>
+        <path fill="#B2B2B2" d="M11.8615696,4.83656959 C11.9365696,4.46156959 11.6365696,4.08656959 11.2615696,4.01156959 C10.8865696,3.93656959 10.4365696,4.23656959 10.4365696,4.61156959 C10.0615696,6.86156959 8.18656959,8.51156959 5.93656959,8.51156959 C3.68656959,8.51156959 1.81156959,6.86156959 1.51156959,4.68656959 C1.43656959,4.23656959 1.06156959,3.93656959 0.61156959,4.01156959 C0.23656959,4.08656959 -0.0634304101,4.46156959 0.0115695899,4.83656959 C0.38656959,7.53656959 2.56156959,9.56156959 5.18656959,9.93656959 L5.18656959,11.5115696 L6.68656959,11.5115696 L6.68656959,9.93656959 C9.31156959,9.63656959 11.4865696,7.53656959 11.8615696,4.83656959 Z"/>
+        <path stroke="#B2B2B2" d="M10.8731392,0 L0,10.5" stroke-linecap="square"/>
+      </g>
+      <text fill="#000000" font-family="Helvetica" font-size="13">
+        <tspan x="32" y="117">Brandon Jacobs</tspan>
+      </text>
+      <rect width="8" height="125" x="225" y="42" fill="#DDDDDD"/>
+      <rect width="5" height="75" x="227" y="43" fill="#999999" rx="2.5"/>
+    </g>
+    <g filter="url(#b)" transform="translate(0 179)">
+      <rect width="233" height="47" fill="#555555"/>
+      <rect width="233" height="108" y="44" fill="#FFFFFF"/>
+    </g>
+    <g transform="translate(13 234)">
+      <circle cx="16" cy="16" r="16" fill="#ABABAB"/>
+      <g fill="#FFFFFF" transform="translate(8 8)">
+        <path fill-rule="nonzero" d="M8,10 C10.2,10 12,8.2 12,6 L12,4 C12,1.8 10.2,0 8,0 C5.8,0 4,1.8 4,4 L4,6 C4,8.2 5.8,10 8,10 Z M6,4 C6,2.9 6.9,2 8,2 C9.1,2 10,2.9 10,4 L10,6 C10,7.1 9.1,8 8,8 C6.9,8 6,7.1 6,6 L6,4 Z"/>
+        <path d="M15.8154261,6.44875945 C15.9154261,5.94875945 15.5154261,5.44875945 15.0154261,5.34875945 C14.5154261,5.24875945 13.9154261,5.64875945 13.9154261,6.14875945 C13.4154261,9.14875945 10.9154261,11.3487595 7.91542612,11.3487595 C4.91542612,11.3487595 2.41542612,9.14875945 2.01542612,6.24875945 C1.91542612,5.64875945 1.41542612,5.24875945 0.81542612,5.34875945 C0.31542612,5.44875945 -0.0845738801,5.94875945 0.0154261199,6.44875945 C0.51542612,10.0487595 3.41542612,12.7487595 6.91542612,13.2487595 L6.91542612,15.3487595 L8.91542612,15.3487595 L8.91542612,13.2487595 C12.4154261,12.8487595 15.3154261,10.0487595 15.8154261,6.44875945 Z"/>
+      </g>
+    </g>
+    <g transform="translate(57 234)">
+      <circle cx="16" cy="16" r="16" fill="#06B027"/>
+      <g stroke="#FFFFFF" transform="translate(8 9)" stroke-linecap="square">
+        <polygon points="9.455 14.545 3.636 10.182 0 10.182 0 4.364 3.636 4.364 9.455 0"/>
+        <path d="M13.0909091 7.27272727L16 7.27272727M12.1454545 3.63636364L14.6181818 2.18181818M12.1454545 10.9090909L14.6181818 12.3636364"/>
+      </g>
+    </g>
+    <g transform="translate(101 234)">
+      <circle cx="16" cy="16" r="16" fill="#ABABAB"/>
+      <g stroke="#FFFFFF" transform="translate(8 10)" stroke-linecap="square">
+        <rect width="10.909" height="11.636"/>
+        <polygon points="16 9.455 10.909 7.273 10.909 4.364 16 2.182"/>
+      </g>
+    </g>
+    <circle cx="205" cy="250" r="16" fill="#ABABAB"/>
+    <g transform="translate(145 234)">
+      <circle cx="16" cy="16" r="16" fill="#3985D0"/>
+      <g stroke="#FFFFFF" transform="translate(8 8)" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M7.5,3.5 L7.5,3 C7.5,2.17157288 6.82842712,1.5 6,1.5 C5.17157288,1.5 4.5,2.17157288 4.5,3 L4.5,9.5 L2.179,8.587 C1.73098653,8.40920476 1.2201674,8.51451209 0.879,8.855 C0.428380667,9.30385869 0.40259073,10.0251027 0.82,10.505 L3.439,13.405 C4.60335238,14.7383566 6.28681493,15.5038983 8.057,15.505 L9.364,15.505 C10.9922351,15.5050005 12.5537089,14.8578447 13.7045759,13.7060398 C14.855443,12.5542349 15.5013268,10.9922345 15.5,9.364 L15.5,3.5 C15.5,2.94771525 15.0522847,2.5 14.5,2.5 C13.9477153,2.5 13.5,2.94771525 13.5,3.5 L13.5,4.5"/>
+        <path d="M10.5 3.5L10.5 3C10.5 2.17157288 11.1715729 1.5 12 1.5 12.8284271 1.5 13.5 2.17157288 13.5 3L13.5 6.5M7.5 6.5L7.5 2C7.5 1.17157288 8.17157288.5 9 .5 9.82842712.5 10.5 1.17157288 10.5 2L10.5 6.5"/>
+      </g>
+    </g>
+    <g fill="#FFFFFF" transform="translate(12 192)">
+      <text font-family="Helvetica-Bold, Helvetica" font-size="14" font-weight="bold">
+        <tspan x="0" y="14">Controls</tspan>
+      </text>
+      <polygon points="202.4 12.8 197 7.4 198.4 6 202.4 10 206.4 6 207.8 7.4"/>
+    </g>
+    <g filter="url(#c)" transform="translate(0 343)">
+      <rect width="233" height="45" fill="#555555"/>
+      <rect width="233" height="209" y="45" fill="#FFFFFF"/>
+    </g>
+    <g fill="#FFFFFF" transform="translate(12 357)">
+      <text font-family="Helvetica-Bold, Helvetica" font-size="14" font-weight="bold">
+        <tspan x="0" y="14">Chat</tspan>
+      </text>
+      <polygon points="202.4 12.8 197 7.4 198.4 6 202.4 10 206.4 6 207.8 7.4"/>
+    </g>
+    <text fill="#000000" opacity=".612" font-family="Helvetica" font-size="11">
+      <tspan x="12" y="429">Is Rachael planning on attending for this </tspan> <tspan x="12" y="442">session?</tspan>
+    </text>
+    <text fill="#61A512" font-family="Helvetica-Bold, Helvetica" font-size="13" font-weight="bold">
+      <tspan x="12" y="411">Angela Turner</tspan>
+    </text>
+    <text fill="#000000" opacity=".612" font-family="Helvetica" font-size="11">
+      <tspan x="12" y="538">We’ll get started in about 10 minutes folks.</tspan>
+    </text>
+    <text fill="#4A90E2" font-family="Helvetica-Bold, Helvetica" font-size="13" font-weight="bold">
+      <tspan x="12" y="520">Roy Wilkinson (me)</tspan>
+    </text>
+    <rect width="233" height="47" y="452" fill="#EEEEEE"/>
+    <rect width="8" height="169" x="225" y="388" fill="#DDDDDD"/>
+    <rect width="5" height="75" x="227" y="479" fill="#999999" rx="2.5"/>
+    <text fill="#000000" opacity=".612" font-family="Helvetica" font-size="11">
+      <tspan x="12" y="487">Negative, she will be on the Thursday call.</tspan>
+    </text>
+    <text fill="#61A512" font-family="Helvetica-Bold, Helvetica" font-size="13" font-weight="bold">
+      <tspan x="12" y="470">Francesca K.</tspan>
+    </text>
+    <text fill="#000000" opacity=".484" font-family="Helvetica" font-size="10">
+      <tspan x="179" y="410">11:13 am</tspan>
+    </text>
+    <text fill="#000000" opacity=".484" font-family="Helvetica" font-size="10">
+      <tspan x="179" y="469">11:15 am</tspan>
+    </text>
+    <text fill="#000000" opacity=".484" font-family="Helvetica" font-size="10">
+      <tspan x="179" y="519">11:20 am</tspan>
+    </text>
+    <path stroke="#979797" d="M0,557.5 L233,557.5" opacity=".237" stroke-linecap="square"/>
+    <rect width="197" height="27" x="6.5" y="564.5" fill="#FFFFFF" stroke="#E0E0E0"/>
+    <text fill="#000000" font-family="Helvetica" font-size="11">
+      <tspan x="12" y="581">Type your message here</tspan>
+    </text>
+    <rect width="26" height="28" x="202" y="564" fill="#4A90E2"/>
+    <polygon fill="#FFFFFF" points=".006 10 12 5 .006 0 0 3.889 8.571 5 0 6.111" transform="translate(209 573)"/>
+    <path stroke="#FFFFFF" d="M205.5 257.5L205.5 255.5M201.5 257.5L209.5 257.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect width="14" height="11" x="198.5" y="242.5" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect width="206" height="29" x="13.5" y="279.5" stroke="#DDDDDD" rx="3"/>
+    <text fill="#000000" opacity=".553" font-family="Helvetica" font-size="12">
+      <tspan x="22" y="298">Switch Presenter</tspan>
+    </text>
+    <g stroke="#111111" transform="translate(203 288)" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points=".344 3.094 3.438 .344 6.531 3.094"/>
+      <polyline points=".344 7.906 3.438 10.656 6.531 7.906"/>
+    </g>
+  </g>
+</svg>

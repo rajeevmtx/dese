@@ -1,0 +1,49 @@
+.profile {
+    label {
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 24px;
+        color: #14558F;
+    }
+
+    input {
+        background: #FFFFFF;
+        padding: 1rem;
+        font-size: 16px;
+        border: 1.5px solid rgba(20, 85, 143, 0.3);
+        box-sizing: border-box;
+        border-radius: 4px;
+    }
+
+   .slds-textarea, .slds-listbox,  .slds-combobox__input{
+        background: #FFFFFF;
+        padding: 1rem;
+        font-size: 16px;
+        border: 1.5px solid rgba(20, 85, 143, 0.3);
+        box-sizing: border-box;
+        border-radius: 4px;
+        justify-content: left;
+    }
+
+
+    h3 {
+        font-weight: bold;
+        font-size: 24px;
+        line-height: 33px;
+        color: #14558F;
+    }
+
+    p {
+        font-size: 16px;
+        line-height: 22px;
+        color: #14558F;
+    }
+
+    .slds-button_brand {
+        font-size: 1.5rem;
+        height: 4rem;
+        border-radius: 8px;
+        width: 20rem;
+        margin-left: 4rem;
+    }
+}

@@ -1,0 +1,109 @@
+//-- Debug your box model (options: true, false)
+$enable-debugger:           false;
+
+//-- Let CSS4 make your life easier, or don't (options: true, false)
+$enable-css-variables:      true;
+
+//-- Enable spacer utility classes
+$enable-spacers:            false;
+
+//-- Enable flexbox grid system
+$enable-grid-classes:       false;
+
+//-- Enable flexbox utility classes
+$enable-flex-classes:       false;
+
+//--- Spacing
+$one:                       0.0625rem;
+
+$spacer:                    1rem;
+$spacer-x:                  $spacer;
+$spacer-y:                  $spacer;
+
+$gap-xs:                    $spacer / 2;
+$gap-sm:                    $spacer;
+$gap:                       $spacer * 2;
+$gap-md:                    $spacer * 3;
+$gap-lg:                    $spacer * 4;
+
+//-- Grid settings
+$grid-columns:                12;
+$grid-gutter-width:           $gap-md;
+
+//-- Viewports
+$screen-xs:                 33.75rem;
+$screen-sm:                 48rem;
+$screen-sm-min:             $screen-sm - $one;
+$screen-sm-ls:              64rem;
+$screen-md:                 45rem;
+$screen-lg:                 75rem;
+$screen-xl:                 90rem;
+
+//-- Layout
+$header-height:             8rem;
+$header-height-collapsed:   6.5rem;
+
+$sidebar-width:             16rem;
+
+$footer-height:             $gap-md;
+
+//-- Forms
+$input-height:              $gap + 0.5rem;
+
+
+$font-regular:              "Helvetica Neue", Helvetica, sans-serif;
+$font-heading:              "Helvetica Neue", Helvetica, sans-serif;
+$font-size-base:            14px;
+
+$line-height-small:         1.5;
+$line-height-base:          1.428571429;
+$line-height-large:         1.3333333;
+
+$font-weight-light:         300;
+$font-weight-regular:       400;
+$font-weight-semibold:      500;
+$font-weight-bold:          700;
+
+$font-size-h1:              3.5rem;
+$font-size-h2:              2rem;
+$font-size-h3:              1.5rem;
+$font-size-h4:              1.25rem;
+$font-size-h5:              $font-size-base;
+$font-size-h6:              0.875rem;
+
+//- Element Colors
+$gray-lt:                   #f6f6f6;
+$gray:                      #cccccc;
+$gray-md:                   #999999;
+$gray-dk:                   #343434;
+
+$brand-primary:             #4483ce;
+$brand-secondary:           #d9d9d9;
+
+$success:                   #88C425;
+$info:                      #5bc0de;
+$warning:                   #f29f4e;
+$danger:                    #e24f44;
+
+//-- Document colors
+$text-dark:                 #333333;
+$text-color:                $gray-dk;
+$text-light:                darken($gray,10%);
+
+$link-color:                $brand-primary;
+$link-active:               darken($brand-primary,10%);
+
+$border-default:            darken($gray-lt,20%);
+$border-lt:                 #ddd;
+$hr-bg:                     $gray-lt;
+
+//-- Layout colors
+$page-bg:                   white;
+
+$header-bg:                 black;
+$header-color:              white;
+
+$footer-bg:                 $gray-dk;
+$footer-color:              lighten($gray-lt,30%);
+
+

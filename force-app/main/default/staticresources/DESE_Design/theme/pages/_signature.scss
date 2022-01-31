@@ -1,0 +1,26 @@
+.signature {
+    .tabset .slds-tabs_default__nav {
+        gap:6rem;
+        justify-content: unset;
+    }
+    .note-grid {
+        background:var(--light-blue);
+    }
+    .note_body {
+        font-weight: normal;
+        font-size: 1.5rem;
+        color: var(--textcolor);
+    }
+    .date{
+        &__due {
+            font-size: 1.4rem;
+            color: var( --dark-grey);
+            font-weight: 500;
+        }
+        &__format {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color:var( --blue);
+        }
+    }
+}

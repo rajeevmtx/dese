@@ -1,0 +1,18 @@
+/* Theme settings */
+.btn-primary {
+  background-color: $brand-primary;
+  color: contrast-color($brand-primary);
+  &:hover,&:focus {
+    background-color: darken($brand-primary,10%);
+    color: contrast-color(darken($brand-primary,10%));
+  }
+  &:active,&.active {
+    background-color: darken($brand-primary,15%);
+    color: contrast-color(darken($brand-primary,15%));
+  }
+}
+
+.btn-default.outlined {
+  border: 1px solid $brand-primary;
+  color: $brand-primary;
+}

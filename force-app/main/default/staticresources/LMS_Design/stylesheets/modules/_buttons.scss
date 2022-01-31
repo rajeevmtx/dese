@@ -1,0 +1,95 @@
+button {
+  appearance: none;
+  background: transparent;
+  border: 0;
+}
+
+.btn {
+  align-items: center;
+  background-image: none;
+  border:0;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 1rem;
+  justify-content:center;
+  margin: 0;
+  min-height: $input-height;
+  padding:0 $gap-sm;
+  text-align: center;
+  text-transform: uppercase;
+  touch-action: manipulation;
+  user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  @include font-bold;
+  &.btn-sm {
+    min-height: $gap;
+    font-size: 0.9rem;
+    padding-left: $gap-xs;
+    padding-right: $gap-xs;
+  }
+  &.btn-xs {
+    min-height: 0;
+    font-size: 0.8rem;
+    padding-left: $gap-xs;
+    padding-right: $gap-xs;
+  }
+}
+
+
+.btn-back {
+  align-items: center;
+  background-image: url('../images/arrow-back.svg');
+  background-repeat: no-repeat;
+  background-position: 0 center;
+  display: inline-flex;
+  font-size: 0.8rem;
+  margin-bottom: $gap-sm;
+  padding-left: $gap;
+  text-transform: uppercase;
+  transition: all 0.15s;
+  @include font-bold;
+  &:hover,&:focus {
+    svg {
+      animation: bounce-left 0.5s forwards;
+    }
+  }
+}
+
+.btn-forward {
+  align-items: center;
+  display: inline-flex;
+  font-size: 0.8rem;
+  padding-left: 0;
+  padding-right: 0;
+  text-transform: uppercase;
+  @include font-bold;
+  svg {
+    height: $gap-sm;
+    margin-left: $gap-xs;
+    width: $gap-sm;
+  }
+}
+
+.skip-link {
+  position: absolute;
+  color: white;
+  z-index: 100;
+  padding: $gap-xs $gap;
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height: $one;
+  width: $one;
+  margin: -$one;
+  border: 0;
+  &:focus {
+    clip:initial;
+    height:auto;
+    width:auto;
+    margin:0;
+    color:white;
+  }
+}
+
+

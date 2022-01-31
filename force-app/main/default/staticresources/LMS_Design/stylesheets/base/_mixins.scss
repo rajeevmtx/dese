@@ -1,0 +1,152 @@
+@mixin word-wrap {
+  hyphens: auto;
+  word-break: break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+}
+
+@mixin truncate($truncation-boundary) {
+  max-width: $truncation-boundary;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin font-smoothing {
+  font-smooth: always;
+  font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+@mixin max-content($width:$screen-lg) {
+  margin-left:auto;
+  margin-right:auto;
+  max-width:$width;
+  width:100%;
+}
+
+// Better than box-shadow for shadowing non-square shapes.
+@mixin drop-shadow($dropshadow) {
+  -webkit-filter:drop-shadow($dropshadow);
+     -moz-filter:drop-shadow($dropshadow);
+      -ms-filter:drop-shadow($dropshadow);
+          filter:drop-shadow($dropshadow);
+}
+
+@mixin sr-only {
+  position: absolute;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  text-transform: none;
+}
+
+@mixin vertical-align($position) {
+  position:$position;
+  top: 50%;
+  @include transform(translateY(-50%));
+}
+
+@mixin csv {
+  > *:not(:last-child)::after {
+    content:", ";
+  }
+}
+
+// Maintains aspect ratio
+// @include responsive-ratio(16,9);
+@mixin responsive-ratio($x,$y, $pseudo: false) {
+  $padding: unquote( ( $y / $x ) * 100 + '%' );
+  @if $pseudo {
+    &:before {
+      @include pseudo($pos: relative);
+      width: 100%;
+      padding-top: $padding;
+    }
+  } @else {
+    padding-top: $padding;
+  }
+}
+
+// Material-like shadowing
+@mixin shadow($level: 1) {
+  @if $level == 1 {box-shadow: 0 1px 3px rgba(#333,0.12), 0 1px 2px rgba(#333,0.24);}
+  @else if $level == 2 {box-shadow: 0 3px 6px rgba(#333,0.16), 0 3px 6px rgba(#333,0.23);}
+  @else if $level == 3 {box-shadow: 0 10px 20px rgba(#333,0.19), 0 6px 6px rgba(#333,0.23);}
+  @else if $level == 4 {box-shadow: 0 14px 28px rgba(#333,0.25), 0 10px 10px rgba(#333,0.22);}
+  @else if $level == 5 {box-shadow: 0 19px 38px rgba(#333,0.30), 0 15px 12px rgba(#333,0.22);}
+}
+
+@mixin triangle($color, $direction, $size: 6px, $position: absolute, $round: false){
+  width: 0;
+  height: 0;
+  @if $round {
+    border-radius: 3px;
+  }
+  @if $direction == down {
+    border-left: $size solid transparent;
+    border-right: $size solid transparent;
+    border-top: $size solid $color;
+    margin-top: 0 - round( $size / 2.5 );
+  }
+  @else if $direction == up {
+    border-left: $size solid transparent;
+    border-right: $size solid transparent;
+    border-bottom: $size solid $color;
+    margin-bottom: 0 - round( $size / 2.5 );
+  }
+  @else if $direction == right {
+    border-top: $size solid transparent;
+    border-bottom: $size solid transparent;
+    border-left: $size solid $color;
+    margin-right: -$size;
+  }
+  @else if $direction == left {
+    border-top: $size solid transparent;
+    border-bottom: $size solid transparent;
+    border-right: $size solid $color;
+    margin-left: -$size;
+  }
+}
+
+@mixin fancy-uline($background,$color) {
+  display:inline-flex;
+  text-shadow:-2px -2px $background,-2px 2px $background,2px -2px $background,2px 2px $background;
+  background-size: 1px 1em;
+  box-shadow:inset 0 0rem $background, inset 0 -0.15rem rgba($text-color,0.1);
+  margin:($gap-xs / 2.5) 0;
+  will-change: box-shadow;
+  transition:box-shadow 0.05s;
+  &:hover,&:focus,&:active {
+    box-shadow:inset 0 -0.1rem $background, inset 0 -0.25rem $color;
+    color:$color;
+  }
+}
+
+@mixin input-placeholder {
+  &.placeholder { @content; }
+  &:-moz-placeholder { @content; }
+  &::-moz-placeholder { @content; }
+  &:-ms-input-placeholder { @content; }
+  &::-webkit-input-placeholder { @content; }
+}
+
+
+@mixin font-regular {
+  font-weight: $font-weight-regular;
+}
+@mixin font-light {
+  font-weight: $font-weight-light;
+}
+@mixin font-semibold {
+  font-weight: $font-weight-semibold;
+}
+@mixin font-bold {
+  font-weight: $font-weight-bold;
+}

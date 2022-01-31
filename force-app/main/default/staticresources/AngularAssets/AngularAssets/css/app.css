@@ -1,0 +1,23 @@
+body {
+  font-size: 1.6rem;
+}
+
+button, html, body, input, select, textarea {
+  font-family: RobotoDraft,Roboto,'Helvetica Neue',sans-serif;
+}
+
+/*--- md-eec: Primary button ---*/
+a.md-button.md-raised.md-eec, .md-button.md-raised.md-eec {
+  color: rgb(250,250,250);
+  background-color: #853F3F; 
+}
+        
+a.md-button.md-raised.md-eec:hover, .md-button.md-raised.md-eec:hover {
+  color: rgb(250,250,250);
+  background-color: #703E3E; 
+}
+
+/* --- Basic Button --- */        
+a.md-button.md-raised, .md-button.md-raised {  
+  background-color: #f7f7f7;
+}  

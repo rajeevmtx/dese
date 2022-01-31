@@ -1,0 +1,64 @@
+.slds-modal__container {
+    max-width: 80rem;
+}
+.modal-header {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: var(--blue);
+}
+.slds-modal__header {
+    height: 8rem;
+    padding: 3rem;
+    background: var(--light-blue);
+    border:none;
+    text-align: unset;
+}
+.modal-content {
+    background: var(--light-blue);
+    padding: 2rem 1.5rem;
+    .sample-box {
+        .slds-input {
+            height: 4rem;
+            border: 1px solid rgba(20, 85, 143, 0.3);
+            border-radius: 6px;
+        }
+        .slds-form-element__control {
+            font-size: 1.6rem;
+        }
+    }
+    label.slds-form-element__label.slds-no-flex {
+        font-size: 1.4rem;
+        color: var(--textcolor);
+    }
+    .slds-input {
+        height:4rem;
+        font-size: 1.4rem; 
+        border: 1px solid rgba(20, 85, 143, 0.3);
+        border-radius: 6px;
+        
+    }
+    .slds-form-element__legend {
+        font-size: 1.4rem;       
+    }
+}
+footer.slds-modal__footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 2rem;
+    gap: 2rem;
+    border:none;
+    button.slds-button.slds-button_neutral {
+        width:14rem;
+        border-radius: 8px;
+        border: none;
+        background: var(--button-grey);
+        color: var( --black);
+    }
+    .slds-button.slds-button_brand {
+        width: 14rem;
+        border-radius: 8px;
+        border: none;
+        height: 4rem;
+        font-size: 1.4rem;
+    }
+}
