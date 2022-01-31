@@ -1,0 +1,35 @@
+<template>
+    <div class="app-container slds-grid slds-gutters slds-wrap">
+        <div class="slds-col slds-size_1-of-1 slds-large-sze_12-of-12">
+            <c-psr-help-text help-text={instructionsHelpText}></c-psr-help-text>
+        </div>
+        <div class="slds-col slds-size_1-of-1 slds-large-sze_12-of-12">
+            <div class="d-flex">
+                <h4>Instruction Page</h4>
+                <span>(Step 1 of 7)</span>
+            </div>
+            <br/>
+            <div>
+                <p>
+                    Please fill out the following information to help the New York State Department of Health (NYSDOH)
+                    and local public health officials gather information about individuals traveling from China who may
+                    need monitoring. The system will be used to track and monitor individuals and their symptoms. Once
+                    the information is submitted, a text message will be sent to the individual’s primary telephone
+                    number, asking for their consent to communicate via text or phone call.
+                </p>
+            </div>
+            <br />
+            <div>
+                <p>
+                    If you develop symptoms or feel ill, contact your local health department. If you are unable to
+                    contact your local health department, please call the NYSDOH during business hours at 518-473-4439
+                    or 866-881-2809 evenings, weekends and holidays.
+                </p>
+            </div>
+        </div>
+        <div class="slds-col slds-size_1-of-1 slds-large-sze_12-of-12">
+            <lightning-button variant="brand" style="float: right;" label="Next" onclick={goNext}>
+            </lightning-button>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,18 @@
+.slds_modal__header{
+    height: 0!important;
+    text-align: center !important;
+    border-top-right-radius: var(--slds-c-modal-radius-border, var(--sds-c-modal-radius-border, var(--lwc-borderRadiusMedium,0.25rem)));
+    border-top-left-radius: var(--slds-c-modal-radius-border, var(--sds-c-modal-radius-border, var(--lwc-borderRadiusMedium,0.25rem)));
+    border-bottom-width: var(--slds-c-modal-sizing-border, var(--sds-c-modal-sizing-border, var(--lwc-borderWidthThick,2px)));
+    border-bottom-style: solid;
+    border-bottom-color: var(--slds-c-modal-color-border, var(--sds-c-modal-color-border, var(--lwc-colorBorder,#D4D4D4)));
+}
+
+.footer.slds-modal__footer .slds-button.slds-button_brand{
+    width: 10rem !important;
+    height: 3rem !important;
+}
+
+.slds-modal__content {
+    font-size:1.2rem;
+}

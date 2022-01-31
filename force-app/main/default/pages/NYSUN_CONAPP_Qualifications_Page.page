@@ -1,0 +1,375 @@
+<apex:page sidebar="false" controller="CORE_CONAPP_Application_Controller" tabStyle="Application__tab" standardStylesheets="false" showHeader="false" title="Qualifications">
+
+    <head>
+        <style>
+            #errorMessage{
+                display: none;
+            }
+            span.certificate-section {
+                margin-left: 25px;
+                display: block;
+            }
+            label.certification-box-label {
+                margin-left: 5px;
+            }
+            .sOption{
+                font-size: 14px;
+                font-style: normal;
+            }
+            .labelClass{
+        	    font-weight: 600;
+    			font-size: 14px;
+    			margin-bottom: 10px;
+	        }
+	        legend {
+	            	border-bottom: 0px;
+	            	margin-bottom: 5px;
+	       }
+	       .mr{
+	       		margin-right: 20px;
+	       }
+			  .ns-touch.inline > label{
+	        z-index: 10px;
+	        padding-left: 40px;
+	        }
+	        
+	        .ns-touch input + i.icm{
+	        z-index: -1;
+	        margin-right: -40px;
+	        }
+        </style>
+    </head>
+
+    <apex:composition template="CORE_CONAPP_Template_Page">
+        <apex:define name="body">
+            <div class="page">
+                <c:CORE_StepNav_Component pgName="{!$CurrentPage.Name}" />
+                <apex:form id="frm">
+                    <apex:outputPanel id="mainPanel">
+                        <div class="application">
+                            <div class="alert-container">
+                                <apex:pageMessages />
+                                <div class="alert alert-danger" id="errorMessage"> </div>
+                            </div>
+                            <div class="content content-body">
+
+                                <div class="form-row lg">
+                                    <apex:outputLabel for="pvIndustry"
+                                        value="How many years has your organization worked in the solar electric (PV) industry?"/>
+                                    <div class="field sm">
+                                        <apex:inputField id="pvIndustry"
+                                            value="{!serviceProviderApp.Years_in_PV_Industry__c}"
+                                            onKeyDown="isDecimalOnly(event, this);"
+                                            styleClass="form-control pvIndustry" />
+                                    </div>
+                                </div>
+
+                                <div class="form-row lg">
+                                    <apex:outputLabel for="completed"
+                                        value="How many solar electric projects has your organization completed?"/>
+                                    <div class="field sm">
+                                        <apex:inputField id="completed"
+                                            value="{!serviceProviderApp.Total_Solar_Projects_Completed__c}"
+                                            onKeyDown="isNumberOnly(event);"
+                                            styleClass="form-control completed" />
+                                    </div>
+                                </div>
+
+                                <div class="form-row"  id="solarProgramDiv">
+
+                                <div class="form-row xl">
+                                    <fieldset>
+                                    <legend class="labelClass">Has your company participated in other solar-related programs in other states or provinces?</legend>
+                                    <div class="result">
+	                                        <div class="ns-touch inline">
+		                                        <input type="radio" id="radio11" name="exp1" class="exp1" value="true" onchange="statePanelAction('Yes');" />
+	                                            <i class="icm"></i>
+	                                            <label for="radio11">
+	                                                <span class="mr">Yes</span>
+	                                            </label>
+	                                        </div>
+	                                        <!-- /.ns-touch -->
+	                                        <div class="ns-touch inline">
+		                                        <input type="radio" id="radio21" name="exp1" class="exp1" value="false" onchange="statePanelAction('No');" />
+		                                        <i class="icm"></i>
+		                                        <label for="radio21">
+		                                            <span>No</span>
+		                                        </label>
+	                                        </div>
+                                        <!-- /.ns-touch -->
+                                    </div>
+                                 </fieldset>
+                                </div>
+                                </div>
+
+                                <apex:outputPanel styleClass="form-row lg"
+                                    layout="block"
+                                    id="statePanel">
+                                    <apex:outputPanel layout="none" rendered="{!AND(NOT(ISBLANK(serviceProviderApp.Participate_in_Other_State_Solar_Prog__c)),
+                                                                                    serviceProviderApp.Participate_in_Other_State_Solar_Prog__c == 'Yes')}">
+                                        <apex:outputLabel for="otherState"
+                                            value="What other states or provinces? (separate locations with a comma)"/>
+                                        <br/>
+                                        <apex:inputField id="otherState" value="{!serviceProviderApp.Participate_in_Other_State_SP_Other__c}"
+                                            styleClass="form-control otherState"
+                                            onKeyDown="isAlphabateOnly(event);"/>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+
+                                <apex:outputPanel layout="none" rendered="{!serviceProviderApp.Builder__c}">
+                                    <div class="form-row lg" id="manualDiv">
+
+                                <div class="form-row xl">
+                                     <fieldset>
+                                    <legend class="labelClass" >Does your company have at least one individual who holds an active credential from NABCEP PV
+                                                Installation Professional Certification, IBEW-NECA Electrical Journeyman &amp; Apprentice Training,
+                                                 or Underwriters Lab PV System Installation Certification, as described in the Program Manual?
+                                                (If yes, select the credential below)</legend>
+                                    <div class="result">
+	                                        <div class="ns-touch inline">
+	                                        	<input type="radio" id="radio12" name="exp2" class="exp2" value="true" onchange="rerenderCertificatePanel('Yes');"/>
+		                                        <i class="icm"></i>
+		                                        <label for="radio12">
+		                                        	<span class="mr">Yes</span>
+		                                        </label>
+	                                        </div>
+	                                        <!-- /.ns-touch -->
+	                                        <div class="ns-touch inline">
+		                                        <input type="radio" id="radio22" name="exp2" class="exp2" value="false" onchange="rerenderCertificatePanel('No');"/>
+		                                        <i class="icm"></i>
+		                                        <label for="radio22">
+		                                            <span>No</span>
+		                                        </label>
+	                                        </div>
+                                        <!-- /.ns-touch -->
+                                    </div>
+                                     </fieldset>
+                                </div>
+                                    </div>
+
+                                    <!-- rahuls91221 07 July 16: changes as mentioned by Nik
+                                        1. alignment of certificate options
+                                        2. checkboxes would act as radio buttons, 1 selectable at a time
+                                        3. selecting certificates is mandatory
+                                         -->
+                                    <apex:outputPanel id="certificatePanel" styleClass="certificate-section">
+                                        <apex:outputPanel layout="none" rendered="{!AND(NOT(ISBLANK(serviceProviderApp.Has_PV_Installation_Certification__c)),
+                                                                                    serviceProviderApp.Has_PV_Installation_Certification__c == 'Yes')}">
+                                            <div class="form-row lg">
+                                                <apex:inputField id="NABCEP"
+                                                    styleClass="NABCEP certification-box"
+                                                    value="{!serviceProviderApp.NABCEP_PV_Installation_Professional_Cert__c}"/>
+                                                <apex:outputLabel for="NABCEP"
+                                                    value="NABCEP PV Installation Professional Certification"
+                                                    styleClass="certification-box-label"/>
+                                            </div>
+
+                                            <div class="form-row lg">
+                                                <apex:inputField id="IBEW"
+                                                    styleClass="IBEW certification-box"
+                                                    value="{!serviceProviderApp.IBEW_NECA_Training__c}"/>
+                                                <apex:outputLabel for="IBEW"
+                                                    value="IBEW-NECA Electrical Journeyman & Apprentice Training"
+                                                    styleClass="certification-box-label"/>
+                                            </div>
+
+                                            <div class="form-row lg">
+                                                <apex:inputField id="Underwriters"
+                                                    styleClass="Underwriters certification-box"
+                                                    value="{!serviceProviderApp.UL_PV_System_Installation_Certification__c}"/>
+                                                <apex:outputLabel for="Underwriters"
+                                                    value="Underwriters Lab PV System Installation Certification"
+                                                    styleClass="certification-box-label"/>
+                                            </div>
+                                        </apex:outputPanel>
+                                   </apex:outputPanel>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                    </apex:outputPanel>
+
+                    <apex:actionFunction name="statePanelAction"  rerender="statePanel" status="status">
+                      <apex:param value="" name="Participate_in_Other_State_Solar_Prog__c" assignTo="{!serviceProviderApp.Participate_in_Other_State_Solar_Prog__c}" />
+                    </apex:actionFunction>
+
+                    <apex:actionFunction name="rerenderCertificatePanel" rerender="certificatePanel, script-panel" status="status" >
+                      <apex:param value="" name="Has_PV_Installation_Certification__c" assignTo="{!serviceProviderApp.Has_PV_Installation_Certification__c}" />
+                    </apex:actionFunction>
+
+                    <apex:actionFunction name="next"  action="{!save}"  rerender="mainPanel, script-panel">
+                        <apex:param value="" name="currentPage"  assignTo="{!currentPage}" />
+                        <apex:param value="" name="Participate_in_Other_State_Solar_Prog__c" assignTo="{!serviceProviderApp.Participate_in_Other_State_Solar_Prog__c}" />
+                        <apex:param value="" name="Has_PV_Installation_Certification__c" assignTo="{!serviceProviderApp.Has_PV_Installation_Certification__c}" />
+                    </apex:actionFunction>
+
+                    <apex:actionFunction name="previous"
+                        action="{!previous}"
+                        rerender="mainPanel, script-panel">
+                        <apex:param value=""
+                            name="currentPage"
+                            assignTo="{!currentPage}" />
+                    </apex:actionFunction>
+                </apex:form>
+            </div>
+            <footer class="footer-nav">
+                <div class="content flex controls sm">
+                  <a href="javascript:void(0)"
+                    onclick="previous('NYSUN_CONAPP_Qualifications_Page');"
+                    class="btn-bs btn-lg btn-blank">Previous</a>
+                  <a href="javascript:void(1)"
+                    onclick="saveScript()"
+                    class="btn-bs btn-lg btn-primary">Continue</a>
+                </div>
+            </footer>
+        </apex:define>
+    </apex:composition>
+
+    <apex:outputPanel id="script-panel">
+        <script>
+            $(document).ready(function() {
+
+            jQuery("html").attr("lang", "en");
+
+                /*
+                    rahuls91221 07 July 16: changes as mentioned by Nik
+                        checkboxes would act as radio buttons, 1 selectable at a time
+                */
+	                $("input.certification-box").on("click", function() {
+	                    $('input.certification-box').not(this).prop('checked', false);
+	                });
+
+                    if('{!serviceProviderApp.Participate_in_Other_State_Solar_Prog__c}' == 'Yes') {
+                        $('#radio11').prop("checked", true);
+                    } else if('{!serviceProviderApp.Participate_in_Other_State_Solar_Prog__c}' == 'No') {
+                        $('#radio21').prop("checked", true);
+                    }
+
+                    if('{!serviceProviderApp.Has_PV_Installation_Certification__c}' == 'Yes') {
+                        $('#radio12').prop("checked", true);
+                    } else if('{!serviceProviderApp.Has_PV_Installation_Certification__c}' == 'No') {
+                        $('#radio22').prop("checked", true);
+                    }
+
+            });
+        </script>
+    </apex:outputPanel>
+    <script>
+
+        function getResponseFromCheckbox(ele) {
+            var exp;
+            var response;
+            if($(ele).val()) {
+                exp = $(ele + ':checked').val();
+                if(exp == 'true') {
+                    response = 'Yes';
+                } else if(exp == 'false'){
+                    response = 'No';
+                }
+            }
+            return response;
+        }
+
+        function saveScript() {
+
+            var strErrorMessage;
+            $('#errorMessage').hide();
+            $('#errorMessage').html("");
+
+            /*
+                rahuls91221 07 July 16: changes as mentioned by Nik
+                    selecting certificates is mandatory
+            */
+            if ('{!serviceProviderApp.Builder__c}' == 'true' && $('.certification-box:checked').length == 0) {
+                strErrorMessage = "Application cannot be submitted without identifying at least one credential.";
+            }
+            if($("#manualDiv input[type='radio']:checked").val() == 'true' && $("input.certification-box:checked").length === 0) {
+                strErrorMessage = "{!$Label.NYSUN_CONAPP_Qualifications_Page_CertificationRequiredMessage}";
+            }
+
+            if (($('.pvIndustry').val() == null || $('.pvIndustry').val() == '')) {
+                strErrorMessage = "Please answer 'How many years has your organization worked in the solar electric (PV) industry?'";
+            }
+            if (($('.completed').val() == null || $('.completed').val() == '')) {
+                strErrorMessage = "Please answer 'How many solar electric projects has your organization completed?'";
+            }
+            if (($("#solarProgramDiv input[type='radio']:checked").val() == 'true' && ($('.otherState').val() == null || $('.otherState').val() == ''))) {
+                strErrorMessage = "Please fill the other states.";
+            } 
+
+
+            if(strErrorMessage) {
+                $('#errorMessage').html(strErrorMessage);
+                $('#errorMessage').show();
+                $("html, body").animate({
+                    scrollTop : 0
+                }, "slow");
+                return false;
+            }
+
+            var exp1 = getResponseFromCheckbox('.exp1');
+            var exp2 = getResponseFromCheckbox('.exp2');
+
+            next('NYSUN_CONAPP_Qualifications_Page',exp1,exp2);
+        }
+
+        function isNumberOnly(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if(evt.shiftKey){
+                evt.preventDefault();
+                return false;
+            }
+            if((charCode > 47 && charCode < 58) || (charCode >= 96 && charCode <= 105) || charCode == 8 || charCode == 9 || (charCode >= 37 && charCode <= 40)) {
+                return true;
+            }
+            else{
+                evt.preventDefault();
+                return false;
+            }
+        }
+
+        // rahuls91221 [I-00709]: Allow decimal in Number of years
+        function isDecimalOnly(evt, obj) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if(evt.shiftKey){
+                evt.preventDefault();
+                return false;
+            }
+            // check for decimal point
+            var value = obj.value;
+            var dotcontains = value.indexOf(".") != -1;
+            if(dotcontains && charCode == 190) {
+                evt.preventDefault();
+                return false;
+            } else if(charCode == 190) {
+                return true;
+            }
+
+            if((charCode > 47 && charCode < 58) ||
+                (charCode >= 96 && charCode <= 105) ||
+                charCode == 8 ||
+                charCode == 9 ||
+                (charCode >= 37 && charCode <= 40)) {
+                return true;
+            }
+            else{
+                evt.preventDefault();
+                return false;
+            }
+        } 
+
+        function isAlphabateOnly(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+
+            if((charCode >= 65 && charCode <= 90) || charCode == 8 || charCode == 9 || charCode == 32 || (charCode >= 37 && charCode <= 40)) {
+                return true;
+            }
+            else{
+                evt.preventDefault();
+                return false;
+            }
+        }
+
+
+    </script>
+
+</apex:page>

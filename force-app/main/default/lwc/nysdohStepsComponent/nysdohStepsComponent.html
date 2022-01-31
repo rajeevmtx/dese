@@ -1,0 +1,27 @@
+<template>
+    <ol class="timeline">
+        
+        <!-- If Community -->
+        <tamplate if:true={isCommunity}>
+            <li class={step1CSS} value="1" steplabel="1">Instructions</li>
+            <li class={step2CSS} value="3" steplabel="2">Screening</li>
+
+            <template if:true={isShowSchedulingOption}>
+                <li class={step3CSS} value="2" steplabel="3">Personal Info</li>
+                <li class={step4CSS} value="4" steplabel="4">Scheduling</li>
+            </template>
+        </tamplate>
+
+        <!-- If Internal -->
+        <tamplate if:false={isCommunity}>
+            <li class={step2CSS} value="2" steplabel="1">Screening</li>
+
+            <template if:true={isShowSchedulingOption}>
+                <li class={step3CSS} value="3" steplabel="2">Personal Info</li>
+                <li class={step4CSS} value="4" steplabel="3" if:true={isShowSchedulingOption}>Scheduling</li>
+            </template>
+        </tamplate>
+        
+        <!-- <li class="event active " value="5" steplabel="5" onclick={handleUserClicks}>Acknowledgement</li> -->
+    </ol>
+</template>

@@ -1,0 +1,81 @@
+<!--
+ - Created by arunm on 22-03-2020.
+ -->
+
+<!-- NYSDOH Demands -->
+<template>
+    <div class="backdrop" if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </div>
+    </div>
+    <c-nysdoh-sidebar selected-tab="PurchaseRequests" show-footer>
+        <div slot="body">   
+        
+            <div class="tab slds-m-around_large shadow-card">
+                <div class="container padding-bottom-container">
+                    <div class="slds-m-bottom_x-large doh-card-heading">
+                        <h1 class="section-title">Inventory Management</h1>
+                    </div>
+                    <c-psr-help-text help-text={Portal_Work_Order_Help_Text}></c-psr-help-text>
+
+                    <div class="slds-grid slds-wrap woTable">
+
+                        <div class="slds-size_1-of-1">
+                            <template if:false={isEditall} >
+                                <lightning-button class="slds-float_right" variant="brand" onclick={editAll} label="Edit"></lightning-button>
+                            </template>
+                            <template if:true={isEditall} >
+                                <lightning-button class="slds-float_right slds-m-left_medium" variant="brand" onclick={cancelClick} label="Cancel"></lightning-button>
+                                <lightning-button class="slds-float_right" variant="brand" onclick={saveInventory} label="Save"></lightning-button>
+                            </template>
+                        </div>
+                        <table style="margin-top: 20px;" class="slds-table">
+                            <tr class="table_header_brand">
+                                <td><b>Equipment Type</b></td>
+                                <td><b>Total Quantity</b></td>
+                                <td><b>Usage Quantity</b></td>
+                                <td><b>Available Quantity</b></td>
+                                <!-- <td><b>New Stock</b></td> -->
+                                <td><b>Action</b></td>
+                                <td><b>Used Quantity (%)</b></td>
+                            </tr>
+                            <template for:each={inventories} for:item="item" for:index="index">
+                                <tr key={item.Id}>
+                                    <td>{item.Equipment_Type__c}
+                                    </td>
+
+                                    <td>{item.Total_Quantity__c}</td>
+                                    <td>
+                                        
+                                        <template if:false={isEditall} >
+                                            {item.Usage_Quantity__c}
+                                        </template>
+                                        <template if:true={isEditall} >
+                                            <lightning-input type="number" data-index={index} data-total={item.Total_Quantity__c} data-available={item.Available_Quantity__c} style="margin-top: -19px;width: 100px;" onchange={updateQuantity} value={item.Usage_Quantity__c}></lightning-input>
+                                        </template>
+                                    </td>
+                                    <td>{item.Available_Quantity__c}</td>
+                                    <td>
+                                        <lightning-button variant="brand" label="Edit" onclick={openEditModal}
+                                            data-recid={item.Id} data-invname={item.Equipment_Type__c}
+                                            class="slds-m-left_x-small side_margin">
+                                        </lightning-button>
+                                    </td>
+
+                                    <td>{item.Used_Quantity__c} %
+                                        <img if:true={item.isShowIndicator} src="/img/msg_icons/warning32.png" style="height: 16px;width: 16px;margin-left: 10px;"/>
+                                    </td>
+                                </tr>
+                            </template>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </c-nysdoh-sidebar>
+
+    <c-nysdoh_edit_inventory if:true={isEditModalOpel} recid={inventoryId} onclose={closeModal} invname={invname}>
+    </c-nysdoh_edit_inventory>
+</template>

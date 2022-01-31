@@ -1,0 +1,276 @@
+<template>
+    <div class="backdrop" if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </div>
+    </div>
+
+    <c-fc-side-bar selected-tab="Home" show-footer>
+        <div slot="body">
+            <div if:true={courseTracksWrapper}>
+                <div class="slds-tabs_default">
+                    <p class="title">FACES Training Page</p>
+                    <hr class="under-title-line">
+                    <ul class="slds-tabs_default__nav base" role="tablist">
+                        <li class="slds-tabs_default__item slds-is-active mycourse" title="MY COURSES"
+                            role="presentation" id="mycourse" data-id="mycourse" onclick={onTabChangeHandler}>
+                            <a class="slds-tabs_default__link selected-courses-tab tab-padding"
+                                style="text-decoration: none;" data-id='mycourse' data-value="allcourse" role="tab"
+                                tabindex="0" aria-selected="true" aria-controls="tab-default-1"
+                                id="tab-default-1__item">MY COURSES</a>
+                        </li>
+                        <!-- <li class="slds-tabs_default__item mytracks" title="My TRACKS" role="presentation" id="mytracks" data-id="mytracks" onclick={onTabChangeHandler}>
+                    <a class="slds-tabs_default__link selected-courses-tab tab-padding" style="text-decoration: none;" data-id='mytracks' data-value="mycourse" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-3" id="tab-default-3__item">MY TRACKS</a>
+                </li> -->
+                        <li class="slds-tabs_default__item allcourse" title="ALL COURSES" role="presentation"
+                            id="allcourse" data-id="allcourse" onclick={onTabChangeHandler}>
+                            <a class="slds-tabs_default__link selected-courses-tab tab-padding"
+                                style="text-decoration: none;" data-id='allcourse' data-value="mycourse" role="tab"
+                                tabindex="-1" aria-selected="false" aria-controls="tab-default-2"
+                                id="tab-default-2__item">ALL COURSES</a>
+                        </li>
+                        <!-- <li class="slds-tabs_default__item alltracks" title="ALL TRACKS" role="presentation" id="alltracks" data-id="alltracks" onclick={onTabChangeHandler}>
+                    <a class="slds-tabs_default__link selected-courses-tab tab-padding" style="text-decoration: none;" data-id='alltracks' data-value="mycourse" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-2" id="tab-default-4__item">ALL TRACKS</a>
+                </li> -->
+                    </ul>
+                </div>
+
+                <div class="slds-grid filter-box">
+
+                    <div class="slds-col slds-size_6-of-12" if:true={isMyCourse}>
+                        <lightning-input type="search" label="Search by Course Name" placeholder="Course Name"
+                            value={valueWrapper.nameValue} onchange={handleInputChnage}> </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12" if:true={isAllCourse}>
+                        <lightning-input type="search" label="Search by Course Name" placeholder="Course Name"
+                            value={valueWrapper.nameValue} onchange={handleInputChnage}> </lightning-input>
+                    </div>
+
+                    <!-- <div class="slds-col slds-size_6-of-12" if:true={isMyTracks}>
+                        <lightning-input type="search" label="Search by Track Name" placeholder="Track Name"
+                            value={valueWrapper.nameValue} onchange={handleInputChnage}> </lightning-input>
+                    </div>
+
+                    <div class="slds-col slds-size_6-of-12" if:true={isAllTracks}>
+                        <lightning-input type="search" label="Search by Track Name" placeholder="Track Name"
+                            value={valueWrapper.nameValue} onchange={handleInputChnage}> </lightning-input>
+                    </div> -->
+
+
+                    <div if:true={isMyCourse} class="slds-col slds-size_6-of-12">
+                        <lightning-combobox name="Select" label="Filter by Category" class="filter-name-setting"
+                            value={valueWrapper.value} onchange={handleSubCategoryChange} options={mycategories}>
+                        </lightning-combobox>
+                    </div>
+                    <div if:true={isAllCourse} class="slds-col slds-size_6-of-12">
+                        <lightning-combobox name="Select" label="Filter by Category" class="filter-name-setting"
+                            value={valueWrapper.value} onchange={handleSubCategoryChange} options={categories}>
+                        </lightning-combobox>
+                    </div>
+                    <!--<div class="slds-col slds-size_2-of-12">
+                <lightning-button class="clear-button example" label="Clear Filter" variant="brand" onclick={clearFilter}></lightning-button>
+            </div>-->
+                </div>
+
+
+
+
+                <!-- Non Fillter My Course-->
+                <div class="slds-p-vertical_small" if:true={isMyCourse}>
+                    <div if:false={isfilter}>
+                        <template for:each={clientData} for:item="course">
+                            <template if:true={course.lockButtons}>
+                                <template if:true={course.isEnrolled}>
+                                    <c-lms_course_tracks_template key={course.id} course-tracks-wrapper={course}
+                                        my-course={isMyCourse}></c-lms_course_tracks_template>
+                                </template>
+                            </template>
+                            <template if:false={course.lockButtons}>
+                                <c-lms_course_tracks_template key={course.id} course-tracks-wrapper={course}
+                                    my-course={isMyCourse}></c-lms_course_tracks_template>
+                            </template>
+                        </template>
+                    </div>
+                    <template if:false={showtable}>
+                        <a><img class="nocourseimg" src={nocourses}></a>
+                    </template>
+                </div>
+
+
+                <!-- Non Fillter My Track-->
+                <!-- <div class="slds-p-vertical_small" if:true={isMyTracks}>
+                    <div if:false={isfilter}>
+                        <template for:each={clientData} for:item="tracks">
+                            <c-lms_tracks key={tracks.currentUserId} track-wrapper={tracks}></c-lms_tracks>
+                        </template>
+                        <template if:false={showtabletrack}>
+                            <a><img class="nocourseimg" src={nocourses}></a>
+                        </template>
+                    </div>
+                </div> -->
+
+                <!-- Non Fillter All Course-->
+                <div class="slds-p-vertical_small" if:true={isAllCourse}>
+                    <div if:false={isfilter}>
+                        <template for:each={clientData} for:item="course">
+                            <template if:true={course.lockButtons}>
+                                <!-- <template if:true={course.isEnrolled}> -->
+                                <c-lms_course_tracks_template key={course.id} course-tracks-wrapper={course}
+                                    onenrollcourse={handleCourseEnroll} my-course={isMyCourse}>
+                                </c-lms_course_tracks_template>
+                                <!-- </template> -->
+                            </template>
+                            <template if:false={course.lockButtons}>
+                                <c-lms_course_tracks_template key={course.id} course-tracks-wrapper={course}
+                                    onenrollcourse={handleCourseEnroll} my-course={isMyCourse}>
+                                </c-lms_course_tracks_template>
+                            </template>
+                        </template>
+                    </div>
+                    <template if:false={showtableall}>
+                        <a><img class="nocourseimg" src={nocourses}></a>
+                    </template>
+                </div>
+
+
+                <!-- Non Fillter All Track-->
+                <!-- <div class="slds-p-vertical_small" if:true={isAllTracks}>
+                    <div if:false={isfilter}>
+                        <template for:each={clientData} for:item="tracks">
+                            <c-lms_tracks key={tracks.currentUserId} track-wrapper={tracks}></c-lms_tracks>
+                        </template>
+                        <template if:false={showtablealltrack}>
+                            <a><img class="nocourseimg" src={nocourses}></a>
+                        </template>
+                    </div>
+                </div> -->
+
+                <!-- Fillter All Track-->
+                <!-- <div class="slds-p-vertical_small" if:true={isAllTracks}>
+                    <div if:true={isfilter}>
+                        <template for:each={clientData} for:item="tracks">
+                            <c-lms_tracks key={tracks.currentUserId} track-wrapper={tracks}></c-lms_tracks>
+                        </template>
+                        <div if:true={isempty}>
+                            <a><img class="nocourseimg" src={nocourses}></a>
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- Fillter My Track-->
+                <!-- <div class="slds-p-vertical_small" if:true={isMyTracks}>
+                    <div if:true={isfilter}>
+                        <template for:each={clientData} for:item="tracks">
+                            <c-lms_tracks key={tracks.currentUserId} track-wrapper={tracks}></c-lms_tracks>
+                        </template>
+                        <div if:true={isempty}>
+                            <a><img class="nocourseimg" src={nocourses}></a>
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- Fillter My Course-->
+                <div if:true={isMyCourse}>
+                    <div if:true={isfilter}>
+                        <template for:each={clientData} for:item="course">
+                            <template if:true={course.lockButtons}>
+                                <template if:true={course.isEnrolled}>
+                                    <c-lms_course_tracks_template key={course.id} course-tracks-wrapper={course}
+                                        onenrollcourse={handleCourseEnroll} my-course={isMyCourse} isempty={isempty}>
+                                    </c-lms_course_tracks_template>
+                                </template>
+                            </template>
+                            <template if:false={course.lockButtons}>
+                                <c-lms_course_tracks_template key={course.id} course-tracks-wrapper={course}
+                                    onenrollcourse={handleCourseEnroll} my-course={isMyCourse} isempty={isempty}>
+                                </c-lms_course_tracks_template>
+                            </template>
+                        </template>
+                        <div if:true={isempty}>
+                            <a><img class="nocourseimg" src={nocourses}></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filter All Course-->
+                <div if:true={isAllCourse}>
+                    <div if:true={isfilter}>
+                        <template for:each={clientData} for:item="course">
+                            <template if:true={course.lockButtons}>
+                                <!-- <template if:true={course.isEnrolled}> -->
+                                <c-lms_course_tracks_template key={course.id} course-tracks-wrapper={course}
+                                    onenrollcourse={handleCourseEnroll} my-course={isMyCourse} isempty={isempty}>
+                                </c-lms_course_tracks_template>
+                                <!-- </template> -->
+                            </template>
+                            <template if:false={course.lockButtons}>
+                                <c-lms_course_tracks_template key={course.id} course-tracks-wrapper={course}
+                                    onenrollcourse={handleCourseEnroll} my-course={isMyCourse} isempty={isempty}>
+                                </c-lms_course_tracks_template>
+                            </template>
+                        </template>
+                        <div if:true={isempty}>
+                            <a><img class="nocourseimg" src={nocourses}></a>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                <!-- Pagination -->
+                <div class="slds-p-around_x-small pagination" if:true={showPaginationBar}>
+                    <div class="slds-grid">
+                        <div class="slds-col slds-size_1-of-12 select-contain">
+                            <lightning-combobox name="Select" class="size-of-list" label="" value={valSize}
+                                onchange={handleChange} options={optionsSize}>
+
+                            </lightning-combobox>
+
+
+                        </div>
+                        <div class="slds-col slds-size_11-of-12 count">
+
+                            <lightning-button-icon icon-name="utility:left" onclick={onFirst} disabled={isDisabled}>
+                            </lightning-button-icon>&nbsp;
+                            <lightning-button-icon icon-name="utility:chevronleft" onclick={onPrev}
+                                disabled={isDisabled}></lightning-button-icon>&nbsp;
+
+                            <template if:true={showFirst}>
+                                <span class="slds-p-horizontal_x-small">
+                                    <a onclick={processMe} name="1" class={selected}>1</a>
+                                </span>
+                            </template>
+
+                            <template if:true={isListValue}>
+                                <template for:each={pageList} for:item="item">
+                                    <!-- <template if:true={condition}>
+                                <span class="slds-p-horizontal_x-small" key={item.id}>
+                                    <a onclick={processMe} name={item} class="selected">{item}</a>
+                                </span>&nbsp;
+                            </template>
+                            <template if:false={condition}> -->
+                                    <span class="slds-p-horizontal_x-small" key={item.id}>
+                                        <a onclick={processMe} name={item} class="">{item}</a>
+                                    </span>&nbsp;
+                                    <!-- </template> -->
+                                </template>
+                            </template>
+
+                            <!-- <span class="slds-p-horizontal_x-small">
+                        <a onclick={processMe} name={totalPages} class={selected}>{totalPages}</a>
+                    </span> -->
+                            <lightning-button-icon icon-name="utility:chevronright" disabled={isTotal} onclick={onNext}>
+                            </lightning-button-icon>&nbsp;
+                            <lightning-button-icon icon-name="utility:right" disabled={isTotal} onclick={onLast}>
+                            </lightning-button-icon>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </c-fc-side-bar>
+</template>

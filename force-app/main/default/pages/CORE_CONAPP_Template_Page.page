@@ -1,0 +1,311 @@
+<apex:page docType="html-5.0" showHeader="false" sidebar="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false" cache="false">
+  <head>
+     <c:Grants_StyleOverrides id="pageHeader" />
+        <c:Grants_HomePageStyles />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <apex:stylesheet value="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600" />
+    <apex:stylesheet value="{!URLFOR($Resource.NYSUN_Design, 'css/custom-bootstrap.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.NYSUN_Design, 'css/main.css')}" />
+    
+<!--     <apex:stylesheet value="{!URLFOR($Resource.NS_Design, 'css/main.css')}" /> -->
+
+    <!--
+    <link rel="apple-touch-icon" sizes="57x57" href="{!URLFOR($Resource.NYSUN_Design, 'img/apple-touch-icon-57x57.png')}" />
+    <link rel="apple-touch-icon" sizes="60x60" href="{!URLFOR($Resource.NYSUN_Design, 'img/apple-touch-icon-60x60.png')}" />
+    <link rel="apple-touch-icon" sizes="72x72" href="{!URLFOR($Resource.NYSUN_Design, 'img/apple-touch-icon-72x72.png')}" />
+    <link rel="apple-touch-icon" sizes="76x76" href="{!URLFOR($Resource.NYSUN_Design, 'img/apple-touch-icon-76x76.png')}" />
+    <link rel="apple-touch-icon" sizes="114x114" href="{!URLFOR($Resource.NYSUN_Design, 'img/apple-touch-icon-114x114.png')}" />
+    <link rel="apple-touch-icon" sizes="120x120" href="{!URLFOR($Resource.NYSUN_Design, 'img/apple-touch-icon-120x120.png')}" />
+    <link rel="apple-touch-icon" sizes="144x144" href="{!URLFOR($Resource.NYSUN_Design, 'img/apple-touch-icon-144x144.png')}" />
+    <link rel="apple-touch-icon" sizes="152x152" href="{!URLFOR($Resource.NYSUN_Design, 'img/apple-touch-icon-152x152.png')}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{!URLFOR($Resource.NYSUN_Design, 'img/apple-touch-icon-180x180.png')}" />
+    <link rel="manifest" href="{!URLFOR($Resource.NYSUN_Design, 'img/manifest.json')}" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="msapplication-TileImage" content="{!URLFOR($Resource.NYSUN_Design, 'img/mstile-144x144.png')}" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="icon" type="image/png" href="{!URLFOR($Resource.NYSUN_Design, 'img/favicon-32x32.png')}" sizes="32x32" />
+    <link rel="icon" type="image/png" href="{!URLFOR($Resource.NYSUN_Design, 'img/android-chrome-192x192.png')}" sizes="192x192" />
+    <link rel="icon" type="image/png" href="{!URLFOR($Resource.NYSUN_Design, 'img/favicon-96x96.png')}" sizes="96x96" />
+    <link rel="icon" type="image/png" href="{!URLFOR($Resource.NYSUN_Design, 'img/favicon-16x16.png')}" sizes="16x16" />
+    -->
+
+<!--     <link rel="icon" type="image/png" href="{!$Resource.NYSUN_Favicon}" /> -->
+
+    <script type="text/javascript">
+      var _NY = {
+        HOST: "static-assets.ny.gov",
+        BASE_HOST: "www.ny.gov",
+        hideSettings: true,
+        hideSearch: true
+      };
+      (function (document, bundle, head) {
+        head = document.getElementsByTagName('head')[0];
+        bundle = document.createElement('script');
+        bundle.type = 'text/javascript';
+        bundle.async = true;
+        bundle.src = "//static-assets.ny.gov/sites/all/widgets/universal-navigation/js/dist/global-nav-bundle.js";
+        head.appendChild(bundle);
+      }(document));
+    </script>
+
+    <!--REMOVE COMMENT AFTER REVIEW | Manish : moved jQuery up in the header, as it was needed in other pages-->
+    <script src="//code.jquery.com/jquery-2.2.3.min.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-26477206-6', 'auto');
+      ga('send', 'pageview');
+	
+	 // Accessibility fix
+	 $(document).ready(function() {
+	 	jQuery("html").attr("lang", "en");
+  	 });
+      // EndOf:  Accessibility fix
+    </script>
+    <style type="text/css">
+      #feedback {
+        -webkit-transform: rotate(-90deg);
+        -moz-transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
+        filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+        padding:4px;
+        margin:0px auto;
+        background-color:#666666;
+        color:#ffffff;
+        font-size:14px;
+        letter-spacing: 1px;
+        position: fixed;
+        top:300px;
+        right: -30px;
+        display:inline;
+        -webkit-appearance: none;
+        /* box-shadow: -5px 0px 13px 0px rgba(0,0,0,0.5); */
+      }
+      #feedback a {color: #ffffff;}
+      #feedback a:hover {color: #000000;}
+      #feedback:hover {background-color: #cccccc; color:#000000;}
+      .NYGB_banner_img {
+        width:100%
+      }
+      .NYGB_logo {
+        padding: 30px;
+      }
+      
+                        body {
+                height : 100%; 
+            }
+            .page-header{
+              margin: 20px 0 20px;
+            }
+            .page-header h2{
+              font-size: 26px;
+            }
+            @media (min-width: 1200px){
+                .container {
+                    width: 100%;
+                }
+                /*
+                .container > .navbar-header{
+                    margin-left: 9%;
+                }*/
+            }
+            @media (max-width: 1199px){
+                .link-desc{
+                    display : none;
+                }
+            }
+            .brand{
+                display : none;
+            } 
+            .navbar-fixed-bottom{
+                position : absolute;
+            } 
+            .container{
+                display: flex;
+            }
+            .welcome-message{
+                margin-bottom : 20px;
+            }
+            .left-panel{
+                margin-right: 10px;
+                background-color: #eaeaea;
+                margin-top: -20px;
+                padding-left: 0;
+                padding-right: 0;
+                padding-top : 30px;
+                min-height : 680px;
+            }
+            
+            .left-panel-item{
+                margin-top : 15px;
+                background-color: #f6f6f6;
+                padding-left: 20px;
+                padding-top : 10px;
+                padding-bottom : 10px;
+                padding-right : 0;
+                height : 90px;
+            }
+            .header-img{
+                margin-bottom : 10px;
+                text-align : center;
+                margin-top: -8px;
+                padding-top: 12%;
+                height : 78px;
+            }
+            .left-panel-item i{
+                color : #115AB1;
+                font-size: 30px;
+                padding-right: 20px;
+                margin-top: 10px;
+            }
+            .left-panel a{
+                color : #000; 
+            }
+            .left-panel-item .icon-wrapper{
+                margin-right : 10px;
+            }
+            .link-desc{
+                font-size : 10px;
+            }
+            .left-panel-profile{
+                padding-left: 10%;
+                padding-right: 10%;
+            }
+            .left-panel-profile hr{
+                border-top: 2px solid #7a7a7a;
+                margin-bottom: 10px;
+            }
+            .left-panel-profile .left-panel-profile-cont{
+                padding-left : 35%;
+                margin-bottom: 20px;
+                color : inherit;
+            }
+            .left-panel-profile-cont a{
+                color : inherit;
+            }
+            .resources{
+                min-height : 50px;
+                background-color : #cecece;
+                padding: 10px 20px 20px 20px;
+            }
+            .link-cont{
+                margin-top: 12px;
+                font-size : 16px;
+            }
+            .leftpanel-tooltip i{
+                font-size : 0.8em;
+            }
+            @media (max-width: 1200px){
+                .link-cont{
+                    font-size : 0.8em;
+                }
+                .left-panel-item i{
+                    font-size: 20px;
+                }
+                .leftpanel-tooltip i{
+                    font-size : 0.8em;
+                }
+            }
+            @media (max-width: 675px){
+                .header-img {
+                    margin-top: -30px;
+                    padding-top: 38px;
+                    padding-left : 15%;
+                }
+            }
+            @media (max-width: 415px){
+                .page-header h2{
+                    font-size : 1em;
+                }
+                .item-content{
+                    font-size : 1em;
+                }
+            }
+            .navbar-nav > li > a {
+                height:100%;
+            }
+                           .loading-spinner 
+            {
+            display: none;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0; 
+            margin: auto;
+            width: 100%;
+            height: 100%;
+            background: rgba(22, 50, 92, 0.6);
+            z-index: 9000;
+        }
+        .loading-spinner-inner 
+        {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            align-content: center;
+            height: 100%;
+            color: #ffffff;
+            text-transform: uppercase;
+         }
+        .loading-spinner img 
+        {
+          max-width: 185px;
+        }
+        
+        .alert-warning{
+        color : red;
+        margin-top: 15px;
+        }
+    </style>
+    <c:WCAG_Styles />
+  </head>
+
+  <body>
+
+<!--     <c:NYS_UniversalNav /> -->
+   <!-- <c:NYSUN_Header /> -->
+      <c:Grants_Nav_Bar_Mini /> 
+    <c:LoadingOverlay />
+
+    <apex:insert name="body"/> 
+
+	<!-- 
+    <div id="feedback"><a type="button" data-toggle="modal" data-src="/apex/Customer_Support_Case_Form" data-width="500" data-height="400" data-target="#myModal" id='helpLink' target="_new" onclick="document.getElementById('helplinkFrame').src = document.getElementById('helplinkFrame').src + '?frompage=' + window.location.href ">FEEDBACK</a></div>
+
+    <div class="modal fade" id="myModal" role="dialog" aria-labelledby="feedbackModal" aria-describedby="feedbackModal">
+      <div class="modal-dialog">
+        <div class="modal-content" style="height:525px;">
+          <div class="modal-body" >
+            <div class="close-button"> 
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="embed-responsive embed-responsive-16by9" id="feedbackModal" style="height:500px;">
+              <iframe id="helplinkFrame" title="feedback" class="embed-responsive-item" frameborder="0" src="/apex/Customer_Support_Case_Form"></iframe>
+            </div>
+          </div>  
+        </div>
+      </div>
+    </div>
+     --> 
+     
+    <c:NYS_Footer />
+
+    <!--<script src="{!URLFOR($Resource.NYSUN_Design, 'bower_components/jquery/dist/jquery.min.js')}"></script>-->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js"></script>
+    <!-- <script src="//cdn.datatables.net/responsive/2.0.0/js/responsive.bootstrap.min.js"></script> -->
+    <script src="{!URLFOR($Resource.NYSUN_Design, 'js/main.js')}"></script>
+
+  </body>
+
+</apex:page>

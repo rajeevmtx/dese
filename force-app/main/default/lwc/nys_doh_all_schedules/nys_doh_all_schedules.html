@@ -1,0 +1,43 @@
+<template>
+    <div style="background:white;">
+        <table class="tbl">
+            <thead>
+                <tr class="slds-line-height_reset">
+                    <th style="background:white;"></th>
+                    <template for:each={data.weeks} for:item="dt">
+                        <th key={dt} class="headerRow">{dt}</th>
+                    </template>
+                </tr>
+
+                <tr class="slds-line-height_reset">
+                    <th style="background:white;"></th>
+                    <template for:each={data.dates} for:item="dt">
+                        <th key={dt} class="headerRow">{dt}</th>
+                    </template>
+                </tr>
+            </thead>
+
+            <tbody>
+                <template for:each={data.rows} for:item="row">
+                    <tr key={row.timeSt}>
+                        <td>{row.timeSt}</td>
+
+                        <template for:each={row.cols} for:item="col">
+                            <template if:true={col.isSelected}>
+                                <td key={col.slotId} class="selectedCol">Available</td>
+                            </template>
+
+                            <template if:false={col.isSelected}>
+                                <td key={col.slotId} class="notAvailable" if:false={col.isAvailable}>Not Available</td>
+                                <td key={col.slotId} class="available" if:true={col.isAvailable} data-recid={col.slotId}
+                                    data-slotid={col.slotId} data-slottime={row.timeSt} onclick={handleSelectedSlots}>
+                                    Available</td>
+                            </template>
+
+                        </template>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
+</template>

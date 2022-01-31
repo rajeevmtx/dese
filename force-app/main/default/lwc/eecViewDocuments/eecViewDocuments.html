@@ -1,0 +1,170 @@
+<template>
+    <!-- Spinner -->
+    
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div if:true={showSpinner}>
+            <div class="spinner">
+                <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+            </div>
+        </div>
+        <div class="slds-modal__container">
+            <div class="slds-modal__header modalHeader">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeViewModal}>
+                    <lightning-icon icon-name="utility:close"
+                        alternative-text="close"
+                        variant="inverse"
+                        size="small" 
+                        onclick={closeModal}></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h3 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{docName}</h3>
+            </div>
+            <!-- Modal/Popup Box LWC body starts here -->
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <lightning-card>
+                    <h3 slot="title">
+                        Manage Documents
+                    </h3>
+                    <template if:true={documentsLoading}>
+                        <lightning-spinner alternative-text="Loading"></lightning-spinner>
+                    </template>
+                    <template if:false={documentsLoading}>              
+                        <template if:true={documentFiles}>
+                            <template if:true={showEditButtonOnModal}>
+                                <div if:false={editMode} class="slds-text-align_center slds-m-around_medium">
+                                    <lightning-button variant="brand" label="Edit" title="Primary action" onclick={handleEdit} class="slds-m-left_x-small"></lightning-button>
+                                </div>
+                                <div if:true={editMode} class="slds-text-align_center slds-m-around_medium">
+                                    <lightning-button variant="brand" label="Save" title="Primary action" onclick={handleSave} class="slds-m-left_x-small"></lightning-button>
+                                    <lightning-button variant="neutral" label="Cancel" title="Primary action" onclick={handleCancel} class="slds-m-left_x-small"></lightning-button>
+                                </div>
+                            </template>
+                            <table class="slds-table slds-table_cell-buffer slds-table_fixed-layout slds-table_bordered slds-m-top_large slds-m-bottom_large">
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th class="fileName" scope="col">
+                                            <div class="slds-cell-wrap" title="Name">Name</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-cell-wrap" title="Status">Status</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-cell-wrap" title="Uploaded By">Uploaded By</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-cell-wrap" title="Uploaded Date">Uploaded Date</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="slds-cell-wrap" title="Status">Internal Notes</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={documentFiles} for:item="file">
+                                        <tr key={file.fileId}>
+                                            <th scope="col">
+                                                <div class="slds-cell-wrap">
+                                                    <a data-id={file.fileId} onclick={openUploadedS3File}>{file.fileName}</a>
+                                                </div>
+                                                </th>
+                                            <th scope="col">
+                                                <div class="slds-cell-wrap" if:false={editMode}>{file.status}</div>
+                                                <div class="slds-cell-wrap" if:true={editMode}>
+                                                    <lightning-combobox
+                                                        name="status"
+                                                        label=""
+                                                        dropdown-alignment="bottom-left"
+                                                        data-id={file.fileId}
+                                                        value={file.status}
+                                                        placeholder=""
+                                                        options={statusValue}
+                                                        onchange={handleInput} >
+                                                    </lightning-combobox>
+                                                </div>
+                                            </th>
+                                            <th scope="col">
+                                                <div class="slds-cell-wrap">{file.uploadedBy}</div>
+                                            </th>
+                                            <th scope="col">
+                                                <div class="slds-cell-wrap">{file.uploadedDate}</div>
+                                            </th>
+                                            <th scope="col">
+                                                <div class="slds-cell-wrap" if:false={editMode}>{file.internalNotes}</div>
+                                                <div class="slds-cell-wrap" if:true={editMode}>
+                                                    <lightning-textarea name="internalNotes" data-id={file.fileId} onblur={handleInput} label="" value={file.internalNotes}></lightning-textarea>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                       </template>
+                        <template if:false={documentFiles}>
+                            <div id="documentBox" class="slds-box slds-text-heading_small">
+                                No documents found.
+                            </div>                                        
+                        </template>
+                    </template>
+                </lightning-card>
+                <lightning-card>
+                    <h3 slot="title">
+                        Communications
+                    </h3>
+                    <template if:true={documentsLoading}>
+                        <lightning-spinner alternative-text="Loading"></lightning-spinner>
+                    </template>
+                    <template if:false={documentsLoading}>
+                        <template if:true={documentTasks}>
+                            <table class="slds-table slds-table_cell-buffer slds-table_fixed-layout slds-table_bordered slds-m-top_large slds-m-bottom_large">
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th class="generalHeader" scope="col">
+                                            <div class="slds-truncate" title="Subject">SUBJECT</div>
+                                        </th>
+                                        <th class="messageHeader" scope="col">
+                                            <div class="slds-truncate" title="Message">MESSAGE</div>
+                                        </th>
+                                        <th class="generalHeader" scope="col">
+                                            <div class="slds-truncate" title="Activity Date">ACTIVITY DATE</div>
+                                        </th>
+                                        <th class="generalHeader" scope="col">
+                                            <div class="slds-truncate" title="Created By">CREATED BY</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={documentTasks} for:item="task">
+                                        <tr key={task.id}>
+                                            <th scope="col">
+                                                <div class="slds-cell-wrap">{task.subject}</div>
+                                            </th>
+                                            <th scope="col">
+                                                <div class="slds-cell-wrap">{task.message}</div>
+                                            </th>
+                                            <th scope="col">
+                                                <div class="slds-cell-wrap">{task.activityDate}</div>
+                                            </th>
+                                            <th scope="col">
+                                                <div class="slds-cell-wrap">{task.createdBy}</div>
+                                            </th>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </template>
+                        <template if:false={documentTasks}>
+                            <div id="communicationsBox" class="slds-box slds-text-heading_small">
+                                No communications found.
+                            </div>                                        
+                        </template>           
+                    </template>
+                </lightning-card>                    
+            </div>
+            <!-- Modal/Popup Box LWC footer starts here -->
+            <footer class="slds-modal__footer">
+                <button class="slds-button slds-button_brand" title="Email Provider" onclick={emailProvider}>Email Provider</button>
+            </footer>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

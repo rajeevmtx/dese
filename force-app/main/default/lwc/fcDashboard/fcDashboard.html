@@ -1,0 +1,169 @@
+<template>
+    <div class="backdrop" if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </div>
+    </div>
+
+    <c-fc-side-bar selected-tab="Home" show-footer>
+        <div slot="body">
+            <div class="pageTextCenter">
+                <span>
+                    <h2>Division for Children, Youth & Families New Hampshire</h2>
+                </span>
+                <hr class="headerbottom">
+            </div>
+            <p class="slds-p-around_large brief_card card-base">Lorem Ipsum is simply dummy text of the printing and
+                typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has
+                survived not only five centuries, but also the leap into electronic typesetting, remaining
+                essentially unchanged.
+            </p><br>
+
+            <div if:true={showStatus} class="tab slds-m-around_large">
+                <div class="permits_header">
+                    <span>
+                        <lightning-icon icon-name="standard:picklist_type" class="permits_icon">
+                        </lightning-icon>
+                    </span><span style="font-size: 1.2rem">{Portal_Dashboard_Application_Component_Header_Help_Text}</span>
+                </div>
+                <div class="slds-grid slds-wrap">
+                    <div class={createdButtonClass}>
+                        <button class={var8} name="" onclick={openTab} data-state="draft">
+                            <div class="slds-grid slds-gutters tablinks">
+                                <div class="slds-col slds-size_4-of-12">
+                                    <lightning-icon icon-name="utility:note" class="icon-orange">
+                                    </lightning-icon>
+                                </div>
+
+                                <div class="slds-col slds-size_8-of-12 text_style_left">
+                                    <p class="tab_title">Created</p>
+                                    <p class="tab_desc">{createdstatus} Draft</p>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                    <div class={submittedButtonClass}>
+                        <button class={var2} onclick={openTab} data-state="Submitted">
+                            <div class="slds-grid slds-gutters tablinks">
+                                <div class="slds-col slds-size_4-of-12">
+                                    <lightning-icon icon-name="utility:package_org">
+                                    </lightning-icon>
+                                </div>
+                                <div class="slds-col slds-size_8-of-12 text_style_left">
+                                    <p class="tab_title">Submitted</p>
+                                    <p class="tab_desc">{submittedstatus} Submitted</p>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                    <div class={inProgressButtonClass}>
+                        <button class={var3} onclick={openTab} data-state="underReview">
+                            <div class="slds-grid slds-gutters tablinks">
+                                <div class="slds-col slds-size_4-of-12">
+                                    <lightning-icon icon-name="utility:spinner">
+                                    </lightning-icon>
+                                </div>
+                                <div class="slds-col slds-size_8-of-12 text_style_left">
+                                    <p class="tab_title">In Progress</p>
+                                    <p class="tab_desc">{inProgressstatus} Under Review</p>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                    <div class={deficientButtonClass}>
+                        <button class={var5} onclick={openTab} data-state="Approved">
+                            <div class="slds-grid slds-gutters tablinks">
+                                <div class="slds-col slds-size_4-of-12">
+                                    <lightning-icon icon-name="utility:success">
+                                    </lightning-icon>
+                                </div>
+                                <div class="slds-col slds-size_8-of-12 text_style_left">
+                                    <p class="tab_title">Approved</p>
+                                    <p class="tab_desc">{deficiencystatus} Approved</p>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                    <div class={processedButtonClass}>
+                        <button class={var4} onclick={openTab} data-state="Closed">
+                            <div class="slds-grid slds-gutters tablinks">
+                                <div class="slds-col slds-size_4-of-12">
+                                    <lightning-icon icon-name="utility:warning">
+                                    </lightning-icon>
+                                </div>
+                                <div class="slds-col slds-size_8-of-12 text_style_left">
+                                    <p class="tab_title">Processed</p>
+                                    <p class="tab_desc">{completestatus} Closed</p>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="Login" class="tabcontent">
+                <div class="form-group">
+                    <label for="emailAddress"> Email Address </label>
+                    <input type="email" class="form-control" id="emailAddress" aria-describedby="emailAddress"
+                        placeholder="user@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="Password">
+                </div>
+            </div>
+
+            <div id="Register" class="tabcontent">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="firstname" aria-describedby="firstname"
+                        placeholder="First Name">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="lastname" aria-describedby="lastname"
+                        placeholder="Last Name">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="paddress" aria-describedby="physicalAddress"
+                        placeholder="Address">
+                </div>
+                <div class="form-group">
+                    <input type="date" class="form-control" id="birthday" aria-describedby="birthday">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="contactinfo" aria-describedby="contactinformation"
+                        placeholder="Contact Information">
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-control" id="regemailAddress" aria-describedby="emailAddress"
+                        placeholder="Email Address">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" id="regpassword" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" id="con-password" placeholder="Confirm Password">
+                </div>
+
+            </div> 
+            <div if:true={showStatus}>
+                <template if:true={var81}>
+                    <c-fcstatuscard status='Draft'></c-fcstatuscard>
+                </template>
+                <template if:true={submitted}>
+                    <c-fcstatuscard status='Submitted'></c-fcstatuscard>
+                </template>
+                <template if:true={inProgress}>
+                    <c-fcstatuscard status='Under Review'></c-fcstatuscard>
+                </template>
+                <template if:true={deficient}>
+                    <c-fcstatuscard status='Approved'></c-fcstatuscard>
+                </template>
+                <template if:true={complete}>
+                    <c-fcstatuscard status='Closed'></c-fcstatuscard>
+                </template>
+            </div>
+            <div class="bottom_spacing"> </div>
+        </div>
+    </c-fc-side-bar>
+</template>

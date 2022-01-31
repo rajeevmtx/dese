@@ -1,0 +1,432 @@
+<template>
+    <div class="backdrop" if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </div>
+    </div>
+
+    <c-fc-side-bar selected-tab="Home" show-footer>
+        <div slot="body">
+            <div if:true={courseModuleList}>
+                <!-- <p class="title">FACES Training Page</p>
+                <hr class="under-title-line"> -->
+                <button class="slds-button slds-button_base" onclick={navigateToCourse}> &larr; BACK TO COURSE
+                    LIST</button><br>
+                <div class="slds-tabs_default">
+                    <div class="slds-grid">
+                        <div class="slds-col slds-size_8-of-12">
+                            <p class="title">{courseName}</p>
+                        </div>
+                        <div class="slds-col slds-size_4-of-12 right-container-header">
+                            <tenplate if:false={courseModuleList.lockButtons}>
+                                <template if:true={courseModuleList.isEnrolled}>
+                                    <template if:false={courseModuleList.isComplete}>
+                                        <button class=" header-button slds-button slds-button_neutral" type="button"
+                                            data-courseid={courseModuleList.courseId}
+                                            data-schedule={courseModuleList.scheduledId} onclick={showConfirmation}>DROP
+                                            COURSE</button>
+                                    </template>
+                                </template>
+                                <template if:false={courseModuleList.isEnrolled}>
+                                    <button class="header-button slds-button slds-button_brand" type="button"
+                                        data-courseid={courseModuleList.courseId}
+                                        data-schedule={courseModuleList.scheduledId}
+                                        onclick={enrollUser}>Enroll</button>
+                                </template>
+                            </tenplate>
+                        </div>
+                    </div>
+
+                    <hr class="under-title-line">
+                    <ul class="slds-tabs_default__nav base" role="tablist">
+                        <li class="slds-tabs_default__item slds-is-active modules" title="Modules" role="presentation"
+                            id="modules" data-id="modules" onclick={onTabChangeHandler}>
+                            <a class="tab-link slds-tabs_default__link selected-courses-tab tab-padding"
+                                style="text-decoration: none;" data-id='modules' role="tab" tabindex="0"
+                                aria-selected="true" aria-controls="tab-default-1" id="tab-default-1__item">CONTENT</a>
+                        </li>
+                        <li class="slds-tabs_default__item  overview" title="Overview" role="presentation" id="overview"
+                            data-id="overview" onclick={onTabChangeHandler}>
+                            <a class="tab-link slds-tabs_default__link selected-courses-tab tab-padding"
+                                style="text-decoration: none;" data-id='overview' role="tab" tabindex="0"
+                                aria-selected="true" aria-controls="tab-default-1" id="tab-default-2__item">OVERVIEW</a>
+                        </li>
+                        <li class="slds-tabs_default__item  objecive" title="Objecive" role="presentation" id="objecive"
+                            data-id="objecive" onclick={onTabChangeHandler}>
+                            <a class="tab-link slds-tabs_default__link selected-courses-tab tab-padding"
+                                style="text-decoration: none;" data-id='objecive' role="tab" tabindex="0"
+                                aria-selected="true" aria-controls="tab-default-1"
+                                id="tab-default-3__item">OBJECTIVES</a>
+                        </li>
+                        <template if:true={courseModuleList.isEnrolled}>
+                            <li class="slds-tabs_default__item attachments" title="Attachments" role="presentation"
+                                id="attachments" data-id="attachments" onclick={onTabChangeHandler}>
+                                <a class="tab-link slds-tabs_default__link selected-courses-tab tab-padding"
+                                    style="text-decoration: none;" data-id='attachments' role="tab" tabindex="-1"
+                                    aria-selected="false" aria-controls="tab-default-2"
+                                    id="tab-default-5__item">DOWNLOADS</a>
+                            </li>
+                            <!-- <li class="slds-tabs_default__item  conversations" title="Conversations" role="presentation"
+                                id="conversations" data-id="conversations" onclick={onTabChangeHandler}>
+                                <a class="tab-link slds-tabs_default__link selected-courses-tab tab-padding"
+                                    style="text-decoration: none;" data-id='conversations' role="tab" tabindex="0"
+                                    aria-selected="true" aria-controls="tab-default-1"
+                                    id="tab-default-4__item">CONVERSATIONS</a>
+                            </li> -->
+                            <li class="slds-tabs_default__item certificate" title="Certificate" role="presentation"
+                                id="certificate" data-id="certificate" onclick={onTabChangeHandler}>
+                                <a class="tab-link slds-tabs_default__link selected-courses-tab tab-padding"
+                                    style="text-decoration: none;" data-id='certificate' role="tab" tabindex="-1"
+                                    aria-selected="false" aria-controls="tab-default-2"
+                                    id="tab-default-6__item">CERTIFICATE</a>
+                            </li>
+                        </template>
+                        <!--<template if:false={courseModuleList.isEnrolled}>
+                        <li class="slds-tabs_default__item attachments disbale" title="Attachments" role="presentation" id="attachments-1" data-id="attachments" >
+                            <a class="tab-link slds-tabs_default__link selected-courses-tab tab-padding" style="text-decoration: none;" data-id='attachments' role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-2" id="tab-default-5__item-1">DOWNLOADS</a>
+                        </li>
+                        <li class="slds-tabs_default__item  conversations disbale" title="Conversations" role="presentation" id="conversations-1" data-id="conversations" >
+                            <a class="tab-link slds-tabs_default__link selected-courses-tab tab-padding" style="text-decoration: none;" data-id='conversations'  role="tab" tabindex="0" aria-selected="true" aria-controls="tab-default-1" id="tab-default-4__item-1">CONVERSATIONS</a>
+                        </li>
+                        <li class="slds-tabs_default__item certificate disbale" title="Certificate" role="presentation" id="certificate-1" data-id="certificate" >
+                            <a class="tab-link slds-tabs_default__link selected-courses-tab tab-padding" style="text-decoration: none;" data-id='certificate' role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-2" id="tab-default-6__item-1">CERTIFICATE</a>
+                        </li>
+                    </template>-->
+
+
+                    </ul>
+                </div>
+
+
+                <!-- <div class="slds-grid">
+                <div class="slds-col slds-size_2-of-8">
+                    <lightning-button-menu class='drop-setting' menu-alignment="right" alternative-text="Show menu" variant="border-filled" icon-name="utility:notebook">
+                        <lightning-menu-item value="overview" data-value="overview" label="Overview" onclick={getSelectedvalue}></lightning-menu-item>
+                        <lightning-menu-item value="objective" data-value="objective" label="Objectives" onclick={getSelectedvalue}></lightning-menu-item>
+                        <lightning-menu-item value="conversations" data-value="conversations" label="Conversations" onclick={getSelectedvalue}></lightning-menu-item>
+                        <lightning-menu-item value="lms-downloads" data-value="lms-downloads" label="Downloads" onclick={getSelectedvalue}></lightning-menu-item>
+                        <lightning-menu-item value="lms-course-certification" data-value="lms-course-certification" label="Certification" onclick={getSelectedvalue}></lightning-menu-item>
+                    </lightning-button-menu>
+                </div>
+            </div> -->
+                <br />
+                <template if:true={isModule}>
+                    <div class="slds-grid module-grid-base module-base-height">
+                        <div class="slds-col slds-size_1-of-12">
+
+                        </div>
+                        <div class="slds-col slds-size_5-of-12 module-content-padding heading-color">
+                            Module Name
+                        </div>
+                        <div class="slds-col slds-size_2-of-12 module-content-padding heading-color">
+                            Status
+                        </div>
+                        <div class="slds-col slds-size_2-of-12 module-content-padding heading-color">
+                            Date Completed
+                        </div>
+                        <div class="slds-col slds-size_2-of-12 module-content-padding heading-color">
+                            <center>Launch</center>
+                        </div>
+                    </div>
+
+                    <template for:each={courseModuleList.moduleAndUserModuleList} for:item="modules">
+                        <hr key={modules.moduleId} class="module-grid-line">
+                        <div class="slds-grid module-grid-base-content module-base-height" key={modules.moduleId}>
+                            <div class="slds-col slds-size_1-of-12 icon-conatiner module-content-padding ">
+                                <template if:true={modules.iconAudio}>
+                                    <img src={audioinc} class="icon-setup" />
+                                </template>
+                                <template if:true={modules.iconVideo}>
+                                    <img src={videoinc} class="icon-setup" />
+                                </template>
+                                <template if:true={modules.iconConfirmation}>
+                                    <img src={confirmationinc} class="icon-setup" />
+                                </template>
+                                <template if:true={modules.iconPDF}>
+                                    <img src={pdfinc} class="icon-setup" />
+                                </template>
+                                <template if:true={modules.iconAssignment}>
+                                    <img src={assignmentinc} class="icon-setup" />
+                                </template>
+                            </div>
+                            <div class="slds-col slds-size_5-of-12 module-content-padding content-color">
+                                {modules.name}
+                            </div>
+                            <div class="slds-col slds-size_2-of-12 module-content-padding content-color">
+                                {modules.moduleUserStatus}
+                            </div>
+                            <div class="slds-col slds-size_2-of-12 module-content-padding content-color">
+                                <template if:true={modules.moduleCompletdDate}>
+                                    {modules.moduleCompletdDate}
+                                </template>
+                                <template if:false={modules.moduleCompletdDate}>
+                                    -
+                                </template>
+                            </div>
+                            <div class="slds-col slds-size_2-of-12 icon-launch-container">
+                                <div if:true={courseModuleList.isEnrolled}>
+                                    <template if:true={courseModuleList.isEnrolled}>
+                                        <template for:each={modules.courseModuleContentList} for:item="moduleContent">
+                                            <template for:each={moduleContent.courseUserModuleContentWrapperList}
+                                                for:item="moduleUserContent">
+                                                <center key={moduleContent.moduleUserStatus}><a key={moduleContent.id}
+                                                        data-user-status-module={modules.moduleUserStatus}
+                                                        data-user-module={modules.userModuleId}
+                                                        data-module-name={modules.name}
+                                                        data-user-content={moduleUserContent.id}
+                                                        data-isyoutube={moduleContent.videoType}
+                                                        data-user-status={moduleUserContent.status}
+                                                        data-confirm={modules.confirmationMesesage}
+                                                        data-online-ins={modules.onlineInstruction}
+                                                        data-module-id={modules.moduleId}
+                                                        data-module-type={modules.moduleType}
+                                                        class="slds-button slds-button_brand"
+                                                        onclick={openModuleContent} data-pdf={moduleContent.pdfLink}
+                                                        data-video={moduleContent.videoId}
+                                                        data-audio={moduleContent.audioFileId}
+                                                        data-summary={modules.moduleSummary}
+                                                        data-is-pdf={moduleContent.isPDF}
+                                                        data-is-audio={moduleContent.isAudio}
+                                                        data-is-video={moduleContent.isVideo}
+                                                        data-is-assessment={moduleContent.isAssessment}
+                                                        data-is-other={moduleContent.isOther}><img class="icon-launch"
+                                                            src={launchinc}></a></center>
+                                            </template>
+                                        </template>
+                                    </template>
+                                </div>
+
+                            </div>
+                        </div>
+                    </template>
+
+
+                    <br>
+
+                    <div class="legend">
+                        <div class="item">
+                            <img src={audioinc} class="svgimg" />
+                            <div class="name">Audio</div>
+                        </div>
+                        <div class="item">
+                            <img src={videoinc} class="svgimg" />
+                            <div class="name">Video</div>
+                        </div>
+                        <div class="item">
+                            <img src={pdfinc} class="svgimg" />
+                            <div class="name">PDF</div>
+                        </div>
+                        <div class="item">
+                            <img src={assignmentinc} class="svgimg" />
+                            <div class="name">Assignment</div>
+                        </div>
+                        <div class="item">
+                            <img src={confirmationinc} class="svgimg" />
+                            <div class="name">Confirmation</div>
+                        </div>
+                    </div>
+                    <!-- Modal Window -->
+                    <template if:true={openModalVideo}>
+                        <div class="demo-only">
+                            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                                aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                                <div class="slds-modal__container modal-container modal-height">
+                                    <header class="slds-modal__header">
+                                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+                                            {moduleName}
+                                        </h2>
+                                    </header>
+                                    <div class="slds-modal__content slds-p-around_medium content-modal-box modal-height full-screen"
+                                        id="modal-content-id-1">
+                                        <div class="slds-grid slds-gutters " style="height:100%">
+                                            <div class="slds-col slds-size_3-of-3 video-iframe" style="height:100%">
+                                                <iframe width="100%" height="100%" src={videofilelink} allowfullscreen>
+                                                </iframe>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <footer class="slds-modal__footer">
+                                        <lightning-button label="Cancel" variant="neutral" onclick={closeModal}>
+                                        </lightning-button>
+                                        <lightning-button label="Complete" class="complete" if:true={showComplete}
+                                            variant="brand" data-user-content={courseUserModuleContent}
+                                            data-user-module={courseUserModule} onclick={completedModule}>
+                                        </lightning-button>
+                                    </footer>
+                                </div>
+
+                            </section>
+                            <div class="slds-backdrop slds-backdrop_open"></div>
+                        </div>
+                    </template>
+
+                    <template if:true={openModalAudio}>
+                        <div class="demo-only">
+                            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                                aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                                <div class="slds-modal__container modal-container-audio modal-height-audio">
+                                    <header class="slds-modal__header">
+
+                                        <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">
+                                            {moduleName}
+                                        </h2>
+                                    </header>
+                                    <div class="slds-modal__content slds-p-around_medium content-modal-box modal-height-audio"
+                                        id="modal-content-id-2">
+                                        <div class="slds-grid slds-gutters">
+                                            <audio class="modal-container-audio" controls="controls" autoplay>
+                                                <source src={audioId} />
+                                            </audio>
+                                        </div>
+                                    </div>
+                                    <footer class="slds-modal__footer">
+                                        <lightning-button label="Cancel" variant="neutral" onclick={closeModal}>
+                                        </lightning-button>
+                                        <lightning-button label="Complete" class="complete" if:true={showComplete}
+                                            variant="brand" data-user-content={courseUserModuleContent}
+                                            data-user-module={courseUserModule} onclick={completedModule}>
+                                        </lightning-button>
+                                    </footer>
+                                </div>
+                            </section>
+                            <div class="slds-backdrop slds-backdrop_open"></div>
+                        </div>
+                    </template>
+
+                    <template if:true={openModalConfirmation}>
+                        <div class="demo-only">
+                            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                                aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                                <div class="slds-modal__container modal-container modal-height">
+                                    <header class="slds-modal__header">
+
+                                        <h2 id="modal-heading-03" class="slds-text-heading_medium slds-hyphenate">
+                                            {moduleName}
+                                        </h2>
+                                    </header>
+                                    <div class="slds-modal__content slds-p-around_medium content-modal-box modal-height"
+                                        id="modal-content-id-3">
+                                        <div class="slds-grid slds-gutters">
+                                            <div class="content-scroll">
+                                                <p class="text-confirmation-para">
+                                                    <lightning-formatted-rich-text value={confirmation}>
+                                                    </lightning-formatted-rich-text>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <footer class="slds-modal__footer">
+                                        <lightning-button label="Cancel" variant="neutral" onclick={closeModal}>
+                                        </lightning-button>
+                                        <lightning-button label="Complete" class="complete" if:true={showComplete}
+                                            variant="brand" data-user-content={courseUserModuleContent}
+                                            data-user-module={courseUserModule} onclick={completedModule}>
+                                        </lightning-button>
+                                    </footer>
+                                </div>
+                            </section>
+                            <div class="slds-backdrop slds-backdrop_open"></div>
+                        </div>
+                    </template>
+
+                    <template if:true={openmodel}>
+                        <div class="demo-only">
+                            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                                aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                                <div class="slds-modal__container modal-container modal-height">
+                                    <header class="slds-modal__header">
+
+                                        <h2 id="modal-heading-012" class="slds-text-heading_medium slds-hyphenate">
+                                            {moduleName}
+                                        </h2>
+                                    </header>
+                                    <div class="slds-modal__content slds-p-around_medium content-modal-box modal-height"
+                                        id="modal-content-id-12">
+                                        <div if:true={pdfDiv} style="padding-bottom: 10px;">
+                                            <lightning-button label="Open Document" data-pdf-link={pdflink}
+                                                variant="brand" onclick={openDocument}></lightning-button>
+                                        </div>
+                                        <div if:true={audio} style="padding-bottom: 10px;width: 99%;">
+                                            <audio style="width: -webkit-fill-available;" controls="controls" autoplay>
+                                                <source src={audioId} />
+                                            </audio>
+                                        </div>
+                                        <div if:true={videofile} style="padding-bottom: 10px;">
+                                            <div class="slds-grid slds-gutters">
+                                                <div class="slds-col slds-size_3-of-3 video-iframe">
+                                                    <iframe width="100%" height="355" src={videofilelink}
+                                                        allowfullscreen>
+                                                    </iframe>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div if:true={other} style="padding-bottom: 10px;">
+
+                                        </div>
+                                    </div>
+                                    <footer class="slds-modal__footer">
+                                        <lightning-button label="Cancel" variant="neutral" onclick={closeModal}>
+                                        </lightning-button>
+                                        <lightning-button label="Complete" class="complete" if:true={showComplete}
+                                            variant="brand" data-user-content={courseUserModuleContent}
+                                            data-user-module={courseUserModule} onclick={completedModule}>
+                                        </lightning-button>
+                                    </footer>
+                                </div>
+                            </section>
+                            <div class="slds-backdrop slds-backdrop_open"></div>
+                        </div>
+                    </template>
+
+                    <!-- Modal Window End-->
+                    <template if:true={openConfirm}>
+                        <div class="demo-only" style="height: 640px;">
+                            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                                aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                                <div class="slds-modal__container">
+                                    <header class="slds-modal__header">
+
+
+                                    </header>
+                                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-21">
+                                        Are you sure, you want to drop this course?
+                                    </div>
+                                    <footer class="slds-modal__footer">
+                                        <lightning-button label="Yes" variant="brand" onclick={dropUser}>
+                                        </lightning-button>
+                                        &nbsp;
+                                        <lightning-button label="No" variant="neutral" onclick={closeConfirmation}>
+                                        </lightning-button>
+                                    </footer>
+                                </div>
+                            </section>
+                            <div class="slds-backdrop slds-backdrop_open"></div>
+                        </div>
+                    </template>
+                </template>
+                <template if:true={isOverview}>
+                    <c-lms_overview courseid={courseId} scheduledid={courseScheduleIdCourse}
+                        user-enrollment={_EnrolledId}>
+                    </c-lms_overview>
+                </template>
+                <template if:true={isObjective}>
+                    <c-lms_objective courseid={courseId} scheduledid={courseScheduleIdCourse}
+                        course-objective={courseObjective} user-enrollment={_EnrolledId}>
+                    </c-lms_objective>
+                </template>
+                <template if:true={isDownloads}>
+                    <c-lms_download_course_content courseid={courseId} scheduledid={courseScheduleIdCourse}
+                        user-enrollment={_EnrolledId}></c-lms_download_course_content>
+                </template>
+                <template if:true={isConversations}>
+                    <!-- <c-lms_course_conversation courseid={courseId}></c-lms_course_conversation> -->
+                </template>
+                <template if:true={isCertification}>
+
+                    <c-lms_course_certificate courseid={courseId} scheduledid={courseScheduleIdCourse}
+                user-enrollment={_EnrolledId}></c-lms_course_certificate>
+                </template>
+            </div>
+        </div>
+    </c-fc-side-bar>
+</template>

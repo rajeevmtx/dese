@@ -1,0 +1,100 @@
+<template>
+    <div class="add-btn">
+        <lightning-button label="Add New Initiative" title="Download action" icon-name="utility:add"
+            onclick={showModal} class="slds-m-left_x-small" disabled={readOnly}></lightning-button>
+    </div>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+          aria-describedby="modal-content-id-1" class={modalClass}>
+          <div class="slds-modal__container">
+             <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close"
+                   onclick={closeModal}>
+                   <lightning-icon icon-name="utility:close" alternative-text="Close Modal" variant="inverse" size="small">
+                   </lightning-icon>
+                </button>
+                <div class="modal-header">
+                  Add Initiative
+              </div>
+             </header>
+             <div class="slds-modal__content slds-p-around_xx-large" id="modal-content-id-1">
+                <div class="modal-content">
+                  <!-- <div class="paragraph slds-m-bottom_xx-small">Intiative Name/Short Title
+                  </div> -->
+                  <p class="paragraph slds-m-top_x-large">
+                    Initiative Name/Short Title
+                </p>
+                <div class="describe-box slds-m-bottom_large">
+                    <div class="slds-form-element">
+                        <div class="slds-form-element__control">
+                            <!-- <textarea id="textarea-id-03" placeholder="Describe Here" class="slds-textarea"></textarea> -->
+                            <lightning-textarea placeholder="Describe Here" variant="label-hidden" name ="initiativeName" onchange={handleChange} value ={initiativeName}></lightning-textarea>
+                        </div>
+                    </div>
+                 </div>
+                  <!--<div class="sample-box slds-m-bottom_small">
+                    <div class="slds-form-element__control">
+                        <lightning-textarea placeholder="Describe Here" class="slds-textarea" name ="initiativeName" onchange={handleChange} value ={initiativeName}></lightning-textarea>
+                    </div>
+                 </div> -->
+                 <!-- <div class="slds-grid slds-gutters"> -->
+                    <div class="slds-form-element">
+                      <p class="paragraph slds-m-top_x-large">
+                        Strategies/Activities
+                     </p>
+                    <div class="describe-box slds-m-bottom_large">
+                        <div class="slds-form-element">
+                            <div class="slds-form-element__control">
+                                <!-- <textarea id="textarea-id-03" placeholder="Describe Here" class="slds-textarea"></textarea> -->
+                                <lightning-textarea placeholder="Describe Here" variant="label-hidden" name ="initiativeStrategies" onchange={handleChange} value ={initiativeStrategies}></lightning-textarea>
+                            </div>
+                        </div>
+                     </div>
+                        <!-- <label class="slds-form-element__label" for="textarea-id-07">
+                            </label>
+                        <div class="slds-form-element__control">
+                            <lightning-textarea placeholder="Describe Here" class="slds-textarea" name ="initiativeStrategies" onchange={handleChange} value ={initiativeStrategies}></lightning-textarea>
+                        </div> -->
+                    </div>
+              <!-- </div> -->
+              <!-- <div class="slds-grid slds-gutters slds-m-top_medium"> -->
+                <!-- <lightning-radio-group name="initiativeActivityConnected" label=" Is this activity/strategy 
+                explicitly connected to district efforts to close equity gaps?"
+                options={options} value={initiativeActivityConnected} type="radio" onchange={handleChange}></lightning-radio-group> -->
+                <lightning-radio-group name="radioGroup"
+                label="Is this activity/strategy 
+                explicitly connected to district efforts to close equity gaps?"
+                options={options} value={initiativeActivityConnected} type="radio" onchange={handleToggleChange} disabled={readOnly}>
+            </lightning-radio-group>
+              <!-- </div> -->
+             
+              <!-- <div class="slds-grid slds-gutters slds-m-top_medium"> -->
+                <p class="paragraph slds-m-top_x-large">
+                  Select the funding source<br>(Select all that apply) 
+              </p>
+              <div class="combobox">
+                  <lightning-combobox
+                      name="fsoptions"
+                      placeholder="Select"
+                      options={fsoptions}
+                      variant="label-hidden"
+                      onchange={handleChange} ></lightning-combobox>
+                  <lightning-pill-container items={items} onitemremove={handleItemRemove} ></lightning-pill-container>
+              </div>
+                <!-- <lightning-checkbox-group name="abc" options={items3} >
+                </lightning-checkbox-group> -->
+                <!-- <lightning-pill-container items={items3}></lightning-pill-container> -->
+              <!-- </div> -->
+   
+                </div>
+             </div>
+             <footer class="slds-modal__footer">
+                <lightning-button variant="neutral" label="Cancel" title="Cancel" onclick={closeModal}>
+                </lightning-button>
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Save" title="Save"
+                   onclick={handleSave}>
+                </lightning-button>
+             </footer>
+          </div>
+       </section>
+       <div class={modalBackdropClass}></div>
+</template>

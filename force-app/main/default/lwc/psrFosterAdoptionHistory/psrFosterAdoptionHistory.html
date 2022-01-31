@@ -1,0 +1,37 @@
+<template>
+    <!--<div class="backdrop" if:true={showSpinner}>
+              <div class="spinner">
+                  <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+              </div>
+          </div>-->
+    <div class="slds-card has-header slds-p-around_medium card-div">
+        <div class="page-header" style="font-size: medium;">
+            <h2 class="page-title">Foster/Adoption History</h2>
+        </div>
+        <lightning-radio-group name="radio1"
+            class="horizontal-radio slds-p-bottom_medium  slds-m-bottom_small slds-m-top_small" label="Have you previously been or are you currently approved for adoption,an approved relative or 
+                                      nonrelative extended family member, or previously or currently licensed,certified,or approved to provide 
+                                      foster care?" options={yesNoOption} type="radio" onchange={handleInput} required>
+        </lightning-radio-group>
+        <lightning-radio-group name="radio2"
+            class="horizontal-radio slds-p-bottom_medium  slds-m-bottom_small slds-m-top_small"
+            label="Have you previously been or are you currently licensed to operate a child care center,family child care home,or residential care facility for the elderly or chronically ill?"
+            options={yesNoOption} type="radio" onchange={handleInput} style="width: 100%;" required>
+        </lightning-radio-group>
+        <lightning-radio-group name="radio3"
+            class="horizontal-radio slds-p-bottom_medium  slds-m-bottom_small slds-m-top_small"
+            label="Have you previously been or are you currently employed by or volunteering at a community care facility,child care,family child care home,or residential care facility for the elderly or chronically ill?"
+            options={yesNoOption} type="radio" onchange={handleInput} style="width: 100%;" required>
+        </lightning-radio-group>
+        <lightning-radio-group name="radio4"
+            class="horizontal-radio slds-p-bottom_medium  slds-m-bottom_small slds-m-top_small"
+            label="Have you had a previous license,certification,relative or nonrelative extended family member approval,Resource Family approval,or portability application denial?"
+            options={yesNoOption} type="radio" onchange={handleInput} style="width: 100%;" required>
+        </lightning-radio-group>
+        <lightning-radio-group name="radio5"
+            class="horizontal-radio slds-p-bottom_medium  slds-m-bottom_small slds-m-top_small"
+            label="Have you had a license ,certification,or approval suspended,revoked,or rescinded?"
+            options={yesNoOption} type="radio" onchange={handleInput} style="width: 100%;" required>
+        </lightning-radio-group>
+    </div>
+</template>

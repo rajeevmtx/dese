@@ -1,0 +1,34 @@
+<template>
+    <h1 class="section-title">Scheduling &amp; Submission</h1>
+
+    <div class="slds-form">
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_1-of-1 slds-p-right_small slds-bottom-right_small slds-p-bottom_small">
+                <lightning-combobox name="Preferred_Testing_Site__c" label="Preferred Testing Site"
+                    placeholder="Preferred Testing Site" options={accountOption} onchange={handleInput} required>
+                </lightning-combobox>
+            </div>
+
+            <div class="slds-col slds-size_1-of-1 slds-p-right_small slds-bottom-right_small slds-p-bottom_small">
+                <lightning-combobox name="Preferred_Timing__c" label="Preferred Timing" placeholder="Preferred Timing"
+                    options={preferredTimeslots} onchange={handleInput} required></lightning-combobox>
+            </div>
+
+            <div if:true={isCommunity} class="slds-col slds-size_1-of-1 slds-m-top_medium slds-m-bottom_small terms-input">
+                <lightning-input type="checkbox" name="Opt_in_for_SMS_Updates__c" label="Opt-in for SMS updates"
+                    onchange={handleInput}>
+                </lightning-input>
+            </div>
+
+            <div if:true={isCommunity}
+                class="slds-col slds-size_1-of-1 slds-p-right_small slds-bottom-right_small slds-p-bottom_small terms-input">
+                <lightning-textarea type="text" label="Acknowledgement and Agreement" value={agreement} disabled>
+                </lightning-textarea>
+            </div>
+            <div if:true={isCommunity} class="slds-col slds-size_1-of-1 slds-m-top_medium slds-m-bottom_small terms-input">
+                <lightning-input type="checkbox" name="Agree_to_the_Terms__c" label="I agree to the above terms"
+                    onchange={handleInput} required></lightning-input>
+            </div>
+        </div>
+    </div>
+</template>

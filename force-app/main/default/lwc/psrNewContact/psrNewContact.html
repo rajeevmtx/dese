@@ -1,0 +1,275 @@
+<!--
+ - Created by AshishP on 21-01-2020.
+ -->
+
+<!-- psrNewContact -->
+<template>
+    <!--<template if:true={isOpenModal}>-->
+    <div>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="width: 80%;">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close" onclick={handleCloseModal}>
+                        <lightning-icon icon-name="utility:close" variant="inverse" alternative-text="Close"
+                            size="medium">
+                        </lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 if:false={isStaff} id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+                        {header}</h2>
+                    <h2 if:true={isStaff} id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">
+                        {headerStaff}</h2>
+
+                </header>
+                <div class="slds-modal__content" id="modal-content-id-1">
+                    <div class="padding-horizontal slds-m-around_small">
+                        <c-psr-help-text help-text={Portal_Add_New_Contact_Help_Text}></c-psr-help-text>
+                    </div>
+                    <div if:false={isStaff} class="">
+                        <lightning-record-edit-form object-api-name="Contact" onsubmit={handleSubmit}>
+                            <lightning-messages>
+                            </lightning-messages>
+                            <!-- <lightning-record-edit-form object-api-name="Application_Contacts__c" > -->
+                            <lightning-messages>
+                            </lightning-messages>
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_2-of-4">
+                                    <label for="fieldid"
+                                        style="padding-right: 16%;padding-top: 2%;margin-left:1%">School Name</label>
+                                    <!-- <lightning-input-field field-name="Company_Name__c" id="fieldid"
+                                        variant="label-hidden" required value={contact.companyName}>
+                                    </lightning-input-field> -->
+                                    <lightning-input name="CompanyName" variant="label-hidden"
+                                        value={contact.companyName} onchange={handleChangeNew}></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_2-of-4">
+                                    <label style="padding-right: 16%;padding-top: 2%;margin-left:1%">Enrollment
+                                        Number</label>
+                                    <!-- <lightning-input-field field-name="Enrollment_Number__c"
+                                        value={contact.enrollmentnumber} variant="label-hidden"></lightning-input-field> -->
+                                    <lightning-input name="EnrollmentNumber" variant="label-hidden"
+                                        value={contact.enrollmentnumber} onchange={handleChangeNew}></lightning-input>
+
+                                </div>
+                                <!-- <div class="slds-col slds-size_1-of-4">
+                                                    <label style="padding-right: 16%;padding-top: 2%;margin-left:1%">First Name</label>
+                                                    <lightning-input-field field-name="FirstName" variant="label-hidden" value={contact.firstName} required></lightning-input-field>
+                                                </div>
+                                                <div class="slds-col slds-size_1-of-4">
+                                                    <label style="padding-right: 16%;padding-top: 2%;margin-left:1%">Last Name</label>
+                                                    <lightning-input-field field-name="LastName" variant="label-hidden"  required value={contact.lastName} onchange={handleMaxLength} ></lightning-input-field>
+                                                </div> -->
+                            </div>
+                            <p>&nbsp;</p>
+                            <!-- </lightning-record-edit-form> -->
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_1-of-4">
+                                    <label style="padding-right: 16%;padding-top: 2%;margin-left:1%">First Name <b
+                                            class="slds-text-color_destructive">*</b></label>
+                                    <lightning-input-field field-name="FirstName" variant="label-hidden"
+                                        value={contact.firstName} required></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-4">
+                                    <label style="padding-right: 16%;padding-top: 2%;margin-left:1%">Last Name <b
+                                            class="slds-text-color_destructive">*</b></label>
+                                    <lightning-input-field field-name="LastName" variant="label-hidden" required
+                                        value={contact.lastName} onchange={handleMaxLength}></lightning-input-field>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-4 ">
+                                    <label style="padding-right: 16%;padding-top: 2%;margin-left:1%">Phone</label>
+                                    <lightning-input-field field-name="Phone" value={contact.phone}
+                                        variant="label-hidden"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-4 ">
+                                    <label style="padding-right: 16%;padding-top: 2%;margin-left:1%">Email <b
+                                            class="slds-text-color_destructive">*</b></label>
+                                    <lightning-input-field field-name="Email" variant="label-hidden" required
+                                        onchange={matchExisting} value={contact.email}></lightning-input-field>
+                                </div>
+                            </div>
+                            <p>&nbsp;</p>
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_1-of-4 ">
+                                    <label style="padding-right: 16%;padding-top: 2%;margin-left:1%">Level of
+                                        Need</label>
+                                    <lightning-input-field field-name="Level_of_Need__c" variant="label-hidden">
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-4 ">
+                                    <label style="padding-right: 16%;padding-top: 2%;margin-left:1%">Most Recent
+                                        Activity</label>
+                                    <lightning-input-field field-name="Most_Recent_Activity__c" variant="label-hidden">
+                                    </lightning-input-field>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_1-of-4 slds-m-top_medium">
+                                    <label style="padding-right: 16%;padding-top: 2%;margin-left:1%">LEP</label>
+                                    <lightning-input-field field-name="LEP__c" variant="label-hidden">
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-4 slds-m-top_medium">
+                                    <label style="padding-right: 16%;padding-top: 2%;margin-left:1%">Disability
+                                        Type</label>
+                                    <lightning-input-field field-name="Disability_Type__c" variant="label-hidden">
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-4 slds-m-top_medium">
+                                    <label style="padding-right: 16%;padding-top: 2%;margin-left:1%">Date of Most Recent
+                                        Activity</label>
+                                    <lightning-input-field field-name="Date_of_Most_Recent_Activity__c"
+                                        variant="label-hidden"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-4 slds-m-top_medium">
+                                    <label style="padding-right: 16%;padding-top: 2%;margin-left:1%">Home Language Not
+                                        English</label>
+                                    <lightning-input-field field-name="Home_Language_Not_English__c"
+                                        variant="label-hidden"></lightning-input-field>
+                                </div>
+                            </div>
+                            <p class="slds-p-left_small slds-m-top_medium">Check all that apply</p>
+                            <div class="slds-grid slds-p-top_small">
+                                <div class="slds-col slds-size_1-of-1 ">
+                                    <table>
+                                        <tr>
+                                            <th>Focus Area</th>
+                                            <th>Selection Criteria</th>
+                                        </tr>
+                                        <template for:each={focusArea} for:item="focusarea">
+                                            <tr key={focusarea.Id}>
+
+                                                <td key={focusarea.Id}>
+                                                    <lightning-input type="checkbox" label={focusarea.focus}
+                                                        name="input1"></lightning-input>
+
+                                                </td>
+                                                <td key={focusarea.Id}>
+                                                    <lightning-checkbox-group name="Checkbox Group" label=""
+                                                        options={focusarea.criterias} value={value}
+                                                        onchange={handleChange}></lightning-checkbox-group>
+                                                </td>
+
+                                            </tr>
+                                        </template>
+
+                                    </table>
+                                </div>
+                            </div>
+                            <footer class="slds-modal__footer">
+                                <lightning-button class="slds-m-top_small" label="Cancel" onclick={handleCloseModal}>
+                                </lightning-button>
+                                <lightning-button class="slds-m-top_small slds-p-left_small" variant="brand"
+                                    type="submit" label="Save"></lightning-button>
+                            </footer>
+                        </lightning-record-edit-form>
+                    </div>
+                    <div if:true={isStaff}>
+                        <lightning-record-edit-form object-api-name="Contact" onsubmit={handleSubmit}>
+                            <lightning-messages>
+                            </lightning-messages>
+                            <!-- <lightning-record-edit-form object-api-name="Application_Contacts__c" >
+                                        <lightning-messages>
+                                        </lightning-messages>
+                                        <div class="slds-grid">
+                                            <div class="slds-col slds-size_1-of-2" style="display: flex;">
+                                                <label for="fieldid1" style="padding-right: 16%;padding-top: 2%;margin-left:1%">School Name</label>
+                                                <lightning-input-field style="width: 66%;" field-name="Company_Name__c" id="fieldid" variant="label-hidden" required value={contact.companyName}></lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field field-name="Enrollment_Number__c" value={contact.enrollmentnumber}></lightning-input-field>
+                                            </div>
+                                        </div>
+                                </lightning-record-edit-form> -->
+                            <div class="slds-grid slds-p-bottom_small">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <label for="fieldid1"
+                                        style="padding-right: 16%;padding-top: 2%;margin-left:1%">Staff First
+                                        Name</label>
+                                    <lightning-input-field field-name="FirstName" variant="label-hidden"
+                                        value={contact.firstName}></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <label for="fieldid2"
+                                        style="padding-right: 16%;padding-top: 2%;margin-left:1%">Staff Last
+                                        Name <b class="slds-text-color_destructive">*</b></label>
+                                    <lightning-input-field field-name="LastName" variant="label-hidden" required
+                                        value={contact.lastName} onchange={handleMaxLength}></lightning-input-field>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-p-bottom_small">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <label for="fieldid3"
+                                        style="padding-right: 16%;padding-top: 2%;margin-left:1%">Program Job
+                                        Title</label>
+                                    <lightning-input-field field-name="Title" variant="label-hidden"
+                                        value={contact.title}></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <label for="fieldid4"
+                                        style="padding-right: 16%;padding-top: 2%;margin-left:1%">Uniform Financial
+                                        Report (UFR) <b class="slds-text-color_destructive">*</b></label>
+                                    <!-- <lightning-input-field field-name="Comments__c" variant="label-hidden"
+                                        value={contact.comments} pattern="^[1]{1}[2]{1}[3]{1}[4]{1}[5]{1}$" ^(?<!12345)$
+                                        message-when-pattern-mismatch="This UFR number does not match to the UFR number of other Devereaux program. Please correct before you can proceed"
+                                        required></lightning-input-field> -->
+                                    <lightning-input name="Comments__c" variant="label-hidden" required
+                                        value={contact.comments} pattern="^12345$" onchange={handleChangeNew}
+                                        message-when-pattern-mismatch="This UFR number does not match to the UFR number of other Devereaux program. Please correct before you can proceed">
+                                    </lightning-input>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-p-bottom_small">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <label for="fieldid5" style="padding-right: 16%;padding-top: 2%;margin-left:1%">Hire
+                                        Date</label>
+                                    <lightning-input-field field-name="Start_Date__c" value={contact.hireDate}
+                                        variant="label-hidden"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <label for="fieldid6"
+                                        style="padding-right: 16%;padding-top: 2%;margin-left:1%">Status <b
+                                            class="slds-text-color_destructive">*</b></label>
+                                    <lightning-input-field field-name="Status__c" value={contact.status}
+                                        variant="label-hidden" required></lightning-input-field>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-p-bottom_small">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <label for="fieldid7" style="padding-right: 16%;padding-top: 2%;margin-left:1%">ELAR
+                                        Number</label>
+                                    <lightning-input-field field-name="Prof_Qualification_Reg_Number__c"
+                                        value={contact.elarNumber} variant="label-hidden"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <!-- <lightning-input-field field-name="Disability_Type__c"></lightning-input-field> -->
+                                </div>
+                            </div>
+                            <!-- <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <lightning-input-field field-name="Date_of_Most_Recent_Activity__c"></lightning-input-field>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <lightning-input-field field-name="Home_Language_Not_English__c"></lightning-input-field>
+                                    </div>
+                                </div>                                -->
+                            <footer class="slds-modal__footer">
+                                <lightning-button class="slds-m-top_small" label="Cancel" onclick={handleCloseModal}>
+                                </lightning-button>
+                                <lightning-button class="slds-m-top_small slds-p-left_small" variant="brand"
+                                    type="submit" label="Save"></lightning-button>
+                            </footer>
+                        </lightning-record-edit-form>
+                    </div>
+                </div>
+                <!--<footer class="slds-modal__footer">
+                        <lightning-button label="Cancel" variant="neutral" onclick={handleCloseModal}></lightning-button>
+                    </footer>-->
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+    <!--</template>-->
+</template>

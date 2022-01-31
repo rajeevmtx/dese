@@ -1,0 +1,196 @@
+<apex:page showHeader="false" standardStylesheets="false" sidebar="false" controller="EEC_ContactController">
+    <title>EEC : Contact - {!contact.Name}</title>
+    <c:EEC_Header id="pageHeader" />
+    <style>
+        .contact-container {
+            margin-bottom: 120px;
+        }
+        section,
+        .contact-buttons {
+            margin-top: 20px;
+        }
+        md-divider {
+            margin-bottom: 5px;
+        }
+        .md-subhead {
+            margin-left: 20px;
+        }
+        .md-button {
+            margin-right: 0px;
+            margin-left: 0px;
+        }
+        .contact-information,
+        .contact-address {
+            margin-left: 20px;
+        }
+        .not-visible {
+            display: none;
+        }
+        .user-title {
+            position: relative;
+            top: -15px;
+            margin-left: 0;
+        }
+    </style>
+    <body ng-app="eecApp">
+        <c:eec_nav_bar id="navBar" />
+        <div class="contact-container" ng-controller="ContactCtrl as ctrl" layout="row" layout-margin="true" layout-padding="true"
+         layout-align="center center" flex="100">
+            <div class="contact-information" layout="column" flex="50" flex-sm="90">
+                <section class="contact-details">
+                    <!-- <h4 class="md-headline">{!contact.Salutation} {!contact.Name}</h4>-->
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h3 class="md-display-1 pull-left">{!contact.Salutation} {!contact.Name}</h3>
+                        </div>
+                        <apex:outputPanel rendered="{!isSelf}">
+                            <div style="margin-top: 15px;" layout-align-gt-lg="end center" layout-align-lg="end center" layout="row" layout-lg="row"
+                             layout-sm="column" layout-md="column" flex="100" layout-gt-lg="row" layout-wrap="true">
+                                <a class="md-button md-raised md-eec" href="/ChangePassword" type="button">Change Password</a>
+                            </div>
+                        </apex:outputPanel>
+                    </div>
+                    <div class="md-subhead user-title {!IF(contact.Title == null ,'not-visible', '')}">{!contact.Title}</div>
+                    <div class="md-subhead user-title {!IF(OR(contact.Role__c == null, isSelf) ,'not-visible', '')}">
+                        <strong>Role: </strong>{!contact.Role__c}</div>
+                    <div class="md-subhead user-title {!IF(OR(contact.Department == null, isSelf) ,'not-visible', '')}">
+                        <strong>Department: </strong>{!contact.Department}</div>
+                </section>
+                <section class="contact-information">
+                    <h4 class="md-title">Contact Information</h4>
+                    <md-divider></md-divider>
+                    <!-- Profile Page -->
+                    <apex:outputPanel rendered="{!isSelf && !isSelfContactMode}">
+                        <apex:outputPanel rendered="{!IF(contact.MobilePhone != null,true,false)}">
+                            <div class="md-subhead" layout="row">
+                                <i flex-sm="20" flex="5" class="material-icons">smartphone</i>
+                                <p flex-sm="80" flex="90">
+                                    <strong>Mobile Phone:</strong> {!contact.MobilePhone}</p>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(contact.Phone != null,true,false)}">
+                            <div class="md-subhead" layout="row">
+                                <i flex-sm="20" flex="5" class="material-icons">phone</i>
+                                <p flex-sm="80" flex="90">
+                                    <strong>Work Phone:</strong> {!contact.Phone}</p>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(contact.Extension__c != null,true,false)}">
+                            <div class="md-subhead" layout="row">
+                                <i flex-sm="20" flex="5" class="material-icons">settings_phone</i>
+                                <p flex-sm="80" flex="90">
+                                    <strong>Work Phone Extension:</strong> {!contact.Extension__c}</p>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(contact.Email != null,true,false)}">
+                            <div class="md-subhead" layout="row">
+                                <i flex-sm="20" flex="5" class="material-icons">email</i>
+                                <p flex-sm="80" flex="90">
+                                    <strong>Email: </strong>{!contact.Email}</p>
+                            </div>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                    <!-- Contact Page -->
+                    <apex:outputPanel rendered="{!!isSelf || isSelfContactMode}">
+                        <apex:outputPanel rendered="{!IF(contact.Email != null,true,false)}">
+                            <div class="md-subhead" layout="row">
+                                <i flex-sm="20" flex="5" class="material-icons">email</i>
+                                <p flex-sm="80" flex="90">
+                                    <strong>Email: </strong>{!contact.Email}</p>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(contact.Phone != null,true,false)}">
+                            <div class="md-subhead" layout="row">
+                                <i flex-sm="20" flex="5" class="material-icons">phone</i>
+                                <p flex-sm="80" flex="90">
+                                    <strong>Phone:</strong> {!contact.Phone}</p>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(contact.Extension__c != null,true,false)}">
+                            <div class="md-subhead" layout="row">
+                                <i flex-sm="20" flex="5" class="material-icons">settings_phone</i>
+                                <p flex-sm="80" flex="90">
+                                    <strong>Extension:</strong> {!contact.Extension__c}</p>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(contact.Fax != null,true,false)}">
+                            <div class="md-subhead" layout="row">
+                                <i flex-sm="20" flex="5" class="fa fa-fax"></i>
+                                <p flex-sm="80" flex="90">
+                                    <strong>Fax:</strong> {!contact.Fax}</p>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(contact.HomePhone != null,true,false)}">
+                            <div class="md-subhead" layout="row">
+                                <i flex-sm="20" flex="5" class="material-icons">phone</i>
+                                <p flex-sm="80" flex="90">
+                                    <strong>Home Phone:</strong> {!contact.HomePhone}</p>
+                            </div>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                </section>
+                <apex:outputPanel rendered="{!!isSelf || isSelfContactMode}">
+                    <section class="contact-address">
+                        <h4 class="md-title">Address Information</h4>
+                        <md-divider></md-divider>
+                        <apex:outputPanel rendered="{!IF(OR(address != '', otherAddress != ''), true, false)}">
+                            <apex:outputPanel rendered="{!IF(address != null,true,false)}">
+                                <div class="md-subhead" layout="row">
+                                    <i flex-sm="20" flex="5" class="material-icons">home</i>
+                                    <p flex-sm="80" flex="90">
+                                        <strong>Mailing Address:</strong> {!address}</p>
+                                </div>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!IF(otherAddress != null,true,false)}">
+                                <div class="md-subhead" layout="row">
+                                    <i flex-sm="20" flex="5" class="material-icons">business</i>
+                                    <p flex-sm="80" flex="90">
+                                        <strong>Work Address:</strong>{!OtherAddress}</p>
+                                </div>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(AND(address == '', otherAddress == ''), true, false)}">
+                            <div class="md-subhead">No address information provided.</div>
+                        </apex:outputPanel>
+                    </section>
+                </apex:outputPanel>
+                <div class="contact-buttons" layout="column" layout-sm="column" layout-md="column" flex="100">
+                    <apex:outputPanel rendered="{!isSelf && !isSelfContactMode && !isWithoutTransaction}">
+                        <md-button layout-fill="true" href="/EEC_MyProfile?ID={!contact.Id}&selfContactMode=false" class="md-raised md-eec" layout-margin="true"
+                         layout-padding="true">Edit</md-button>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!isSelf && isSelfContactMode && !isWithoutTransaction}">
+                        <md-button layout-fill="true" href="/EEC_MyProfile?ID={!contact.Id}&selfContactMode=true" class="md-raised md-eec" layout-margin="true"
+                         layout-padding="true">Edit My Profile</md-button>
+                    </apex:outputPanel>
+                    <md-button layout-fill="true" href="{!IF(backBtnText == 'Back to Home Page' , '/EEC_PortalLandingPage' , IF(backBtnText == 'Back to Umbrella' , '/EEC_Umbrella?accountId='+acc.Id , '/EEC_PortalProviderPage'+IF(memberId != null,'?member='+memberId,'')))}"
+                     class="md-raised md-eec" layout-margin="true" layout-padding="true">{!backBtnText}</md-button>
+                </div>
+            </div>
+        </div>
+        <c:eec_site_footer id="siteFooter" />
+        <script>
+            app.controller('ContactCtrl', ['$scope', '$location', function ($scope, $location) {
+                // Instance of controller.
+                var conCtrl = this;
+                // Controller level variables.
+                // TODO: Come up with a better solution for getting the investigation ID.
+                conCtrl.contactId = '{!contact.Id}';
+                // Function to convert the unix date to a usable format.
+                conCtrl.convertDateToString = function (dateStr) {
+                    var d = new Date(dateStr);
+                    // Format the date in English standard. Increment the month by one due to Date returning 0-11.  
+                    var formattedDate = d.getUTCDate() + '/' + (d.getUTCMonth() + 1) + '/' + d.getUTCFullYear();
+                    return formattedDate;
+                }
+                // Retrieve the visits and Non-Compliants for the investigation on Controller load.
+                try {
+                    //investApp.getVisits();
+                    //investApp.getNonCompliants();
+                } catch (e) {
+                    console.log("Exception: " + e);
+                }
+            }]);
+        </script>
+    </body>
+</apex:page>

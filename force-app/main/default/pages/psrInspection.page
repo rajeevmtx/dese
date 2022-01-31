@@ -1,0 +1,5 @@
+<apex:page showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" docType="html-5.0">
+<apex:pageBlock >
+        <apex:iframe src="http://salesforce.com?embedded=true" scrolling="true" id="theIframe"/>
+    </apex:pageBlock>
+</apex:page>

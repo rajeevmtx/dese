@@ -1,0 +1,387 @@
+<apex:page showHeader="false" sidebar="false" standardController="Account" extensions="EEC_DifferentialLifecycleFlowController"
+           applyHtmlTag="false" applyBodyTag="false">
+    <c:eec_javascriptcsscontainer includeJquery="true" includeBootStrapJS="true" includeBootStrap="true"/>
+    <style type="text/css">
+        .differentialStep {
+            background-color: #ececec;
+            border: 2px solid black;
+            border-radius: 5px;
+            padding: 6px 6px 6px 6px;
+        }
+        .differentialStepSelected {
+            background-color: #006dc3;
+            color: white;
+            border: 5px solid #006dc3;
+            border-radius: 5px;
+            padding: 6px 6px 6px 6px;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .stepArrows {
+            vertical-align: text-align;
+            font-size: 1.5em;
+            padding-top: 8px;
+            padding-bottom: 8px;
+        }
+        .center-text--grid {
+            position: absolute;
+            width: 100%;
+            font-size: 20px;
+            padding: 0.5rem;
+            border-radius: 2px;
+            margin: 0 auto;
+            left: 0;
+            right: 0;
+            letter-spacing: 0.3px;
+            font-weight: bold;
+            color: #525151;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+    <!-- <p style="display: {! IF(isLicensed, 'none', 'block')};">Provider is currently not licensed.</p> -->
+    <div class="container" style="text-align: center; display: block;">
+        <!-- START OF LIFECYCLE DIAGRAM - FCC -->
+        <p class="center-text--grid">Program Review Cycle</p>
+            <div class="row">
+                <div class="col-sm-2 progress1 differentialStep">
+                    Agencies are trained on changes to the system<br/>
+                    and monitoring criteria <b>(STARTING POINT)</b>
+                </div>
+                <div class="col-sm-1 stepArrows">
+                    <span class="glyphicon glyphicon-arrow-right" />
+                </div>
+                <div class="col-sm-2 progress2 differentialStep differentialStepSelected">
+                    Agency submits Self-Assessment
+                </div>
+                <div class="col-sm-1 stepArrows">
+                    <span class="glyphicon glyphicon-arrow-right" />
+                </div>
+                <div class="col-sm-2 renewalFullReview differentialStep">
+                    OASES Chairperson conducts preliminary review of health and safety criteria
+                </div>
+                <div class="col-sm-1 stepArrows">
+                    <span class="glyphicon glyphicon-arrow-right" />
+                </div>
+                <div class="col-sm-2 monitoring1 differentialStep">
+                    OASES Chairperson conducts Desk Review
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 stepArrows">
+                    <span class="glyphicon glyphicon-arrow-up" />
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2 stepArrows">
+                    <span class="glyphicon glyphicon-arrow-down" />
+                </div>
+                <div class="col-sm-1">
+                </div>
+            </div>
+            <div class="row">
+                <!-- <div class="col-sm-2">
+                </div> -->
+                <div class="col-sm-2 monitoring2 differentialStep">
+                    If there were findings, OASES conducts unannounced visit to School
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2 monitoring2 differentialStep">
+                    OASES Chairperson develops onsite plan
+                </div>
+                <div class="col-sm-1">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 stepArrows">
+                    <span class="glyphicon glyphicon-arrow-up" />
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2 stepArrows">
+                    <span class="glyphicon glyphicon-arrow-down" />
+                </div>
+                <div class="col-sm-1">
+                </div>
+            </div>
+            <div class="row">
+                <!-- <div class="col-sm-2">
+                </div> -->
+                <div class="col-sm-2 renewalEnhancedMonitoring differentialStep">
+                    Progress Reports Submitted by School and Approved by Cases
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2 renewalEnhancedMonitoring differentialStep">
+                    OASES Chairperson Receives Approval of the onsite plan<br/>
+                    from the Supervisor
+                </div>
+                <div class="col-sm-1">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 stepArrows">
+                    <span class="glyphicon glyphicon-arrow-up" />
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2 stepArrows">
+                    <span class="glyphicon glyphicon-arrow-down" />
+                </div>
+                <div class="col-sm-1">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 progress1 differentialStep">
+                    Corrective Action Plan Submitted by School and Approved by OASES
+                </div>
+                <div class="col-sm-1 stepArrows">
+                    <span class="glyphicon glyphicon-arrow-left" />
+                </div>
+                <div class="col-sm-2 progress2 differentialStep">
+                    Program or Mid-cycle Review drafted (needs approval from Supervisor and Manager)
+                </div>
+                <div class="col-sm-1 stepArrows">
+                    <span class="glyphicon glyphicon-arrow-left" />
+                </div>
+                <div class="col-sm-2 renewalFullReview differentialStep">
+                    Onsite Review
+                </div>
+                <div class="col-sm-1 stepArrows">
+                    <span class="glyphicon glyphicon-arrow-left" />
+                </div>
+                <div class="col-sm-2 monitoring1 differentialStep">
+                    Orientation with OASES team and Agency/School Leader
+                </div>
+                <div class="col-sm-1">
+                </div>
+            </div>
+        <!-- END OF LIFECYCLE DIAGRAM - FCC -->
+        <!-- START OF LIFECYCLE DIAGRAM - GSA -->
+        <!-- <div class="container" style="text-align: center; display: {! IF(provRecordType == 'GSA', 'block', 'none')}">
+            <div class="row">
+                <div class="col-sm-2 monitoring90day differentialStep">
+                    Provisional License 90-day Monitoring
+                </div>
+                <div class="col-sm-1 stepArrows">
+                    <span class="glyphicon glyphicon-arrow-right" />
+                </div>
+                <div class="col-sm-2 provisional differentialStep">
+                    Provisional License Renewal
+                </div>
+                <div class="col-sm-1 stepArrows">
+                    <span class="glyphicon glyphicon-arrow-right" />
+                </div>
+                <div class="col-sm-2 monitoring1 differentialStep">
+                    Monitoring
+                </div>
+                <div class="col-sm-1 stepArrows">
+                    <span class="glyphicon glyphicon-arrow-right" />
+                </div>
+                <div class="col-sm-2 monitoring2 differentialStep">
+                    Renewal Monitoring
+                </div>
+                <div class="col-sm-1">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2 stepArrows">
+                    <span class="glyphicon glyphicon-arrow-up" />
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2 stepArrows">
+                    <span class="glyphicon glyphicon-arrow-down" />
+                </div>
+                <div class="col-sm-1">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2 renewalFullReview differentialStep">
+                    Renewal Full Review
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2 enhancedMonitoring differentialStep">
+                    Enhanced Monitoring
+                </div>
+                <div class="col-sm-1">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2 stepArrows">
+                    <span class="glyphicon glyphicon-arrow-up" />
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2 stepArrows">
+                    <span class="glyphicon glyphicon-arrow-down" />
+                </div>
+                <div class="col-sm-1">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2 monitoring4 differentialStep">
+                    Monitoring
+                </div>
+                <div class="col-sm-1 stepArrows">
+                    <span class="glyphicon glyphicon-arrow-left" />
+                </div>
+                <div class="col-sm-2 monitoring3 differentialStep">
+                    Renewal Monitoring
+                </div>
+                <div class="col-sm-1">
+                </div>
+            </div>
+        </div>
+        <!-- END OF LIFECYCLE DIAGRAM - GSA -->
+        <!-- START OF LIFECYCLE DIAGRAM - R&P -->
+        <!-- <div class="container" style="text-align: center; display: {! IF(provRecordType == 'R_P', 'block', 'none')}">
+            <div class="row">
+                <div class="col-sm-2 progress1 ">
+                </div>
+                <div class="col-sm-1 ">
+                </div>
+                <div class="col-sm-2 provisional differentialStep">
+                    Provisional License Renewal
+                </div>
+                <div class="col-sm-1 stepArrows">
+                    <span class="glyphicon glyphicon-arrow-right" />
+                </div>
+                <div class="col-sm-2  monitoring1 differentialStep">
+                    Monitoring
+                </div>
+                <div class="col-sm-1 stepArrows">
+                    <span class="glyphicon glyphicon-arrow-right" />
+                </div>
+                <div class="col-sm-2 renewalEnhancedMonitoring differentialStep">
+                    Renewal Enhanced Monitoring
+                </div>
+                <div class="col-sm-1">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2 stepArrows">
+                    <span class="glyphicon glyphicon-arrow-up" />
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2 stepArrows">
+                    <span class="glyphicon glyphicon-arrow-down" />
+                </div>
+                <div class="col-sm-1">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-2 renewalFullReview differentialStep">
+                    Renewal Full Review
+                </div>
+                <div class="col-sm-1 stepArrows">
+                    <span class="glyphicon glyphicon-arrow-left" />
+                </div>
+                <div class="col-sm-2 monitoring2 differentialStep">
+                    Monitoring
+                </div>
+                <div class="col-sm-1">
+                </div>
+            </div>
+        </div> -->
+        <!-- END OF LIFECYCLE DIAGRAM - R&P -->
+    </div>
+    <script type="text/javascript">
+        var selectedStep = '{!nextDifferentialStep}';
+        console.log(selectedStep);
+        $(selectedStep).addClass('differentialStepSelected');
+    </script>
+</apex:page>

@@ -1,0 +1,107 @@
+<template>
+    <template if:true={ecr}>
+        <template for:each={ecr} for:item="ecrRecord" for:index="index"> 
+            <div key={ecrRecord.Id} class="slds-grid card-base">
+                <div class={divCss}>
+                </div>
+                <div class="slds-col slds-size_11-of-12 " style="padding: 1rem">
+                    <div class="slds-grid">
+                        <div class="slds-col slds-size_5-of-12 ">
+                            <!--<div if:false={isChatterLogo}>-->
+                            <p class="card_detail_section"><b><a data-id={ecrRecord.ID}
+                                        onclick={redirectToPermit}>{ecrRecord.Name}</a></b><br /><span>Application
+                                    Number</span></p>
+                            <!--</div>-->
+                            <!--<div if:true={isChatterLogo}>-->
+                            <!--<p>Application Number:{ecrRecord.Name}</p>-->
+                            <!--</div>-->
+                            <p class="card_detail_section"><b>{ecrRecord.ownerName}</b><br /><span>Name</span></p>
+                            <p class="card_detail_section"><b>{ecrRecord.PhysicalStreet}, {ecrRecord.City}, {ecrRecord.State}, {ecrRecord.Zip} </b><br /><span> Address</span></p>
+                        </div>
+                        <div class="slds-col slds-size_5-of-12 ">
+                            <p class="card_detail_section"><b>{ecrRecord.ownerName}</b><br /><span>Name</span></p>
+                            <p if:true={ecrRecord.isNotDraft} class="card_detail_section">
+                                <b>{ecrRecord.submmisionDate}</b><br /><span>Submission Date</span></p>
+                        </div>
+                        <div class="slds-col slds-size_2-of-12 ">
+                            <!-- <div if:true={isChatterLogo}> -->
+                            <b>Useful Link</b>
+                            <ul>
+                                <li>
+                                    <div onclick={redirectToChatter} data-id={ecrRecord.ID} style="cursor:pointer">
+                                        <div class="discussion-text-link">
+                                            Discussion
+                                        </div>
+                                    </div>
+                                </li>
+                                <li if:true={ecrRecord.statusValue}>
+                                    <div onclick={downloadFile} data-id={ecrRecord.ID} style="cursor:pointer">
+                                        <div class="discussion-text-link">
+                                            Print License
+                                        </div>
+                                    </div>
+                                </li>
+                                <!--<li if:true={ecrRecord.statusValueApp}>
+                                    <div if:true={ecrRecord.showRequestInspection}>
+                                        <div onclick={handleInspections} data-id={ecrRecord.ID} data-index={index}
+                                            style="cursor:pointer;width:160px;">
+                                            <div class="discussion-text-link">
+                                                Request Inspection
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>-->
+                                <li>
+                                    <div if:true={showReUploadDocs}>
+                                        <div onclick={handleReUpload} data-id={ecrRecord.ID} data-index={index}
+                                            style="cursor:pointer;width:160px;">
+                                            <div class="discussion-text-link">
+                                                Re-Upload Documents
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            <!-- </div> -->
+                            <!--<div if:false= {isChatterLogo}>-->
+                            <!--<div onclick={redirectToPermit} data-id={ecrRecord.ID} style="cursor:pointer">-->
+                            <!--<lightning-icon class="slds-float_right" size="small" icon-name="action:edit" alternative-text="edit" ></lightning-icon>-->
+                            <!--</div>-->
+                            <!--</div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+</template>
+<template if:true={isChatter}>
+        <lightning-card title="">
+            <div style="height: 500px;width:52rem !important;">
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                    aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        <header class="slds-modal__header">
+                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                title="Close" onclick={handleCloseModal}>
+                                <lightning-icon icon-name="utility:close" variant="inverse" alternative-text="Close"
+                                    size="medium">
+                                </lightning-icon>
+                                <span class="slds-assistive-text">Close</span>
+                            </button>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate"> Collaborative
+                                Discussion</h2>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+
+                            <div class="slds-m-around_medium">
+                                <iframe width="800" height="400" frameborder="0" src={fullUrl}></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </div>
+        </lightning-card>
+    </template>
+</template>

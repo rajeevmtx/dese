@@ -1,0 +1,62 @@
+<template>
+    <!-- <img src={onlineinc}/> -->
+    <div if:true={certificate}>
+        <div>
+            <!-- <div class="container noprint" >
+                        <center><lightning-button label="Donwload" onclick={download}></lightning-button></center>
+                    </div> -->
+            <div class="container noprint" if:true={validateButton}>
+                <center>
+                    <lightning-button label="Generate Certificate" onclick={genrateNewCertitifcate}></lightning-button>
+                </center>
+            </div>
+
+            <template if:true={certificate.isCertificateGenrated}>
+                <lightning-button class="down-button" variant="Brand" icon-name="utility:download" label="Download"
+                    onclick={redirectCert}></lightning-button><br />
+                <div class="certificate-content capture">
+                    <img src={onlineinc} class="img-size" />
+                    <div class="info">
+                        Certifies that
+                    </div>
+                    <div class="user-name">
+                        {certificate.UserName}
+                        <center>
+                            <hr class="name-line">
+                        </center>
+                    </div>
+                    <div class="has-successfully-completed">
+                        <p>has sucessfully completed</p>
+                    </div>
+                    <div class="course-name">
+                        <p>{certificate.CourseName}</p>
+                    </div>
+                    <div class="date">
+                        {certificate.genratedDate}
+                    </div>
+                    <div class="sign">
+                        Signature
+                    </div>
+                </div>
+            </template>
+            <template if:false={certificate.isCertificateGenrated}>
+                <template if:false={validateButton}>
+                    <br />
+                    <br />
+                    <br />
+                    <center>
+                        <lightning-button label="Generate Certificate" disabled></lightning-button>
+                    </center>
+                    <br />
+                    <br />
+                    <br />
+                    <center>
+                        <p>Certificate will be generated, once all the modules for this course are completed.</p>
+                    </center>
+                </template>
+            </template>
+
+        </div>
+    </div>
+
+</template>

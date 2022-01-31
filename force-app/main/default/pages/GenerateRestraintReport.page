@@ -1,0 +1,5 @@
+<apex:page standardcontroller="Account" extensions="GenerateButtonController" action="{! saveRestraintPDF }">
+    <!-- <script>
+        window.open("/sfc/servlet.shepherd/version/download/06903000001rVkFAAU","_blank");
+    </script> -->
+</apex:page>

@@ -1,0 +1,39 @@
+<template>
+    <!-- <div class="slds-combobox_container slds-p-left_xx-small slds-p-right_xx-small dropdown" tabindex=-1>
+        <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open" aria-expanded="true"
+            aria-haspopup="listbox" role="combobox">
+            <label class="slds-form-element__label">Subcontractor</label>
+            <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right slds-form-element__stacked slds-form-element" role="none">
+                <input name="group-typeahead-search-input" type="text" maxlength="40"
+                    class="slds-input slds-combobox__input typeahead-input" autocomplete="off" role="textbox" oninput={filterGroups}
+                    onfocus={filterGroups} aria-describedby="visitor-input-error" onkeyup={inputKeyUp}
+                    onblur={handleFocusOut} />
+                    
+                <div if:true={showDropDown} class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid dropdown-box"
+                    role="listbox">
+                    <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                        <template for:each={appContactList} for:item="appcontact">
+                            <li key={appcontact.record.Id} role="presentation" data-name={appcontact.record.Contact__r.Name}
+                                data-id={appcontact.record.Id} onclick={handleGroupSelect} class="slds-listbox__item">
+                                <div class="slds-p-horizontal_small slds-grow slds-shrink no-clicks">
+                                    <div class="group-name-div dropdown-box" key={appcontact.record.Id} role="presentation" data-name={appcontact.record.Contact__r.Name}
+                                    data-id={appcontact.record.Id} onclick={handleGroupSelect}>{appcontact.record.Contact__r.Name}</div>
+                                </div>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </div> 
+        </div>
+    </div> -->
+    <div if:true={showOptions}>
+        <lightning-combobox
+            name="subcontractor"
+            label="Subcontractor"
+            value={selectedContactId}
+            placeholder="Select Subcontractor"
+            options={options}
+            onchange={handleGroupSelect}>
+        </lightning-combobox>
+    </div>
+</template>

@@ -1,0 +1,80 @@
+<template>
+    <div class="slds-form fcSidebarCSS">
+        <lightning-accordion allow-multiple-sections-open active-section-name={activeSections}>
+
+            <lightning-accordion-section name="Applicant_Information" label="Applicant Information">
+                <span class="Applicant">Applicant A</span>
+                <ul class="timeline">
+                    <span class="ApplicantOptions">
+                        <li class={step1CSS} value="1" steplabel="1.1" onclick={handleUserClicks}>Applicant Info</li>
+                        <li class={step2CSS} value="2" steplabel="1.2" onclick={handleUserClicks}>Applicant Employment</li>
+                        <li class={step3CSS} value="3" steplabel="1.3" onclick={handleUserClicks}>Financial Information</li>
+                    </span>
+                </ul>
+                <template if:true={isMultipleApplicant}>
+                    <div class="slds-m-top_medium">
+                        <span class="Applicant">Applicant B</span>
+                        <ul class="timeline">
+                            <span class="ApplicantOptions">
+                                <li class={step4CSS} value="4" steplabel="1.4" onclick={handleUserClicks}>Applicant Info</li>
+                                <li class={step5CSS} value="5" steplabel="1.5" onclick={handleUserClicks}>Applicant Relationship</li>
+                                <li class={step6CSS} value="6" steplabel="1.6" onclick={handleUserClicks}>Applicant Employment</li>
+                                <li class={step7CSS} value="7" steplabel="1.7" onclick={handleUserClicks}>Financial Information</li>
+                            </span>
+                        </ul> 
+                    </div>
+                </template>
+            </lightning-accordion-section>
+            <lightning-accordion-section name="Household_Information" label="Household Information">
+                <ul class="timeline">
+                    <li class={step8CSS} value="8" steplabel="2.1" onclick={handleUserClicks}>Home Contact Info</li>
+                    <li class={step9CSS} value="9" steplabel="2.2" onclick={handleUserClicks}>Home Information</li>
+                    <li class={step10CSS} value="10" steplabel="2.3" onclick={handleUserClicks}>Minor Children</li>
+                    <li class={step11CSS} value="11" steplabel="2.4" onclick={handleUserClicks}>Other Adults / Adult Children</li>
+                </ul>
+            </lightning-accordion-section>
+            <lightning-accordion-section name="Foster/Adoption_Information" label="Foster/Adoption Information">
+                <ul class="timeline">
+                    <li class={step12CSS} value="12" steplabel="3.1" onclick={handleUserClicks}>County / Agency Name</li>
+                    <li class={step13CSS} value="13" steplabel="3.2" onclick={handleUserClicks}>Applicant A Foster/Adoption History</li>
+                    <template if:true={isMultipleApplicant}>
+                        <li class={step14CSS} value="14" steplabel="3.3" onclick={handleUserClicks}>Applicant B Foster/Adoption History</li>
+                        <li class={step15CSS} value="15" steplabel="3.4" onclick={handleUserClicks}>Child / Nonminor Dependent Desired</li>
+                    </template>
+                    <template if:false={isMultipleApplicant}>
+                        <li class={step15CSS} value="15" steplabel="3.3" onclick={handleUserClicks}>Child / Nonminor Dependent Desired</li>
+                    </template>
+                </ul>
+            </lightning-accordion-section>
+            <lightning-accordion-section name="References" label="References">
+                <div class="">
+                    <ul class="timeline">
+                        <li class={step16CSS} value="16" steplabel="4.1" onclick={handleUserClicks}>References</li>
+                    </ul>
+                </div>
+            </lightning-accordion-section>
+            <lightning-accordion-section name="Background_Consent" label="Background Consent">
+                <div class="">
+                    <ul class="timeline">
+                        <li class={step17CSS} value="17" steplabel="5.1" onclick={handleUserClicks}>Background Consent</li>
+                    </ul>
+                </div>
+            </lightning-accordion-section>
+            <lightning-accordion-section name="Documents" label="Documents">
+                <div class="">
+                    <ul class="timeline">
+                        <li class={step18CSS} value="18" steplabel="6.1" onclick={handleUserClicks}>Documents</li>
+                    </ul>
+                </div>
+            </lightning-accordion-section>
+            <lightning-accordion-section name="Review_and_Submit" label="Review and Submit">
+                <div class="">
+                    <ul class="timeline">
+                        <li class={step19CSS} value="19" steplabel="7.1" onclick={handleUserClicks}>Review and Submit</li>
+                    </ul>
+                </div>
+            </lightning-accordion-section>
+
+        </lightning-accordion>
+    </div>
+</template>

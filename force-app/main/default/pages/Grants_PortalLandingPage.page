@@ -1,0 +1,211 @@
+<apex:page sidebar="false" showHeader="false" docType="html-5.0" controller="Grants_PortalLandingController" standardstylesheets="false">
+    <head>
+        <title>Grants</title>
+        <c:Grants_StyleOverrides id="pageHeader" />
+        <c:Grants_HomePageStyles />
+
+        <style>
+            body {
+                height : 100%;
+            }
+            .page-header{
+              margin: 20px 0 20px;
+            }
+            .page-header h2{
+              font-size: 26px;
+            }
+            @media (min-width: 1200px){
+                .container {
+                    width: 100%;
+                }
+                /*
+                .container > .navbar-header{
+                    margin-left: 9%;
+                }*/
+            }
+            @media (max-width: 1199px){
+                .link-desc{
+                    display : none;
+                }
+            }
+            .brand{
+                display : none;
+            }
+            .navbar-fixed-bottom{
+                position : relative;
+            }
+            .container{
+                display: flex;
+            }
+            .welcome-message{
+                margin-bottom : 20px;
+            }
+            .left-panel{
+                margin-right: 10px;
+                background-color: #eaeaea;
+                margin-top: -20px;
+                padding-left: 0;
+                padding-right: 0;
+                padding-top : 30px;
+                min-height : 680px;
+            }
+
+            .left-panel-item{
+                margin-top : 15px;
+                background-color: #f6f6f6;
+                padding-left: 20px;
+                padding-top : 10px;
+                padding-bottom : 10px;
+                padding-right : 0;
+                height : 90px;
+            }
+            .header-img{
+                margin-bottom : 10px;
+                text-align : center;
+                margin-top: -8px;
+                padding-top: 12%;
+                height : 78px;
+            }
+            .left-panel-item i{
+                color : #115AB1;
+                font-size: 30px;
+                padding-right: 20px;
+                margin-top: 10px;
+            }
+            .left-panel a{
+                color : #000;
+            }
+            .left-panel-item .icon-wrapper{
+                margin-right : 10px;
+            }
+            .link-desc{
+                font-size : 10px;
+            }
+            .left-panel-profile{
+                padding-left: 10%;
+                padding-right: 10%;
+            }
+            .left-panel-profile hr{
+                border-top: 2px solid #7a7a7a;
+                margin-bottom: 10px;
+            }
+            .left-panel-profile .left-panel-profile-cont{
+                padding-left : 35%;
+                margin-bottom: 20px;
+                color : inherit;
+            }
+            .left-panel-profile-cont a{
+                color : inherit;
+            }
+            .resources{
+                min-height : 50px;
+                background-color : #cecece;
+                padding: 10px 20px 20px 20px;
+            }
+            .link-cont{
+                margin-top: 12px;
+                font-size : 16px;
+            }
+            .leftpanel-tooltip i{
+                font-size : 0.8em;
+            }
+            @media (max-width: 1200px){
+                .link-cont{
+                    font-size : 0.8em;
+                }
+                .left-panel-item i{
+                    font-size: 20px;
+                }
+                .leftpanel-tooltip i{
+                    font-size : 0.8em;
+                }
+            }
+            @media (max-width: 675px){
+                .header-img {
+                    margin-top: -30px;
+                    padding-top: 38px;
+                    padding-left : 15%;
+                }
+            }
+            @media (max-width: 415px){
+                .page-header h2{
+                    font-size : 1em;
+                }
+                .item-content{
+                    font-size : 1em;
+                }
+            }
+            .navbar-nav > li > a {
+                height:100%;
+            }
+                           .loading-spinner
+            {
+            display: none;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            width: 100%;
+            height: 100%;
+            background: rgba(22, 50, 92, 0.6);
+            z-index: 9000;
+        }
+        .loading-spinner-inner
+        {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            align-content: center;
+            height: 100%;
+            color: #ffffff;
+            text-transform: uppercase;
+         }
+        .loading-spinner img
+        {
+          max-width: 185px;
+        }
+
+        .alert-warning{
+        color : red;
+        margin-top: 15px;
+        }
+
+        .bPageHeader{
+        	display: none;
+        }
+        </style>
+        <script>
+
+        </script>
+    </head>
+    <body>
+        <div class="loading-spinner" data-attempts="0" style="display:none;">
+            <div class="loading-spinner-inner">
+               <!-- <img src="{!URLFOR($Resource.SLDS0120, 'assets/images/spinners/slds_spinner_brand.gif')}"/> -->
+                <p class="loading-text">Processing Request...</p>
+            </div>
+        </div>
+        <c:Grants_Nav_Bar providerId="{!acc.id}" accountName="{!acc.Name}" id="navBar" />
+        <apex:form id="frm" >
+            <div class="container container-fluid row">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xsm-12 left-panel">
+                     <apex:repeat value="{! lstMenuItems }" var="item">
+                        <c:Grants_LeftPanel_Widget name="{! item.name }"
+                                                description="{! item.description }"
+                                                icon="{! item.icon }"
+                                                destination="{! item.destination }"/>
+                    </apex:repeat>
+                </div>
+
+                <iframe src='https://egrants.force.com/Core_Project_ListView_Page' width="100%" height="700px;" style="border:none;" scrolling="no" frameBorder="0"/>
+
+            </div>
+            <div>
+                <c:Grants_Site_Footer id="siteFooter" />
+            </div>
+        </apex:form>
+    </body>
+</apex:page>

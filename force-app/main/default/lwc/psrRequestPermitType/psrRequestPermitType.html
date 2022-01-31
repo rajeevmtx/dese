@@ -1,0 +1,57 @@
+<template>
+    <div class="backdrop" if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </div>
+    </div>
+
+    <c-psr-sidebar selected-tab="Request Permit Type" show-footer>
+        <div slot="body">
+            <div class="tab slds-m-around_large">
+                <div class="has-shadow slds-p-vertical_medium slds-m-bottom_x-large bg-white"
+                    style="margin-bottom: 0px;">
+                    <div class="container d-flex justify-space-between">
+                        <div class="d-flex justify-space-between">
+                            <h4 class="header-pane-title">My Permit Types</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <c-psr-help-text help-text={Portal_Request_Permit_Type_Help_Text}></c-psr-help-text>
+
+                <div class="container license-grid">
+                    <lightning-button variant="Neutral" label="New" onclick={handleNewPermitType}>
+                    </lightning-button>
+                </div>
+
+                <div class="slds-grid slds-wrap">
+                    <table style="margin-top: 20px;" class="psrRequestPermitTypes">
+                        <tr class="table_header_brand">
+                            <td><b>Request Number</b></td>
+                            <td><b>Permit Type</b></td>
+                            <td><b>Status</b></td>
+                            <td><b>Requested Date</b></td>
+                        </tr>
+
+                        <template for:each={cases} for:item="item">
+                            <tr key={item.record.Id}>
+                                <td>{item.record.CaseNumber}</td>
+                                <td>{item.record.Request_Permit_Type__c}</td>
+                                <td>{item.record.Status}</td>
+                                <td>
+                                    <lightning-formatted-date-time value={item.record.CreatedDate}>
+                                    </lightning-formatted-date-time>
+                                </td>
+                            </tr>
+                        </template>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </c-psr-sidebar>
+
+    <c-psr_new_request_permit_type if:true={isShowNewRequestPermit} valid-permit-types={validPermitTypes}
+        onclose={closeNewPermitType} onsuccess={refreshAndCloseNewPermitType}>
+    </c-psr_new_request_permit_type>
+
+</template>

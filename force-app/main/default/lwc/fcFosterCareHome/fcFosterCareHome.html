@@ -1,0 +1,149 @@
+<template>
+  <div class="container">
+    <img class="nh_logo" src={logo} alt="NH Logo" />
+  </div>
+  <div class="banner-image"></div>
+  <section class="banner container">
+    <div>
+      <div class="banner-text">
+        <h1>Become a foster parent in New Hampshire</h1>
+        <p><strong>Provide the home that makes lasting changes in a foster child’s life.</strong></p>
+        <button onclick={navigateToPage} data-navigatepage="user-registration">Register Now</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="slds-grid slds-wrap slds-gutters">
+      <div class="slds-m-bottom_medium slds-size_6-of-12 slds-large-size_4-of-12">
+        <div class="card card-blue">
+          <h3 class="card-title">Resource Family Guide</h3>
+          <p class="card-text">Bureau of Family, Community, and Program Supports.</p>
+          <!-- <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas facilisis eros in arcu sagittis pretium.</p> -->
+          <a class="card-link" href="https://www.dhhs.nh.gov/dcyf/support.htm" target="_blank">Learn more</a>
+        </div>
+      </div>
+
+      <div class="slds-m-bottom_medium slds-size_6-of-12 slds-large-size_4-of-12">
+        <div class="card card-light" data-maintile="resource" data-main="out">
+          <h3 class="card-title">Resource/Foster Family Application</h3>
+          <p class="card-text " data-out="out" data-tile="resource">
+            <a href="https://www.dhhs.nh.gov/dcyf/adoption/index.htm" target="_blank" class="anchor-text">Bureau of
+              Foster Care and Adoption Services</a> <br> <br>
+            <a href="https://www.dhhs.nh.gov/dcyf/adoption/documents/foster-adopt-resource-guide.pdf" target="_blank"
+              class="anchor-text">
+              A Resource Guide to Assist Families with Foster Care
+              Adoption and Permanency Supports</a></p>
+          <!-- <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas facilisis eros in arcu sagittis pretium.</p> -->
+          <a onclick={navigateToPage} data-navigatepage="user-registration" class="card-link" href="#">Learn more</a>
+        </div>
+      </div>
+
+      <div class="slds-m-bottom_medium slds-size_6-of-12 slds-large-size_4-of-12">
+        <div class="card card-orange" data-maintile="abuse" data-main="out">
+          <h3 class="card-title">Report Abuse</h3>
+          <p class="card-text add-line-clamp" onmouseover={handleHover} data-out="out" onmouseout={mouseOut}
+            data-tile="abuse">PUBLIC HEALTH ISSUE Neglect and abuse is a serious issue that health
+            officers can help to resolve. If you suspect a problem, fill out the online report, or call 603-271-6562 to
+            speak with the Division for Children, Youth, and Families (DCYF) Child Protection Services and discuss
+            children, youth, and their families.</p>
+          <!-- <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas facilisis eros in arcu sagittis pretium.</p> -->
+          <a onclick={navigateToPage} data-navigatepage="fcchildintakeform" class="card-link" href="#">Learn more</a>
+        </div>
+      </div>
+
+      <div class="slds-m-bottom_medium slds-size_6-of-12 slds-large-size_4-of-12">
+        <div class="card card-purple">
+          <h3 class="card-title">Frequently Asked Questions</h3>
+          <!-- <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas facilisis eros in arcu
+            sagittis pretium.</p> -->
+          <p class="card-text">
+            <a href="https://www.dhhs.nh.gov/dcyf/index.htm" target="_blank" class="anchor-text">Children, Youth and
+              Families</a><br>
+            <a href="https://www.dhhs.nh.gov/dcyf/cps/respondent.htm" target="_blank" class="anchor-text">Information
+              for
+              Parents</a><br>
+            <a href="https://www.dhhs.nh.gov/dcyf/cps/stop.htm" target="_blank" class="anchor-text">Stop Abuse or
+              Neglect</a><br>
+            <a href="https://www.dhhs.nh.gov/dcyf/cps/signs.htm" target="_blank" class="anchor-text">Warning
+              Signs</a><br>
+            <a href="https://www.dhhs.nh.gov/dcyf/cps/contact.htm" target="_blank" class="anchor-text">Report Child
+              Abuse and
+              Neglect</a><br>
+          </p>
+          <a class="card-link" href="#">Learn more</a>
+        </div>
+      </div>
+      <div class="slds-m-bottom_medium slds-size_6-of-12 slds-large-size_4-of-12">
+        <div class="card card-dark" data-maintile="attend" data-main="out">
+          <h3 class="card-title">Attend an orientation</h3>
+          <p class="card-text add-line-clamp" onmouseover={handleHover} data-out="out" onmouseout={mouseOut}
+            data-tile="attend">To become a foster parent, a person must complete 21 hours of foster care training,
+            called Foster and Adoptive Care Essentials (FACES), and complete training every two years to maintain the
+            license. A foster home can be licensed as General Care and, after fostering for one year or more, can become
+            a Specialized home. To renew their license, foster parents with General Care homes need 16 hours of training
+            every two years and those with Specialized homes need 32 hours of training every two years. Find training
+            calendar <a href="https://cwep.granite.edu/?page_id=1801" target="_blank" class="anchor-text">here</a>
+          </p>
+          <!-- <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas facilisis eros in arcu sagittis pretium.</p> -->
+          <a class="card-link" href="https://cwep.granite.edu/?page_id=1801" target="_blank">Learn more</a>
+        </div>
+      </div>
+      <div class="slds-m-bottom_medium slds-size_6-of-12 slds-large-size_4-of-12">
+        <div class="card card-green" data-maintile="contact" data-main="out">
+          <h3 class="card-title">Contact Us</h3>
+          <!-- <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas facilisis eros in arcu
+            sagittis pretium.</p> -->
+          <p class="card-text add-line-clamp" onmouseover={handleHover} data-out="out" onmouseout={mouseOut}
+            data-tile="contact">
+            If you suspect a problem, fill out the online report (add link to portal), If this is an immediate
+            emergency, please call 911.<br>
+            Telephone Numbers<br>
+            Report Child Abuse (603) 271-6562<br>
+            Report Child Abuse Fax (603) 271-6565<br>
+            Report Child Abuse TDD (800) 735-2964<br>
+            Report Child Abuse Toll-Free (800) 894-5533 (in state only)
+          </p>
+          <a class="card-link" href="#">Learn more</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="container">
+      <div class="slds-grid">
+        <div class="slds-large-size_3-of-12">
+          <ul>
+            <li>FOSTER CARE OPTIONS</li>
+            <li>Foster</li>
+            <li>Adopt</li>
+            <li>Mentor</li>
+          </ul>
+        </div>
+        <div class="slds-large-size_3-of-12">
+          <ul>
+            <li>ABOUT</li>
+            <li>About Us</li>
+            <li>Meet Our Team</li>
+          </ul>
+        </div>
+        <div class="slds-large-size_3-of-12">
+          <ul>
+            <li>SEE THIS SITE IN</li>
+            <li>English</li>
+            <li>Español</li>
+          </ul>
+        </div>
+        <div class="slds-large-size_3-of-12">
+          <ul>
+            <li>CONTACT US</li>
+            <li>Telephone:</li>
+            <li> (000) 000-0000</li>
+            <li>Email:</li>
+            <li>nhfoster@nh.com</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+</template>

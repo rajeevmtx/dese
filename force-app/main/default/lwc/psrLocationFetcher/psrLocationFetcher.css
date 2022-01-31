@@ -1,0 +1,56 @@
+@font-face {
+    font-family: 'FontAwesome';
+    src: url('/resource/resource_name/fonts/fontawesome-webfont.eot?v=4.2.0');
+    font-weight: normal;
+    font-style: normal
+}
+.city-dropdown {
+    width: 98%;
+    margin-top: -1rem;
+    left: 12px !important;
+    transform: none !important;
+    max-width: 100% !important;
+    
+}
+.cityInputSearch {
+    width: 100%;
+}
+.search-wrapper {
+    position: relative;
+    width: 53%
+}
+.search-wrapper .fa-search {
+    position: absolute;
+    right: 13px;
+    top: 35px;
+    color: #a9a9a9;
+}
+.rel {
+    position: relative;
+}
+
+.city-dropdown ul.city_predictions li .slds-listbox__option-icon {
+    display: none;
+}
+.city-dropdown ul.city_predictions li span.slds-truncate:hover {
+    background-color: rgba(0, 0, 0, 0.09);
+}
+.city-dropdown ul.city_predictions li span.slds-truncate {
+    display: block;
+    padding: 5px 15px;
+    border-bottom: 1px solid #f5f5f5;
+}
+.addressForm {
+    position: relative;
+}
+.search_icon{
+    position: absolute;
+    top: 56%;
+    right: 2%;
+    width: 1.2%;
+}
+.circle_help
+{
+    margin: 0rem .2rem 0rem .75rem;
+    width: 1.3%;
+}

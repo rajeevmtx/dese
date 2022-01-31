@@ -1,0 +1,2184 @@
+<template>
+    <div class="narrative-box">
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col sample-box slds-size_1-of-2">
+                <div class="slds-text-heading_medium">
+                    <strong>${totalAllocation}</strong>
+                </div>
+            </div>
+            <div class="slds-col sample-box  slds-size_1-of-2">
+                <div class="slds-text-heading_medium">
+                    <strong>${totalReservation}</strong>
+                </div>
+            </div>
+        </div>
+        <div class="slds-grid slds-gutters slds-m-top_medium">
+            <div class="slds-col slds-text-heading_medium slds-size_1-of-2">
+                Allocation (before any flexing)
+            </div>
+            <div class="slds-col slds-text-heading_medium  slds-size_1-of-2">
+                Reservation for Equitable (Private-School) Services
+            </div>
+        </div>
+    </div>
+
+    <div class="subheader slds-m-top_large">
+        7.2.1 Budget
+    </div>
+    <div class="table-header slds-m-top_small slds-m-bottom_small">
+        <div class="small-header">All Title II, Districts</div>
+        <div class="resource-icon">
+            <img src={notebook} />
+            <div class="resources">
+                Resources
+            </div>
+        </div>
+    </div>
+
+    <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection} active-section-name="OuterA">
+        <lightning-accordion-section name="OuterA" label="Administrator Salaries">
+            <div class="privateschool-accordion slds-m-top_small">
+                <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection}
+                    active-section-name="A">
+                    <lightning-accordion-section name="A" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="B" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="C" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+
+                </lightning-accordion>
+                <div class="add-btn">
+                    <lightning-button label="Add New Role" title="Download action" icon-name="utility:add"
+                        class="slds-m-left_x-small"></lightning-button>
+                </div>
+            </div>
+        </lightning-accordion-section>
+        <lightning-accordion-section name="OuterB" label="Instructional/Professsional Staff">
+            <div class="privateschool-accordion slds-m-top_small">
+                <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection}
+                    active-section-name="A">
+                    <lightning-accordion-section name="A" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="B" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="C" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+
+                </lightning-accordion>
+            </div>
+        </lightning-accordion-section>
+        <lightning-accordion-section name="OuterC" label="Support Staff">
+            <div class="privateschool-accordion slds-m-top_small">
+                <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection}
+                    active-section-name="A">
+                    <lightning-accordion-section name="A" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="B" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="C" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+
+                </lightning-accordion>
+            </div>
+        </lightning-accordion-section>
+        <lightning-accordion-section name="OuterD" label="Stipends">
+            <div class="privateschool-accordion slds-m-top_small">
+                <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection}
+                    active-section-name="A">
+                    <lightning-accordion-section name="A" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="B" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="C" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+
+                </lightning-accordion>
+            </div>
+        </lightning-accordion-section>
+        <lightning-accordion-section name="OuterE" label="Fringe Benifits">
+            <div class="privateschool-accordion slds-m-top_small">
+                <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection}
+                    active-section-name="A">
+                    <lightning-accordion-section name="A" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="B" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="C" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+
+                </lightning-accordion>
+            </div>
+        </lightning-accordion-section>
+        <lightning-accordion-section name="OuterF" label="Contractual Service">
+            <div class="privateschool-accordion slds-m-top_small">
+                <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection}
+                    active-section-name="A">
+                    <lightning-accordion-section name="A" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="B" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="C" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+
+                </lightning-accordion>
+            </div>
+        </lightning-accordion-section>
+        <lightning-accordion-section name="OuterG" label="Supplies and Materials">
+            <div class="privateschool-accordion slds-m-top_small">
+                <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection}
+                    active-section-name="A">
+                    <lightning-accordion-section name="A" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="B" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="C" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+
+                </lightning-accordion>
+            </div>
+        </lightning-accordion-section>
+        <lightning-accordion-section name="OuterH"
+            label="Travel  (Mileage, Conference registration, Courses, Hotels, etc.)">
+            <div class="privateschool-accordion slds-m-top_small">
+                <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection}
+                    active-section-name="A">
+                    <lightning-accordion-section name="A" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="B" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="C" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+
+                </lightning-accordion>
+            </div>
+        </lightning-accordion-section>
+        <lightning-accordion-section name="OuterI" label="Other Costs">
+            <div class="privateschool-accordion slds-m-top_small">
+                <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection}
+                    active-section-name="A">
+                    <lightning-accordion-section name="A" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="B" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="C" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+
+                </lightning-accordion>
+            </div>
+        </lightning-accordion-section>
+        <lightning-accordion-section name="OuterJ" label="Indirect Costs">
+            <div class="privateschool-accordion slds-m-top_small">
+                <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection}
+                    active-section-name="A">
+                    <lightning-accordion-section name="A" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="B" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="C" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+
+                </lightning-accordion>
+            </div>
+        </lightning-accordion-section>
+        <lightning-accordion-section name="OuterK" label="Equipments">
+            <div class="privateschool-accordion slds-m-top_small">
+                <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection}
+                    active-section-name="A">
+                    <lightning-accordion-section name="A" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="B" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="C" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+
+                </lightning-accordion>
+            </div>
+        </lightning-accordion-section>
+    </lightning-accordion>
+
+
+
+    <div class="note-grid slds-m-top_large slds-m-bottom_large">
+        <div class="grid-item">
+            <div class="head">$122</div>
+            <div class="body">Total Funds Requested</div>
+        </div>
+        <div class="grid-item">
+            <div class="head">$122</div>
+            <div class="body">Total Funds for Equitable Services</div>
+        </div>
+        <div class="grid-item">
+            <div class="head">1298</div>
+            <div class="body">Discrepancy
+                <span>
+                    <lightning-icon icon-name="utility:info_alt" alternative-text="info_alt"
+                        title="info_alt"></lightning-icon>
+                </span>
+            </div>
+        </div>
+        <div class="grid-item">
+            <div class="head">-104</div>
+            <div class="body">Discrepancy
+                <span>
+                    <lightning-icon icon-name="utility:info_alt" alternative-text="info_alt"
+                        title="info_alt"></lightning-icon>
+                </span>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="narrative-box">
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col sample-box slds-size_1-of-2">
+                <div class="slds-text-heading_medium">
+                    <strong>$112</strong>
+                </div>
+            </div>
+            <div class="slds-col sample-box  slds-size_1-of-2">
+                <div class="slds-text-heading_medium">
+                    <strong>$112</strong>
+                </div>
+            </div>
+        </div>
+        <div class="slds-grid slds-gutters slds-m-top_medium">
+            <div class="slds-col slds-text-heading_medium slds-size_1-of-2">
+                Total Funds requested
+            </div>
+            <div class="slds-col slds-text-heading_medium  slds-size_1-of-2">
+                Total Funds Equitable Services
+            </div>
+        </div>
+
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col sample-box slds-size_1-of-2">
+                <div class="slds-text-heading_medium">
+                    <strong>1298
+                    </strong>
+                </div>
+            </div>
+            <div class="slds-col sample-box  slds-size_1-of-2">
+                <div class="slds-text-heading_medium">
+                    <strong>-104</strong>
+                </div>
+            </div>
+        </div>
+        <div class="slds-grid slds-gutters slds-m-top_medium">
+            <div class="slds-col slds-text-heading_medium slds-size_1-of-2">
+                Discrepancy<lightning-icon icon-name="action:info"></lightning-icon>
+            </div>
+            <div class="slds-col slds-text-heading_medium  slds-size_1-of-2">
+                Discrepancy<lightning-icon icon-name="action:info"></lightning-icon>
+            </div>
+        </div>
+    </div> -->
+
+    <div class="subheader slds-m-top_large">
+        7.2.2 - Indirect Costs: Major contracts and equipment
+    </div>
+    <div class="table-header slds-m-top_small slds-m-bottom_small">
+        <div class="small-header"> Title II Districts taking Indirect Costs</div>
+    </div>
+    <div class="narrative-box">
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col sample-box slds-size_1-of-2">
+                <div class="slds-text-heading_medium">
+                    Please Note
+                </div>
+            </div>
+        </div>
+        <div class="slds-grid slds-gutters slds-m-top_medium">
+            <div class="slds-col slds-text-heading_medium slds-size_1-of-1">
+                Indirect costs are those expenses of doing business that are not readily identifed with a particular
+                grant, contract, project fund or activity, but are necessary for the general operation of the
+                organization and the conduct of the activities it performs. Because these expenses are difficult to
+                track with precision across all benefiting sources, federal grants allow use of a rate as a mechanism
+                for fairly and conveniently apportioning indirect costs across all programs within the boundaries of
+                sound administrative principles<span if:true={readMore}>Indirect costs are those expenses of doing business that are not readily identifed with a particular
+                    grant, contract, project fund or activity, but are necessary for the general operation of the
+                    organization and the conduct of the activities it performs. Because these expenses are difficult to
+                    track with precision across all benefiting sources, federal grants allow use of a rate as a mechanism
+                    for fairly and conveniently apportioning indirect costs.
+
+                </span>
+                <lightning-button variant="brand" label={clickedButtonLabel} title="READ MORE" onclick={handleClick}
+                class="readmore"></lightning-button>
+            </div>
+        </div>
+    </div>
+
+    <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection} active-section-name="OuterAA">
+        <lightning-accordion-section name="OuterAA" label="Contracts Exceeding $25,000">
+            <div class="privateschool-accordion slds-m-top_small">
+                <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection}
+                    active-section-name="A">
+                    <lightning-accordion-section name="A" label="$26000">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">$1000</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="B" label="$1000">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">$1000</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="C" label="Sub Total">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">$54000</div>
+                                <div class="info-item">$1000</div>
+                                <div class="info-item"></div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+
+                </lightning-accordion>
+                <div class="add-btn">
+                    <lightning-button label="Add New Detail" title="Download action" icon-name="utility:add"
+                        class="slds-m-left_x-small"></lightning-button>
+                </div>
+            </div>
+        </lightning-accordion-section>
+        <lightning-accordion-section name="OuterBB" label="Equipment">
+            <div class="privateschool-accordion slds-m-top_small">
+                <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection}
+                    active-section-name="A">
+                    <lightning-accordion-section name="A" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="B" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="C" label="Grant Program Manager/Coordinator">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item"></div>
+                                <div class="info-item"></div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">10</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                    <span>
+                                        <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                            title="Settings"></lightning-button-icon>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">100</div>
+                                    <div class="body">No.of Staff</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Total FTE</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Amount
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10</div>
+                                    <div class="body">Primary Function</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$100</div>
+                                    <div class="body">Comments</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">SW</div>
+                                    <div class="body">Amount Included in this expenditure for Equitable Services </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">MTRS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+
+                </lightning-accordion>
+            </div>
+        </lightning-accordion-section>
+    </lightning-accordion>
+
+
+
+
+</template>

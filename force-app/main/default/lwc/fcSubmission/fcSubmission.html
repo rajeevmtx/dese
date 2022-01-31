@@ -1,0 +1,33 @@
+<template>
+    <div class="page-header">
+        <h1 class="page-title">Review and Submit</h1>
+    </div>
+    <div class="slds-grid slds-wrap">
+        <div class="slds-col slds-size_1-of-1 slds-card__header">
+            <c-fc-intake-form-help-text help-text={helpText}></c-fc-intake-form-help-text>
+        </div>
+        <div class="slds-col slds-size_1-of-1 slds-card__header">
+            <h6 class="text-500">Submit Application: {appNo}</h6>
+        </div>
+            <div class="slds-col slds-size_1-of-1">
+                <p>
+                    Thank you very much for providing some of the initial information required by applicants looking to
+                    become licensed foster or foster-to-adopt parents in New Hampshire. Submitting this information is one
+                    part of the process and does not require a commitment from you to follow through with licensing. You
+                    will be asked to participate in foster and adoptive parent training. Your residence will need to be
+                    inspected for safety and you will have various record checks and will be interviewed several times as
+                    part of this process. Each applicant is allowed to set the pace of this process and may withdraw or
+                    place themselves on hold at any time. Opening your heart and home to a child in need, whether for a few
+                    days or forever, will change your life and the life of a child. Only you will know if this is the right
+                    time for you and your family to begin that journey.
+                </p>
+                <br>
+                <!-- Date: <lightning-formatted-date-time year="numeric" month="numeric" day="numeric"
+                    value={todayDate}>
+                </lightning-formatted-date-time> -->
+            </div>
+            <div class="slds-col slds-size_1-of-1">
+                <lightning-input  type="checkbox" label="I agree"></lightning-input>
+            </div>
+    </div>
+</template>

@@ -1,0 +1,16 @@
+<apex:page showheader="false" sidebar="false" standardStylesheets="false" controller="EEC_TransactionRoutingController">
+<style>
+
+
+</style>
+<c:EEC_Header id="pageHeader" />
+<!-- <c:EEC_Nav_Bar id="navBar" providerId="{!memberId}"/>
+<c:EEC_Site_Footer id="siteFooter" /> -->
+<apex:outputPanel >
+    <md-content style="margin-top: 150px;" layout="row" flex="100" layout-align="center center">   
+             <div class="alert alert-danger" >  
+                Sorry, we are unable to process your request. 
+             </div>
+    </md-content>
+</apex:outputPanel>
+</apex:page>

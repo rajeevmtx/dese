@@ -1,0 +1,52 @@
+<template>
+    <div class="backdrop" if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </div>
+    </div>
+
+    <c-psr-sidebar selected-tab="Contractor Information" show-footer>
+        <div slot="body">
+            
+        <h4 class="header-pane-title slds-m-bottom_medium">Program Information</h4>
+                        
+
+        <!-- <c-psrstatuscard-program-information status='Submitted' currentobj={obj1}></c-psrstatuscard-program-information>
+        <c-psrstatuscard-program-information status='Submitted' currentobj={obj2}></c-psrstatuscard-program-information>
+        <c-psrstatuscard-program-information status='Submitted' currentobj={obj3}></c-psrstatuscard-program-information> -->
+
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered program-info-table" aria-label="Example table of Opportunities with vertical borders">
+            <thead>
+              <tr class="slds-line-height_reset">
+                <th class="" scope="col">
+                  <div class="slds-truncate" title="Program Name">Program Name</div>
+                </th>
+                <th class="" scope="col">
+                  <div class="slds-truncate" title="City">City</div>
+                </th>
+                <th class="" scope="col">
+                  <div class="slds-truncate" title="Phone">Phone</div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+                <template for:each={tableRecord} for:item="record">
+              <tr class="slds-hint-parent" key={record.Id}>
+                <th data-label="Program Name" scope="row">
+                  <div class="slds-truncate" title="Cloudhub">
+                    <a href="#" tabindex="-1">{record.name}</a>
+                  </div>
+                </th>
+                <td data-label="City">
+                  <div class="slds-truncate" title={record.city}>{record.city}</div>
+                </td>
+                <td data-label="Phone">
+                  <div class="slds-truncate" title={record.phone}>{record.phone}</div>
+                </td>
+              </tr>
+            </template>
+            </tbody>
+          </table>
+        </div>
+    </c-psr-sidebar>
+</template>

@@ -1,0 +1,14 @@
+th{
+    padding: .5rem !important;
+    background-color: #115ab1 !important;
+    color: white !important;
+}
+
+.pageTextCenter {
+    text-align: center;
+    padding-top: 1rem;
+}
+
+.smallerColumns{
+    width: 5rem;
+}

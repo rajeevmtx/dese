@@ -1,0 +1,55 @@
+<!--
+ - Created by arunm on 22-03-2020.
+ -->
+
+<!-- NYSDOH Demands -->
+<template>
+    <div class="backdrop" if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </div>
+    </div>
+    <c-nysdoh-sidebar selected-tab="Demands" show-footer>
+        <div slot="body">
+            <div class="tab slds-m-around_large">
+                <div class="has-shadow slds-p-vertical_medium slds-m-bottom_x-large bg-white"
+                     style="margin-bottom: 0px;">
+                    <div class="container d-flex justify-space-between">
+                        <div class="d-flex justify-space-between">
+                            <h4 class="header-pane-title">Demand</h4>
+                        </div>
+                    </div>
+                </div>
+                <c-psr-help-text help-text={Portal_Work_Order_Help_Text}></c-psr-help-text>
+                <div class="slds-grid slds-wrap woTable">
+                    <table style="margin-top: 20px;" class="slds-table">
+                        <tr class="table_header_brand">
+                            <td><b>Hospital</b></td>
+                            <td><b>Type</b></td>
+                            <td><b>Status</b></td>
+                            <td><b>Quantity</b></td>
+                            <td><b>Status</b></td>
+                            <td><b>Action</b></td>
+                        </tr>
+                        <template for:each={demands} for:item="item">
+                            <tr key={item.Id}>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <lightning-button variant="brand-outline" label="Bid" onclick={editBid}
+                                                      data-demand-id={item.Id} class="slds-m-left_x-small side_margin">
+                                    </lightning-button>
+                                </td>
+                            </tr>
+                        </template>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </c-nysdoh-sidebar>
+    <c-psr-work-order if:true={isEditModalOpel} onclose={closeModal} work-demand-id={demandId}></c-psr-work-order>
+
+</template>

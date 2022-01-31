@@ -1,0 +1,172 @@
+<template>
+    <div class="backdrop" if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </div>
+    </div>
+    <c-fc-side-bar selected-tab="Home" show-footer>
+        <div slot="body">
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size_12-of-12 nh_header-section--white">
+                    <div class="nh_page-header">
+                        Matching Kids
+                    </div>
+                    <br/>
+                    <div class="nh_page-subheading">
+                        <!-- <lightning-formatted-rich-text
+                            value="Locate eligible foster parent by location and other characterstics using the fields below.">
+                        </lightning-formatted-rich-text> -->
+                        <p class="slds-p-around_large brief_card card-base">Lorem Ipsum is simply dummy text of the printing and
+                            typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                            when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has
+                            survived not only five centuries, but also the leap into electronic typesetting, remaining
+                            essentially unchanged.
+                        </p>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_12-of-12 nh_header-section ">
+                    <div class="nh_page-subheading">
+                        Search results
+                    </div>
+                    <div class="nh_card top_margin--large">
+                        <div class="slds-grid slds-wrap no-left-right-padding">
+                            <div class="slds-col slds-size_12-of-12 no-left-right-padding">
+                                <div class="search-card">
+                                    <div class="slds-grid slds-wrap no-left-right-padding">
+                                        <div class="slds-col slds-size_1-of-5 section-parts no-left-right-padding">
+                                            <div class="slds-grid slds-wrap">
+                                                <div class="slds-col slds-size_1-of-1 user--content">
+                                                    <!-- <template if:true={interestedInChild1}>
+                                                        <div class="interested-button-matching-child-container">
+                                                            <div class="interested-button-matching-child-text">
+                                                                <strong>Interested</strong>
+                                                            </div>
+                                                        </div>
+                                                    </template> -->
+                                                    <div class="user--name">Lauren Landry</div>
+                                                    <div class="user--address">Female</div>
+                                                    <div class="user-distance">Age: 9</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-col slds-size_6-of-12 section-parts">
+                                            <div class="nh_grid-container">
+                                                <div class="nh_grid-item">
+                                                    DOB
+                                                    <span class="item-value">28.Jun.2010</span>
+                                                </div>
+                                                <div class="nh_grid-item">
+                                                    Medical Condition
+                                                    <span class="item-value">N/A</span>
+                                                </div>
+                                                <div class="nh_grid-item">
+                                                    Special Needs
+                                                    <span class="item-value">Yes</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-col slds-size_3-of-12 section-parts">
+                                            <div class="nh_grid-container--two">
+                                                <div class="nh_grid-item">
+                                                    Match Percentage
+                                                    <span class="item-value">90%</span>
+                                                </div>
+                                                <div class="nh_grid-item">
+                                                    <template if:true={interestedInChild1}>
+                                                        <button class="slds-button slds-button_brand nh_custom-btn interested-disabled-btn" disabled>
+                                                            Interested
+                                                        </button>
+                                                    </template>
+                                                    <template if:false={interestedInChild1}>
+                                                        <button class="slds-button slds-button_brand nh_custom-btn" onclick={handleInterestInChild1}>
+                                                            Show Interest
+                                                        </button>
+                                                    </template>
+                                                    <!-- <button class="slds-button slds-button_brand nh_custom-btn">
+                                                        Details
+                                                    </button>
+                                                    <button class="slds-button slds-button_neutral nh_custom-btn">
+                                                        Placement
+                                                    </button> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nh_card">
+                        <div class="slds-grid slds-wrap no-left-right-padding">
+                            <div class="slds-col slds-size_12-of-12 no-left-right-padding">
+                                <div class="search-card">
+                                    <div class="slds-grid slds-wrap no-left-right-padding">
+                                        <div class="slds-col slds-size_1-of-5 section-parts no-left-right-padding">
+                                            <div class="slds-grid slds-wrap">
+                                                <div class="slds-col slds-size_1-of-1 user--content">
+                                                    <!-- <template if:true={interestedInChild2}>
+                                                        <div class="interested-button-matching-child-container">
+                                                            <div class="interested-button-matching-child-text">
+                                                                <strong>Interested</strong>
+                                                            </div>
+                                                        </div>
+                                                    </template> -->
+                                                    <div class="user--name">Alex Williamson</div>
+                                                    <div class="user--address">Male</div>
+                                                    <div class="user-distance">Age: 3</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-col slds-size_6-of-12 section-parts">
+                                            <div class="nh_grid-container">
+                                                <div class="nh_grid-item">
+                                                    DOB
+                                                    <span class="item-value">02.Feb.2017</span>
+                                                </div>
+                                                <div class="nh_grid-item">
+                                                    Medical Condition
+                                                    <span class="item-value">Diabetes</span>
+                                                </div>
+                                                <div class="nh_grid-item">
+                                                    Special Needs
+                                                    <span class="item-value">N/A</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-col slds-size_3-of-12 section-parts">
+                                            <div class="nh_grid-container--two">
+                                                <div class="nh_grid-item">
+                                                    Match Percentage
+                                                    <span class="item-value">90%</span>
+                                                </div>
+                                                <div class="nh_grid-item">
+                                                    <template if:true={interestedInChild2}>
+                                                        <button class="slds-button slds-button_brand nh_custom-btn interested-disabled-btn" disabled>
+                                                            Interested
+                                                        </button>
+                                                    </template>
+                                                    <template if:false={interestedInChild2}>
+                                                        <button class="slds-button slds-button_brand nh_custom-btn" onclick={handleInterestInChild2}>
+                                                            Show Interest
+                                                        </button>
+                                                    </template>
+                                                    
+                                                    <!-- <button class="slds-button slds-button_brand nh_custom-btn">
+                                                        Details
+                                                    </button>
+                                                    <button class="slds-button slds-button_neutral nh_custom-btn">
+                                                        Placement
+                                                    </button> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </c-fc-side-bar>
+</template>

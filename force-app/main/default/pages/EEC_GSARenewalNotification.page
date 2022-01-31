@@ -1,0 +1,444 @@
+<apex:page sidebar="false" docType="html-5.0" controller="EEC_GSARenewalNotificationController">
+    <c:eec_javascriptcsscontainer includeJquery="true" includeBootStrapJS="true" includeDataTable="true" includeBootStrap="true" includeParseley="true" includeConnectionJs="true"/>
+    <style> 
+        #errorMsg {
+            display: none;
+        }
+        #successMsg {
+            display: none;
+        }
+        .alert-info {
+            margin-bottom: 0px;
+        }
+        .col-text { 
+            width: 40px;
+        } 
+        .parsley-errors-list {
+            margin: 2px 0 3px;
+            padding: 0;
+            list-style-type: none;
+            line-height: 0.9em;
+            color: #B94A48;
+            transition: all .3s ease-in;
+            -o-transition: all .3s ease-in;
+            -moz-transition: all .3s ease-in;
+            -webkit-transition: all .3s ease-in;
+        }
+        .parsley-errors-list.filled {
+            opacity: 1;
+        }
+        .form-control {
+            height: 34px !important;
+            width: 100% !important;
+        }
+        .parsley-error {
+            border: 1px solid red;
+        }
+        .parsley-success {
+            border: 1px solid #ccc;
+        }
+        hr {
+            margin-top: 10px !important;
+            margin-bottom: 10px !important;
+        }
+        .dateFormat {
+            display: none;
+        }
+    </style> 
+    <apex:form styleClass="renewalForm container">
+        <apex:actionFunction name="getProvidersAF" status="status" reRender="tablePanel,attachmentPanel" oncomplete="toggleLoadingIcon('hide');"/>
+        <apex:actionFunction name="fetchAttachmentAF" status="status" reRender="attachmentSectionPanel, attachmentPanel"/>
+        <apex:outputPanel layout="block" id="pageMessage">
+            <apex:outputPanel layout="block" rendered="{!pageErrorMessage != null && pageErrorMessage != ''}">
+                <script>scrollToTop();</script>
+                <div class="alert alert-danger">
+                    {!pageErrorMessage}
+                </div>
+            </apex:outputPanel>
+        </apex:outputPanel>
+        <apex:outputPanel layout="block" id="headerPanel">
+            <apex:outputPanel layout="none" rendered="{!selectedRenewalType == 'Renewal Meeting'}">
+                <div class="row eec-text-align_center">
+                    <h2>GSA Renewal Notification Options</h2>
+                </div>
+                <div class="alert alert-info">
+                    Click on "Send Electronic Notification" button based on the filtered options. If you would like to provide generate a paper
+                    based template and mail it to the providers that are not in the system then click on 'Download
+                    Renewal Template' that will auto-populate filtered information.
+                </div>
+                <hr/>
+            </apex:outputPanel>
+            <apex:outputPanel layout="none" rendered="{!selectedRenewalType != 'Renewal Meeting'}">
+                <div class="row eec-text-align_center">
+                    <h2> Renewal Notification Options</h2>
+                </div>
+                <div class="alert alert-info">
+                    Please Select the providers for which you want to generate the renewal notification forms and then click on 'Download Renewal
+                    Template'.
+                </div>
+                <hr/>
+            </apex:outputPanel>
+        </apex:outputPanel>
+        <div class="alert alert-danger" id="errorMsg"></div>
+        <div class="alert alert-success" id="successMsg"></div>
+        <div class="row eec-p-around_x-small">
+            <apex:outputPanel layout="block" id="attachmentSectionPanel">
+                <apex:outputPanel layout="none" rendered="{!showAttachmentComponent}">
+                    <c:eec_uploadmultiplefilescomponent attachmentIdString="{!attachmentIdString}" parentId="{!usermeetingId}" allowMultipleFile="true" attachmentHiddenId="attachmentIdHidden" parentPageFunctionName="fetchAttachmentAF();"/>
+                </apex:outputPanel>
+            </apex:outputPanel>
+            <div class="col-sm-4">
+                <label>Select Renewal Type:</label>
+                <apex:selectList value="{!selectedRenewalType}" multiselect="false" styleclass="form-control" size="1" html-data-parsley-required="true">
+                    <apex:selectOption itemValue="" itemLabel="--None--"/>
+                    <apex:selectOption itemValue="Renewal Meeting" itemLabel="GSA Renewal Meeting"/>
+                    <apex:selectOption itemValue="Renewal 120 days notification" itemLabel="Renewal 120 days notification"/>
+                    <apex:selectOption itemValue="Renewal 150 days notification" itemLabel="Renewal 150 days notification"/>
+                    <apex:actionSupport event="onchange" reRender="headerPanel, programTypePanel, attachmentPanel, meetingPanel" status="status"/>
+                </apex:selectList>
+            </div>
+            <div class="col-sm-4">
+                <label>Select your Region:</label>
+                <apex:selectList value="{!selectedRegion}" multiselect="false" styleclass="form-control" size="1" html-data-parsley-required="true">
+                    <apex:selectOptions value="{!regionList}" />
+                    <apex:actionSupport event="onchange" reRender="meetingPanel" status="status"/>
+                </apex:selectList>
+            </div>
+            <apex:outputPanel styleClass="col-sm-4" layout="block" id="programTypePanel">
+                <apex:outputPanel layout="none" rendered="{!AND(!isBlank(selectedRenewalType), selectedRenewalType != 'Renewal Meeting')}">
+                    <label>Select Program Type:</label>
+                    <apex:selectList value="{!selectedProgramType}" multiselect="false" styleclass="form-control" size="1" html-data-parsley-required="true">
+                        <apex:selectOption itemValue="" itemLabel="--None--"/>
+                        <apex:selectOption itemValue="FCC" itemLabel="FCC"/>
+                        <apex:selectOption itemValue="FCC Assistant" itemLabel="FCC Assistant"/>
+                    </apex:selectList>
+                </apex:outputPanel>
+            </apex:outputPanel>
+        </div>
+        <div class="row eec-p-around_x-small">
+            <div class="col-sm-12">
+                <label>Create invitations for the providers who expire between these dates:</label>
+            </div>
+            <div class="col-sm-4">
+                <apex:inputField value="{!contact.BRC_Expiration_Date__c}" styleClass="form-control" html-data-parsley-required="true"/>
+            </div>
+            <div class="col-sm-1 eec-text-align_center">To</div>
+            <div class="col-sm-4">
+                <apex:inputField value="{!contact.BRC_Renewal_Date__c}" styleClass="form-control" html-data-parsley-required="true"/>
+            </div> 
+            <div class="col-sm-3">
+                [<a href="javascript:void(0);" onclick="validateShowProvider();">Show Possible Providers</a>]
+            </div>
+        </div>
+        <apex:outputPanel styleClass="row eec-p-around_x-small" layout="block" id="meetingPanel">
+            <apex:outputPanel rendered="{!selectedRenewalType == 'Renewal Meeting'}" layout="none">
+                <div class="col-sm-12">
+                    <label>These are the dates of the meetings we would like to invite them to:</label>
+                </div>
+                <apex:outputPanel layout="none" rendered="{!meetingList.size > 0}">
+                    <apex:repeat value="{!meetingList}" var="meeting">
+                        <div class="col-sm-12">
+                            <div class="col-sm-1 col-text">
+                                <input type="checkbox" name="{!meeting.timings}" class="meeting-checkbox" value="{!meeting.meetingId}" data-parsley-multiple="checkbox" parsley-required="false"/>
+                            </div>
+                            <div class="col-sm-11">{!meeting.timings}</div>
+                        </div>
+                    </apex:repeat>
+                </apex:outputPanel>
+                <apex:outputPanel layout="none" rendered="{!meetingList.size == 0}">
+                    <div class="col-sm-12">No meeting record found.</div>
+                </apex:outputPanel>
+            </apex:outputPanel>
+        </apex:outputPanel>
+        <apex:outputPanel layout="block" id="tablePanel" styleClass="row eec-p-around_x-small">
+            <apex:outputPanel styleClass="col-sm-12" rendered="{!providerWrapperList.size > 0}" layout="block">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Possible Providers
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-striped table-responsive" id="providerDataTable">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" onclick="selectAllCheckboxes(this,'provider-checkbox')" id="provider-checkbox" parsley-required="false"/>
+                                    </th>
+                                    <th>Provider Name</th>
+                                    <th>Email Address</th>
+                                    <th>Address</th>
+                                    <th>Expiration Date</th>
+                                    <th>Provider Type</th>
+                                    <th>License Status</th>
+                                    <th>Provider Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <apex:repeat value="{!providerWrapperList}" var="provider">
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" onclick="checkSelectAllCheckboxes('provider-checkbox');" class="provider-checkbox" value="{!provider.Id}" data-parsley-multiple="checkbox" parsley-required="false"/>
+                                        </td>
+                                        <td>{!provider.Name}</td>
+                                        <td>{!provider.Provider_Email__c}</td>
+                                        <td>{!provider.Provider_Address_1__c} {!provider.Provider_City__r.Name}
+                                            {!provider.State__c} {!provider.Provider_Zip_Code__c}</td>
+                                        <td>
+                                            <apex:outputText value="{0,date,MM'/'dd'/'yyy}">
+                                                <apex:param value="{!provider.Renewal_date__c}" />
+                                            </apex:outputText>
+                                        </td>
+                                        <td>{!provider.RecordType.Name}</td>
+                                        <td>{!provider.License_Status__c}</td>
+                                        <td>{!provider.Provider_Status__c}</td>
+                                    </tr>
+                                </apex:repeat>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <script>applyDataTable('providerDataTable', true, true, true);</script>
+            </apex:outputPanel>
+        </apex:outputPanel>
+        <apex:outputPanel styleClass="row eec-p-around_x-small" layout="block" id="attachmentPanel">
+            <apex:outputPanel styleClass="col-sm-12" layout="block" rendered="{!AND(meetingList.size > 0, providerWrapperList.size > 0, selectedRenewalType == 'Renewal Meeting')}">
+                <div class="panel panel-default">
+                    <div class="panel-heading eec-text-align_center">
+                        <apex:commandButton value="Attach File" styleClass="btn-bs btn-primary" reRender="attachmentSectionPanel" status="status">
+                            <apex:param name="showAttachmentComponent" value="true" assignTo="{!showAttachmentComponent}" />
+                        </apex:commandButton>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-striped table-condensed table-responsive" id="attachmentDataTable">
+                            <thead>
+                                <tr>
+                                    <td>
+                                        Action
+                                    </td>
+                                    <td>
+                                        Name
+                                    </td>
+                                    <td>
+                                        File Size
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <apex:repeat value="{!attachmentList}" var="attachment">
+                                    <tr>
+                                        <td>
+                                            <apex:commandLink action="{!deleteAttachmentRecord}" value="Del" onclick="if(!confirm('Are you sure?')) return false;" reRender="attachmentPanel" status="status">
+                                                <apex:param name="deletedAttachmentId" assignTo="{!deletedAttachmentId}" value="{!attachment.Id}"/>                 
+                                            </apex:commandLink>
+                                        </td>
+                                        <td>
+                                            {!attachment.Name}
+                                        </td>
+                                        <td>
+                                            {!round(attachment.BodyLength/1024,2)}KB
+                                        </td>
+                                    </tr>
+                                </apex:repeat>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <apex:inputHidden value="{!attachmentIdString}" id="attachmentIdHidden" />
+                <apex:inputHidden value="{!showAttachmentComponent}" id="showAttachmentComponent" />
+                <script>applyDataTable('attachmentDataTable', false, false, false);</script>
+            </apex:outputPanel>
+            <apex:outputPanel layout="none" rendered="{!AND(providerWrapperList.size > 0, !isBlank(selectedRenewalType))}">
+                <hr/>
+                <div class="eec-text-align_center">
+                    <apex:outputPanel layout="none" rendered="{!selectedRenewalType == 'Renewal Meeting'}">
+                        <a href="javascript:void(0);" onclick="openEmailTemplateInEditMode();return false;" Class="btn-bs btn-primary">Send Electronic Notification</a>
+                    </apex:outputPanel>
+                    <a href="javascript:void(0);" onclick="validateDownloadTemplate('{!selectedRenewalType}');return false;" Class="btn-bs btn-primary">Download Renewal Template</a>
+                </div>
+            </apex:outputPanel>
+        </apex:outputPanel>
+        <!-- Modal -->
+        <div class="modal fade" id="emailTemplatePreviewModal" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Template</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Additional Comment</Label>
+                            <apex:inputTextArea styleclass="form-control" id="additionalComments"/>
+                        </div>
+                        <div class="form-group">
+                            <div id="inlineEditTemplate"/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-bs btn-primary" onclick="validateSendNotification(); return false;">Send Email</button>
+                        <button type="button" class="btn-bs btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal End -->
+    </apex:form>
+    <script>
+        var form = $(".renewalForm").parsley({
+            excluded: 'input[type=checkbox]',
+            errorsWrapper: '<div class="parsley-errors-list"></div>',
+            errorTemplate: '<p class="errorMsg"></p>'
+        });
+        var meetingHTML = '<ul>';
+        $(document).ready(function () {
+            window.onload = function myFunction() {
+                $('.renewalForm').get(0).reset();
+            };
+        });
+        function applyDataTable(dataTableId, sortingEnabled, searchingEnabled, overflowXScroll) {
+            $('#' + dataTableId).DataTable({
+                "paging": false,
+                "searching": searchingEnabled,
+                "info": false,
+                "ordering": sortingEnabled,
+                "scrollX": overflowXScroll
+            });
+        }
+        function validateFilterFields(showMeetingValidation) {
+            $('#errorMsg').hide();
+            $('#successMsg').hide();
+            if ($("input.meeting-checkbox:checkbox[type=checkbox]:checked").length == 0 && showMeetingValidation) {
+                $('#errorMsg').html('<strong>Error! </strong> Please select at least one meeting to proceed further.');
+                $('#errorMsg').show();
+                $('body,html').animate({ scrollTop: 0 }, 400);
+                return false;
+            }
+            if ($("input.provider-checkbox:checkbox[type=checkbox]:checked").length == 0) {
+                $('#errorMsg').html('<strong>Error! </strong> Please select at least one provider to proceed further.');
+                $('#errorMsg').show();
+                $('body,html').animate({ scrollTop: 0 }, 400);
+                return false;
+            }
+            return true;
+        }
+        function validateShowProvider() {
+            if(form.validate()) {
+                getProvidersAF();
+            } else {
+                return false;
+            }
+        }
+        function validateSendNotification() {
+            if (validateFilterFields(true)) {
+                toggleLoadingIcon('show');
+                let providerIdArray = [];
+                $("input.provider-checkbox:checkbox[type=checkbox]:checked").each(function (index) {
+                    providerIdArray.push($(this).val());
+                });
+                Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.EEC_GSARenewalNotificationController.sendEmailToProvider}',
+                    '{!emailTemplate.Id}', JSON.stringify(providerIdArray), $('[id$="attachmentIdHidden"]').val(),
+                    meetingHTML, '{!regionAddress}', '{!regionPhone}', '{!regionFax}', $('[id$="additionalComments"]').val(),
+                    '{!orgWideAddress}', '{!emailTemplate.Name}',
+                    function(result, event){
+                        if (event.status) {
+                            if(result == "Success") {
+                                $('#successMsg').html('Notification has been send successfully.');
+                                $('#successMsg').show();
+                                $('body,html').animate({ scrollTop: 0 }, 400);
+                                toggleLoadingIcon('hide');
+                                $('[id$="attachmentIdHidden"]').val('');
+                                fetchAttachmentAF();
+                            } else {
+                                $('#errorMsg').html(result);
+                                $('#errorMsg').show();
+                                $('body,html').animate({ scrollTop: 0 }, 400);
+                                toggleLoadingIcon('hide');
+                            }
+                        } else if (event.type === 'exception') {
+                            $('#errorMsg').html(event.message);
+                            $('#errorMsg').show();
+                            $('body,html').animate({ scrollTop: 0 }, 400);
+                            toggleLoadingIcon('hide');
+                            console.log(' event.where ' + event.where);
+                        } else {
+                            $('#errorMsg').html(event.message);
+                            $('#errorMsg').show();
+                            $('body,html').animate({ scrollTop: 0 }, 400);
+                            toggleLoadingIcon('hide');
+                        }
+                    },
+                    {escape: false}
+                );
+                $('#emailTemplatePreviewModal').modal('hide');
+            }
+        }
+        function validateDownloadTemplate(renewalType) {
+            if(validateFilterFields(renewalType == 'Renewal Meeting' ? true : false)) {
+                let meetingIdArray = [];
+                let providerIdArray = []; 
+                $("input.meeting-checkbox:checkbox[type=checkbox]:checked").each(function () {
+                    meetingIdArray.push($(this).val());
+                });
+                $("input.provider-checkbox:checkbox[type=checkbox]:checked").each(function (index) {
+                    providerIdArray.push($(this).val());
+                });
+                if(renewalType == 'Renewal Meeting' && meetingIdArray.length > 0 && providerIdArray.length > 0) {
+                    window.open('../apex/EEC_RenewalNotificationsPDF?selectedId=' + providerIdArray.join() + '&selectedMeetingId=' + meetingIdArray.join(),"_self");
+                } else if(renewalType == 'Renewal 120 days notification' && providerIdArray.length > 0) {
+                    window.open('../apex/EEC_120DaysRenewalNotification?selectedId=' + providerIdArray.join(),"_self");
+                } else if(renewalType == 'Renewal 150 days notification' && providerIdArray.length > 0) {
+                    window.open('../apex/EEC_150DaysRenewalNotification?selectedId=' + providerIdArray.join(),"_self");
+                }
+            }
+        }
+        function openEmailTemplateInEditMode() {
+            if (validateFilterFields(true)) {
+                Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.EEC_GSARenewalNotificationController.retrieveEmailTemplateBody}',
+                    '{!emailTemplate.Id}',
+                    function(result, event){
+                        if (event.status) {
+                            let emailTemplateBody = JSON.parse(result)['htmlBody'];
+                            $("input.meeting-checkbox:checkbox[type=checkbox]:checked").each(function () {
+                                meetingHTML += '<li>' + $(this).attr("name") + '</li>';
+                            });
+                            meetingHTML += '</ul>';
+                            emailTemplateBody = emailTemplateBody.replace('[Meeting List]', meetingHTML);
+                            emailTemplateBody = emailTemplateBody.replace('[Address]', '{!regionAddress}');
+                            emailTemplateBody = emailTemplateBody.replace('[Phone]', '{!regionPhone}');
+                            emailTemplateBody = emailTemplateBody.replace('[Fax]', '{!regionFax}');
+                            emailTemplateBody = emailTemplateBody.replace('[ProviderName]', '');
+                            emailTemplateBody = emailTemplateBody.replace('[Provider Name]', '');
+                            emailTemplateBody = emailTemplateBody.replace('[Provider Renewal Date]', '');
+                            $('#inlineEditTemplate').html(emailTemplateBody);
+                            $('#emailTemplatePreviewModal').modal('show');
+                        } else if (event.type === 'exception') {
+                            console.log(' event.message ' + event.message);
+                            $('#errorMsg').html(event.message);
+                            $('#errorMsg').show();
+                            $('body,html').animate({ scrollTop: 0 }, 400);
+                            toggleLoadingIcon('hide');
+                        } else {
+                            $('#errorMsg').html(event.message);
+                            $('#errorMsg').show();
+                            $('body,html').animate({ scrollTop: 0 }, 400);
+                            toggleLoadingIcon('hide');
+                        }
+                    },
+                    {escape: false}
+                );
+            }
+        }
+        function checkSelectAllCheckboxes(checkBoxClass) {
+            if ($('input.' + checkBoxClass + '[type=checkbox]:not(:checked)').length) {
+                $("#" + checkBoxClass).prop('checked', false);
+            } else {
+                $("#" + checkBoxClass).prop('checked', true);
+            }
+        }
+        function selectAllCheckboxes(parentCheckbox, checkBoxClass) {
+            $("." + checkBoxClass).prop('checked', parentCheckbox.checked);
+        }
+    </script>
+</apex:page>

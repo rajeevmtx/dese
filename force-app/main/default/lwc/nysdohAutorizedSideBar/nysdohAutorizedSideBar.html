@@ -1,0 +1,178 @@
+<template>
+        <div class="container_spacing sidebar-page">
+            <div class="mobile-block">
+                <div class="sidenav-margin">
+                    <div>
+                        <lightning-vertical-navigation>
+                            <lightning-vertical-navigation-section>
+                                <!--<button class="padding_space_button"  onclick={openHome}
+                                        data-navigatepage="contractor-information" data-modal="registerEntity">
+                                    <div class="slds-grid slds-gutters pointer-event-none">
+                                        <div class="slds-col slds-size_1-of-12">
+                                            <lightning-icon icon-name="utility:identity" size="xx-small"></lightning-icon>
+                                        </div>
+                                        <div class="slds-col slds-size_11-of-12">
+                                            Home
+                                        </div>
+                                    </div>
+                                </button>-->
+                                <button if:true={showVolunteerAssignmentTab} class="padding_space_button"  onclick={openVolunteer}
+                                data-navigatepage="contractor-information" data-modal="registerEntity">
+                                    <div class="slds-grid slds-gutters pointer-event-none">
+                                        <div class="slds-col slds-size_1-of-12">
+                                            <lightning-icon icon-name="utility:identity" size="xx-small"></lightning-icon>
+                                        </div>
+                                        <div class="slds-col slds-size_11-of-12">
+                                            Volunteer Assignments
+                                        </div>
+                                    </div>
+                                </button>
+
+                                
+
+                                <button if:true={showMyAssignmentTab} class="padding_space_button"  onclick={openAssignment}
+                                        data-navigatepage="contractor-information" data-modal="registerEntity">
+                                    <div class="slds-grid slds-gutters pointer-event-none">
+                                        <div class="slds-col slds-size_1-of-12">
+                                            <lightning-icon icon-name="utility:identity" size="xx-small"></lightning-icon>
+                                        </div>
+                                        <div class="slds-col slds-size_11-of-12">
+                                            Assignments
+                                        </div>
+                                    </div>
+                                </button>
+    
+                                <button if:true={isHospitalUser} class="padding_space_button"
+                                    data-navigatepage="psrlicenseselection" onclick={openMap}>
+                                    <div class="slds-grid slds-gutters pointer-event-none">
+                                        <div class="slds-col slds-size_1-of-12">
+                                            <lightning-icon icon-name="utility:reassign" size="xx-small"></lightning-icon>
+                                        </div>
+                                        <div class="slds-col slds-size_11-of-12">
+                                            Find and Request Volunteers
+                                        </div>
+                                    </div>
+                                </button>
+
+                                <button if:true={showInventoryTab} class="padding_space_button"  onclick={openInventory}
+                                data-navigatepage="contractor-information" data-modal="registerEntity">
+                                    <div class="slds-grid slds-gutters pointer-event-none">
+                                        <div class="slds-col slds-size_1-of-12">
+                                            <lightning-icon icon-name="utility:identity" size="xx-small"></lightning-icon>
+                                        </div>
+                                        <div class="slds-col slds-size_11-of-12">
+                                            Inventory Management
+                                        </div>
+                                    </div>
+                                </button>
+                               
+                                <button if:true={showPurchaseRequestTab} class="padding_space_button"
+                                    data-navigatepage="psrworkorders" onclick={openRequest}>
+                                    <div class="slds-grid slds-gutters pointer-event-none">
+                                        <div class="slds-col slds-size_1-of-12">
+                                            <lightning-icon icon-name="utility:work_order_type" size="xx-small"></lightning-icon>
+                                        </div>
+                                        <div class="slds-col slds-size_11-of-12">
+                                            Purchase Requests
+                                        </div>
+                                    </div>
+                                </button>
+
+                                
+
+                                <button if:true={isHospitalUser} class="padding_space_button"
+                                        data-navigatepage="psrworkorders" onclick={openRequest}>
+                                    <div class="slds-grid slds-gutters pointer-event-none">
+                                        <div class="slds-col slds-size_1-of-12">
+                                            <lightning-icon icon-name="utility:contact_request" size="xx-small"></lightning-icon>
+                                        </div>
+                                        <div class="slds-col slds-size_11-of-12">
+                                            Request for Purchase
+                                        </div>
+                                    </div>
+                                </button>
+                                <button if:true={showWorkOrderTab} class="padding_space_button"
+                                    data-navigatepage="psrworkorders" onclick={openWork}>
+                                    <div class="slds-grid slds-gutters pointer-event-none">
+                                        <div class="slds-col slds-size_1-of-12">
+                                            <lightning-icon icon-name="utility:work_order_type" size="xx-small"></lightning-icon>
+                                        </div>
+                                        <div class="slds-col slds-size_11-of-12">
+                                            My Work Order
+                                        </div>
+                                    </div>
+                                </button>
+                                <button if:true={showTechnicalHelpDeskTab} class="padding_space_button"
+                                    data-navigatepage="psrworkorders" onclick={openHelpDesk}>
+                                    <div class="slds-grid slds-gutters pointer-event-none">
+                                        <div class="slds-col slds-size_1-of-12">
+                                            <lightning-icon icon-name="utility:help_center" size="xx-small"></lightning-icon>
+                                        </div>
+                                        <div class="slds-col slds-size_11-of-12">
+                                            Technical Helpdesk
+                                        </div>
+                                    </div>
+                                </button>
+                            </lightning-vertical-navigation-section>
+                        </lightning-vertical-navigation>
+                    </div>
+                </div>
+
+                <div class="sidebar-cont">
+                    <slot name="body">
+
+                        <tempalte if:true={home}>
+                        <div class="pageTextCenter">
+                            <span>
+                                <h2>{Supplier_Portal_Home_page_Header}</h2>
+                            </span>
+                            <hr class="headerbottom">
+                        </div>
+                        <c-psr-help-text help-text={Supplier_Portal_Home_Page_Help_Text}></c-psr-help-text>
+
+                      
+                        <br>
+
+                        
+                            <tempalte if:true={showVolunteerAssignmentTab}>
+                                <c-nysdoh-authenticated-home></c-nysdoh-authenticated-home>
+                            </tempalte>
+                            <tempalte if:true={showPurchaseRequestSummaryTab}>
+                                <c-nysdoh-purchase-request-summary></c-nysdoh-purchase-request-summary>
+                            </tempalte>
+                            <tempalte if:true={showVolunteerAssignmentSummaryTab}>
+                                <c-nysdoh-volunteer-assignment-summary></c-nysdoh-volunteer-assignment-summary>
+                            </tempalte>
+                        </tempalte>
+                        <template if:true={mass}>
+                            <c-nysdoh-mass-creation-volunteer idvalues = {idValues}></c-nysdoh-mass-creation-volunteer>
+                        </template>
+                        <template if:true={isRequest}>
+                            <c-nysdoh-requests></c-nysdoh-requests>
+                        </template>
+                        <template if:true={isDemand}>
+                            <c-nysdoh-requests></c-nysdoh-requests>
+                        </template>
+                        <tempalte if:true={isMap}>
+                            <c-nysdoh-authenticated-map></c-nysdoh-authenticated-map>
+                        </tempalte>
+                        <template if:true ={isVolunteer}>
+                            <c-nysdoh-volunteer-assignment></c-nysdoh-volunteer-assignment>
+                        </template>
+                        <template if:true ={isInventory}>
+                            <c-nys_doh_-inventory></c-nys_doh_-inventory>
+                        </template>
+                        <template if:true ={isAssignment}>
+                            <c-nysdoh-volunteer-assignment></c-nysdoh-volunteer-assignment>
+                        </template>
+                        <template if:true ={work}>
+                            <c-nysdoh-work-order></c-nysdoh-work-order>
+                        </template>
+                        <template if:true ={helpDesk}>
+                            <c-nysdoh-technical-helpdesk></c-nysdoh-technical-helpdesk>
+                        </template>
+                    </slot>
+                </div>
+            </div>
+        </div>
+    </template>

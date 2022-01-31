@@ -1,0 +1,1311 @@
+<apex:page controller="EEC_TransactionWizardController" docType="html-5.0" showheader="false" sidebar="false"
+           standardStylesheets="false">
+    <title>EEC</title>
+    <c:EEC_Header id="pageHeader"/>
+    <style>
+.visibilityHidden {
+visibility: hidden;
+}
+.md-button.md-raised.md-eec,
+.md-button.md-raised.md-eec {
+color: rgb(250, 250, 250);
+background-color: #853F3F;
+}
+.md-button.md-raised.md-eec:hover,
+.md-button.md-raised.md-eec:hover {
+color: rgb(250, 250, 250);
+background-color: #703E3E;
+}
+.md-button.md-raised,
+.md-button.md-raised {
+background-color: #f7f7f7;
+}
+.md-button span {
+padding: 6px;
+}
+.top-level-label {
+font-weight: 600;
+margin-right: 5px;
+line-height: 20px;
+color: rgba(0, 0, 0, 0.54);
+}
+table {
+border-collapse: separate;
+border-spacing: 2px;
+}
+input[type="radio"],
+input[type="checkbox"] {
+margin: 4px 7px 0;
+}
+.command-button-container {
+position: relative;
+top: -2px;
+}
+.commandBtn {
+margin: -1px 0px -2px;
+}
+.transaction-info-row {
+margin-left: 0px;
+}
+.eec-subhead {
+font-size: 1.2em;
+font-weight: 600;
+margin-left: 0px;
+}
+.form-control {
+color: rgba(0, 0, 0, .87);
+width: 55%;
+}
+.navigation-buttons {
+overflow: visible;
+}
+.not-visible {
+display: none;
+}
+textarea {
+margin-bottom: 20px;
+}
+label {
+margin-bottom: 2px;
+font-weight: normal;
+}
+.desc-panel {
+margin-left: 15px;
+width: 22%;
+}
+.desc-panel-new {
+width: 30%;
+}
+.ques-panel {
+width: 68%;
+}
+.background-form-container {
+margin-bottom: 20px;
+}
+.btn-group {}
+.training-row {
+flex-wrap: wrap;
+-ms-flex-wrap: wrap;
+display: -ms-flexbox;
+display: flex;
+}
+@media only screen and (min-width: 0px) and (max-width: 959px) {
+.household-form-container {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.navigation-buttons .md-button,
+.clear-button {
+    width: 98%;
+}
+.navigation-buttons md-content {
+    width: 100%;
+}
+.add-button-container {
+    padding-right: 0;
+    width: 100%;
+}
+.fileErrorMessage {
+    bottom: -20px !important;
+}
+.s3-input-container {
+    margin-bottom: 5px;
+}
+}
+.attachment-item {
+width: 100%;
+display: block;
+flex-direction: row;
+}
+.attachment-item p {
+float: left;
+margin-right: 15px;
+align-self: center;
+}
+.attachment-item p:first-child {
+flex: 2;
+}
+.errorMessage,
+.fileErrorMessage {
+color: red;
+display: none;
+}
+.attachments-container {
+position: relative;
+}
+.fileErrorMessage {
+/*position: absolute;*/
+bottom: -25px;
+left: 10px;
+margin: 0;
+}
+.errorMessage {
+white-space: nowrap;
+height: 20px;
+}
+.s3-input-container {
+/*margin-top: 15px; */
+}
+.question-panel-spacing {
+margin-top: 2px;
+}
+.dateErrorMessage {
+position: absolute;
+}
+.requiredInput {
+margin-left: 0px !important;
+}
+.requiredInputNew {
+margin-left: 0px;
+}
+
+
+    </style>
+    <body ng-app="eecApp">
+    <c:eec_nav_bar id="navBar"
+                   rendered="{!loggedUser.UserType == 'PowerPartner' || loggedUser.UserType == 'PowerCustomerSuccess' || loggedUser.UserType == 'CspLitePortal' || loggedUser.UserType == 'CustomerSuccess'}"
+    />
+    <div class="training-info-container training-info-controller-container" layout-wrap="true" layout-lg="row"
+         layout-gt-lg="row"
+         layout="column" layout-padding="true" layout-margin="true" ng-controller="TransactionController as ctrl">
+        <md-content style="margin-top: 20px;" ng-show="ctrl.checkForMessages()" layout="row" flex="100"
+                    layout-align="center center">
+            <md-whiteframe class="md-whiteframe-z2 ng-cloak" layout="column" layout-padding="true" flex="75">
+                <!--<apex:pageMessages id="showmsg"></apex:pageMessages>-->
+            </md-whiteframe>
+        </md-content>
+        <md-whiteframe class="md-whitefram-z2 ng-cloak" layout="column" layout-padding="true" flex="75"
+                       ng-if="missingFileError">
+            {{missingFileErrorText}}
+        </md-whiteframe>
+        <!--             <c:EEC_ActionStatus ></c:EEC_ActionStatus> -->
+        <div class="training-info-container col-lg-8 col-md-8 col-sm-12" layout="column" layout-padding="true"
+             style="margin-bottom:100px;margin-top:30px;">
+            <apex:form id="TrainingInformationForm" styleClass="training-information-form">
+                <div class="top-header-section">
+                    <div class="header-name-section">
+                        <h3 class="md-display-1 header-display-name">{!applicationDisplayName}</h3>
+                        <h4 class="step-name">Training Information</h4>
+                        <h5 class="base-label trans-number">Application number: {!licenseTransation.Name}</h5>
+                    </div>
+                </div>
+                <md-divider class="ng-cloak" layout-align="center center"></md-divider>
+                <br/>
+                <p>Please indicate trainings you've taken and upload your training certificates.
+                    <br/>
+                    <apex:outputPanel rendered="{!LicenseRecordTypeName == 'FCC_New_License'
+                                        || LicenseRecordTypeName == 'FCC_Assistant_Renewal'
+                                        || LicenseRecordTypeName == 'FCC_Renewal'
+                                        || LicenseRecordTypeName == 'Informal_Care_New_Application'}">
+                        <apex:outputText value="{!licensingTrainingInstructions}" escape="false"/>
+                    </apex:outputPanel>
+                </p>
+                <apex:outputPanel layout="block" styleclass="training-info-container form-block">
+                    <div class="card-row" flex="100" layout="column" layout-wrap="true">
+                        <h3 class="eec-subhead" layout-margin="true">Training Information</h3>
+                        <div class="md-subhead top-level-label">
+                            Please note that you are required to upload adequate documentation for each of these items
+                            <apex:outputPanel rendered="{!LicenseRecordTypeName != 'Informal_Care_New_Application'}">
+                                prior to granting the license
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!LicenseRecordTypeName == 'Informal_Care_New_Application'}">
+                                prior to granting the approval
+                            </apex:outputPanel>
+                            . You can upload related documents within the attachment
+                            page before submission. Or you can submit them after submission if desired; however, you
+                            must submit
+                            them as soon as possible to avoid delay.
+                        </div>
+                        <br/>
+                        <!-- Food Program -->
+                        <apex:outputpanel styleclass="training-row" rendered="{!LicenseRecordTypeName=='FCC_Renewal'}">
+                            <apex:outputpanel styleclass="ques-panel" layout="block">
+                                <apex:outputpanel styleclass="question-panel-spacing" layout="block">
+                                    <apex:outputlabel styleclass="top-level-label required"
+                                                      value="Do you currently belong to a food program?"/>
+                                    <span class="required">*</span>
+                                    <apex:actionregion >
+                                        <div class="requiredInputNew">
+                                            <div class="requiredBlock"></div>
+                                            <apex:selectradio value="{!licenseTransation.Belong_to_Food_Program__c}"
+                                                              styleclass="radio-container">
+                                                <apex:actionsupport event="onchange" status="status"
+                                                                    action="{!showLSDesc}" rerender="wfpDesc"/>
+                                                <apex:selectoptions value="{!items}"/>
+                                            </apex:selectradio>
+                                            <p class="errorMessage">This field is required.</p>
+                                        </div>
+                                    </apex:actionregion>
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                            <apex:outputpanel id="wfpDesc" styleClass="desc-panel" style="width:100%;" layout="block">
+                                <apex:outputpanel styleclass="question-panel-spacing" layout="block"
+                                                  rendered="{!LicenseRecordTypeName=='FCC_Renewal' && licenseTransation.Belong_to_Food_Program__c == 'Yes'}">
+                                    <apex:outputlabel styleclass="top-level-label required" value="If yes, which one?"/>
+                                    <span class="required">*</span>
+                                    <p class="errorMessage">This field is required.</p>
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                        </apex:outputpanel>
+                        <!-- Medication Adminstration -->
+                        <!-- <apex:outputpanel styleclass="training-row" rendered="{!(LicenseRecordTypeName == 'FCC_Assistant_New_License' && licenseTransation.License_Requested__c != 'Regular Assistant')
+                                                                       || LicenseRecordTypeName =='FCC_New_License'
+                                                                       || ((LicenseRecordTypeName == 'FCC_Assistant_License_Upgrade' || LicenseRecordTypeName == 'FCC_Regular_Assistant_to_Certified_Assistant') && licenseTransation.IsAssistantUpgradeToCertified__c)
+                                                                       || (LicenseRecordTypeName == 'FCC_Assistant_Renewal' && licenseTransation.IsAssistantUpgradeToCertified__c)
+                                                                       }">
+                             <apex:outputpanel styleclass="ques-panel" layout="block">
+                                 <apex:outputpanel styleclass="question-panel-spacing" layout="block">
+                                     <apex:outputlabel styleclass="top-level-label required"
+                                                       value="Medication Administration Online Training"/>
+                                     <span class="required">*</span>
+                                     <apex:actionregion >
+                                         <div class="requiredInputNew">
+                                             <div class="requiredBlock"></div>
+                                             <apex:selectradio value="{!licenseTransation.Took_Medication_Administration_Training__c}"
+                                                     styleclass="radio-container">
+                                                 <apex:actionsupport event="onchange" action="{!showLSDesc}"
+                                                                     status="status"
+                                                                     rerender=" dmaDesc , script-existing-items, medFileErrorMessageContainer"/>
+                                                 <apex:selectoptions value="{!items}"/>
+                                             </apex:selectradio>
+                                             <p class="errorMessage">This field is required.</p>
+                                         </div>
+                                     </apex:actionregion>
+                                 </apex:outputpanel>
+                             </apex:outputpanel>
+                             <apex:outputpanel id="dmaDesc" styleclass="desc-panel-new" layout="block">
+                                 <apex:outputpanel styleclass="question-panel-spacing" layout="block"
+                                                   rendered="{!licenseTransation.Took_Medication_Administration_Training__c == 'Yes'}">
+                                     <apex:inputhidden value="{!licenseTransation.Medication_Administration_Training_Cert__c}"
+                                             id="medicalAttached"/>
+                                     <apex:outputlabel styleclass="top-level-label required" value="Date"/>
+                                     <span class="required">*</span>
+                                     <apex:inputfield onchange="jQuery('[id*=medicalAttached]').val(true);"
+                                                      styleclass="form-control"
+                                                      value="{!licenseTransation.Date_Med_Administration_Training_Taken__c}"
+                                                      html-data-parsley-required="true" html-data-provide="datepicker"
+                                                      html-data-date-end-date="0d"
+                                     />
+                                     <p class="errorMessage dateErrorMessage">This field is required.</p>
+                                 </apex:outputpanel>
+                             </apex:outputpanel>
+                         </apex:outputpanel> -->
+                        <!-- Transportation Training -->
+                        <!--  <apex:outputpanel styleclass="training-row" rendered="{! (LicenseRecordTypeName == 'FCC_Assistant_New_License' && licenseTransation.License_Requested__c != 'Regular Assistant')
+                                                                          || LicenseRecordTypeName =='FCC_New_License'
+                                                                          || ((LicenseRecordTypeName == 'FCC_Assistant_License_Upgrade'  || LicenseRecordTypeName == 'FCC_Regular_Assistant_to_Certified_Assistant') && licenseTransation.IsAssistantUpgradeToCertified__c)
+                                                                          || (LicenseRecordTypeName == 'FCC_Assistant_Renewal' && licenseTransation.IsAssistantUpgradeToCertified__c)
+                                                                         }">
+                              <apex:outputpanel styleclass="ques-panel" layout="block">
+                                  <apex:outputpanel styleclass="question-panel-spacing" layout="block">
+                                      <apex:outputlabel styleclass="top-level-label required"
+                                                        value="Transportation Safety Training: Look Before You Lock"/>
+                                      <span class="required">*</span>
+                                      <apex:actionregion >
+                                          <div class="requiredInputNew">
+                                              <div class="requiredBlock"></div>
+                                              <apex:selectradio value="{!licenseTransation.Took_Transportation_Training__c}"
+                                                      styleclass="radio-container">
+                                                  <apex:actionsupport event="onchange" action="{!showLSDesc}"
+                                                                      status="status"
+                                                                      rerender="dttDesc, script-existing-items, transFileErrorMessageContainer"/>
+                                                  <apex:selectoptions value="{!items}"/>
+                                              </apex:selectradio>
+                                              <p class="errorMessage">This field is required.</p>
+                                          </div>
+                                      </apex:actionregion>
+                                  </apex:outputpanel>
+                              </apex:outputpanel>
+                              <apex:outputpanel id="dttDesc" styleclass="desc-panel-new" layout="block">
+                                  <apex:outputpanel styleclass="question-panel-spacing" layout="block"
+                                                    rendered="{!licenseTransation.Took_Transportation_Training__c == 'Yes'}">
+                                      <apex:inputhidden value="{!licenseTransation.Transportation_Training_Cert__c}"
+                                                        id="transAttached"/>
+                                      <apex:outputlabel styleclass="answer-label top-level-label required" value="Date"/>
+                                      <span class="required">*</span>
+                                      <apex:inputfield onchange="jQuery('[id*=transAttached]').val(true);"
+                                                       styleclass="form-control"
+                                                       value="{!licenseTransation.Date_Transportation_Training_Taken__c}"
+                                                       html-data-parsley-required="true" html-data-provide="datepicker"
+                                                       html-data-date-end-date="0d"/>
+                                      <p class="errorMessage dateErrorMessage">This field is required.</p>
+                                  </apex:outputpanel>
+                              </apex:outputpanel>
+                          </apex:outputpanel> -->
+
+
+                        <apex:outputpanel styleclass="training-row"
+                                          rendered="{! LicenseRecordTypeName =='FCC_New_License' || LicenseRecordTypeName =='FCC_Renewal' || (LicenseRecordTypeName =='FCC_Assistant_New_License') || LicenseRecordTypeName =='FCC_Assistant_Renewal' || ((LicenseRecordTypeName == 'FCC_Assistant_License_Upgrade' || LicenseRecordTypeName == 'FCC_Regular_Assistant_to_Certified_Assistant' ) && licenseTransation.IsAssistantUpgradeToCertified__c )}">
+                            <apex:outputpanel styleclass="ques-panel" layout="block">
+                                <apex:outputpanel styleclass="question-panel-spacing" layout="block">
+                                    <apex:outputlabel styleclass="top-level-label required"
+                                                      value=" EEC Essentials training"/>
+                                    <span class="required">*</span>
+                                    <apex:actionregion >
+                                        <div class="requiredInputNew">
+                                            <div class="requiredBlock"></div>
+                                            <apex:selectradio styleclass="radio-container">
+                                                <apex:actionsupport event="onchange" action="{!showLSDesc}"
+                                                                    status="status"
+                                                                    rerender="dlstDesc, script-existing-items,sidsFileErrorMessageContainer"
+                                                />
+                                                <apex:selectoptions value="{!items}"/>
+                                            </apex:selectradio>
+                                            <p class="errorMessage">This field is required.</p>
+                                        </div>
+                                    </apex:actionregion>
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                            <apex:outputpanel id="dlstDesc" styleclass="desc-panel-new" layout="block">
+                                <apex:outputpanel styleclass="question-panel-spacing" layout="block"
+                                                 >
+                                    <apex:outputlabel styleclass="answer-label top-level-label required"
+                                                      value="Last training date"/>
+                                    <span class="required">*</span>
+                                    <apex:inputfield styleclass="form-control"
+                                                     value="{!licenseTransation.Date_Last_EEC_Essentials_Training_Taken__c}"
+                                                     html-data-parsley-required="true"
+                                                     html-data-provide="datepicker" html-data-date-end-date="0d"/>
+                                    <p class="errorMessage dateErrorMessage">This field is required.</p>
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                        </apex:outputpanel>
+                        <!-- SIDS Training -->
+                        <!-- <apex:outputpanel styleclass="training-row" rendered="{! LicenseRecordTypeName =='FCC_New_License' || LicenseRecordTypeName =='FCC_Renewal' || (LicenseRecordTypeName =='FCC_Assistant_New_License' && licenseTransation.License_Requested__c != 'Regular Assistant') || LicenseRecordTypeName =='FCC_Assistant_Renewal' || ((LicenseRecordTypeName == 'FCC_Assistant_License_Upgrade' || LicenseRecordTypeName == 'FCC_Regular_Assistant_to_Certified_Assistant' ) && licenseTransation.IsAssistantUpgradeToCertified__c )}">
+                             <apex:outputpanel styleclass="ques-panel" layout="block">
+                                 <apex:outputpanel styleclass="question-panel-spacing" layout="block">
+                                     <apex:outputlabel styleclass="top-level-label required" value="Reducing the Risk of SIDS in Child Care" />
+                                     <span class="required">*</span>
+                                     <apex:actionregion >
+                                         <div class="requiredInputNew">
+                                             <div class="requiredBlock"></div>
+                                             <apex:selectradio value="{!licenseTransation.Took_SIDS_Training__c}" styleclass="radio-container">
+                                                 <apex:actionsupport event="onchange" action="{!showLSDesc}" status="status" rerender="dlstDesc, script-existing-items,sidsFileErrorMessageContainer"
+                                                 />
+                                                 <apex:selectoptions value="{!items}" />
+                                             </apex:selectradio>
+                                             <p class="errorMessage">This field is required.</p>
+                                         </div>
+                                     </apex:actionregion>
+                                 </apex:outputpanel>
+                             </apex:outputpanel>
+                             <apex:outputpanel id="dlstDesc" styleclass="desc-panel-new" layout="block">
+                                 <apex:outputpanel styleclass="question-panel-spacing" layout="block" rendered="{! licenseTransation.Took_SIDS_Training__c == 'Yes'}">
+                                     <apex:inputhidden value="{!licenseTransation.SIDS_Training_Cert__c}" id="sidsAttached" />
+                                     <apex:outputlabel styleclass="answer-label top-level-label required" value="Last training date" />
+                                     <span class="required">*</span>
+                                     <apex:inputfield styleclass="form-control" value="{!licenseTransation.Date_Last_SIDS_Training_Taken__c}" html-data-parsley-required="true"
+                                         html-data-provide="datepicker" html-data-date-end-date="0d" />
+                                     <p class="errorMessage dateErrorMessage">This field is required.</p>
+                                 </apex:outputpanel>
+                             </apex:outputpanel>
+                         </apex:outputpanel> -->
+                        <!-- USDA Nutrition Information -->
+                        <!--  <apex:outputpanel styleclass="training-row" rendered="{! (LicenseRecordTypeName == 'FCC_Assistant_New_License' && licenseTransation.License_Requested__c != 'Regular Assistant')
+                                                                                        || LicenseRecordTypeName == 'FCC_New_License'
+                                                                                        || ((LicenseRecordTypeName == 'FCC_Assistant_License_Upgrade'  || LicenseRecordTypeName == 'FCC_Regular_Assistant_to_Certified_Assistant') && licenseTransation.IsAssistantUpgradeToCertified__c )
+                                                                                        || (LicenseRecordTypeName == 'FCC_Assistant_Renewal' && licenseTransation.IsAssistantUpgradeToCertified__c )
+                                                                                        }">
+                              <apex:outputpanel styleclass="ques-panel" layout="block">
+                                  <apex:outputpanel styleclass="question-panel-spacing" layout="block">
+                                      <apex:outputlabel styleclass="top-level-label required" value="Basic training in USDA Nutrition Requirements and food choking hazards."
+                                      />
+                                      <span class="required">*</span>
+                                      <apex:actionregion >
+                                          <div class="requiredInputNew">
+                                              <div class="requiredBlock"></div>
+                                              <apex:selectradio value="{!licenseTransation.Took_USDA_Nutrition_Training__c}" styleclass="radio-container">
+                                                  <apex:actionsupport event="onchange" action="{!showLSDesc}" status="status" rerender="duntDesc,script-existing-items, usdaFileErrorMessageContainer"
+                                                  />
+                                                  <apex:selectoptions value="{!items}" />
+                                              </apex:selectradio>
+                                              <p class="errorMessage">This field is required.</p>
+                                          </div>
+                                      </apex:actionregion>
+                                  </apex:outputpanel>
+                              </apex:outputpanel>
+                              <apex:outputpanel id="duntDesc" styleclass="desc-panel-new" layout="block">
+                                  <apex:outputpanel styleclass="question-panel-spacing" layout="block" rendered="{! licenseTransation.Took_USDA_Nutrition_Training__c == 'Yes'}">
+                                      <apex:inputhidden value="{!licenseTransation.USDA_Nutrition_Training_Evidence__c}" id="usdaAttached" />
+                                      <apex:outputlabel styleclass="answer-label top-level-label required" value="Date" />
+                                      <span class="required">*</span>
+                                      <apex:inputfield onchange="jQuery('[id*=usdaAttached]').val(true);" styleclass="form-control" value="{!licenseTransation.Date_USDA_Nutrition_Training_Taken__c}"
+                                          html-data-parsley-required="true" html-data-provide="datepicker" html-data-date-end-date="0d"
+                                      />
+                                      <p class="errorMessage dateErrorMessage">This field is required.</p>
+                                  </apex:outputpanel>
+                              </apex:outputpanel>
+                          </apex:outputpanel> -->
+                        <!-- Intro to EEC in MA -->
+                        <apex:outputpanel styleclass="training-row"
+                                          rendered="{! LicenseRecordTypeName == 'FCC_Assistant_New_License' && licenseTransation.License_Requested__c == 'Regular Assistant' }">
+                            <apex:outputpanel styleclass="ques-panel" layout="block">
+                                <apex:outputpanel styleclass="question-panel-spacing" layout="block">
+                                    <apex:outputlabel styleclass="top-level-label required"
+                                                      value="Family Child Care Regular Assistant training"/>
+                                    <span class="required">*</span>
+                                    <apex:actionregion >
+                                        <div class="requiredInputNew">
+                                            <div class="requiredBlock"></div>
+                                            <apex:selectradio value="{!licenseTransation.Taken_Intro_to_EEC_in_Mass_Orientation__c}"
+                                                    styleclass="radio-container">
+                                                <apex:actionsupport status="status" event="onchange"
+                                                                    rerender="introEECModuleDesc, script-existing-items, introEECModuleFileErrorMessageContainer"/>
+                                                <apex:selectoptions value="{!items}"/>
+                                            </apex:selectradio>
+                                            <p class="errorMessage">This field is required.</p>
+                                        </div>
+                                    </apex:actionregion>
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                            <apex:outputpanel id="introEECModuleDesc" styleclass="desc-panel-new" layout="block">
+                                <apex:outputpanel styleclass="question-panel-spacing" layout="block"
+                                                  rendered="{! licenseTransation.Taken_Intro_to_EEC_in_Mass_Orientation__c == 'Yes'}">
+                                    <apex:inputhidden id="introEECModuleAttached"/>
+                                    <apex:outputlabel styleclass="answer-label top-level-label required" value="Date"/>
+                                    <span class="required">*</span>
+                                    <apex:inputfield onchange="jQuery('[id*=introEECModuleAttached]').val(true);"
+                                                     styleclass="form-control"
+                                                     value="{!licenseTransation.Date_Taken_Intro_EEC_in_MA_orientation__c }"
+                                                     html-data-parsley-required="true" html-data-provide="datepicker"
+                                                     html-data-date-end-date="0d"
+                                    />
+                                    <p class="errorMessage dateErrorMessage">This field is required.</p>
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                        </apex:outputpanel>
+                        <!-- FCC Orientation Module I -->
+                        <apex:outputpanel styleclass="training-row" rendered="{!LicenseRecordTypeName == 'FCC_New_License' ||
+                                                                      (LicenseRecordTypeName == 'FCC_Assistant_New_License' && licenseTransation.License_Requested__c != 'Regular Assistant')||
+                                                                      ((LicenseRecordTypeName == 'FCC_Assistant_License_Upgrade' || LicenseRecordTypeName == 'FCC_Regular_Assistant_to_Certified_Assistant') && licenseTransation.IsAssistantUpgradeToCertified__c && !licenseTransation.IsAssistantUpgradeGT6__c ) ||
+                                                                      (LicenseRecordTypeName == 'FCC_Assistant_Renewal' && licenseTransation.IsAssistantUpgradeToCertified__c && licenseTransation.License_Requested__c != 'Regular Assistant')
+                                                                      }">
+                            <apex:outputpanel styleclass="ques-panel" layout="block">
+                                <apex:outputpanel styleclass="question-panel-spacing" layout="block">
+                                    <apex:outputlabel styleclass="top-level-label required"
+                                                      value="FCC Orientation, Module 1"/>
+                                    <span class="required">*</span>
+                                    <apex:actionregion >
+                                        <div class="requiredInputNew">
+                                            <div class="requiredBlock"></div>
+                                            <apex:selectradio value="{!licenseTransation.Took_FCC_Orientation_Module_1__c}"
+                                                    styleclass="radio-container">
+                                                <apex:actionsupport event="onchange" action="{!showLSDesc}"
+                                                                    status="status"
+                                                                    rerender="oriModuleDesc, oriModuleEvidenceUpload, script-existing-items, oriModuleFileErrorMessageContainer"
+                                                />
+                                                <apex:selectoptions value="{!items}"/>
+                                            </apex:selectradio>
+                                            <p class="errorMessage">This field is required.</p>
+                                        </div>
+                                    </apex:actionregion>
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                            <apex:outputpanel id="oriModuleDesc" styleclass="desc-panel-new" layout="block">
+                                <apex:outputpanel styleclass="question-panel-spacing" layout="block"
+                                                  rendered="{! licenseTransation.Took_FCC_Orientation_Module_1__c == 'Yes'}">
+                                    <apex:inputhidden value="{!licenseTransation.FCC_Orientation_Module_I_Evidence__c}"
+                                                      id="oriModuleAttached"/>
+                                    <apex:outputlabel styleclass="answer-label top-level-label required" value="Date"/>
+                                    <span class="required">*</span>
+                                    <apex:inputfield onchange="jQuery('[id*=oriModuleAttached]').val(true);"
+                                                     styleclass="form-control"
+                                                     value="{!licenseTransation.Date_FCC_Orientation_Mod_1_Taken__c}"
+                                                     html-data-parsley-required="true" html-data-provide="datepicker"
+                                                     html-data-date-end-date="0d"
+                                    />
+                                    <p class="errorMessage dateErrorMessage">This field is required.</p>
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                        </apex:outputpanel>
+                        <!-- Upgrade capacity: 7-10 Children in Family Child Care -->
+                        <apex:outputpanel styleclass="training-row" rendered="{!
+                                                                      (LicenseRecordTypeName == 'FCC_License_Upgrade' ) ||
+                                                                      (LicenseRecordTypeName == 'FCC_Renewal' && licenseTransation.IsProviderUpgrade__c) ||
+                                                                      ((LicenseRecordTypeName == 'FCC_Assistant_License_Upgrade'  || LicenseRecordTypeName == 'FCC_Regular_Assistant_to_Certified_Assistant') && licenseTransation.IsAssistantUpgradeGT6__c ) ||
+                                                                      (LicenseRecordTypeName == 'FCC_Assistant_Renewal' && licenseTransation.IsAssistantUpgradeGT6__c )
+                                                                      }">
+                            <apex:outputpanel styleclass="ques-panel" layout="block">
+                                <apex:outputpanel styleclass="question-panel-spacing" layout="block">
+                                    <apex:outputlabel styleclass=" top-level-label required"
+                                                      value="Capacity Increase Training for Serving 7 - 10 Children"/>
+                                    <span class="required">*</span>
+                                    <apex:actionregion >
+                                        <div class="requiredInputNew">
+                                            <div class="requiredBlock"></div>
+                                            <apex:selectradio value="{!licenseTransation.Took_Upgrading_Capacity_Training__c}"
+                                                    styleclass="radio-container">
+                                                <apex:actionsupport event="onchange" action="{!showLSDesc}"
+                                                                    status="status"
+                                                                    rerender="ductDesc, script-existing-items, upgradeFileErrorMessageContainer"
+                                                />
+                                                <apex:selectoptions value="{!items}"/>
+                                            </apex:selectradio>
+                                            <p class="errorMessage">This field is required.</p>
+                                        </div>
+                                    </apex:actionregion>
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                            <apex:outputpanel id="ductDesc" styleclass="desc-panel-new" layout="block">
+                                <apex:outputpanel styleclass="question-panel-spacing" layout="block"
+                                                  rendered="{!licenseTransation.Took_Upgrading_Capacity_Training__c == 'Yes'}">
+                                    <apex:inputhidden id="capacityAttached"/>
+                                    <apex:outputlabel styleclass="answer-label top-level-label required" value="Date"/>
+                                    <span class="required">*</span>
+                                    <apex:inputfield onchange="jQuery('[id*=capacityAttached]').val(true);"
+                                                     styleclass="form-control"
+                                                     value="{!licenseTransation.Date_Upgrading_Capacity_Training_Taken__c}"
+                                                     html-data-parsley-required="true" html-data-provide="datepicker"
+                                                     html-data-date-end-date="0d"
+                                    />
+                                    <p class="errorMessage dateErrorMessage">This field is required.</p>
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                        </apex:outputpanel>
+                        <!-- FCC Orientation Module II -->
+                        <apex:outputpanel styleclass="training-row" rendered="{!(LicenseRecordTypeName == 'FCC_Renewal') ||
+                                                                      (LicenseRecordTypeName == 'FCC_Assistant_License_Upgrade' && !licenseTransation.IsAssistantUpgradeToCertified__c)  ||
+                                                                      (LicenseRecordTypeName == 'FCC_Assistant_Renewal' && !licenseTransation.IsAssistantUpgradeToCertified__c && licenseTransation.License_Requested__c != 'Regular Assistant')
+                                                                      }">
+                            <apex:outputpanel styleclass=" ques-panel" layout="block">
+                                <apex:outputpanel styleclass="question-panel-spacing" layout="block">
+                                    <apex:outputlabel styleclass="top-level-label required"
+                                                      value="FCC Orientation, Module II"/>
+                                    <span class="required">*</span>
+                                    <apex:actionregion >
+                                        <div class="requiredInputNew">
+                                            <div class="requiredBlock"></div>
+                                            <apex:selectradio value="{!licenseTransation.Took_FCC_Orientation__c}"
+                                                              styleclass="radio-container"
+                                                              disabled="{!noOfRenewalApplications > 0}">
+                                                <apex:actionsupport event="onchange" action="{!showLSDesc}"
+                                                                    status="status"
+                                                                    rerender="dfotDesc, script-existing-items, oriFileErrorMessageContainer"
+                                                />
+                                                <apex:selectoptions value="{!items}"/>
+                                            </apex:selectradio>
+                                            <p class="errorMessage">This field is required.</p>
+                                        </div>
+                                    </apex:actionregion>
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                            <apex:outputpanel id="dfotDesc" styleclass="desc-panel-new" layout="block">
+                                <apex:outputpanel styleclass="question-panel-spacing" layout="block"
+                                                  rendered="{! licenseTransation.Took_FCC_Orientation__c == 'Yes'}">
+                                    <apex:inputhidden value="{!licenseTransation.FCC_Orientation_Module_II_Evidence__c}"
+                                                      id="oriAttached"/>
+                                    <apex:outputlabel styleclass="answer-label top-level-label required" value="Date"/>
+                                    <span class="required">*</span>
+                                    <apex:inputfield onchange="jQuery('[id*=oriAttached]').val(true);"
+                                                     styleclass="form-control"
+                                                     value="{!licenseTransation.Date_FCC_Orientation_Taken__c}"
+                                                     html-data-parsley-required="true" html-data-provide="datepicker"
+                                                     html-data-date-end-date="0d"
+                                    />
+                                    <p class="errorMessage dateErrorMessage">This field is required.</p>
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                        </apex:outputpanel>
+                        <!-- CPR Certified -->
+                        <apex:outputpanel styleclass="training-row" rendered="{! LicenseRecordTypeName == 'Informal_Care_New_Application' ||
+                                                                      LicenseRecordTypeName == 'FCC_New_License' ||
+                                                                      LicenseRecordTypeName == 'FCC_Renewal' ||
+                                                                      (LicenseRecordTypeName ==  'FCC_Assistant_New_License' && licenseTransation.License_Requested__c != 'Regular Assistant') ||
+                                                                      (LicenseRecordTypeName == 'FCC_Assistant_License_Upgrade' || LicenseRecordTypeName == 'FCC_Regular_Assistant_to_Certified_Assistant') ||
+                                                                      (LicenseRecordTypeName == 'FCC_Assistant_Renewal' && licenseTransation.License_Requested__c != 'Regular Assistant')}">
+                            <!--                             (LicenseRecordTypeName == 'FCC_Assistant_Renewal' && licenseTransation.IsAssistantUpgradeToCertified__c) -->
+                            <apex:outputpanel styleclass="ques-panel" layout="block">
+                                <apex:outputpanel styleclass="question-panel-spacing" layout="block">
+                                    <apex:outputlabel styleclass="top-level-label required" value="CPR:"
+                                                      rendered="{!LicenseRecordTypeName != 'Informal_Care_New_Application'}"
+                                    />
+                                    <apex:outputlabel styleclass="top-level-label required" value="Pediatric CPR:"
+                                                      rendered="{!LicenseRecordTypeName == 'Informal_Care_New_Application'}"
+                                    />
+                                    <span class="required">*</span>
+                                    <apex:actionregion >
+                                        <div class="requiredInputNew">
+                                            <div class="requiredBlock"></div>
+                                            <apex:selectradio value="{!licenseTransation.CPR_Certified__c}"
+                                                              styleclass="radio-container">
+                                                <apex:actionsupport event="onchange" action="{!showLSDesc}"
+                                                                    status="status"
+                                                                    rerender="ccidDesc, script-existing-items, cprFileErrorMessageContainer"
+                                                />
+                                                <apex:selectoptions value="{!items}"/>
+                                            </apex:selectradio>
+                                            <p class="errorMessage">This field is required.</p>
+                                        </div>
+                                    </apex:actionregion>
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                            <apex:outputpanel id="ccidDesc" styleclass="desc-panel-new" layout="block">
+                                <apex:outputpanel styleclass="question-panel-spacing" layout="block"
+                                                  rendered="{! licenseTransation.CPR_Certified__c == 'Yes' }">
+                                    <apex:inputhidden value="{!licenseTransation.CPR_Certificate__c}" id="cprAttached"/>
+                                    <apex:outputlabel styleclass="answer-label top-level-label required"
+                                                      value="Issuance Date"/>
+                                    <span class="required">*</span>
+                                    <apex:inputfield onchange="jQuery('[id*=cprAttached]').val(true);"
+                                                     styleclass="form-control"
+                                                     value="{!licenseTransation.CPR_Certification_Issue_Date__c}"
+                                                     html-data-parsley-required="true" html-data-provide="datepicker"
+                                                     html-data-date-end-date="0d"
+                                    />
+                                    <p class="errorMessage dateErrorMessage">This field is required.</p>
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                        </apex:outputpanel>
+                        <!-- First Aid -->
+                        <apex:outputpanel styleclass="training-row" rendered="{! LicenseRecordTypeName == 'Informal_Care_New_Application' ||
+                                                                      LicenseRecordTypeName == 'FCC_New_License' ||
+                                                                      LicenseRecordTypeName == 'FCC_Renewal' ||
+                                                                      (LicenseRecordTypeName ==  'FCC_Assistant_New_License' && licenseTransation.License_Requested__c != 'Regular Assistant') ||
+                                                                      (LicenseRecordTypeName == 'FCC_Assistant_License_Upgrade' || LicenseRecordTypeName == 'FCC_Regular_Assistant_to_Certified_Assistant') ||
+                                                                      (LicenseRecordTypeName == 'FCC_Assistant_Renewal' && licenseTransation.License_Requested__c != 'Regular Assistant')
+                                                                      }">
+                            <apex:outputpanel styleclass="ques-panel" layout="block">
+                                <apex:outputpanel styleclass="question-panel-spacing" layout="block">
+                                    <apex:outputlabel styleclass="top-level-label required" value="First Aid:"
+                                                      rendered="{!LicenseRecordTypeName != 'Informal_Care_New_Application'}"/>
+                                    <apex:outputlabel styleclass="top-level-label required" value="Pediatric First Aid:"
+                                                      rendered="{!LicenseRecordTypeName == 'Informal_Care_New_Application'}"/>
+                                    <span class="required">*</span>
+                                    <apex:actionregion >
+                                        <div class="requiredInputNew">
+                                            <div class="requiredBlock"></div>
+                                            <apex:selectradio value="{!licenseTransation.First_Aid_Certified__c}"
+                                                              styleclass="radio-container">
+                                                <apex:actionsupport event="onchange" action="{!showLSDesc}"
+                                                                    status="status"
+                                                                    rerender="ficiDesc, script-existing-items, faFileErrorMessageContainer"
+                                                />
+                                                <apex:selectoptions value="{!items}"/>
+                                            </apex:selectradio>
+                                            <p class="errorMessage">This field is required.</p>
+                                        </div>
+                                    </apex:actionregion>
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                            <apex:outputpanel id="ficiDesc" styleclass="desc-panel-new" layout="block">
+                                <apex:outputpanel styleclass="question-panel-spacing" layout="block"
+                                                  rendered="{! licenseTransation.First_Aid_Certified__c == 'Yes'}">
+                                    <apex:inputhidden value="{!licenseTransation.First_Aid_Certificate__c}"
+                                                      id="firstAidAttached"/>
+                                    <apex:outputlabel styleclass="answer-label top-level-label required"
+                                                      value="Issuance Date"/>
+                                    <span class="required">*</span>
+                                    <apex:inputfield styleclass="form-control"
+                                                     value="{!licenseTransation.First_Aid_Certification_Issue_Date__c}"
+                                                     html-data-parsley-required="true"
+                                                     html-data-provide="datepicker" html-data-date-end-date="0d"
+                                                     onchange="jQuery('[id*=firstAidAttached]').val(true);"
+                                    />
+                                    <p class="errorMessage dateErrorMessage">This field is required.</p>
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                        </apex:outputpanel>
+                        <!-- CCRR Orientation with Date of Attendance Date up -->
+                        <apex:outputpanel styleclass="training-row" rendered="{! LicenseRecordTypeName == 'Informal_Care_New_Application'}">
+                            <apex:outputpanel styleclass="ques-panel" layout="block">
+                                <apex:outputpanel styleclass="question-panel-spacing" layout="block">
+                                    <apex:outputlabel styleclass="top-level-label required" value="CCRR Orientation with Date of Attendance:"
+                                                      rendered="{!LicenseRecordTypeName == 'Informal_Care_New_Application'}"/>
+                                            <span class="required">*</span>
+                                    <apex:actionregion >
+                                        <div class="requiredInputNew">
+                                            <apex:selectradio value="{!licenseTransation.Parental_Consent_forms__c}"
+                                                              styleclass="radio-container">
+                                                <apex:actionsupport event="onchange" action="{!showLSDesc}"
+                                                                    status="status"
+                                                                    rerender="ccrrdDesc1, script-existing-items, ccrFileErrorMessageContainer"/>
+                                                <apex:selectoptions value="{!items}"/>
+                                            </apex:selectradio>
+                                            <p class="errorMessage">This field is required.</p>
+                                        </div>
+                                    </apex:actionregion>
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                            <apex:outputpanel id="ccrrdDesc1" styleclass="desc-panel-new" layout="block">
+                                <apex:outputpanel styleclass="question-panel-spacing" layout="block"
+                                                  rendered="{! licenseTransation.Parental_Consent_forms__c == 'Yes' }">
+                                    <apex:outputlabel styleclass="answer-label top-level-label"
+                                                      value="Issuance Date"/>
+                                        <span class="required">*</span>
+                                    <apex:inputfield styleclass="form-control" html-data-parsley-required="true"
+                                                     value="{!licenseTransation.CCRR_Orientation_with_Date_of_Attendance__c}"
+                                                     html-data-provide="datepicker"
+                                                    html-data-date-end-date="0d"/>
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                        </apex:outputpanel>
+                        <!-- EEC Essentials Trainings with Issuance Date  -->
+                        <apex:outputpanel styleclass="training-row" rendered="{! LicenseRecordTypeName == 'Informal_Care_New_Application'}">
+                            <apex:outputpanel styleclass="ques-panel" layout="block">
+                                <apex:outputpanel styleclass="question-panel-spacing" layout="block">
+                                    <apex:outputlabel styleclass="top-level-label required" value="EEC Essentials Trainings with Issuance Date:"
+                                                      rendered="{!LicenseRecordTypeName == 'Informal_Care_New_Application'}"/>
+                                    <span class="required">*</span>
+                                    <apex:actionregion >
+                                        <div class="requiredInputNew">
+                                            <div class="requiredBlock"></div>
+                                            <apex:selectradio styleclass="radio-container">
+                                                <apex:actionsupport event="onchange" action="{!showLSDesc}"
+                                                                    status="status"
+                                                                    rerender="Essentials, script-existing-items, ccrFileErrorMessageContainer"/>
+                                                <apex:selectoptions value="{!items}"/>
+                                            </apex:selectradio>
+                                            <p class="errorMessage">This field is required.</p>
+                                        </div>
+                                    </apex:actionregion>
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                            <apex:outputpanel id="Essentials" styleclass="desc-panel-new" layout="block">
+                                <apex:outputpanel styleclass="question-panel-spacing" layout="block"
+                                                  >
+                                    <apex:outputlabel styleclass="answer-label top-level-label required"
+                                                      value="Issuance Date"/>
+                                    <span class="required">*</span>
+                                    <apex:inputfield styleclass="form-control"
+                                                     value="{!licenseTransation.Date_Last_EEC_Essentials_Training_Taken__c}"
+                                                     html-data-parsley-required="true" html-data-provide="datepicker"
+                                                     html-data-date-end-date="0d"/>
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                        </apex:outputpanel>
+                    </div>
+                    <div class="card-row" flex="100" layout="column" layout-wrap="true">
+                        <apex:outputpanel rendered="{!(LicenseRecordTypeName != 'Informal_Care_New_Application'
+                                            && LicenseRecordTypeName != 'FCC_New_License'
+                                            && LicenseRecordTypeName != 'FCC_License_Upgrade'
+                                            && licenseTransation.License_Requested__c != 'Certified Family Child Care Assistant (6)'
+                                            && licenseTransation.License_Requested__c != 'Certified Family Child Care Assistant (8)'
+                                            && licenseTransation.License_Requested__c != 'Certified Family Child Care Assistant (10)'
+                                            && licenseTransation.License_Requested__c != 'Regular Assistant')}">
+                            <h3 class="eec-subhead" flex="95" layout-margin="true">Additional Training Information</h3>
+                            <p class="md-subhead top-level-label">
+                                <apex:outputtext rendered="{!!isFccAssistant}"> Please note licensors will review those
+                                    hours.
+                                </apex:outputtext>
+                            </p>
+                            <apex:outputpanel >
+                                <apex:outputtext rendered="{!!isFccAssistant}" styleclass="top-level-label required"
+                                                 value="Have you completed your 30 hours of training? "
+                                />
+                                <apex:outputtext rendered="{!isFccAssistant}" styleclass="top-level-label required"
+                                                 value="Have you completed your 30 hours of training and entered it into the Professional Qualification Registry? "
+                                />
+                                <span class="required">*</span>
+                                <apex:outputpanel >
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <apex:selectradio value="{!licenseTransation.Completed_30_hours_of_Training__c}"
+                                                          required="false">
+                                            <apex:actionsupport event="onchange" action="{!showLSDesc}" status="status"
+                                                                rerender="nameAndAges"/>
+                                            <apex:selectoptions value="{!items}" html-data-parsley-required="true"/>
+                                        </apex:selectradio>
+                                    </div>
+                                    <apex:outputpanel id="nameAndAges" styleclass="desc">
+                                        &nbsp;
+                                        <apex:outputpanel rendered="{!licenseTransation.Completed_30_hours_of_Training__c == 'No'}">
+                                            <apex:outputtext styleclass="top-level-label required"
+                                                             value="Plan for training completion"
+                                                             style="font-weight: bold !important;"
+                                            />
+                                            <span class="required">*</span>
+                                            <apex:inputfield styleclass="form-control" required="false"
+                                                             value="{!licenseTransation.Plan_for_training_completion__c}"
+                                                             html-data-parsley-required="true"/>
+                                        </apex:outputpanel>
+                                    </apex:outputpanel>
+                                </apex:outputpanel>
+                                <apex:outputtext styleclass="top-level-label required"
+                                                 value="Do one-third of those hours address diverse learners? "/>
+                                <span class="required">*</span>
+                                <apex:outputpanel >
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <apex:selectradio value="{!licenseTransation.Address_diverse_learners_hours__c}"
+                                                          required="false">
+                                            <apex:actionsupport event="onchange" action="{!showLSDesc}" status="status"
+                                                                rerender="nameAndAges1"/>
+                                            <apex:selectoptions value="{!items}" html-data-parsley-required="true"/>
+                                        </apex:selectradio>
+                                    </div>
+                                    <apex:outputpanel id="nameAndAges1" styleclass="desc">
+                                        &nbsp;
+                                        <apex:outputpanel rendered="{!licenseTransation.Address_diverse_learners_hours__c == 'No'}">
+                                            <apex:outputtext styleclass="top-level-label required"
+                                                             value=" Plan for diverse learners training completion"
+                                                             style="font-weight: bold !important;"
+                                            />
+                                            <span class="required">*</span>
+                                            <apex:inputfield styleclass="form-control" required="false"
+                                                             value="{!licenseTransation.Plan_for_diverse_learners_training__c}"
+                                                             html-data-parsley-required="true"/>
+                                        </apex:outputpanel>
+                                    </apex:outputpanel>
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                        </apex:outputpanel>
+                    </div>
+                </apex:outputPanel>
+                <!-- Buttons -->
+                <div class="row">
+                    <apex:actionfunction status="status" name="UpdateTransactionAttachments"
+                                         action="{!saveTrainingAttachmentsFromJson}"
+                                         onComplete="saveAttachmentsFromJsonComplete();"
+                                         reRender="showmsg">
+                        <apex:param name="json" value="" assignTo="{!trainingAttachmentsJson}"/>
+                    </apex:actionfunction>
+                    <apex:actionFunction action="{!SaveAndNextTE}" name="SaveAndNext" status="status"/>
+                    <apex:actionFunction action="{!SaveAndNextTE}" name="saveAndReturnToSamePage" rerender=""
+                                         status="status">
+                        <apex:param name="isSaveOnly" value="true" assignTo="{!isSaveOnly}"/>
+                    </apex:actionFunction>
+                    <apex:actionFunction action="{!SaveAndPreviousTE}" name="SaveAndPrevious" status="status"/>
+                    <apex:actionFunction action="{!SaveAndReturnTE}" name="SaveAndReturn"/>
+                    <md-divider layout-align="center center"></md-divider>
+                    <md-content class="navigation-buttons" layout="column" layout-lg="row"
+                                layout-align="space-between center" layout-gt-lg="row"
+                                layout-align-sm="center center" layout-align-md="center center">
+                        <apex:commandLink status="status" value="Previous"
+                                          styleClass="md-button md-raised md-button md-default-theme"
+                                          html-layout-padding="true"
+                                          action="{!SaveAndPreviousTE}" html-role="button"/>
+                        <apex:commandLink styleClass="md-button md-raised md-button md-default-theme btn-pullLeft"
+                                          value="Close" action="{!closeAndreturnToHome}"
+                                          html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1"
+                                          html-md-button="true"
+                        />
+                        <apex:commandLink status="status" value="Save"
+                                          styleClass="md-button md-raised md-eec save-btn btn-pullRight saveButton"
+                                          html-layout-padding="true"
+                                          onclick="if(!form.validate()){console.log('-----1');return false;} else {console.log('-----2'); uploadAttachments(2); return false;}"
+                                          html-role="button"/>
+                        <apex:commandLink status="status" styleClass="md-button md-raised md-eec save-btn"
+                                          html-layout-padding="true"
+                                          onclick="if(!form.validate()){return false;} else { uploadAttachments(1); return false;}"
+                                          html-role="button">
+                            <apex:outputText rendered="{!!isSubmitted}">Save and</apex:outputText>
+                            Next
+                        </apex:commandLink>
+                    </md-content>
+                    <md-divider layout-align="center center"></md-divider>
+                    <!--                   <md-content class="navigation-buttons" layout="column" layout-lg="row" layout-align="space-between center" layout-gt-lg="row" layout-align-sm="center center" layout-align-md="center center">     -->
+                    <!--                     <apex:commandLink status="status" styleClass="md-button md-raised"   immediate="true" action="{!CancelTransaction}" value="Cancel {!formattedLicenseRecordTypeLabel} Transaction"  onclick="return confirm('Are you sure to cancel the transaction?');" html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true"/> -->
+                    <!--                     <apex:commandLink status="status" value="{!saveAndReturnLabel}" styleClass="md-button md-raised" -->
+                    <!--                             html-layout-padding="true"   -->
+                    <!--                             onclick="if(!form.validate()){return false;} else uploadAttachments(3); return false;" html-role="button"/> -->
+                    <!--                   </md-content> -->
+                </div>
+                <apex:actionFunction action="{!SaveAndNextTE}" name="SaveNext" status="status"/>
+                <apex:actionFunction action="{!SaveAndPreviousTE}" name="SavePrevious" oncomplete="addMargin();"
+                                     status="status">
+                    <apex:param name="previousPage" assignTo="{!previousPageName}" value=""/>
+                </apex:actionFunction>
+            </apex:form>
+        </div>
+        <eec-wizard btn-progress-color="#fff" class="col-lg-3" flex="30" passed-btn-bg-color="#4CAF50"
+                    btn-bg-color="#FAFAFA" active-btn-bg-color="#0288D1"
+                    hide="true" show-gt-md="true">
+            <c:EEC_Navigation current="Training Information" recordTypeDeveloperName="{!LicenseRecordTypeName}"
+                              highest="{!highestStepReached}"
+                              providerRecordType="{!licenseTransation.providerRecordTypeDeveloperName__c}"
+                              IsAssistantUpgradeToCertified="{!IsAssistantUpgradeToCertified}">
+            </c:EEC_Navigation>
+        </eec-wizard>
+    </div>
+    <c:eec_site_footer id="siteFooter"/>
+    <script>
+var form = j$(".training-information-form").parsley({
+    errorsWrapper: '<div class="parsley-errors-list"></div>',
+    errorTemplate: '<p class="errorMsg"></p>'
+});
+function addMargin() {
+    j$(".required-input").addClass("required-input-with-error");
+}
+function closeWindow() {
+    this.close();
+}
+app.controller('TransactionController', ['$scope', '$rootScope', '$location', '$mdToast', 'Util', function ($scope, $rootScope, $location, $mdToast, Util) {
+    $scope.additionalTopic = '';
+    $scope.funcId = '';
+    $scope.numUploadComponents = 0;
+    $scope.timesUploadComplete = 0;
+    $scope.bucketName = '{!$Setup.AWS_Config__c.S3_Bucket_Name__c}';
+    $scope.exisitingFiles = '{!trainingAttachmentsJson}';
+    $scope.missingFileError = false;
+    $scope.missingFileErrorText = 'One or more file uploads are missing a file. Please attach all necessary documents and try again.';
+    // Variables for visibility for all file upload sections.
+    $scope.medicationUploadVisible = {!licenseTransation.Took_Medication_Administration_Training__c == 'Yes'
+};
+$scope.transportationUploadVisible = {!licenseTransation.Took_Transportation_Training__c == 'Yes'};
+$scope.sidsUploadVisible = {!licenseTransation.Took_SIDS_Training__c == 'Yes'};
+$scope.usdaUploadVisible = {!licenseTransation.Took_USDA_Nutrition_Training__c == 'Yes'};
+$scope.upgradeCapacityUploadVisible = {!licenseTransation.Took_Upgrading_Capacity_Training__c == 'Yes'};
+$scope.orientationUploadVisible = {!licenseTransation.Took_FCC_Orientation__c == 'Yes'};
+$scope.cprUploadVisible = {!licenseTransation.CPR_Certified__c == 'Yes'};
+$scope.firstAidUploadVisible = {!licenseTransation.First_Aid_Certified__c == 'Yes'};
+$scope.parentalConsentformsVisible = {!licenseTransation.Parental_Consent_forms__c == 'Yes'};
+$scope.orientationModuleUploadVisible = {!licenseTransation.Took_FCC_Orientation_Module_1__c == 'Yes'};
+$scope.introEECModuleEvidenceUpload = {! licenseTransation.Taken_Intro_to_EEC_in_Mass_Orientation__c == 'Yes' };
+// Toast Options
+$scope.toastPosition = {
+    bottom: false,
+    top: true,
+    left: true,
+    right: true
+};
+$scope.getToastPosition = function () {
+    return Object.keys($scope.toastPosition)
+        .filter(function (pos) { return $scope.toastPosition[pos]; })
+        .join(' ');
+};
+$scope.showSimpleToast = function (msg) {
+    $mdToast.show($mdToast.simple()
+        .content(msg)
+        .position($scope.getToastPosition())
+        .hideDelay(6000)
+    );
+};
+// Instance of controller.
+var tranCtrl = this;
+// Controller level variables.
+tranCtrl.funcId = null;
+tranCtrl.wizardElements = Util.generateWizardElements("{!licenseRecordTypeName}", "Training Information");
+tranCtrl.selected = [];
+// Function to check for messages available due to errors.
+tranCtrl.checkForMessages = function () {
+    // TODO: Switch this to use Angular and now jQuery.
+    var ele = jQuery('[id*="showmsg"]');
+    if (ele.children().length > 0) {
+        return true;
+    }
+    return false;
+};
+// Call this function to broadcast to the directive to process the upload.
+this.upload = function (id) {
+    // Set the callback function ID for later.
+    $scope.funcId = id;
+    $scope.numUploadComponents = jQuery('s3-file-upload').length;
+    if ($scope.numUploadComponents === 0) {
+        saveAttachmentsFromJsonComplete();
+    }
+    // Clear all error messages.
+    jQuery('.fileErrorMessage').hide();
+    jQuery('.errorMessage').hide();
+    // Get all the upload containers.
+    var uploadContainers = jQuery('.ques-panel');
+    // Get all the S3 File Upload Directives.
+    var uploadDirectiveElements = jQuery('s3-file-upload');
+    // Get all the date inputs available.
+    var requiredDates = jQuery('.desc-panel-new input');
+    var requiredDescriptions = jQuery('.desc-panel-new textarea');
+    // Reset the file error.
+    missingFileError = false;
+    // Loop through all directive elements.
+    for (i = 0; i < uploadDirectiveElements.length; i++) {
+        // Check for filename labels in the directive elements. If the directive is visible and has less than or one label then no files present.
+        var filenameLabels = jQuery(uploadDirectiveElements[i]).find('.s3-input-container-labels label');
+        var checkForExisitingItem = jQuery(uploadDirectiveElements[i]).parent().children(':not("s3-file-upload")');
+        // Check for visiblity and label length.
+        if (checkForExisitingItem.data('visible') && !checkForExisitingItem.data('additional') && filenameLabels.length <= 1) {
+            // If attachment item exists then we have an exisiting item so allow no upload.
+            if (jQuery(checkForExisitingItem.find('.attachment-item')).length <= 0) {
+                missingFileError = true;
+                jQuery('body').scrollTop(0);
+                showProcessingOverlay(false);
+                jQuery(uploadDirectiveElements[i]).parent().find('.fileErrorMessage').css('display', 'block');
+            }
+        }
+    }
+    if (requiredDates.length > 0) {
+        _.each(requiredDates, function (value, key) {
+            var ele = jQuery(value);
+            var dateValue = ele.val();
+            if (_.isEmpty(dateValue)) {
+                missingFileError = true;
+                showProcessingOverlay(false);
+                ele.parent().parent().parent().parent().parent().find('.errorMessage').css('display', 'block');
+            }
+        });
+    }
+    if (requiredDescriptions.length > 0) {
+        _.each(requiredDescriptions, function (value, key) {
+            var ele = jQuery(value);
+            var dateValue = ele.val();
+            if (_.isEmpty(dateValue)) {
+                missingFileError = true;
+                showProcessingOverlay(false);
+                ele.parent().parent().parent().find('.errorMessage').css('display', 'block');
+            }
+        });
+    }
+    // Verify that the heating radio is checked. If not show error message on client side.
+    var radioContainers = jQuery('.radio-container');
+    _.each(radioContainers, function (value, key) {
+        var radioContainerInput = jQuery(value).find('input');
+        var inputNotValid = [];
+        for (var i = 0; i < radioContainerInput.length; i++) {
+            var input = jQuery(radioContainerInput[i]);
+            inputNotValid.push(input.prop('checked'));
+        }
+       if (!_.includes(inputNotValid, true)) {
+            jQuery(value).parent().find('.errorMessage').show();
+            missingFileError = true;
+        }
+    });
+    if (!missingFileError) {
+        // Call all upload directives to process files.
+           $rootScope.$broadcast('upload', {});
+           showProcessingOverlay(false);
+            SaveAndNext();
+    }
+
+};
+this.clear = function (clearIndex) {
+    if (!angular.isUndefined(clearIndex)) {
+        $rootScope.$broadcast('clearFiles_' + clearIndex, {});
+    } else {
+        $rootScope.$broadcast('clearFiles', {});
+    }
+}
+// Capture Emit event from Directive for result data.
+$scope.$on('uploadComplete', function (event, data) {
+    $scope.timesUploadComplete++;
+    if (angular.isArray(data)) {
+        var json = [];
+        for (var i = 0; i < data.length; i++) {
+            if (!data[i].status) {
+                console.log("----> Error: File not successfully uploaded.");
+                showProcessingOverlay(false);
+                break;
+            }
+            var attachment = data[i].data;
+            // Split the filename to get the prefix.
+            var splitFilename = attachment.key.split('/');
+            // Create the JSON needed for the S3_File__c objects.
+            var file = {
+                "Filename__c": splitFilename[1],
+                "Prefix__c": splitFilename[0],
+                "Content_Type__c": attachment['Content-Type'],
+                "Acl__c": attachment.acl,
+                "Bucket__c": $scope.bucketName
+            };
+            if (!angular.isUndefined($scope.exisitingFiles) && $scope.exisitingFiles !== '') {
+                var exisitingFilesJson = JSON.parse($scope.exisitingFiles);
+                // Loop through the results.
+                angular.forEach(exisitingFilesJson, function (value, key) {
+                    // Get the short names of the files without the file extensions.
+                    var exisitingShortName = value.Filename__c.split('.')[0];
+                    var shortName = file.Filename__c.split('.')[0];
+                    // If the short name of the file is the same as the existing then set the id for upsert.
+                    if (exisitingShortName == shortName) {
+                        file.Id = value.Id;
+                    }
+                });
+            }
+            // Push the file into the json object to send.
+            json.push(file);
+        }
+        // Call the action function to create the S3 Object entries in Sforce.
+        UpdateTransactionAttachments(JSON.stringify(json));
+    } else if ($scope.timesUploadComplete == $scope.numUploadComponents) {
+        console.log("Error: " + data.error);
+        showProcessingOverlay(false);
+        if (data.error.indexOf('No files') > -1) {
+            console.log("No files to upload. Continue to next page.");
+            switch ($scope.funcId) {
+                case 1:
+                    //SaveAndNext();
+                    break;
+                case 2:
+                    saveAndReturnToSamePage();
+                    //SaveAndPrevious();
+                    break;
+                case 3:
+                    SaveAndReturn();
+                    break;
+                case 4:
+                    if ($scope.nextPage != '') {
+                      //  SaveNext();
+                    }
+                    else if ($scope.previousPage != '') {
+                        SavePrevious($scope.previousPage);
+                    }
+                    break;
+            }
+        }
+    }
+});
+}]);
+
+
+    </script>
+    <script>
+var inProgress = false;
+var showProcessingOverlay = function showProcessingOverlay(isProcessing) {
+    if (!isProcessing) {
+        j$('[id$="start"]').show();
+    } else {
+        j$('[id$="start"]').hide();
+    }
+}
+var uploadAttachments = function (functionId) {
+   showProcessingOverlay(true);
+    // Call the Angular process method from JS.
+    return angular.element(jQuery('.training-info-controller-container'))
+        .scope()
+        .ctrl.upload(functionId);
+}
+var saveAttachmentsFromJsonComplete = function () {
+    var timesComplete = angular.element(jQuery('.training-info-controller-container')).scope().timesUploadComplete;
+    var numUploadComponents = angular.element(jQuery('.training-info-controller-container')).scope().numUploadComponents;
+    if (!inProgress && timesComplete == numUploadComponents) {
+        inProgress = true;
+        // Call action function for specified button.
+        switch (angular.element(jQuery('.training-info-controller-container')).scope().funcId) {
+            case 1:
+                //SaveAndNext();
+                break;
+            case 2:
+                saveAndReturnToSamePage();//SaveAndPrevious();
+                break;
+            case 3:
+                SaveAndReturn();
+                break;
+            case 4:
+                if (angular.element(jQuery('.training-info-controller-container')).scope().nextPage != '') {
+                   // SaveNext();
+                }
+                else if (angular.element(jQuery('.training-info-controller-container')).scope().previousPage != '') {
+                    SavePrevious(angular.element(jQuery('.training-info-controller-container')).scope().previousPage);
+                }
+                break;
+        }
+    }
+}
+if (jQuery('.training-row').length == 0) {
+    jQuery('.form-block').hide();
+}
+
+
+    </script>
+    <apex:outputPanel id="script-existing-items">
+        <script>
+    jQuery(document).ready(function () {
+        var scope = angular.element(jQuery('.training-info-controller-container')).scope();
+        scope.$apply(function () {
+            scope.exisitingFiles = '{!trainingAttachmentsJson}';
+        });
+        var isSubmitted = '{!isSubmitted}';
+        if (isSubmitted == 'true') {
+            jQuery('.saveButton').addClass('visibilityHidden');
+            j$("textarea").prop('disabled', true);
+            j$("input[type=radio]").prop('disabled', true);
+            j$("input[type=text]").prop('disabled', true);
+        }
+    });
+    function doNavigate(previousPage, nextPage) {
+        var scope = angular.element(jQuery('.training-info-controller-container')).scope();
+        scope.previousPage = previousPage;
+        scope.nextPage = nextPage;
+        console.log('doNavigate');
+        //angular.element(jQuery('.training-info-controller-container')).scope().previousPage=previousPage;
+        //angular.element(jQuery('.training-info-controller-container')).scope().nextPage=nextPage;
+        ////debugger;
+        var iserror = false;
+        var requiredDates = jQuery('.desc-panel-new input');
+        var requiredDescriptions = jQuery('.desc-panel-new textarea');
+        // Clear all error messages.
+        jQuery('.fileErrorMessage').hide();
+        jQuery('.errorMessage').hide();
+        // Get all the upload containers.
+        var uploadContainers = jQuery('.ques-panel');
+        // Get all the S3 File Upload Directives.
+        var uploadDirectiveElements = jQuery('s3-file-upload');
+        // Get all the date inputs available.
+        var requiredDates = jQuery('.desc-panel-new input');
+        var requiredDescriptions = jQuery('.desc-panel-new textarea');
+        // Reset the file error.
+        missingFileError = false;
+        // Loop through all directive elements.
+        for (i = 0; i < uploadDirectiveElements.length; i++) {
+            // Check for filename labels in the directive elements. If the directive is visible and has less than or one label then no files present.
+            var filenameLabels = jQuery(uploadDirectiveElements[i]).find('.s3-input-container-labels label');
+            var checkForExisitingItem = jQuery(uploadDirectiveElements[i]).parent().children(':not("s3-file-upload")');
+            // Check for visiblity and label length.
+            if (checkForExisitingItem.data('visible') && !checkForExisitingItem.data('additional') && filenameLabels.length <= 1) {
+                // If attachment item exists then we have an exisiting item so allow no upload.
+                if (jQuery(checkForExisitingItem.find('.attachment-item')).length <= 0) {
+                    missingFileError = true;
+                    jQuery('body').scrollTop(0);
+                    showProcessingOverlay(false);
+                    jQuery(uploadDirectiveElements[i]).parent().find('.fileErrorMessage').css('display', 'block');
+                    iserror = true;
+                }
+            }
+        }
+        ////debugger;
+        if (requiredDates.length > 0) {
+            _.each(requiredDates, function (value, key) {
+                var ele = jQuery(value);
+                var dateValue = ele.val();
+                if (_.isEmpty(dateValue)) {
+                    missingFileError = true;
+                    showProcessingOverlay(false);
+                    ele.parent().parent().parent().parent().parent().find('.errorMessage').css('display', 'block');
+                    iserror = true;
+                }
+            });
+        }
+        if (requiredDescriptions.length > 0) {
+            _.each(requiredDescriptions, function (value, key) {
+                var ele = jQuery(value);
+                var dateValue = ele.val();
+                if (_.isEmpty(dateValue)) {
+                    missingFileError = true;
+                    showProcessingOverlay(false);
+                    ele.parent().parent().parent().find('.errorMessage').css('display', 'block');
+                    iserror = true;
+                }
+            });
+        }
+        // Verify that the heating radio is checked. If not show error message on client side.
+        var radioContainers = jQuery('.radio-container');
+        _.each(radioContainers, function (value, key) {
+            var radioContainerInput = jQuery(value).find('input');
+            var inputNotValid = [];
+            for (var i = 0; i < radioContainerInput.length; i++) {
+                var input = jQuery(radioContainerInput[i]);
+                inputNotValid.push(input.prop('checked'));
+            }
+            if (!_.includes(inputNotValid, true)) {
+                jQuery(value).parent().find('.errorMessage').show();
+                showProcessingOverlay(false);
+                iserror = true;
+            }
+        });
+        console.log('iserror'+iserror);
+        if (iserror == true) {
+
+            return false;
+        }
+        else {
+            uploadAttachments(4);
+        /*  if(nextPage != ''){
+                //SaveNext();
+            }
+            else if(previousPage != ''){
+                //SavePrevious(previousPage);
+            }*/
+        }
+    }
+
+
+        </script>
+    </apex:outputPanel>
+    </body>
+</apex:page>

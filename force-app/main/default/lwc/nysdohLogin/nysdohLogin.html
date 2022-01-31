@@ -1,0 +1,63 @@
+<template>
+    <div class="slds-card card-setup">
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_12-of-12 slds-large-size_4-of-12">
+                    
+                <div class="card-photo">
+                        <img class="login-photo" src={customImage}/>
+                </div>
+
+               
+            </div>
+            <div class="slds-col slds-size_12-of-12 slds-large-size_8-of-12">
+                <div class="card-right-content">
+
+                    <div class="card-header">
+                        <div class="intro">Welcome back</div>
+                        <h1>Enter your credentials below</h1>
+                       
+                        <div class="slds-form-element slds-p-bottom_x-large">
+                            <template if:true={showError}>
+                                <div class="error">{errorMessage}</div>
+                            </template>
+                            <label class="slds-form-element__label" for="text-input-id-1">
+                              <abbr class="slds-required" title="required">* </abbr>Username</label>
+                            <div class="slds-form-element__control">
+                              <input type="text" name="username" placeholder="Enter your user ID overher" required="" value={username} class="slds-input" onchange={nameChange}/>
+                            </div>
+                          </div>
+                          <div class="slds-form-element slds-p-bottom_x-large">
+                            <label class="slds-form-element__label" for="text-input-id-1">
+                              <abbr class="slds-required" title="required">* </abbr>Password</label>
+                            <div class="slds-form-element__control">
+                              <input type="text" name='password' placeholder="Enter the Password" required="" class="slds-input" value={password} onchange={passwordChange}/>
+                            </div>
+                          </div>
+                          <div class="slds-clearfix slds-p-bottom_x-large">
+                          <div class="slds-form-element slds-float_left">
+                            <div class="slds-form-element__control">
+                              <div class="slds-checkbox">
+                                <input type="checkbox" name="options" id="checkbox-unique-id-73" value="checkbox-unique-id-73" checked="" />
+                                <label class="slds-checkbox__label" for="checkbox-unique-id-73">
+                                  <span class="slds-checkbox_faux"></span>
+                                  <span class="slds-form-element__label">Remember Password</span>
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="slds-float_right">
+                          <a href="#">Forgot Password</a>
+                        </div>
+                    </div>
+                    <lightning-button label="Login" title="Neutral action" onclick={doLogin} class="nys-registration-button"></lightning-button>
+                    <hr class="content-rule">
+  
+                <div class="note error-box">
+                  <div><strong>Error:</strong><br> Type your error message over here.</div>
+                </div>
+          </div>
+          </div>
+          </div>
+          </div>
+          </div>
+</template>

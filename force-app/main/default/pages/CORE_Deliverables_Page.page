@@ -1,0 +1,1103 @@
+<apex:page docType="html-5.0" sidebar="false" showHeader="false" applyBodyTag="false" controller="CORE_Deliverables_Controller">
+    <title>Milestone and Deliverables</title>
+
+    <style>
+        .taskNameTitle{
+            word-wrap: break-word !important;
+            white-space: pre-wrap !important;
+            width: 365px !important;
+        }
+        .alert-icon {
+            margin:0px 0px -2px 10px;
+        }
+
+        .createDeliverableRecord{
+            width: 35%;
+        }
+        .externalReview {
+        	width:12%;
+        }
+        .externalReviewFeedbackSectionHide {
+        	display:none;
+        }
+    </style>
+    <apex:composition template="CORE_TemplateBlank">
+        <apex:define name="body">
+            <apex:includescript value="{!URLFOR($Resource.CKEDITOR, 'ckeditor/ckeditor.js')}" />
+            <apex:actionstatus id="counterStatus">
+                <apex:facet name="start">
+                    <div class="sk-folding-cube">
+                        <div class="sk-cube1 sk-cube"></div>
+                        <div class="sk-cube2 sk-cube"></div>
+                        <div class="sk-cube4 sk-cube"></div>
+                        <div class="sk-cube3 sk-cube"></div>
+                    </div>
+                    <div class="loading-overlay"></div>
+                </apex:facet>
+            </apex:actionstatus>
+            <apex:form id="form">
+                <div class="page">
+                    <script>
+                        function data() {
+                            var element = CKEDITOR.instances['{!$Component.editor1}'].getData();
+                            insertObject(element);
+                        }
+
+                        function resetPanel(a) {
+                            debugger;
+                            if ("{!selectedObject}" != "projectMilesParent") {
+                                $("#{!selectedProjecttaskid}").removeAttr("style");
+                                $("#GroupSection{!selectedProjecttaskid}").removeClass("collapsed");
+                                $("#{!selectedProjecttaskid}").addClass("in");
+                            }
+
+                            if (a == 1) {
+                                $('#{!selectedObject}').modal('hide');
+                                $('.modal-backdrop').remove();
+                                $('body').removeClass('modal-open');
+                                CKEDITOR.instances.editor1.destroy();
+                            }
+                        }
+                    </script>
+
+                    <apex:actionFunction name="updateDeliverable" action="{!updateDeliverable}" rerender="form" status="counterStatus" >
+                        <apex:param name="projectask" assignTo="{!selectedProjecttaskid}" value="" />
+                    </apex:actionFunction>
+
+                    <apex:actionFunction name="initializeNewObject" action="{!initializeNewObject}" rerender="op1" status="counterStatus" oncomplete="CKEDITOR.replace('{!$component.editor1}');  $('#{!selectedObject}').modal('show'); addCostFieldListeners(); removeMilestoneVal();">
+                        <apex:param name="object" assignTo="{!selectedObject}" value="" />
+                        <apex:param name="projectask" assignTo="{!selectedProjecttaskid}" value="" />
+                    </apex:actionFunction>
+
+                    <apex:actionFunction name="initializeEditObject" action="{!editeNewObject}" rerender="op1" status="counterStatus" oncomplete="CKEDITOR.replace('{!$component.editor1}'); $('#{!selectedObject}').modal('show'); addCostFieldListeners(); removeMilestoneVal();">
+                        <apex:param name="object" assignTo="{!selectedObject}" value="" />
+                        <apex:param name="selectedRecord" assignTo="{!selectedRecord}" value="" />
+                        <apex:param name="projectask" assignTo="{!selectedProjecttaskid}" value="" />
+                    </apex:actionFunction>
+
+                    <!-- Changes moved to deliverable document page
+                    <apex:actionFunction name="initializeEditDeliverStatus" action="{!editeNewObject}" rerender="op1" status="counterStatus" oncomplete="$('#projectDeliverStatus').modal('show'); ">
+                        <apex:param name="object" assignTo="{!selectedObject}" value="" />
+                        <apex:param name="selectedRecord" assignTo="{!selectedRecord}" value="" />
+                        <apex:param name="projectask" assignTo="{!selectedProjecttaskid}" value="" />
+                        <apex:param name="taskinfo" assignTo="{!taskInformation}" value="true" />
+                    </apex:actionFunction>
+                    -->
+
+                    <apex:actionFunction action="{!insertObject}" rerender="form" name="insertObject" oncomplete="resetPanel(1);" status="counterStatus">
+                        <apex:param name="richText" assignTo="{!richText}" value="" />
+                    </apex:actionFunction>
+                    <apex:actionFunction action="{!insertFeedback}" rerender="form" name="insertFeedback" oncomplete="resetPanel(1);" status="counterStatus"/>
+
+                    <apex:actionFunction name="deleteObject" action="{!deleteObject}" rerender="form" status="counterStatus" oncomplete="resetPanel(0);">
+                        <apex:param name="object" assignTo="{!selectedObject}" value="" />
+                        <apex:param name="selectedRecord" assignTo="{!selectedRecord}" value="" />
+                        <apex:param name="projectask" assignTo="{!selectedProjecttaskid}" value="" />
+                    </apex:actionFunction>
+                    <apex:actionFunction name="relaodPage" action="{!retrieveData}" rerender="form" status="counterStatus" />
+
+                    <div class="container-bs deliverables">
+                        <div class="page-header m-t-md">
+                            <div>
+                                <h2>{!project.name}</h2>
+                                <apex:commandLink action="{!URLFOR($Action.project__c.view, projectid)}" value="Back to Project" styleclass="back-button"/>
+                            </div>
+                            <div></div>
+                        </div>
+
+                        <div class="panel-control">
+                            <apex:outputPanel layout="none">
+                            <div class="filters">
+                                <label for="{!$Component.phase}">Phase:</label>
+                                <div class="field">
+                                    <apex:selectList value="{!SelectedPhase}" id="phase" size="1" multiselect="false" styleClass="form-control input-sm md" onchange="relaodPage()">
+                                        <apex:selectOptions value="{!sophase}" />
+                                    </apex:selectList>
+                                </div>
+                            </div>
+                            </apex:outputPanel>
+                            <!-- /.flex-row -->
+                            <div class="controls">
+                                <a id="expandAllButton" class="btn-bs btn-default toggle"><span class="icon-enlarge2"></span> Expand All</a>
+                                <a id="collapseAllButton" class="btn-bs btn-default active hidden toggle"><span class="icon-shrink2"></span> Collapse All</a>
+                                <apex:outputPanel layout="none" rendered="{!AND(profileAccess,!contractor)}">
+                                    <a onclick="CKEDITOR.config.width ='100%';initializeNewObject('projectMilesParent','{!projectId}')" class="btn-bs btn-primary">Add Task</a>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                        <!-- /.panel-control -->
+
+                        <div class="panel-group" id="DeliverableGroup" role="tablist" aria-multiselectable="true">
+                            <apex:repeat value="{!litaskwrapper}" var="tw">
+                                <div class="panel panel-nys">
+                                    <div class="panel-heading has-rollup" role="tab" id="headingDeliverableGroupSection{!tw.parentMiles.id}">
+                                        <a id="GroupSection{!tw.parentMiles.id}" class="toggle-button collapsed" role="button" data-toggle="collapse" href="#{!tw.parentMiles.id}" aria-expanded="true" aria-controls="GroupSection{!tw.parentMiles.id}">
+                                            <span class="panel-title taskNameTitle">{!tw.parentMiles.task_name__c}<apex:image value="/img/func_icons/util/alert16.gif" styleClass="alert-icon" rendered="{!tw.parentMiles.Enable_Task_Limit__c}"/></span>
+
+                                            <span class="total">
+                                                <span class="name">{!$Label.Clean_Transportation_Incentive_amount}:</span>
+                                                <apex:outputField styleclass="panel-title" value="{!tw.parentMiles.Incentive_Amount__c}" rendered="{!!tw.parentMiles.Enable_Task_Limit__c}"/>
+                                                <apex:outputField styleclass="panel-title" value="{!tw.parentMiles.NYSERDA_Cost__c}" rendered="{!tw.parentMiles.Enable_Task_Limit__c}"/>
+                                            </span>
+
+                                            <apex:outputPanel rendered="{!isInnovation}" layout="none">
+                                                <span class="total">
+                                                    <span class="name">{!$ObjectType.Project_Milestones__c.fields.Billed_To_Date__c.label}:</span>
+                                                    <apex:outputField styleclass="panel-title" value="{!tw.parentMiles.Billed_To_Date__c}" />
+                                                </span>
+                                            </apex:outputPanel>
+
+                                            <span class="icm"></span>
+                                        </a>
+
+                                        <div class="controls">
+                                            <apex:outputPanel layout="none" rendered="{!tw.parentMiles.Stage_Gate__c}">
+                                                <!--Place holder for Stop icon -->
+                                                <!-- Classes available: pending, approved, denied -->
+                                                <a class="panel-option {!IF(NOT(ISBLANk(tw.parentMiles.Stage_Gate_Status__c)),LOWER(tw.parentMiles.Stage_Gate_Status__c),'')} icon-traffic-lights"><span style="display:none">Remove</span></a>
+                                            </apex:outputPanel>
+                                            <apex:outputPanel layout="none" rendered="{!AND(!contractor,profileAccess)}">
+                                                <a href="#" class="panel-option icon-pencil" onclick="CKEDITOR.config.width ='100%';initializeEditObject('projectMilesParent','{!tw.parentMiles.id}','{!tw.parentMiles.id}')"> <span style="display:none">Remove</span> </a>
+                                                <a href="#" class="panel-option icon-bin" onclick="var a = confirm('Are you sure you want to delete this item?'); if(a) deleteObject('projectMilesParent','{!tw.parentMiles.id}','{!tw.parentMiles.id}')"> <span style="display:none">Remove</span></a>
+                                            </apex:outputPanel>
+                                            <!-- <a href="#" class="panel-option icon-note" onclick="initializeEditObject('projectMilesParentDesc','{!tw.parentMiles.id}','{!tw.parentMiles.id}')"></a> -->
+                                            <!--
+                                            <a style="width:10%" class="btn-notes popper" data-toggle="popover" data-trigger="hover" data-placement="right"><span class="icon-note"></span></a>
+                                               <div class="popover-content hide">
+                                                  <p><apex:outputText value="{!maptaskWrapper[tw].parentMiles.description__c}" escape="false"/></p>
+                                               </div>
+                                            </a>
+                                            -->
+                                        </div>
+                                    </div><!-- /.panel-heading -->
+                                    <div id="{!tw.parentMiles.id}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDeliverableGroupSection{!tw.parentMiles.id}">
+                                        <div class="panel-body">
+                                        <apex:outputPanel >
+                                            <div class="panel panel-nys gray-panel">
+                                                <div class="panel-heading" role="tab" id="headingTaskDescription">
+                                                    <a class="toggle-button collapsed" role="button" data-toggle="collapse" href="#TaskDescription{!tw.parentMiles.id}" aria-expanded="true" aria-controls="TaskDescription">
+                                                        <span class="panel-title">Description</span>
+                                                        <span class="icm"></span>
+                                                    </a>
+                                                </div>
+                                                <div id="TaskDescription{!tw.parentMiles.id}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTaskDescription">
+                                                    <div class="panel-body">
+                                                        <apex:outputField value="{!tw.parentMiles.Description__c}"></apex:outputField>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!tw.projectDeliver.Size > 0}" layout="none">
+                                                <div class="table-header">
+                                                    <h4>Deliverables</h4>
+                                                </div>
+                                                <table id="contactTable" class="table table-condensed table-striped table-default upper table-bordered" cellspacing="0" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Deliverable Name</th>
+                                                            <th>Status</th>
+                                                            <th>Due Date</th>
+                                                            <th>Pending Response</th>
+                                                            <th>Submitted Document</th>
+                                                            <!--<th>Approval History</th>-->
+                                                            <th width="1%">Edit / Remove / Email</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <apex:variable var="i" value="{!0}" />
+                                                        <apex:repeat value="{!tw.projectDeliver}" var="var" rendered="{!tw.projectDeliver !=null}">
+                                                        	<apex:outputPanel rendered="{!IF(!externalReviewer, true, IF(var.External_Review_Required__c, true, false))}">
+                                                            <apex:variable var="i" value="{!i+1}" />
+                                                            <tr>
+                                                                <td>{!var.Deliverable_Name__c}</td>
+                                                                <td>{!var.Status__c}</td>
+                                                                <td>
+                                                                    <apex:outputField value="{!var.End_Date__c}" />
+                                                                </td>
+                                                                <!--
+                                                                <td>
+                                                                    <apex:outputField value="{!mapDeliverableToDocument[var.Id].createdDate}" rendered="{!mapDeliverableToAttachment[var.Id] != 'NA'}" />
+                                                                </td>
+                                                                -->
+                                                                <td>
+                                                                    <apex:outputField value="{!var.Waiting_for_External_Response__c}" />
+                                                                </td>
+                                                                <td>
+                                                                    <apex:outputPanel layout="none" rendered="{!recordExist[var.Id]}">
+                                                                        <apex:repeat value="{!mapDeliverableToDocument[var.Id]}" var="projDoc" >
+                                                                            <a href="/servlet/servlet.FileDownload?file={!mapOfChildParent[projDoc][0].Attachments[0].id}" target="_new" title="{!mapOfChildParent[projDoc][0].Attachments[0].name} - {!MOnth(Datevalue(mapOfChildParent[projDoc][0].Attachments[0].createdDate))}/{!Day(Datevalue(mapOfChildParent[projDoc][0].Attachments[0].createdDate))}/{!Year(Datevalue(mapOfChildParent[projDoc][0].Attachments[0].createdDate))}">{!mapOfChildParent[projDoc][0].Attachments[0].name} </a>
+                                                                             <!--
+                                                                             {!mapOfChildParent[mapDeliverableToDocument[var.Id][0]].Attachments[0].name}
+                                                                             {!mapOfChildParent[mapDeliverableToDocument[var.Id][0]].Attachments[0].id}
+                                                                             <a href="/servlet/servlet.FileDownload?file={!mapDeliverableToAttachment[var.Id]}" target="_new">View</a>
+                                                                            -->
+                                                                            <br/>
+                                                                        </apex:repeat>
+                                                                    </apex:outputPanel>
+                                                                </td>
+                                                                <td class="action">
+                                                                    <apex:outputPanel layout="none" rendered="{!NOT(AND(!contractor,profileAccess))}">
+                                                                        <apex:outputPanel layout="none" rendered="{!!var.External_Review_Required__c}"> NA </apex:outputPanel>
+                                                                    </apex:outputPanel>
+                                                                    <apex:outputPanel layout="none"  rendered="{!AND(!contractor,profileAccess)}">
+                                                                        <a href="#" onclick="initializeEditObject('projectDelivery','{!var.id}','{!tw.parentMiles.id}')"><span class="icon-pencil"> </span></a>
+                                                                        <apex:outputPanel rendered="{!var.External_Review_Required__c}">
+                                                                        <a href="#" onclick="initializeEditObject('projectDeliveryExternalReview','{!var.id}','{!tw.parentMiles.id}')"><span class="icon-eye"> </span></a>
+                                                                        </apex:outputPanel>
+                                                                        <apex:outputPanel rendered="{!!recordExist[var.Id]}">
+                                                                        <a href="#" onclick="var a = confirm('{!$Label.Clean_Transportation_Delete_Confirm}'); if(a) deleteObject('projectDelivery','{!var.id}','{!tw.parentMiles.id}')"><span class="icon-bin"></span></a>
+                                                                        </apex:outputPanel>
+                                                                        <!--  <a href="{!URLFOR($page.CustomEmail_Page,'',[projectDeliverableid=var.id])}"><span class="icon-envelope"></span></a> -->
+                                                                    </apex:outputPanel>
+                                                                    <apex:outputPanel layout="none"  rendered="{!externalReviewer}">
+                                                                    	<a href="#" onclick="initializeEditObject('projectDeliveryExternalReview','{!var.id}','{!tw.parentMiles.id}')"><span class="icon-pencil"> </span></a>
+                                                                    </apex:outputPanel>
+                                                                    <apex:outputPanel layout="none"  rendered="{!AND(contractor,profileAccess,var.External_Review_Required__c)}">
+                                                                    	<a href="#" onclick="initializeEditObject('projectDeliveryExternalReview','{!var.id}','{!tw.parentMiles.id}')"><span class="icon-eye"> </span></a>
+                                                                    </apex:outputPanel>
+                                                                </td>
+                                                            </tr>
+                                                           </apex:outputPanel>
+                                                        </apex:repeat>
+                                                    </tbody>
+                                                </table>
+
+                                                <apex:outputPanel layout="block" styleClass="table-controls" >
+                                                  <!--  <a href="{!URLFOR($page.CHP_Invoice_Page)}?milestoneId={!tw.parentMiles.id}&projectId={!projectid}"
+                                                       class="link-icon-button {!IF(tw.isAllDeliverablesApproved, '', 'btn-bs disabled')}">
+                                                       <span class="icon-note-list"></span>
+                                                       Invoice
+                                                    </a>
+                                                    <apex:outputPanel layout="none" rendered="{!AND(profileAccess,!contractor)}">
+                                                        <a onclick="updateDeliverable('{!tw.parentMiles.id}');" class="btn-bs btn-primary">For Test Only: Approve</a>
+                                                    </apex:outputPanel> -->
+                                                </apex:outputPanel>
+
+                                                <apex:outputPanel layout="block" styleClass="table-controls" rendered="{!OR(profileAccess, AND(contractor, project.Status__c = 'Approved'))}">
+                                                    <apex:outputPanel rendered="{!!contractor}" layout="none">
+                                                        <a onclick="initializeNewObject('projectDelivery','{!tw.parentMiles.id}')" class="add-button">Add Deliverables</a>
+                                                    </apex:outputPanel>
+                                                    <a href="{!URLFOR($page.CORE_Deliverables_Documents_Page)}?id={!tw.parentMiles.id}&projectid={!projectid}" class="add-button">Manage Deliverables</a>
+                                                </apex:outputPanel>
+                                            </apex:outputPanel>
+
+                                            <apex:outputPanel rendered="{!AND(OR(ismilestone, AND(!ismilestone, tw.parentMiles.Hybrid_Budget__c)),tw.projectMiles.Size > 0)}" layout="none">
+                                                <div class="table-header">
+                                                    <h4>Milestones</h4>
+                                                </div>
+                                                <table id="milestonesTable" class="table table-condensed table-striped table-default upper table-bordered" cellspacing="0" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Milestone Name</th>
+                                                            <apex:outputPanel layout="none" rendered="{!isSolicitationEnabledQuantity}">
+                                                                <th>Quantity</th>
+                                                            </apex:outputPanel>
+                                                            <th>ORG Share</th>
+                                                            <th>Cost Share</th>
+                                                            <th>Start Date</th>
+                                                            <th>End Date</th>
+                                                            <th>Status</th>
+                                                            <th width="1%">Edit / Remove</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <apex:variable var="i" value="{!0}" />
+                                                        <apex:repeat value="{!tw.projectMiles}" var="var" rendered="{!tw.projectMiles !=null}">
+                                                            <apex:variable var="i" value="{!i+1}" />
+                                                            <tr>
+                                                                <td>{!var.Task_Name__c}</td>
+                                                                <apex:outputPanel layout="none" rendered="{!isSolicitationEnabledQuantity}">
+                                                                    <td>
+                                                                        <apex:outputField value="{!var.Quantity__c}" />
+                                                                    </td>
+                                                                </apex:outputPanel>
+                                                                <td>
+                                                                    <apex:outputField value="{!var.Incentive_Amount__c}" />
+                                                                </td>
+                                                                <td>
+                                                                    <apex:outputField value="{!var.Cost_Share__c}" />
+                                                                </td>
+                                                                <td>
+                                                                    <apex:outputField value="{!var.Start_Date__c}" />
+                                                                </td>
+                                                                <td>
+                                                                    <apex:outputField value="{!var.End_Date__c}" />
+                                                                </td>
+                                                                <td>{!var.Status__c}</td>
+                                                                <td class="action">
+                                                                    <apex:outputPanel layout="none" rendered="{!NOT(AND(!contractor,profileAccess))}">
+                                                                        NA
+                                                                    </apex:outputPanel>
+                                                                    <apex:outputPanel layout="none" rendered="{!AND(!contractor,profileAccess)}">
+                                                                        <a href="#" onclick="initializeEditObject('projectMilesChild','{!var.id}','{!tw.parentMiles.id}')"><span class="icon-pencil"></span><span style="display:none">Remove</span> </a>
+                                                                        <a href="#" onclick="var a = confirm('Are you sure you want to delete this item?'); if(a) deleteObject('projectMilesChild','{!var.id}','{!tw.parentMiles.id}')"><span class="icon-bin"></span><span style="display:none">Remove</span></a>
+                                                                    </apex:outputPanel>
+                                                                </td>
+                                                            </tr>
+                                                        </apex:repeat>
+                                                        <tr style="font:weight:bold">
+                                                            <th>Total</th>
+                                                            <apex:outputPanel layout="none" rendered="{!isSolicitationEnabledQuantity}">
+                                                                <th>
+                                                                <div style="display:none;">blank</div> </th> <!-- Accessibility Issues -->
+                                                            </apex:outputPanel>
+                                                            <th>
+                                                                <apex:outputField value="{!tw.parentMiles.Incentive_Amount__c}" />
+                                                            </th>
+                                                            <th>
+                                                                <apex:outputField value="{!tw.parentMiles.Cost_Share__c}" />
+                                                            </th>
+                                                            <th>&nbsp;<div style="display:none;">blank</div></th> <!-- Accessibility Issues -->
+                                                            <th>&nbsp;<div style="display:none;">blank</div></th> <!-- Accessibility Issues -->
+                                                            <th>&nbsp;<div style="display:none;">blank</div></th> <!-- Accessibility Issues -->
+                                                            <th>&nbsp;<div style="display:none;">blank</div></th> <!-- Accessibility Issues -->
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <!-- <apex:outputPanel layout="block" styleClass="table-controls" rendered="{!AND(profileAccess,!contractor)}">
+                                                    <a href="#" onclick="initializeNewObject('projectMilesChild','{!tw.parentMiles.id}')" class="m-t-sm m-b-md add-button">Add Milestone</a>
+                                                </apex:outputPanel> -->
+                                                <apex:outputPanel layout="block" styleClass="table-controls" >
+
+                                                <a href="#" onclick="navigateToPage()" class="m-t-sm m-b-md add-button">Invoice</a>
+                                                </apex:outputPanel>
+
+                                            </apex:outputPanel>
+
+                                            <div class="table-controls reset">
+                                                <!-- <apex:outputPanel rendered="{!AND(OR(ismilestone, AND(!ismilestone, tw.parentMiles.Hybrid_Budget__c)),tw.projectMiles.Size = 0,profileAccess,!contractor)}">
+                                                    <a href="#" onclick="initializeNewObject('projectMilesChild','{!tw.parentMiles.id}')" class="add-button">Add Milestone</a>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!AND(tw.projectDeliver.Size = 0,profileAccess,!contractor)}">
+                                                    <a href="#" onclick="initializeNewObject('projectDelivery','{!tw.parentMiles.id}')" class="add-button">Add Deliverables</a>
+                                                </apex:outputPanel> -->
+                                            </div><!-- /.table-controls reset -->
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </apex:repeat>
+                        </div>
+                        <!--
+                            <div class="panel-footer">
+                               <a onclick="initializeNewObject('projectMilesParent','{!projectId}')" class="add-button">Add Task</a>
+                            </div>/.panel-footer
+                        -->
+                    </div><!-- /.container-bs -->
+                </div>
+
+                <apex:outputPanel id="op1">
+                    <!--
+                    <div id="projectDeliverStatus" class="modal fade">
+                        <div class="modal-dialog" style="width:70%">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title">Project Deliverable </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="alert alert-danger" id="ErrorMessageDel2" style="display:none"></div>
+                                    <div class="flex-row">
+                                        <label>{!$ObjectType.Project_Deliverables__c.fields.name.label}<span class="required red">&nbsp;* </span>
+                                        </label>
+                                        <div class="field lg">
+                                            <apex:outputField value="{!newProjectDeliverables.Deliverable_Name__c}" styleClass="form-control phase" />
+                                        </div>
+                                    </div>
+                                    <div class="flex-row">
+                                        <label>{!$ObjectType.Project_Deliverables__c.fields.Status__c.label}<span class="required red">&nbsp;* </span>
+                                        </label>
+                                        <div class="field lg">
+                                            <apex:inputField value="{!newProjectDeliverables.Status__c}" styleClass="form-control phase" rendered="{!!contractor}" />
+                                            <apex:outputField value="{!newProjectDeliverables.Status__c}" styleClass="form-control phase" rendered="{!contractor}" />
+                                        </div>
+                                    </div>
+                                    <div class="flex-row">
+                                        <label>{!$ObjectType.Project_Deliverables__c.fields.notes__c.label}<span class="required red">&nbsp;* </span>
+                                        </label>
+                                        <div class="field lg">
+                                            <apex:inputField value="{!newProjectDeliverables.Notes__c}" styleClass="form-control phase" />
+                                        </div>
+                                    </div>
+                                    Communications:
+                                    <apex:outputText rendered="{!litask.size== 0}" value="No records found" />
+                                    <br/>
+                                    <apex:outputPanel layout="block" styleclass="flex-row" rendered="{!litask.size > 0}">
+
+                                        <table id="tasktable" class="table table-condensed table-striped table-default upper table-bordered" cellspacing="0" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Subject</th>
+                                                    <th>Activity Date</th>
+                                                    <th>Created By</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <apex:variable var="i" value="{!0}" />
+                                                <apex:repeat value="{!litask}" var="var">
+                                                    <tr>
+                                                        <td>{!var.subject} </td>
+                                                        <td>
+                                                            <apex:outputField value="{!var.createddate}" /> </td>
+                                                        <td>
+                                                            <apex:outputField value="{!var.createdby.name}" /> </td>
+                                                    </tr>
+                                                </apex:repeat>
+                                            </tbody>
+                                        </table>
+
+                                    </apex:outputPanel>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn-bs btn-primary" onclick="validatedeliverable();">Save</button>
+                                    <button type="button" class="btn-bs btn-default" data-dismiss="modal">Cancel</button>
+                                    <a class="btn-bs btn-default" href="{!URLFOR($page.CustomEmail_Page,'',[projectDeliverableid=newProjectDeliverables.id])}">Email Contractor</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    -->
+                    <div id="projectDelivery" class="modal fade">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title">New Project Deliverable </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="alert alert-danger" id="ErrorMessageDel" style="display:none"></div>
+                                    <div class="flex-row">
+                                        <label for="{!$Component.dName}">{!$ObjectType.Project_Deliverables__c.fields.name.label}<span class="required red">&nbsp;* </span>
+                                        </label>
+                                        <div class="field lg">
+                                            <apex:inputField value="{!newProjectDeliverables.Deliverable_Name__c}" id="dName" styleClass="form-control delName" />
+                                        </div>
+                                    </div>
+                                    <!-- commented as the logic is moved to another modal
+                                    <div class="flex-row">
+                                       <label>{!$ObjectType.Project_Deliverables__c.fields.Status__c.label}<span class="required red">&nbsp;* </span></label>
+                                       <div class="field lg">
+                                          <apex:inputField value="{!newProjectDeliverables.Status__c}" styleClass="form-control phase" rendered="{!!contractor}"/>
+                                           <apex:outputField value="{!newProjectDeliverables.Status__c}" styleClass="form-control phase" rendered="{!contractor}"/>
+                                       </div>
+                                    </div>
+                                    -->
+                                    <div class="flex-row">
+                                        <label for="{!$Component.sequence}">{!$ObjectType.Project_Deliverables__c.fields.sequence__C.label}<span class="required red">&nbsp;* </span>
+                                        </label>
+                                        <div class="field lg">
+                                            <apex:inputField value="{!newProjectDeliverables.Sequence__c}" id="sequence" styleClass="form-control sequenceDel" />
+                                        </div>
+                                    </div>
+                                    <div class="flex-row">
+                                        <label for="{!$Component.startDate1}">{!$ObjectType.Project_Deliverables__c.fields.start_Date__c.label}<span class="required red">&nbsp;* </span>
+                                        </label>
+                                        <div class="field lg">
+                                            <apex:inputField value="{!newProjectDeliverables.Start_Date__c}" id="startDate1" styleClass="form-control startDatedel" />
+                                        </div>
+                                    </div>
+                                    <div class="flex-row">
+                                        <label for="{!$Component.endDate1}">{!$ObjectType.Project_Deliverables__c.fields.end_DAte__c.label}<span class="required red">&nbsp;* </span>
+                                        </label>
+                                        <div class="field lg">
+                                            <apex:inputField value="{!newProjectDeliverables.End_Date__c}" id="endDate1" styleClass="form-control endDatedel" />
+                                        </div>
+                                    </div>
+                                    <div class="flex-row">
+                                        <!--  <label for="{!$Component.externalReview}">{!$ObjectType.Project_Deliverables__c.fields.External_Review_Required__c.label}
+                                        </label> -->
+                                        <div class="field lg">
+                                            <apex:inputField value="{!newProjectDeliverables.External_Review_Required__c}" id="externalReview" styleClass="form-control externalReview"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn-bs btn-primary saveDeliverable" onclick="validatedeliverable();">Save</button>
+                                    <button type="button" class="btn-bs btn-default" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="projectDeliveryExternalReview" class="modal fade">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title">Deliverable Feedback </h4>
+                                </div>
+                               <!-- <div class="modal-body">
+                                    <div class="alert alert-danger" id="ErrorMessageReviewSection" style="display:none"></div>
+                                    <div class="flex-row">
+                                          <label for="{!$Component.dName}">{!$ObjectType.Project_Deliverables__c.fields.External_Review_Feedback__c.label}<span class="required red">&nbsp;* </span>
+                                        </label>
+                                        <div class="field lg">
+                                            <apex:inputField value="{!newProjectDeliverables.External_Review_Feedback__c}" id="inputReviewFeedback" styleClass="form-control delName" rendered="{!externalReviewer}"/>
+                                            <apex:inputField html-disabled="true" value="{!newProjectDeliverables.External_Review_Feedback__c}" id="outputReviewFeedback" styleClass="form-control delName" rendered="{!!externalReviewer}"/>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn-bs btn-primary saveDeliverable" onclick="validateDeliverableFeedback();">Save</button>
+                                    <button type="button" class="btn-bs btn-default" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="projectMilesChild" class="modal fade">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title">Project Task New </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="alert alert-danger" id="ErrorMessage" style="display:none"></div>
+                                    <div class="flex-row">
+                                        <label for="{!$Component.tName}">{!$ObjectType.Project_Milestones__c.fields.name.label}<span class="required red">&nbsp;* </span></label>
+                                        <div class="field lg">
+                                            <apex:inputField value="{!newProjectMilestones.Task_Name__c}" id="tName" styleClass="form-control childName" />
+                                        </div>
+                                    </div>
+                                    <div class="flex-row">
+                                        <label for="{!$Component.startDate}">{!$ObjectType.Project_Milestones__c.fields.start_Date__c.label}<span class="required red">&nbsp;* </span></label>
+                                        <div class="field lg">
+                                            <apex:inputField value="{!newProjectMilestones.Start_Date__c}" id="startDate" styleClass="form-control startDateChild" />
+                                        </div>
+                                    </div>
+                                    <div class="flex-row">
+                                        <label for="{!$COmponent.endDate}">{!$ObjectType.Project_Milestones__c.fields.end_Date__c.label}<span class="required red">&nbsp;* </span></label>
+                                        <div class="field lg">
+                                            <apex:inputField value="{!newProjectMilestones.End_Date__c}" id="endDate" styleClass="form-control endDateChild" />
+                                        </div>
+                                    </div>
+                                    <div class="flex-row">
+                                        <label for="{!$Component.seque}">{!$ObjectType.Project_Milestones__c.fields.sequence__C.label}<span class="required red">&nbsp;* </span></label>
+                                        <div class="field lg">
+                                            <apex:inputField value="{!newProjectMilestones.Sequence__c}" id="seque" styleClass="form-control sequenceChild" />
+                                        </div>
+                                    </div>
+                                    <div class="flex-row">
+                                        <label for="{!$COmponent.status}">{!$ObjectType.Project_Milestones__c.fields.Status__c.label}<span class="required red">&nbsp;* </span></label>
+                                        <div class="field lg">
+                                            <apex:inputField value="{!newProjectMilestones.Status__c}" id="status" styleClass="form-control statusChild" rendered="{!!contractor}" />
+                                            <apex:outputField value="{!newProjectMilestones.Status__c}" styleClass="form-control phase" rendered="{!contractor}" />
+                                        </div>
+                                    </div>
+
+                                    <apex:outputPanel layout="none" rendered="{!isSolicitationEnabledQuantity}">
+                                        <div class="flex-row">
+                                            <label for="{!$Component.quant}">{!$ObjectType.Project_Milestones__c.fields.Quantity__c.label}<span class="required red">&nbsp;* </span></label>
+                                            <div class="field lg">
+                                                <apex:inputField value="{!newProjectMilestones.Quantity__c}" id="quant" styleClass="form-control milestoneQuantity" />
+                                            </div>
+                                        </div>
+                                    </apex:outputPanel>
+
+                                    <div class="flex-row">
+                                        <label for="{!$Component.incentiveAmount}">{!$label.Clean_Transportation_Incentive_amount}<span class="required red">&nbsp;* </span></label>
+                                        <div class="field lg">
+                                            <apex:inputField value="{!newProjectMilestones.Incentive_Amount__c}" id="incentiveAmount" styleClass="form-control nysedrashare" />
+                                        </div>
+                                    </div>
+                                    <div class="flex-row">
+                                        <label for="{!$Component.cstShare}">{!$ObjectType.Project_Milestones__c.fields.Cost_Share__c.label}<span class="required red">&nbsp;* </span></label>
+                                        <div class="field lg">
+                                            <apex:inputField value="{!newProjectMilestones.Cost_Share__c}" id="cstShare" styleClass="form-control costShare" />
+                                        </div>
+                                    </div>
+
+                                    <apex:outputPanel layout="none" rendered="{!newProjectMilestones.Id == null}">
+                                        <div class="flex-row">
+                                          <label for="{!$Component.createDeliverableRec}">Create deliverable record?</label>
+                                            <div class="field sm">
+                                                <apex:inputCheckbox value="{!createDeliverableRecord}" id="createDeliverableRec" styleClass="form-control createDeliverableRecord" />
+                                            </div>
+                                        </div>
+                                    </apex:outputPanel>
+
+                                    <div class="flex-row" style="opacity: 0;">
+                                        <label for="{!$Component.tCost}">{!$ObjectType.Project_Milestones__c.fields.TOtal_cost__c.label}<span class="required red">&nbsp;* </span></label>
+                                        <div class="field lg">
+                                            <apex:inputField value="{!newProjectMilestones.Total_Cost__c}" id="tCost" styleClass="form-control totalcost" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <script>
+                                    if({!!isTaskLimitEnabled}){
+                                        $(".milestoneQuantity option[value='No Limit']").remove();
+                                    }
+                                </script>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn-bs btn-primary saveMilestone" onclick="validateChild();">Save</button>
+                                    <button type="button" class="btn-bs btn-default" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="projectMilesParent" class="modal fade">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title">Project Task New </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="alert alert-danger" id="validationErrorMessage" style="display:none"></div>
+                                    <div class="panel-group">
+
+                                       <div class="panel panel-nys">
+                                           <div class="panel-heading" role="tab" id="headingeligibleVehicles">
+                                               <a class="toggle-button" role="button" data-toggle="collapse" href="#eligibleVehicles" aria-expanded="true" aria-controls="eligibleVehicles">
+                                                   <span class="panel-title">Task Information</span>
+                                                   <span class="icm"></span>
+                                               </a>
+                                           </div>
+                                           <div id="eligibleVehicles" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingeligibleVehicles">
+                                               <div class="panel-body md">
+                                                <div class="row">
+                                                    <div class="col-sm-5">
+                                                        <div class="flex-row">
+                                                            <label for="{!$Component.tskName}">{!$label.Clean_Transportation_Task_Name}<span class="required red">&nbsp;* </span></label>
+                                                            <div class="field lg">
+                                                                <apex:inputField value="{!projectMilesParent.Task_Name__c}" id="tskName" styleClass="form-control name taskParent" />
+                                                            </div>
+                                                        </div>
+                                                        <apex:outputPanel layout="none">
+                                                            <div class="flex-row">
+                                                                <label for="{!$Component.phase1}">{!$ObjectType.Project_Milestones__c.fields.phase__c.label}<span class="required red">&nbsp;* </span></label>
+                                                                <div class="field lg">
+                                                                    <apex:inputField value="{!projectMilesParent.Phase__c}" id="phase1" styleClass="form-control phase taskParentPhase" />
+                                                                </div>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                        <div class="flex-row">
+                                                            <label for="{!$Component.sqnce}">{!$ObjectType.Project_Milestones__c.fields.sequence__C.label}<span class="required red">&nbsp;* </span></label>
+                                                            <div class="field lg">
+                                                                <apex:inputField value="{!projectMilesParent.Sequence__c}" id="sqnce" styleClass="form-control taskSequence" />
+                                                            </div>
+                                                        </div>
+
+                                                        <apex:outputPanel rendered="{!!ismilestone}" layout="none">
+                                                            <div class="flex-row">
+                                                                <label for="{!$Component.hBudget}">{!$ObjectType.Project_Milestones__c.fields.Hybrid_Budget__c.label}</label>
+                                                                <div class="field md">
+                                                                    <apex:inputField value="{!projectMilesParent.Hybrid_Budget__c}" id="hBudget" onchange="rerenderBudgetPanel();" />
+                                                                </div>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                    <div class="col-sm-6 col-sm-offset-1">
+                                                        <div class="flex-row">
+                                                            <label for="{!$Component.stDate}">{!$ObjectType.Project_Milestones__c.fields.start_Date__c.label}<span class="required red">&nbsp;* </span></label>
+                                                            <div class="field md">
+                                                                <apex:inputField value="{!projectMilesParent.Start_Date__c}" id="stDate" styleClass="form-control startDateParent" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-row">
+                                                            <label for="{!$Component.enDate}">{!$ObjectType.Project_Milestones__c.fields.end_Date__c.label}<span class="required red">&nbsp;* </span></label>
+                                                            <div class="field md">
+                                                                <apex:inputField value="{!projectMilesParent.End_Date__c}" id="endate" styleClass="form-control endDateParent" />
+                                                            </div>
+                                                        </div>
+                                                        <apex:outputPanel id="budgetPanel">
+                                                            <apex:outputPanel rendered="{!AND(!ismilestone, !projectMilesParent.Hybrid_Budget__c)}" layout="none">
+                                                                <script>
+                                                                    addCostFieldListeners();
+                                                                </script>
+
+                                                                <div class="flex-row">
+                                                                    <label for="{!$Component.iAmount}">{!$label.Clean_Transportation_Incentive_amount}<span class="required red">&nbsp;* </span></label>
+                                                                    <div class="field md">
+                                                                        <apex:inputField value="{!projectMilesParent.Incentive_Amount__c}" id="iAmount" styleClass="form-control nysedrashare" />
+                                                                    </div>
+                                                                </div>
+                                                                <apex:outputPanel layout="none">
+                                                                    <div class="flex-row">
+                                                                        <label for="{!$Component.cShare1}">{!$ObjectType.Project_Milestones__c.fields.Cost_Share__c.label}<span class="required red">&nbsp;* </span></label>
+                                                                        <div class="field md">
+                                                                            <apex:inputField value="{!projectMilesParent.Cost_Share__c}" id="cShare1" styleClass="form-control costShare" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="flex-row">
+                                                                        <label for="{!$Component.tCost1}">{!$ObjectType.Project_Milestones__c.fields.TOtal_cost__c.label}<span class="required red">&nbsp;* </span></label>
+                                                                        <div class="field md">
+                                                                            <apex:inputField value="{!projectMilesParent.Total_Cost__c}" id="tCost1" styleClass="form-control totalcost" />
+                                                                        </div>
+                                                                    </div>
+                                                                </apex:outputPanel>
+                                                            </apex:outputPanel>
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                </div>
+
+                                                <apex:outputPanel rendered="{!isSolicitationEnabledTaskLimit && isMilestone}" layout="none">
+                                                    <div class="row">
+                                                        <div class="col-sm-5">
+                                                          <div class="flex-row">
+                                                              <label for="{!$Component.ETL}">{!$ObjectType.Project_Milestones__c.fields.Enable_Task_Limit__c.label}</label>
+                                                              <div class="field lg">
+                                                                  <apex:inputField id="ETL" value="{!projectMilesParent.Enable_Task_Limit__c}" styleClass="enableTaskLimit" />
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                      <div class="col-sm-6 col-sm-offset-1 nyserdaCostTaskLimitPanel">
+                                                          <div class="flex-row">
+                                                              <label for="{!$Component.NYCOST}">Cost</label>
+                                                              <div class="field md">
+                                                                  <apex:inputField id="NYCOST" value="{!projectMilesParent.NYSERDA_Cost__c}" styleClass="form-control nyserdaCostTaskLimit" />
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                     </div>
+
+                                                     <script>
+                                                        function toggleNyserdaCostTaskLimit(){
+                                                            if($('.enableTaskLimit:checked').length > 0){
+                                                                $('.nyserdaCostTaskLimitPanel').show();
+                                                            }else{
+                                                                $('.nyserdaCostTaskLimitPanel').hide();
+                                                                $('.nyserdaCostTaskLimit').val('');
+                                                            }
+                                                        }
+
+                                                        toggleNyserdaCostTaskLimit();
+
+                                                        $('.enableTaskLimit').on('change', function(){toggleNyserdaCostTaskLimit()});
+                                                     </script>
+                                                   </apex:outputPanel>
+                                               </div>
+                                           </div>
+                                       </div>
+                                       <div class="panel panel-nys">
+                                           <div class="panel-heading" role="tab" id="headingstageGate">
+                                               <a class="toggle-button collapse" role="button" data-toggle="collapse" href="#stageGate" aria-expanded="true" aria-controls="stageGate">
+                                                   <span class="panel-title">Stage Gate</span>
+                                                   <span class="icm"></span>
+                                               </a>
+                                           </div>
+                                           <div id="stageGate" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingstageGate">
+                                               <div class="panel-body md">
+                                                   <div class="row">
+                                                       <div class="col-sm-5">
+                                                           <div class="flex-row">
+                                                               <label for="{!$Component.sgate}">{!$ObjectType.Project_Milestones__c.fields.Stage_Gate__c.label}</label>
+                                                               <div class="field lg">
+                                                                   <apex:inputField id="sGate" value="{!projectMilesParent.Stage_Gate__c}" styleClass="form-control phase" />
+                                                               </div>
+                                                           </div>
+                                                           <div class="flex-row">
+                                                               <label for="{!$Component.sgateStatus}">{!$ObjectType.Project_Milestones__c.fields.Stage_Gate_Status__c.label}</label>
+                                                               <div class="field lg">
+                                                                   <apex:inputField id="sGateStatus" value="{!projectMilesParent.Stage_Gate_Status__c}" styleClass="form-control phase" />
+                                                               </div>
+                                                           </div>
+                                                       </div>
+                                                       <div class="col-sm-6 col-sm-offset-1">
+                                                           <div class="flex-row">
+                                                               <label for="{!$Component.sGateStatusDate}">{!$ObjectType.Project_Milestones__c.fields.Stage_Gate_Status_Date__c.label}</label>
+                                                               <div class="field lg">
+                                                                   <apex:inputField id="sGateStatusDate" value="{!projectMilesParent.Stage_Gate_Status_Date__c}" styleClass="form-control phase" />
+                                                               </div>
+                                                           </div>
+                                                           <div class="flex-row">
+                                                               <label for="{!$Component.sGateStatusNote}">{!$ObjectType.Project_Milestones__c.fields.Stage_Gate_Status_Note__c.label}</label>
+                                                               <div class="field lg">
+                                                                   <apex:inputField id="sGateStatusNote" value="{!projectMilesParent.Stage_Gate_Status_Note__c}" styleClass="form-control phase" />
+                                                               </div>
+                                                           </div>
+                                                       </div>
+                                                       <apex:outputPanel rendered="{!!isMilestone}">
+                                                           <div class="col-sm-5">
+                                                               <div class="flex-row">
+                                                                   <label for="{!$Component.NEA}">{!$ObjectType.Project_Milestones__c.fields.Not_to_Exceed_Amount__c.label}</label>
+                                                                   <div class="field lg">
+                                                                       <apex:inputField id="NEA" value="{!projectMilesParent.Not_to_Exceed_Amount__c}" styleClass="form-control phase" />
+                                                                   </div>
+                                                               </div>
+                                                           </div>
+                                                       </apex:outputPanel>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                       </div>
+
+                                       <div class="panel panel-nys">
+                                           <div class="panel-heading" role="tab" id="headingdescription">
+                                               <a class="toggle-button collapse" role="button" data-toggle="collapse" href="#description" aria-expanded="true" aria-controls="description">
+                                                   <span class="panel-title">Description</span>
+                                                   <span class="icm"></span>
+                                               </a>
+                                           </div>
+                                           <div id="description" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingdescription">
+                                               <div class="panel-body md">
+                                                   <div class="flex-row">
+                                                       <label for="{!$Component.editor1}">{!$ObjectType.Project_Milestones__c.fields.description__c.label}</label>
+                                                   </div>
+                                                   <div class="flex-row">
+                                                       <apex:inputTextArea style="width:100%" value="{!projectMilesParent.Description__c}" styleClass="form-control ckeditor" id="editor1" richtext="false" />
+                                                   </div>
+                                               </div>
+                                           </div>
+                                       </div>
+                                    </div><!-- /.panel-group -->
+                                </div>
+                                <div class="modal-footer flex">
+                                    <div class="left">
+                                       <button type="button" class="btn-bs btn-default" data-dismiss="modal">Cancel</button>
+                                    </div><!-- /.left -->
+                                    <div class="right">
+                                       <button type="button" class="btn-bs btn-primary saveTask"  onclick="validateParent()">Save</button>
+                                    </div><!-- /.right -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--
+                    <div id="projectMilesParentDesc" class="modal fade">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title">Project Task {!projectMilesParent.Task_Name__c} - Description</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="flex-row">
+                                        <apex:outputField value="{!projectMilesParent.Description__c}" />
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn-bs btn-default" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    -->
+                </apex:outputPanel>
+
+                <apex:actionFunction name="rerenderBudgetPanel" rerender="budgetPanel" status="status" />
+            </apex:form>
+        </apex:define>
+    </apex:composition>
+    <script>
+        var milestone = '{!ismilestone}';
+
+
+        function validateParent() {
+            if(! isEmpty('validationErrorMessage', '.taskParent','Project Task Name'))
+                return false;
+
+            if(! isEmpty('validationErrorMessage', '.startDateParent','Start Date'))
+                return false;
+
+            if(! isEmpty('validationErrorMessage', '.endDateChild','End Date'))
+                return false;
+			console.log('here');
+            if(! isEmpty('validationErrorMessage', '.taskParentPhase','Phase'))
+                return false;
+
+            if(! isEmpty('validationErrorMessage', '.taskSequence','Sequence'))
+                return false;
+
+            if(! isEmpty('validationErrorMessage', '.nysedrashare','Cost') && milestone != 'true' && {!!projectMilesParent.Hybrid_Budget__c})
+                return false;
+
+            if(! isEmpty('validationErrorMessage', '.costShare','Cost Share') && milestone != 'true' && {!!projectMilesParent.Hybrid_Budget__c})
+                return false;
+
+            if(!isEmpty('validationErrorMessage', '.totalcost','Total Cost') && milestone != 'true' && {!!projectMilesParent.Hybrid_Budget__c})
+                return false;
+
+            if({!isSolicitationEnabledTaskLimit}){
+                if(($('.enableTaskLimit:checked').length > 0) && ($('.nyserdaCostTaskLimit').val() == '' ||
+                                                                  $('.nyserdaCostTaskLimit').val() == null)){
+                    $('#validationErrorMessage').hide();
+                    $("#validationErrorMessage").html("<strong>Error! Cost :</strong> Cannot be empty.");
+                    $("#validationErrorMessage").show();
+                    return false;
+                }
+            }
+
+            if (validateDate('validationErrorMessage', 'startDateParent', 'endDateParent')) {
+                $('.saveTask').prop('disabled', true);
+                data();
+            }
+        }
+
+        function validateChild() {
+            debugger;
+            if(! isEmpty('ErrorMessage', '.childName','Project Milestone Name'))
+                return false;
+
+            if(! isEmpty('ErrorMessage', '.startDateChild','Start Date'))
+                return false;
+
+            if(! isEmpty('ErrorMessage', '.endDateChild','End Date'))
+                return false;
+
+            if(! isEmpty('ErrorMessage', '.sequenceChild','Sequence'))
+                return false;
+
+            if(! isEmpty('ErrorMessage', '.statusChild','Status'))
+                return false;
+
+            if({!isSolicitationEnabledQuantity}){
+                if(! isEmpty('ErrorMessage', '.milestoneQuantity','Quantity'))
+                    return false;
+            }
+
+            if(! isEmpty('ErrorMessage', '.nysedrashare','Cost'))
+                return false;
+
+            if(! isEmpty('ErrorMessage', '.costShare','Cost Share'))
+                return false;
+
+            if(! isEmpty('ErrorMessage', '.totalcost','Total Cost'))
+                return false;
+
+            if (validateDate('ErrorMessage', 'startDateChild', 'endDateChild')) {
+                $('.saveMilestone').prop('disabled', true);
+                insertObject();
+            }
+        }
+        function navigateToPage(){
+            var projectId = '{!projectid}'
+            window.location.replace('https://desedemo-demo-lp.cs196.force.com/psr/apex/CORE_Invoice_Page?pId='+projectId+'&sfdc.override=1');
+        }
+        function validatedeliverable() {
+            if(! isEmpty('ErrorMessageDel', '.delName','Project Deliverable Name'))
+                return false;
+
+            if(! isEmpty('ErrorMessageDel', '.startDatedel','Start Date'))
+                return false;
+
+            if(! isEmpty('ErrorMessageDel', '.endDatedel','End Date'))
+                return false;
+
+            if(! isEmpty('ErrorMessageDel', '.sequenceDel','Sequence'))
+                return false;
+
+
+
+            if(validateDate('ErrorMessageDel', 'startDatedel', 'endDatedel')) {
+                $('.saveDeliverable').prop('disabled', true);
+                insertObject();
+            }
+        }
+
+        function validateDeliverableFeedback() {
+            insertFeedback();
+        }
+
+        function isEmpty(source,className, fname){
+            $('#' + source).hide();
+            console.log($(className));
+            console.log($(className).val());
+            if($(className).val()==null || $(className).val()==''){
+                $("#" + source).html("<strong>Error! "+fname+" :</strong> Cannot be empty.");
+                $('#' + source).show();
+                return false;
+            }
+            return true;
+        }
+        function stringTonumber(string) {
+            if (string == null || string == "")
+                return 0;
+            var NumberValue = string.replace(/\,/g, '').replace('$', '');;
+            return parseFloat(NumberValue);
+        }
+
+        function validateTotalCost(source, nysedrashare, costShare, totalcost) {
+            $('#' + source).hide();
+            var nysedrashare = stringTonumber($('.' + nysedrashare).val());
+            var costShare = stringTonumber($('.' + costShare).val());
+            var totalCost = stringTonumber($('.' + totalcost).val());
+
+            if (totalcost != costShare + nysedrashare) {
+                $("#" + source).html("<strong>Error:</strong> Total Cost should be equal to Incentive Amount and cost share.");
+                $('#' + source).show();
+                return false;
+            }
+            return true;
+        }
+
+        function validateDate(source, startDateParent, endDateParent) {
+            debugger;
+            $('#' + source).hide();
+            var startDate = Date.parse($("." + startDateParent).val());
+            var endDate = Date.parse($("." + endDateParent).val());
+            if (startDate > endDate) {
+                $("#" + source).html("<strong>Error:</strong> Start Date cannot be greater than end Date.");
+                $('#' + source).show();
+                return false;
+            }
+            return true;
+        }
+
+        $(document).ready(function() {
+            $.fn.modal.Constructor.prototype.enforceFocus = function() {
+                modal_this = this
+                $(document).on('focusin.modal', function(e) {
+                    if (modal_this.$element[0] !== e.target && !modal_this.$element.has(e.target).length && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_select') && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_text')) {
+                        modal_this.$element.focus()
+                    }
+                })
+            };
+
+            //Open task panel
+            if('{!taskId}' != null && '{!taskId}' != '') {
+                $('#{!taskId}').collapse('show');
+            }
+        });
+
+        /*
+        function validateStartEndDate(eve,errorClass){
+            if(eve == parent){
+
+                var enddateParent = $(".enddateParent");
+                var startdateParent = $(".startdateParent");
+                if(startdateParent==null || startdateParent=="")
+                $('#errorMessageparent').html('<strong>Error!</strong> Start  Date Cannot be blanks'  );
+                retrun false;
+            }
+        }
+        */
+
+        // Enable the stack panels
+        $('.panel-collapse').collapse({
+            toggle: false
+        });
+        // Toggle the Expand All / Collapse All buttons
+        $('.btn-bs.toggle').click(function() {
+            $(this).parent().children('.btn-bs.toggle').toggleClass('hidden');
+        });
+        // Create the Expand All / Collapse All events
+        $('#expandAllButton').click(function() {
+            var panels = $('#DeliverableGroup').find('.panel-collapse');
+            panels.collapse('show');
+            panels.siblings('.panel-heading').removeClass('collapsed');
+        });
+        $('#collapseAllButton').click(function() {
+            var panels = $('#DeliverableGroup').find('.panel-collapse');
+            panels.collapse('hide');
+            panels.siblings('.panel-heading').addClass('collapsed');
+        });
+
+        function addCostFieldListeners() {
+            $(".nysedrashare, .costShare").on("change", function() {
+                var nyserdaCost = stringTonumber($(this).parents(".modal-body").find(".nysedrashare").val());
+                var costShare = stringTonumber($(this).parents(".modal-body").find(".costShare").val());
+                $(this).parents(".modal-body").find(".totalcost").val(nyserdaCost + costShare);
+            });
+        }
+
+        function removeMilestoneVal(){
+            $('.statusChild option').each(function(){
+                if($(this).val() == 'Unsubmitted')
+                    $(this).replaceWith('span');
+            })
+        }
+    </script>
+</apex:page>

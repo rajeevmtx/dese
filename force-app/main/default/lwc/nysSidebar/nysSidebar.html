@@ -1,0 +1,37 @@
+<!--
+ - Created by arunm on 22-03-2020.
+ -->
+
+<!-- NYS Sidebar -->
+<template>
+    div class="container_spacing">
+    <div class="slds-grid slds-gutters mobile-block">
+        <div class="slds-col slds-size_2-of-12 mobile-full-width sidenav-margin">
+            <div>
+                <lightning-vertical-navigation>
+                    <lightning-vertical-navigation-section>
+                        <button class="padding_space_button" onclick={navigateToPage}
+                                data-navigatepage="demans" data-modal="registerEntity" style="margin-top: 3rem;">
+                            <div class="slds-grid slds-gutters pointer-event-none">
+                                <div class="slds-col slds-size_1-of-12">
+                                    <lightning-icon icon-name="utility:identity" size="xx-small"></lightning-icon>
+                                </div>
+                                <div class="slds-col slds-size_11-of-12">
+                                    Demands
+                                </div>
+                            </div>
+                        </button>
+                    </lightning-vertical-navigation-section>
+                </lightning-vertical-navigation>
+            </div>
+        </div>
+        <div class="slds-col slds-size_10-of-12 side_space mobile-full-width">
+            <slot name="body"></slot>
+        </div>
+    </div>
+    </div>
+
+    <div class="slds-m-top_large text-right newfooter" if:true={showFooter}>
+        <p>{footerText}</p>
+    </div>
+</template>

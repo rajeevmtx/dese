@@ -1,0 +1,20 @@
+.navBar {
+    background-color : #5a565f;;
+    width: 100%;
+    border-bottom: 0px solid transparent;
+}
+.footer_container_spacing {
+    padding: 0 .75rem !important;
+    width: 100%;
+    position: fixed;
+    margin-bottom: 3.5rem;
+}
+.footer-content{
+    padding: 1.3rem 0px 0px 2rem;
+    font-size: 22px;
+    line-height: 26px;
+    display: table-cell;
+    height: 75px;
+    vertical-align: middle;
+    color: white;
+}

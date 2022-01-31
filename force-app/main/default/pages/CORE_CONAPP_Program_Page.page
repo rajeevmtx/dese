@@ -1,0 +1,252 @@
+<apex:page controller="CORE_CONAPP_Application_Controller" cache="false" showHeader="false" sidebar="false" action="{!getProgramFamilyList}" standardStylesheets="false" title="Contractor Application">
+    <head>
+        <style>
+            #errorMessage{
+                display: none;
+            }
+
+            .tooltipCss{
+                width: 12%;
+            }
+
+            .helpIconSpan{
+                margin-right: 90%;
+                padding-top: 1%;
+            }
+
+            .helpIconBuilderSpan{
+                margin-right: 90%;
+                padding-top: 1%;
+            }
+            .assistiveText {
+                position: absolute !important;
+                height: 1px;
+                width: 1px;
+                overflow: hidden;
+                clip: rect(1px 1px 1px 1px);
+            }
+        </style>
+    </head>
+    <apex:composition template="CORE_CONAPP_Template_Page">
+        <apex:define name="body">
+            <div class="page">
+                <apex:form >
+                    <apex:outputPanel layout="block" id="mainPanel" styleClass="application">
+                        <div class="content content-header nonRTEM">
+                            <h1>Select Program </h1>
+                            <div class="description">
+                                {!$Label.CORE_CONAPP_Program_Page_Description}
+                            </div>
+                        </div>
+ 
+                        <div class="alert-container">
+                            <div class="alert alert-danger" id="errorMessage"/>
+
+<!--                             <apex:outputPanel layout="none" rendered="{!programName == 'Commercial_Real_Time_Energy_Management'}"> -->
+<!--                                 <div class="alert alert-info"><apex:outputText value="{!$Label.RTEM_CORE_CONAPP_DIRECTIONS}" escape="false" /></div> -->
+<!--                             </apex:outputPanel> -->
+                        </div> 
+
+                        <div class="content content-body">
+                            <apex:outputPanel layout="block" styleClass="flex-row m-b-lg nonRTEM">
+                                <div class="form-group lg">
+                                    <label  for="{!$Component.programFamily}" data-toggle="popover"
+                                            data-trigger="hover" data-placement="right"
+                                            data-content="{!$ObjectType.Program__c.fields.Program_Family__c.inlineHelpText}">Program Family <span class="icon-question" ></span>
+                                    </label>
+
+                                    <div class="field" >
+                                        <apex:selectList id="programFamily" value="{!selectedprogramFamily}"
+                                                         styleClass="form-control programFamilySelection select2 lg"
+                                                         size="1" multiselect="false" onchange="getProgramList()">
+                                            <apex:selectOptions value="{!programFamilyList}"/>
+                                        </apex:selectList>
+                                        <!-- <span class="icon-question"></span> -->
+                                    </div><!-- /.field -->
+                                </div><!-- /.flex-row -->
+                            </apex:outputPanel>
+
+                            <apex:outputPanel layout="block" styleClass="form-row m-b-lg nonRTEM" rendered="{!selectedprogramFamily != ''}">
+
+                                <span class="m-b" >
+                                    <apex:outputLabel for="{!$Component.hiddenTxtWCAGIssue}" value="Select a program or Both" rendered="{!if(selectedprogramFamily == 'NY-Sun',true,false)}"/>
+                                    <apex:outputLabel for="{!$Component.hiddenTxtWCAGIssue}" value="Please select a program" rendered="{!if(selectedprogramFamily == 'NY-Sun',false,true)}"/>
+                                </span>
+                                <apex:inputText Id="hiddenTxtWCAGIssue" style="display:none"/> <!-- Accessibility fix -->
+
+                                <div class="field" >
+                                        <apex:outputPanel rendered="{!programList.size == 0}">
+                                            <div class="body-text-1">No program is associated to the selected family</div>
+                                        </apex:outputPanel>
+                                        <apex:selectRadio legendInvisible="true" legendText="Select program" value="{!selectedProgram}" id="selectrole" layout="pageDirection" styleClass="programSelection" onchange="getRoles()" rendered="{!programList.size > 0}">
+                                                <apex:selectOptions value="{!programList}"/>
+                                        </apex:selectRadio>
+
+                                </div><!-- /.field -->
+
+                            </apex:outputPanel>
+
+                            <apex:outputPanel id="rolesSection">
+                                <apex:outputPanel layout="block" styleClass="form-row m-b-lg" rendered="{!AND(serviceProviderLabel != null, serviceProviderLabel != '')}">
+                                    <apex:outputPanel layout="none" rendered="{!programName != 'Commercial_Real_Time_Energy_Management'}">
+                                        <span class="m-b roleSelectionLabel">
+                                            <span class="icon-help" data-toggle="tooltip" data-placement="top" data-html="true"
+                                                  title="{!$Label.Select_Role_Help_Text}">
+                                            </span>
+                                        </span>
+                                    </apex:outputPanel>
+
+<!--                                     <apex:outputPanel layout="none" rendered="{!programName == 'Commercial_Real_Time_Energy_Management'}"> -->
+<!--                                         <label class="m-b roleSelectionLabel"> -->
+<!--                                             {!$Label.RTEM_SELECT_ROLE_HELP_TEXT} -->
+<!--                                             <span class="icon-help" data-toggle="tooltip" data-placement="top" data-html="true" -->
+<!--                                                   title="{!$Label.RTEM_CONAPP_SELECT_ROLE_TOOLTIP}"> -->
+<!--                                             </span> -->
+<!--                                         </label> -->
+<!--                                     </apex:outputPanel> -->
+
+                                    <div class="form-row">
+                                    <fieldset>
+                                        <div class="checkbox sm">
+
+                                           <apex:outputPanel layout="none" rendered="{!if(selectedprogramFamily == 'NY-Sun',true,false)}">
+                                                <legend>
+                                                    <label for="service" class="tooltipCss"
+                                                       data-toggle="popover" data-html="true" data-trigger="hover" data-placement="right" data-content="{!$Label.NYSUN_CONAPP_Contractor_Helptext}"><input type="checkbox" name="role" class="role" value="Service Provider" id="service"/>{!serviceProviderLabel} <span class="icon-question helpIconSpan"></span></label>
+                                                </legend>
+                                           </apex:outputPanel>
+
+                                           <apex:outputPanel layout="none" rendered="{!if(selectedprogramFamily != 'NY-Sun',true,false)}">
+                                            <legend>
+                                                <label for="service"><input type="checkbox" name="role" class="role" value="Service Provider" id="service"/>{!serviceProviderLabel}</label>
+                                            </legend>
+                                           </apex:outputPanel>
+                                        </div>
+                                        <div class="checkbox sm" style="{!IF(systemProviderLabel != '','','display:none;')}">
+                                           <apex:outputPanel layout="none" rendered="{!if(selectedprogramFamily == 'NY-Sun',true,false)}">
+                                             <legend>
+                                                <label for="system" class="tooltipCss"
+                                                data-toggle="popover" data-html="true" data-trigger="hover" data-placement="right" data-content="{!$Label.NYSUN_CONAPP_Builder_Helptext}"><input type="checkbox" name="role" class="role" value="System Provider" id="system"/>{!systemProviderLabel} <span class="icon-question helpIconBuilderSpan"></span></label>
+                                           </legend>
+                                           </apex:outputPanel>
+
+                                           <apex:outputPanel layout="none" rendered="{!if(selectedprogramFamily != 'NY-Sun',true,false)}">
+                                             <legend>
+                                                <label for="system"><input type="checkbox" name="role" class="role" value="System Provider" id="system"/>{!systemProviderLabel}</label>
+                                             </legend>
+                                           </apex:outputPanel>
+                                        </div>
+                                        <div class="checkbox sm" style="{!IF(OR(selectedProgram == GSHPSmallProgramVersionId, selectedProgram == GSHPLargeProgramVersionId, selectedProgram = 'GSHP_ALL_SYSTEM'),'','display:none;')}">
+                                           <apex:outputPanel layout="none">
+                                            <legend>
+                                                <label for="driller"><input type="checkbox" name="role" class="role" value="Driller" id="driller"/>Driller</label>
+                                            </legend>
+                                           </apex:outputPanel>
+                                        </div>
+                                        </fieldset>
+                                    </div>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                        </div>
+                    </apex:outputPanel>
+
+                    <apex:actionFunction name="getRoles" action="{!getRoles}" rerender="rolesSection" status="status" oncomplete="manageUI()"/>
+                    <apex:actionFunction name="getProgramList" action="{!getProgramList}" status="status"  rerender="mainPanel" oncomplete="manageUI();setNYSUNCommerialId('{!nysunCommertialProgramVersionId}', '{!nysunResidentialProgramVersionId}');"/>
+                    <apex:actionFunction name="next" action="{!launchContractAppWizard}" status="status"  rerender="mainPanel" oncomplete="manageUI()">
+                        <apex:param value="" name="role1" assignTo="{!serviceRole}" />
+                        <apex:param value="" name="role2" assignTo="{!systemRole}" />
+                        <apex:param value="" name="role3" assignTo="{!drillerRole}" />
+                    </apex:actionFunction>
+                    <apex:actionFunction name="previous" action="{!previous}" rerender="mainPanel" status="status" oncomplete="manageUI()">
+                        <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                    </apex:actionFunction>
+                </apex:form>
+            </div>
+
+            <footer class="footer-nav">
+                <div class="content flex controls sm">
+                    <a href="javascript:void(0)" onclick="selectProgramScript();" class="btn-bs btn-lg btn-primary">Continue</a>
+                </div>
+            </footer>
+        </apex:define>
+    </apex:composition>
+    <script>
+        var nysunCommertialProgramVersionId;
+        var nysunResidentialProgramVersionId;
+
+        $(document).ready(function(){
+
+            jQuery("html").attr("lang", "en");
+
+            $(document).on('mouseover', '[data-toggle="popover"]', function () { $(this).popover('show'); });
+            $(document).on('mouseleave', '[data-toggle="popover"]', function () { $(this).popover('hide'); });
+            nysunCommertialProgramVersionId = '{!nysunCommertialProgramVersionId}';
+            nysunResidentialProgramVersionId = '{!nysunResidentialProgramVersionId}';
+
+            if("{!programName}" == "Commercial_Real_Time_Energy_Management"){
+                $('.nonRTEM').hide();
+            }
+
+            manageUI();
+        });
+
+        function manageUI() {
+            $('.select2').select2();
+            $('[data-toggle="tooltip"]').tooltip();
+
+            if($('.programSelection input:checked').val() == nysunResidentialProgramVersionId || $('.programSelection input:checked').val() == 'Both') {
+                $('.roleSelectionLabel').html('Please select your role in the Residential / Small Commercial Program <span class=\"icon-question\" ></span>');
+            } else {
+
+                if("{!programName}" != "Commercial_Real_Time_Energy_Management"){
+                    $('.roleSelectionLabel').html('Please select your role in this application (Select all that apply) <span class=\"icon-question\" ></span>');
+                }
+
+            }
+        }
+
+        function selectProgramScript() {
+            $('#errorMessage').hide();
+            $('#errorMessage').html("");
+            if ($('.programFamilySelection').val() == null || $('.programFamilySelection').val() == "") {
+                $('#errorMessage').html("Please select a program family <span class=\"icon-question\" ></span>");
+                $('#errorMessage').show();
+                return false;
+            }
+            if ( $('.programSelection input:checked').length == 0) {
+                $('#errorMessage').html("Please select at least one program <span class=\"icon-question\" ></span>");
+                $('#errorMessage').show();
+                return false;
+            }
+
+            if ($('.role:checked').length == 0 && $('.programSelection input:checked').val() != nysunCommertialProgramVersionId) {
+                $('#errorMessage').html("Please select your role in this application <span class=\"icon-question\" ></span>");
+                $('#errorMessage').show();
+                return false;
+            }	
+            
+            if($(".select2-selection__rendered" ).html() == 'New Construction') {
+            	if($('#service').is(':checked') && $('#system').is(':checked')) {
+	            	$('#errorMessage').html("You can select only one role in this application <span class=\"icon-question\" ></span>");
+                	$('#errorMessage').show();
+                	return false;
+            	}
+            }
+            
+            if ($('#service').is(':checked')) $('#service').val("TRUE");
+            else $('#service').val("FALSE");
+            if ($('#system').is(':checked')) $('#system').val("TRUE");
+            else $('#system').val("FALSE");
+            if ($('#driller').is(':checked')) $('#driller').val("TRUE");
+            else $('#driller').val("FALSE");
+
+            next($('#service').val(), $('#system').val(), $('#driller').val());
+        }
+		
+		
+        function setNYSUNCommerialId(cVersionId, rVersionId) {
+            nysunCommertialProgramVersionId = cVersionId;
+            nysunResidentialProgramVersionId = rVersionId;
+        }
+    </script>
+</apex:page>

@@ -1,0 +1,15 @@
+/**
+ * Created by AshishP on 21-01-2020.
+ */
+ .slds-dropdown {
+     top : auto !important;
+     bottom: 30px !important;
+ }
+ td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  .slds-modal__container{
+    max-width: 80% !important;
+}

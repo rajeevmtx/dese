@@ -1,0 +1,178 @@
+body {
+    background: #dfe9ff;
+    font-family: Lato, sans-serif;
+}
+
+.container {
+    margin: 0 auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    max-width: 1330px;
+}
+
+.top_margin {
+    margin-top: 1rem !important;
+}
+
+.background-red {
+    background-color: red;
+    color: white !important;
+    padding: 0 10px;
+    border-radius: 5px;
+}
+
+.section-parts {
+    padding: 0 .5rem;
+    border-right: 1px solid #ddd;
+    min-height: 100px;
+}
+
+.section-parts:last-child {
+    border-right: 0px;
+}
+
+.user--image {
+    border-radius: 12px;
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+}
+
+.user--content {
+    padding: 0 0 0 1rem;
+}
+
+.user--name {
+    color: rgb(14, 97, 185);
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: .5rem;
+}
+
+.user--address {
+    color: rgb(51, 51, 51);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 19px;
+}
+
+.user-distance {
+    color: rgb(51, 51, 51);
+    font-style: italic;
+    font-weight: normal;
+    line-height: 21px;
+}
+
+.nh_grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    font-size: 16px;
+    font-weight: 600;
+    align-items: center;
+    min-height: 100px;
+}
+
+.nh_grid-container--two {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    font-size: 16px;
+    font-weight: 600;
+    align-items: center;
+    min-height: 100px;
+}
+
+.nh_grid-item {
+    padding: 1rem;
+}
+
+span.item-value {
+    display: block;
+    font-size: 14px;
+    font-weight: 400;
+    margin-top: .2rem;
+}
+
+.nh_custom-btn {
+    margin: .2rem 0rem;
+    justify-content: center;
+    min-width: 130px;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.nh_card {
+    padding: 1rem;
+    box-shadow: 0 0.5px 1.2px rgba(0, 0, 0, 0.011), 0 1.1px 2.8px rgba(0, 0, 0, 0.016), 0 2.1px 5.3px rgba(0, 0, 0, 0.02), 0 3.8px 9.4px rgba(0, 0, 0, 0.024), 0 7.1px 17.5px rgba(0, 0, 0, 0.029), 0 17px 42px rgba(0, 0, 0, 0.04);
+    margin-bottom: 1rem;
+    background-color: white;
+}
+
+
+/*Code for Model Window */
+.top_margin--large {
+    margin-top: 2rem !important;
+}
+
+.item-value-right,
+.item-value-left {
+    min-width: 10rem;
+    padding-bottom: .75rem;
+}
+
+.model-item-list {
+    display: inline-flex;
+    border-bottom: 1px solid #eee;
+}
+
+.item-value-left {
+    font-weight: 600 !important;
+}
+
+.model-item-list .slds-form-element {
+    display: flex;
+    padding: 0.75rem 0rem;
+}
+
+.model-item-list label.slds-form-element__label {
+    font-size: 14px;
+    min-width: 10rem;
+}
+
+
+.model-item-list .slds-form-element__control.slds-p-top_xxx-small {
+    padding-top: .4rem
+}
+
+/*End Code for Model Window */
+
+.placement-button {
+    /* background-color: green;
+    color: white; */
+    background-color: white;
+    color: green;
+}
+
+.set-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* @media only screen and (max-width: 1024px) { */
+.set-button-style {
+    font-size: 10px !important;
+}
+
+.set-percent-style {
+    font-size: 14px !important;
+}
+
+/* } */
+
+.set-child-grid {
+    display: grid !important;
+    font-size: 16px;
+    font-weight: 600;
+    align-items: center;
+    grid-template-columns: 12fr 1fr;
+}

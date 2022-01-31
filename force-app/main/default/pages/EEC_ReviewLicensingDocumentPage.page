@@ -1,0 +1,351 @@
+<apex:page standardController="Licensing_Transaction__c" extensions="EEC_ReviewLicensingDocumentExtension" showheader="false">
+    <c:eec_javascriptcsscontainer includeJquery="true" includeBootStrapJS="true" includeLightningCSS="true" includeFontAwesome="true"
+    />
+    <style>
+        .documentsTable th,
+        .documentsTable td {
+            padding: 8px !important;
+            line-height: 1.42857143 !important;
+            vertical-align: top !important;
+        }
+        .downArrowClass {
+            height: 1rem !important;
+            fill: rgb(0, 109, 204) !important;
+        }
+        .fade {
+            display: none;
+        }
+        .fade.in {
+            display: block;
+        }
+        .nested-table:before {
+            content: '';
+        }
+        .slds-table td.nested-table {
+            padding: 0px !important;
+        }
+        .collapsed:after {
+            transform: rotate(225deg) !important;
+        }
+        .deliverable-expand:not(.collapsed) i {
+            transform: rotate(90deg);
+        }
+        .btnNeutralClass {
+            padding: 6px 12px !important;
+            line-height: 1.42857143 !important;
+            color: #555 !important;
+            min-width: 8rem !important;
+            font-size: medium !important;
+            max-width: 25rem !important;
+        }
+        .btnBrandClass {
+            padding: 6px 12px !important;
+            line-height: 1.42857143 !important;
+            min-width: 8rem !important;
+            font-size: medium !important;
+            max-width: 25rem !important;
+        }
+        .close {
+            float: right;
+            cursor: pointer;
+        }
+        .slds-scope img {
+            max-width: none !important;
+        }
+    </style>
+    <div class="slds-scope">
+        <apex:form id="reviewForm">
+            <!-- <apex:actionFunction name="saveS3File" action="{!updateS3File}" rerender="reviewForm" status="status" oncomplete="refresh('{!reloadPage}');">
+                <apex:param value="" name="documentId" />
+                <apex:param value="" name="fileId" />
+            </apex:actionFunction> -->
+            <apex:actionFunction name="saveS3DocumentsAF" action="{!updateDocuments}" rerender="reviewForm" status="status">
+                <apex:param value="" name="documentId" />
+            </apex:actionFunction>
+            <apex:outputPanel rendered="{!AllDocuments.size == 0}">
+                <div class="slds-box slds-text-align_center">
+                    There are no documents for Review.
+                </div>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!AllDocuments.size > 0}">
+                <div class="slds-p-top_x-small slds-p-bottom_x-small">
+                    <apex:outputPanel rendered="{!!isEditMode}">
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_1-of-3 slds-p-top_x-small">
+                                <img class="helpOrb helpOrbautomate" style="max-width:70px;" src="{!URLFOR($Resource.EEC_Bootstrap,'EEC_Bootstrap/img/Information.png')}"
+                                /> &nbsp; Uploaded By Internal Staff &nbsp; |&nbsp;
+                                <img class="helpOrb helpOrbautomate" style="max-width:70px;" src="{!URLFOR($Resource.EEC_Bootstrap,'EEC_Bootstrap/img/upload.png')}"
+                                /> &nbsp; Upload Icon
+                            </div>
+                            <div class="slds-col slds-size_2-of-3">
+                                <apex:commandButton StyleClass="slds-button slds-button_neutral btnNeutralClass" value="Edit" action="{!setEditMode}" rerender="reviewForm"
+                                    status="status" />&nbsp;&nbsp;&nbsp;
+                                <apex:commandButton StyleClass="slds-button slds-button_neutral btnNeutralClass" value="Send Rejected Document to Provider"
+                                    action="{!sendRejectDocumentsToProvider}" oncomplete="openSendRejectedDocWindow('{!isSendDocumentsToProviderApplicable}');"
+                                    rerender="reviewForm" status="status" />
+                            </div>
+                        </div>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!isEditMode}">
+                        <div class="slds-text-align_center">
+                            <apex:commandButton StyleClass="slds-button slds-button_brand btnBrandClass" value="Save" action="{!saveProjectDocuments}"
+                                rerender="reviewForm" status="status" oncomplete="refresh('{!reloadPage}');" />&nbsp;&nbsp;&nbsp;
+                            <apex:commandButton StyleClass="slds-button slds-button_neutral btnNeutralClass" value="Cancel" action="{!cancelChanges}"
+                                rerender="reviewForm" status="status" />
+                        </div>
+                    </apex:outputPanel>
+                </div>
+                <apex:pageMessages id="pageMessage" />
+                <table class="slds-table slds-table_bordered documentsTable slds-max-medium-table--stacked">
+                    <thead>
+                        <tr>
+                            <th>Document Type</th>
+                            <th class="slds-text-align_center">Mode</th>
+                            <th class="slds-text-align_center">Status</th>
+                            <apex:outputPanel rendered="{!!isEditMode}" layout="none">
+                                <th class="slds-text-align_center">View/Upload</th>
+                            </apex:outputPanel>
+                            <th class="slds-text-align_center">Comment</th>
+                            <th class="slds-text-align_center">Not Applicable</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <apex:repeat value="{!AllDocuments}" var="transactionDocument">
+                            <tr>
+                                <td>
+                                    <a class="deliverable-expand collapsed" onclick="toggleDataDiv('collapse{!transactionDocument.document.Id}', this);">
+                                        <i class="fa fa-chevron-right"></i>&nbsp;
+                                        <apex:outputPanel rendered="{!NOT(ISBLANK(transactionDocument.document.Document_Type__r.Name))}">
+                                            <apex:outputText value="{!transactionDocument.document.Document_Type__r.Name}" />
+                                        </apex:outputPanel>
+                                        <apex:outputPanel rendered="{!ISBLANK(transactionDocument.document.Document_Type__r.Name)}">
+                                            <apex:outputText value="{!transactionDocument.document.Transaction_Document_Name__c}" />
+                                        </apex:outputPanel>
+                                        <apex:outputPanel rendered="{!AND(ISBLANK(transactionDocument.document.Document_Type__r.Name), ISBLANK(transactionDocument.document.Transaction_Document_Name__c))}">
+                                            <apex:outputText value="{!transactionDocument.document.Name}" />
+                                        </apex:outputPanel>
+                                    </a>
+                                    <apex:outputText value=" [Alert: Missing Document]" styleclass="text-danger" rendered="{!transactionDocument.document.Document_Attachment_Status__c == 'No Attachment' && !transactionDocument.document.Document__r.Not_Applicable__c}"
+                                    />
+                                </td>
+                                <td class="slds-text-align_center">
+                                    <apex:outputText value="{!transactionDocument.document.Mode__c}" />
+                                </td>
+                                <td class="slds-text-align_center">
+                                    <apex:outputPanel rendered="{!isEditMode}">
+                                        <apex:inputField value="{!transactionDocument.document.Status__c}" styleClass="slds-select" />
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!!isEditMode}">
+                                        <apex:outputText value="{!transactionDocument.document.Status__c}" />
+                                    </apex:outputPanel>
+                                </td>
+                                <apex:outputPanel rendered="{!!isEditMode}" layout="none">
+                                    <td class="slds-text-align_center">
+                                        <a title="Attach Document(s)" onclick="window.open('/apex/EEC_AttachmentSelection?id={!transactionDocument.document.Document__c}&transactiondocId={!transactionDocument.document.Id}&transactionId={!transactionDocument.document.Licensing_Transaction__c}','_blank','width=1100, height=600');return false;">
+                                            <img class="helpOrbautomate" src="{!URLFOR($Resource.EEC_Bootstrap,'EEC_Bootstrap/img/upload.png')}" />
+                                        </a>
+                                    </td>
+                                </apex:outputPanel>
+                                <td class="slds-text-align_center">
+                                    <apex:outputPanel rendered="{!isEditMode}">
+                                        {!transactionDocument.document.Document__r.Notes__c}
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!!isEditMode}">
+                                        {!transactionDocument.document.Document__r.Notes__c}
+                                    </apex:outputPanel>
+                                </td>
+                                <td class="slds-text-align_center">
+                                    <apex:inputCheckbox value="{!transactionDocument.document.Document__r.Not_Applicable__c}" disabled="{!!isEditMode}" styleClass="slds-checkbox"
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="8" class="nested-table">
+                                    <div class="slds-hide slds-p-around_x-small" id="collapse{!transactionDocument.document.Id}">
+                                        <div class="slds-card">
+                                            <div class="slds-card__header slds-grid slds-grid_vertical-align-center">
+                                                <div class="slds-col slds-size_4-of-12">
+                                                    Manage Documents
+                                                </div>
+                                                <div class="slds-col slds-size_8-of-12 editMode{!transactionDocument.document.Document__c}">
+                                                    <apex:outputPanel rendered="{!transactionDocument.fileAttachments.size > 0}">
+                                                        <apex:commandButton StyleClass="slds-button slds-button_neutral btnNeutralClass" value="Edit" onclick="enableEditMode('{!transactionDocument.document.Document__c}');"
+                                                            rerender="none" status="status" />
+                                                    </apex:outputPanel>
+                                                </div>
+                                                <div class="slds-col slds-hide slds-size_8-of-12 viewMode{!transactionDocument.document.Document__c}">
+                                                    <apex:commandButton StyleClass="slds-button slds-button_brand btnBrandClass" value="Save" onclick="saveS3DocumentsAF('{!transactionDocument.document.Document__c}');"
+                                                        rerender="none" status="status" />
+                                                    <apex:commandButton StyleClass="slds-button slds-button_neutral btnNeutralClass" value="Cancel" action="{!cancelChanges}"
+                                                        rerender="reviewForm" status="status" />
+                                                </div>
+                                            </div>
+                                            <div class="slds-card__body slds-card__body_inner">
+                                                <apex:outputPanel rendered="{!transactionDocument.fileAttachments.size > 0}">
+                                                    <table class="slds-table slds-table_bordered slds-table_striped slds-max-medium-table--stacked">
+                                                        <thead>
+                                                            <tr>
+                                                                <!-- <th>Action</th> -->
+                                                                <th>Name</th>
+                                                                <th>Status</th>
+                                                                <th>Uploaded By</th>
+                                                                <th>Uploaded Date</th>
+                                                                <th>Internal Notes</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <apex:repeat value="{!transactionDocument.fileAttachments}" var="s3file">
+                                                                <tr>
+                                                                    <!-- <td>
+                                                                        <apex:outputpanel styleClass="viewMode{!s3file.Id}">
+                                                                            <a href="javascript:void(0);" onclick="enableEditMode('{!s3file.Id}');"> Edit </a>
+                                                                        </apex:outputpanel>
+                                                                        <apex:outputpanel styleClass="slds-hide editMode{!s3file.Id}">
+                                                                            <a href="javascript:void(0);" onclick="saveS3File('{!transactionDocument.document.Document__c}','{!s3file.Id}'); return false;">
+                                                                            Save </a> |
+                                                                            <a href="javascript:void(0);" onclick="enableEditMode('{!s3file.Id}');"> Cancel </a>
+                                                                        </apex:outputpanel>
+                                                                    </td> -->
+                                                                    <td>
+                                                                        <apex:commandlink action="{!generateS3Link}" target="_blank" value="{!s3file.Filename__c}">
+                                                                            <apex:param name="attachmentId" value="{!s3file.Id}" />
+                                                                        </apex:commandlink>
+                                                                    </td>
+                                                                    <td>
+                                                                        <apex:outputpanel styleClass="viewMode{!s3file.Id} viewMode{!transactionDocument.document.Document__c}">
+                                                                            {!s3file.Status__c}
+                                                                        </apex:outputpanel>
+                                                                        <apex:outputpanel styleClass="slds-hide editMode{!s3file.Id} editMode{!transactionDocument.document.Document__c}">
+                                                                            <apex:inputField value="{!s3file.Status__c}" styleClass="slds-select" />
+                                                                        </apex:outputpanel>
+                                                                    </td>
+                                                                    <td>
+                                                                        {!s3file.CreatedBy.Name}
+                                                                    </td>
+                                                                    <td>
+                                                                        <apex:outputText value="{0,date,MM/dd/yyyy H:mm a}">
+                                                                            <apex:param value="{!s3file.CreatedDate}" />
+                                                                        </apex:outputText>
+                                                                    </td>
+                                                                    <td>
+                                                                        <apex:outputPanel styleClass="slds-hide editMode{!s3file.Id} editMode{!transactionDocument.document.Document__c}">
+                                                                            <apex:inputField styleClass="slds-textarea" value="{!s3file.Comments__c}" />
+                                                                        </apex:outputPanel>
+                                                                        <apex:outputPanel styleClass="viewMode{!s3file.Id} viewMode{!transactionDocument.document.Document__c}">
+                                                                            {!s3file.Comments__c}
+                                                                        </apex:outputPanel>
+                                                                    </td>
+                                                                </tr>
+                                                            </apex:repeat>
+                                                        </tbody>
+                                                    </table>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!transactionDocument.fileAttachments.size == 0}">
+                                                    <div class="slds-box slds-text-align_center">
+                                                        No documents found.
+                                                    </div>
+                                                </apex:outputPanel>
+                                            </div>
+                                        </div>
+                                        <div class="slds-card">
+                                            <div class="slds-card__header slds-grid">
+                                                <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                                    <div class="slds-media__body">
+                                                        <h2 class="slds-card__header-title" title="Communications">
+                                                            <span>Communications</span>
+                                                        </h2>
+                                                    </div>
+                                                </header>
+                                            </div>
+                                            <div class="slds-card__body slds-card__body_inner">
+                                                <apex:outputPanel rendered="{!transactionDocument.taskList.size > 0}">
+                                                    <table class="slds-table slds-table_bordered slds-table_striped slds-max-medium-table--stacked">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Subject</th>
+                                                                <th>Message</th>
+                                                                <th>Activity Date</th>
+                                                                <th>Created By</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <apex:repeat value="{!transactionDocument.taskList}" var="tsk">
+                                                                <tr>
+                                                                    <td>{!tsk.subject} </td>
+                                                                    <td>
+                                                                        <a type="button" data-toggle="modal" data-target="#myModal{!tsk.id}">View Message</a>
+                                                                        <div class="fade" id="myModal{!tsk.id}">
+                                                                            <div role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small" aria-modal="true">
+                                                                                <div class="slds-modal__container">
+                                                                                    <header class="slds-modal__header">
+                                                                                        <i class="fa fa-times close" aria-hidden="true" data-dismiss="modal"></i>
+                                                                                        <h4 class="modal-title">Message</h4>
+                                                                                    </header>
+                                                                                    <div class="slds-modal__content slds-p-around_medium">
+                                                                                        <apex:outputText escape="false" value="{!tsk.Description}" />
+                                                                                    </div>
+                                                                                    <div class="slds-modal__footer">
+                                                                                        <button type="button" class="slds-button slds-button_neutral" data-dismiss="modal">Close</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="slds-backdrop slds-backdrop_open"></div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <apex:outputField value="{!tsk.createddate}" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <apex:outputField value="{!tsk.createdby.name}" />
+                                                                    </td>
+                                                                </tr>
+                                                            </apex:repeat>
+                                                        </tbody>
+                                                    </table>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!transactionDocument.taskList.size == 0}">
+                                                    <div class="slds-box slds-text-align_center">
+                                                        No communications found.
+                                                    </div>
+                                                </apex:outputPanel>
+                                            </div>
+                                        </div>
+                                        <div class="slds-p-top_x-small">
+                                            <a class="slds-button slds-button_brand" target="_top" href="/apex/EEC_CustomEmailPage?docId={!transactionDocument.document.Document__r.id}&ltId={!transactionDocument.document.Licensing_Transaction__c}&url={!'/'+Licensing_Transaction__c.Id}&type='L'">Email Provider</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </apex:repeat>
+                    </tbody>
+                </table>
+            </apex:outputPanel>
+        </apex:form>
+    </div>
+    <script>
+        function openSendRejectedDocWindow(isOpenWindow) {
+            if (isOpenWindow == 'true') {
+                var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
+                var dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top;
+                var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+                var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+                var left = ((width / 2) - (500 / 2)) + dualScreenLeft;
+                var top = ((height / 2) - (500 / 2)) + dualScreenTop;
+                var win = window.open("/apex/EEC_SendTransactionToProvider?id={!Licensing_Transaction__c.Id}&Mode=Doc&parent=" + window.location.href, "MyWinName", "height=500,width=500, top=" + top + ", left=" + left);
+            }
+        }
+        function enableEditMode(recordId) {
+            $('.editMode' + recordId).toggleClass('slds-hide');
+            $('.viewMode' + recordId).toggleClass('slds-hide');
+        }
+        function toggleDataDiv(divId, anchor) {
+            $('#' + divId).toggleClass('slds-hide');
+            $(anchor).toggleClass('collapsed');
+        }
+        function refresh(reloadPage) {
+            if (reloadPage == 'true') {
+                window.top.location.href = '/{!Licensing_Transaction__c.Id}';
+            }
+        }
+    </script>
+</apex:page>

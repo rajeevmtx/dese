@@ -1,0 +1,101 @@
+.clear-button{
+    float: right;
+    bottom: 0px;
+    padding-top: 15%;
+  }
+  
+  .nocourseimg{
+    width: 100% !important;
+  }
+
+  .under-title-line{
+    background-color: black;
+    height: 1px;
+    opacity: .2;
+    
+    width: 96%;
+    align-items: center;
+    position: initial;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-top: 2%;
+    margin-bottom: 1%;
+  }
+
+  .filter-box{
+    width: auto;
+    padding: 2% 2% 2% 2%;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.71);    
+    margin: 0rem -1rem;
+  }
+
+  .filter-name-setting{
+    padding-left: 7%;
+    
+  }
+  
+  /* Responsive layout - makes the two columns/boxes stack on top of each other instead of next to each other, on small screens */
+  @media (max-width: 600px) {
+    nav, article {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  /* -------- New CSS -----*/
+  base {
+    width: 1160px;
+    height: 270px;
+    box-shadow: 0 2px 0 0 #f2f2f2;
+    background-color: #ffffff;
+    border-bottom: 0px !important;
+  }
+
+
+  .selected-courses-tab {
+    width: auto;
+    height: 3rem;
+    font-family: 'OpenSans' sans-serif !important;
+    font-size: 14px !important;
+    font-weight: bold !important;
+    font-style: normal !important;
+    font-stretch: normal !important;
+    line-height: normal !important;
+    letter-spacing: normal !important;
+  }
+  
+  .tab-padding{
+    padding: 1rem !important;
+    font-family: 'OpenSans' sans-serif !important;
+    font-size: 14px !important;
+    font-weight: normal !important;
+    font-style: normal !important;
+    font-stretch: normal !important;
+    line-height: normal !important;
+    letter-spacing: normal !important;
+  }
+
+  .title{
+    padding: 20px 00px 0px 20px;
+    font-size: 24px;
+    float: left;
+  }
+  .help-button{
+    padding: 20px 20px 0px 00px;
+    float: right;
+  }
+  .slds-tabs_default{
+    width: auto !important;
+    margin: -1rem;
+  }
+
+  .size-of-list{
+    width: 100% !important;
+    margin-top: -20px !important;
+   
+  }
+
+  .select-contain{
+    padding-right: 5px !important;
+  }

@@ -1,0 +1,339 @@
+<template>
+    <lightning-card>
+        <div class="narrative-content daseTitle2">
+            <div if:false={readOnly}>
+                <h1 class="header slds-m-bottom_medium">
+                    Title II, Part A
+                </h1>
+            </div>
+
+            <div class="tabset">
+                <lightning-tabset active-tab-value="1">
+                    <lightning-tab label="Part A Narrative" value="1">
+                        <!-- <c-dese-title-part-ad-narrative></c-dese-title-part-ad-narrative> -->
+                        <div class="subheader slds-m-top_large">
+                            7.1.1 Educator Effectiveness (Fund Code 140)
+                        </div>
+                        <div class="table-header slds-m-top_small slds-m-bottom_small">
+                            <div class="small-header">All Title II Districts</div>
+                            <div class="resource-icon">
+                                <img src={notebook} />
+                                <div class="resources">
+                                    Resources
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" program-purpose slds-box slds-m-bottom_medium">
+                            <h3 class="heading slds-m-bottom_medium">Program Purpose</h3>
+                    
+                            <ul class="program-purpose__data list">
+                                <li>To increase student achievement consistent with challenging state standards.</li>
+                                <li>To improve the quality and effectiveness of teachers, principals, and other school leaders.</li>
+                                <li> To increase the number of teachers, principals, and other school leaders who are effective in improving student academic achievement in schools.</li>
+                                <li>Provide low-income and minority students greater access to effective teachers, principals and other school leaders.</li>
+                            </ul>
+                        </div>
+                        
+
+
+
+                        <!-- <div class="narrative-box">
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-col sample-box slds-size_1-of-2">
+                                    <div class="slds-text-heading_medium">
+                                        Program Purpose
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-gutters slds-m-top_medium">
+                                <div class="slds-col slds-text-heading_medium slds-size_1-of-1">
+                                    <li>To increase student achievement consistent with challenging state standards.
+                                    </li>
+                                    <li>To improve the quality and effectiveness of teachers, principals, and other
+                                        school leaders.</li>
+                                    <li>To increase the number of teachers, principals, and other school leaders who
+                                        are
+                                        effective in improving student academic achievement in schools.</li>
+                                    <li>Provide low-income and minority students greater access to effective
+                                        teachers,
+                                        principals and other school leaders.</li>
+                                </div>
+                            </div>
+                        </div> -->
+                        <p class="paragraph">
+                            Describe those activities listed in Step 5 that will be funded in whole or in part with
+                            Title II, Part A funds.
+                        </p>
+                        <div class="narrative-box">
+                            <div class="box-header-small">
+                                Initiative Name/Short Title
+                            </div>
+                            <div class="box-header-medium slds-m-bottom_large">
+                                Sample title text here
+                            </div>
+                            <div class="box-header-small">
+                                Strategies/Activities
+                            </div>
+                            <div class="box-header-medium slds-m-bottom_large">
+                                Risus molestie amet, amet, at. Ac posuere nec proin sagittis. Nascetur eget ac risus
+                                amet, est aliquam. Duis nunc vitae, in ultricies aliquam adipiscing arcu posuere.
+                            </div>
+                            <div class="box-header-small">
+                                Briefly describe specific activities funded by Title II based on assessment of needs:
+                            </div>
+                            <div class="describe-box slds-m-bottom_large">
+                                <div class="slds-form-element">
+                                    <div class="slds-form-element__control">
+                                        <textarea id="textarea-id-01" placeholder="Describe Here" class="slds-textarea"
+                                            disabled={readOnly}></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-header-small">
+                                What data prompted this activity? <i>(Select all that apply) </i>
+                            </div>
+                            <div class="sample-box slds-m-bottom_large">
+                                <lightning-input type="text" variant="label-hidden" placeholder="" disabled={readOnly}
+                                    label="Enter some text">
+                                </lightning-input>
+                            </div>
+                            <div class="multiselect">
+                                <lightning-input type="text" variant="label-hidden" placeholder="Selected sample text 1"
+                                    disabled={readOnly} label="Enter some text"></lightning-input><span class="close">
+                                    <lightning-icon icon-name="utility:close" alternative-text="close" title="Error">
+                                    </lightning-icon>
+                                </span>
+
+                                <lightning-input type="text" variant="label-hidden" placeholder="abc"
+                                    disabled={readOnly} label="Enter some text"></lightning-input><span class="closed">
+                                    <lightning-icon icon-name="utility:close" alternative-text="close" title="Error">
+                                    </lightning-icon>
+                                </span>
+                            </div>
+                            <div class="box-header-small">
+                                What data will you use to determine progress and attainment of goals?
+                                <i>(Select all that apply) </i>
+                            </div>
+                            <div class="sample-box slds-m-bottom_large">
+                                <lightning-input type="text" variant="label-hidden" placeholder="" disabled={readOnly}
+                                    label="Enter some text">
+                                </lightning-input>
+                            </div>
+                            <div class="multiselect">
+                                <lightning-input type="text" variant="label-hidden" placeholder="Selected sample text 1"
+                                    disabled={readOnly} label="Enter some text"></lightning-input><span class="close">
+                                    <lightning-icon icon-name="utility:close" alternative-text="close" title="Error">
+                                    </lightning-icon>
+                                </span>
+
+                                <lightning-input type="text" variant="label-hidden" placeholder="other"
+                                    disabled={readOnly} label="Enter some text"></lightning-input><span class="closed">
+                                    <lightning-icon icon-name="utility:close" alternative-text="close" title="Error">
+                                    </lightning-icon>
+                                </span>
+                            </div>
+                            <div class="box-header-medium ">
+                                Specify “Other”
+                            </div>
+                            <div class="describe-box">
+                                <div class="slds-form-element">
+                                    <div class="slds-form-element__control">
+                                        <textarea id="textarea-id-02" placeholder="Describe Here" class="slds-textarea"
+                                            disabled={readOnly}></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="narrative-box slds-m-top_x-large">
+                            <div class="describe-head slds-m-bottom_large">
+                                <div class="describe-headings">
+                                    <div class="box-header-small">
+                                        Initiative Name/Short Title
+                                    </div>
+                                    <div class="box-header-medium">
+                                        Sample title text here
+                                    </div>
+                                </div>
+                                <div class="describe-btn">
+                                    <lightning-button variant="brand-outline" label="Describe"
+                                        title="Primary action with lighter look" onclick={handleClick}
+                                        class="slds-m-left_x-small button__white"></lightning-button>
+                                </div>
+                            </div>
+                            <div class="box-header-small">
+                                Initiative Name/Short Title
+                            </div>
+                            <div class="box-header-medium">
+                                Risus molestie amet, amet, at. Ac posuere nec proin sagittis. Nascetur eget ac risus
+                                amet, est aliquam. Duis nunc vitae, in ultricies aliquam adipiscing arcu posuere.
+                            </div>
+                        </div>
+                        <div class="narrative-box slds-m-top_x-large">
+                            <div class="describe-head slds-m-bottom_large">
+                                <div class="describe-headings">
+                                    <div class="box-header-small">
+                                        Initiative Name/Short Title
+                                    </div>
+                                    <div class="box-header-medium">
+                                        Sample title text here
+                                    </div>
+                                </div>
+                                <div class="describe-btn">
+                                    <lightning-button variant="brand-outline" label="Describe"
+                                        title="Primary action with lighter look" onclick={handleClick}
+                                        class="slds-m-left_x-small button__white"></lightning-button>
+                                </div>
+                            </div>
+                            <div class="box-header-small">
+                                Initiative Name/Short Title
+                            </div>
+                            <div class="box-header-medium">
+                                Risus molestie amet, amet, at. Ac posuere nec proin sagittis. Nascetur eget ac risus
+                                amet, est aliquam. Duis nunc vitae, in ultricies aliquam adipiscing arcu posuere.
+                            </div>
+                        </div>
+                        <p>&nbsp;</p>
+                        <p class="paragraph">
+                            Describe those Part A-funded activities not listed above
+                        </p>
+                        <div class="narrative-box">
+                            <div class="box-header-small">
+                                Initiative Name/Short Title
+                            </div>
+                            <div class="paragraph ">
+                                <lightning-combobox name="progress" label="" variant="label-hidden" value={value} placeholder="Select here"
+                                disabled={readOnly} options={options} onchange={handleChange}>
+                            </lightning-combobox>
+                            </div>
+                            
+                            <div class="box-header-small">
+                                Is your district using any of these substrategies?
+                            </div>
+                            <div class="sample-box slds-m-bottom_large">
+                                <lightning-input type="text" variant="label-hidden" placeholder="" disabled={readOnly}
+                                    label="Enter some text">
+                                </lightning-input>
+                            </div>
+                            <div class="multiselect">
+                                <lightning-input type="text" variant="label-hidden" placeholder="Selected sample text 1"
+                                    disabled={readOnly} label="Enter some text"></lightning-input><span class="close">
+                                    <lightning-icon icon-name="utility:close" alternative-text="close" title="Error">
+                                    </lightning-icon>
+                                </span>
+
+                                <lightning-input type="text" variant="label-hidden" placeholder="Other"
+                                    disabled={readOnly} label="Enter some text"></lightning-input><span class="closed">
+                                    <lightning-icon icon-name="utility:close" alternative-text="close" title="Error">
+                                    </lightning-icon>
+                                </span>
+                            </div>
+                            <div class="box-header-small">
+                                Is this activity/strategy explicitly connected to district efforts to close equity gaps?
+                            </div>
+                            <lightning-radio-group name="radioGroup" label="" options={radioOptions} value={value}
+                                disabled={readOnly} type="radio"></lightning-radio-group>
+                            <div class="box-header-small">
+                                Is this activity/strategy explicitly connected to district efforts to close equity gaps?
+                            </div>
+                            <div class="paragraph ">
+                            <lightning-combobox name="progress" label="" variant="label-hidden"  value={value} placeholder="Select here"
+                                options={options} onchange={handleChange} disabled={readOnly}>
+                            </lightning-combobox>
+                        </div>
+                            <div class="box-header-small">
+                                What data prompted this activity?
+                            </div>
+                            <div class="sample-box slds-m-bottom_large">
+                                <lightning-input type="text" variant="label-hidden" placeholder=""
+                                    label="Enter some text" disabled={readOnly}>
+                                </lightning-input>
+                            </div>
+                            <div class="multiselect">
+                                <lightning-input type="text" variant="label-hidden" placeholder="Selected sample text 1"
+                                    label="Enter some text" disabled={readOnly}></lightning-input><span class="close">
+                                    <lightning-icon icon-name="utility:close" alternative-text="close" title="Error">
+                                    </lightning-icon>
+                                </span>
+
+                                <lightning-input type="text" variant="label-hidden" placeholder="Other"
+                                    label="Enter some text" disabled={readOnly}></lightning-input><span class="closed">
+                                    <lightning-icon icon-name="utility:close" alternative-text="close" title="Error">
+                                    </lightning-icon>
+                                </span>
+                            </div>
+                            <div class="box-header-small">
+                                What data prompted this activity?
+                            </div>
+                            <div class="sample-box slds-m-bottom_large">
+                                <lightning-input type="text" variant="label-hidden" placeholder=""
+                                    label="Enter some text" disabled={readOnly}>
+                                </lightning-input>
+                            </div>
+                            <div class="multiselect">
+                                <lightning-input type="text" variant="label-hidden" placeholder="Selected sample text 1"
+                                    label="Enter some text" disabled={readOnly}></lightning-input><span class="close">
+                                    <lightning-icon icon-name="utility:close" alternative-text="close" title="Error">
+                                    </lightning-icon>
+                                </span>
+
+                                <lightning-input type="text" variant="label-hidden" placeholder="Other"
+                                    label="Enter some text" disabled={readOnly}></lightning-input><span class="closed">
+                                    <lightning-icon icon-name="utility:close" alternative-text="close" title="Error">
+                                    </lightning-icon>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="add-btn">
+                            <lightning-button label="Add More Activities" title="Add more activities"
+                                icon-name="utility:add" class="slds-m-left_x-small"></lightning-button>
+                        </div>
+                        <!--done till here -->
+                        <div class="line slds-m-bottom_xx-large slds-m-top_xx-large"></div>
+                        <div class="subheader slds-m-top_large">
+                            7.1.2 Title II Districts Using Funds for Class-Size Reduction
+                        </div>
+                        <lightning-radio-group name="radioGroup"
+                            label="Are you using Title II, Part A funds for class-size reduction?"
+                            options={radioOptions} value={value} type="radio" disabled={readOnly}>
+                        </lightning-radio-group>
+                        <p class="paragraph slds-m-top_x-large">
+                            If "yes," please cite the evidence supporting your decision to reduce class size and explain
+                            how the evidence supports your circumstances.
+                        </p>
+                        <div class="describe-box">
+                            <div class="slds-form-element">
+                                <div class="slds-form-element__control">
+                                    <textarea id="textarea-id-06" placeholder="Describe Here" class="slds-textarea"
+                                        disabled={readOnly}></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="paragraph slds-m-top_x-large">
+                            Do you have enrollment data showing that class-size reduction is not supplanting use of
+                            state or local funds?
+                        </p>
+                        <div class="paragraph ">
+                            <lightning-combobox name="progress" variant="label-hidden" label="" value={value} placeholder="Select here"
+                                options={options} onchange={handleChange} disabled={readOnly}>
+                            </lightning-combobox>
+                        </div>
+                    </lightning-tab>
+                    <lightning-tab label="Part B Budget" value="2">
+                        <c-dese_title2_budget read-only={readOnly} project-id={projectId}></c-dese_title2_budget>
+                    </lightning-tab>
+                </lightning-tabset>
+            </div>
+
+        </div>
+
+
+        <div slot="footer">
+            <div class="button" if:false={readOnly}>
+                <lightning-button variant="brand-outline" label="Back" title="Primary action with lighter look"
+                    onclick={handlePrev} class="slds-m-left_x-small button__white"></lightning-button>
+                <lightning-button variant="brand" label="Next" title="Primary action" onclick={handleNext}
+                    class="slds-m-left_x-small"></lightning-button>
+            </div>
+        </div>
+    </lightning-card>
+</template>

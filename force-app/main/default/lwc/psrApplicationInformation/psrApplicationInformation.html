@@ -1,0 +1,132 @@
+<template>
+  <div class="addressForm">
+    <div
+      class="slds-text-heading_small slds-text-title_bold slds-border_bottom"
+    >
+      Application Information
+    </div>
+
+    <lightning-record-edit-form
+      class="slds-p-top_large"
+      record-id={appId}
+      onsuccess={handleSuccess}
+      onsubmit={handleSubmit}
+      object-api-name="Application__c"
+    >
+      <div class="slds-grid slds-p-top_large">
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input-field
+            field-name="Promotor__c"
+            disabled={disabledFields}
+          >
+          </lightning-input-field>
+        </div>
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input-field
+            field-name="Trainer__c"
+            disabled={disabledFields}
+          >
+          </lightning-input-field>
+        </div>
+      </div>
+      <div class="slds-grid">
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input-field
+            field-name="Manager__c"
+            disabled={disabledFields}
+          >
+          </lightning-input-field>
+        </div>
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input-field
+            field-name="License_Type__c"
+            disabled={disabledFields}
+          >
+          </lightning-input-field>
+        </div>
+        <!-- <div class="slds-col slds-size_1-of-2">
+          <lightning-input-field
+            field-name="Size__c"
+            disabled={disabledFields}
+          >
+          </lightning-input-field>
+        </div> -->
+        <!-- <div class="slds-col slds-size_1-of-2">
+          <lightning-input-field
+            field-name="Manuafacturer__c"
+            disabled={disabledFields}
+          >
+          </lightning-input-field>
+        </div> -->
+        
+      </div>
+      <div class="slds-grid">
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input-field
+            field-name="Discipline__c"
+            disabled={disabledFields}
+          >
+          </lightning-input-field>
+        </div>
+        <div class="slds-col slds-size_1-of-2">
+        </div>
+        
+      </div>
+      <div class="slds-grid">
+        
+        <!-- <div class="slds-col slds-size_1-of-2">
+          <lightning-input-field
+            field-name="Issue_Date__c"
+            disabled={disabledFields}
+          >
+          </lightning-input-field>
+        </div> -->
+        <!-- <div class="slds-col slds-size_1-of-2">
+          <lightning-input-field
+            field-name="HUD_Serial_Number__c"
+            disabled={disabledFields}
+          >
+          </lightning-input-field>
+        </div> -->
+        <!-- <div class="slds-col slds-size_1-of-2">
+          <lightning-input-field
+            field-name="Sold_By__c"
+            disabled={disabledFields}
+          >
+          </lightning-input-field>
+        </div> -->
+      </div>
+      <!-- <div class="slds-grid">
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input-field
+            field-name="Expiration_Date__c"
+            disabled={disabledFields}
+          >
+          </lightning-input-field>
+        </div>
+        <div class="slds-col slds-size_1-of-2"></div>
+         <div class="slds-col slds-size_1-of-2">
+          <lightning-input-field field-name="Size__c" disabled={disabledFields}>
+          </lightning-input-field>
+        </div>
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input-field
+            field-name="Type_Of_Home__c"
+            disabled={disabledFields}
+          >
+          </lightning-input-field>
+        </div>
+      </div> -->
+      <!-- <div class="slds-grid">
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input-field
+            field-name="LP_Gas_Appliances__c"
+            disabled={disabledFields}
+          >
+          </lightning-input-field>
+        </div>
+        <div class="slds-col slds-size_1-of-2"></div>
+      </div> -->
+    </lightning-record-edit-form>
+  </div>
+</template>

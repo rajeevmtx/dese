@@ -1,0 +1,352 @@
+<apex:page sidebar="false" tabStyle="Project__c" controller="PROPOSAL_CORE_Budget_Controller" standardStylesheets="false">
+    <style>
+        #validationErrorMessage1 {
+            display: none;
+        }
+
+        #successMessage {
+            display: none;
+        }
+
+        .required {
+            font-weight: bold;
+            color: red;
+        }
+
+        .alert-container {
+            padding: 0px;
+        }
+
+        .popover {
+            width: 250px;
+        }
+
+        .mb0 {
+            margin-bottom: 0;
+        }
+
+        .justify-space-between {
+            justify-content: space-between;
+        }
+
+        .help-link {
+            font-size: 14px;
+            color: #1d49cc;
+            padding-top: 2%;
+            margin-left: 50px;
+        }
+
+        .slds-button_outline-brand {
+            border-color: #0d3cc8;
+            color: #0d3cc8;
+        }
+
+        .timeline {
+            border-left: 2px solid #dfe4f2;
+            border-bottom-right-radius: 4px;
+            border-top-right-radius: 4px;
+            margin-left: 12px;
+            letter-spacing: 0;
+            position: relative;
+            position: -webkit-sticky;
+            position: sticky;
+            top: 2rem;
+            line-height: 1.4em;
+            font-size: 14px;
+            padding: 0 25px;
+            list-style: none;
+            text-align: left;
+            counter-reset: li-counter;
+            margin: 3rem 2rem;
+        }
+
+        .timeline .event:after {
+            border: 2px solid #656566;
+            border: 5px solid #f7f7f7;
+            position: absolute;
+            display: block;
+            top: 0;
+            left: -43px;
+            background: #dfe4f2;
+            border-radius: 50%;
+            height: 21px;
+            width: 25px;
+            content: "";
+            top: 5px;
+            top: 10px;
+            text-align: center;
+            content: attr(steplabel);
+            counter-increment: li-counter;
+            color: black;
+            padding-top: 4px;
+        }
+
+        .timeline .event {
+            padding-bottom: 17.5px;
+            position: relative;
+            padding-top: 17.5px;
+            min-width: 200px;
+            cursor: pointer;
+        }
+
+        .timeline .event:after else {
+            border: 2px solid #0f43e0;
+        }
+
+        .timeline .event.completed {
+            color: #0070d2;
+        }
+
+        .timeline .event.completed:after {
+            background: #0070d2;
+            padding-top: 4px;
+            color: white;
+            content: '✓';
+            text-align: center;
+        }
+
+        .timeline .event.active {
+            color: #128ec3;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .timeline .event.active:after {
+            background-color: #479eeb;
+            color: white;
+        }
+
+        .timeline .event:first-of-type {
+            padding-top: 7.5px;
+        }
+
+        .timeline .event:first-of-type:after {
+            top: -2px;
+        }
+
+        .timeline .event:last-of-type {
+            padding-bottom: 0;
+            margin-bottom: 0;
+            border: none;
+        }
+
+        .timeline .event:last-of-type:after {
+            top: auto;
+            top: 10px;
+            bottom: 0;
+        }
+
+        footer {
+            background: #fff;
+            position: relative !important;
+        }
+
+        .card--new {
+            background: #fff;
+            padding: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24);
+            transition: all .3s cubic-bezier(.25, .8, .25, 1);
+            border: none;
+            border-radius: 0;
+            margin: 1rem 2rem;
+        }
+
+        .bodyDiv {
+            background: #F5F7FA !important;
+        }
+
+        .has-shadow {
+            width: 100%;
+            margin-bottom: 1rem;
+            padding: 2rem;
+            background-color: #fff;
+            box-shadow: 4px 1px 2px 1px rgba(0, 0, 0, .05);
+            text-align: left;
+        }
+    </style>
+
+    <apex:composition template="CORE_APPINTAKE_Template_Page">
+        <apex:define name="body">
+            <div class="has-shadow slds-p-vertical_medium slds-m-bottom_medium heading_header_registration">
+                <c:CORE_StepNav_Component pgName="{!$CurrentPage.Name}" />
+            </div>
+            <div class="container row">
+                <div class="col-md-2">
+                    <ol class="timeline">
+                        <li class="event active" value="0" steplabel="0">Instruction</li>
+                        <li class="event" value="1" steplabel="1">Proposer Contact Information</li>
+                        <li class="event" value="2" steplabel="2">Private School Information</li>
+                        <li class="event" value="3" steplabel="3">Allocation and Flexing</li>
+                        <li class="event" value="4" steplabel="4">Proposal Documents</li>
+                        <li class="event" value="5" steplabel="5">Authorizd Signature and Certification</li>
+                        <li class="event" value="6" steplabel="6">Proposal Submission</li>
+                    </ol>
+                </div>
+                <div class="col-md-10 card--new">
+                    <div class="page">
+                        <!-- <div class="sub-heading">Application Number:&nbsp;<apex:outputfield value="{!project.Application_Number__c}" /></div> -->
+                        <!-- <c:CORE_StepNav_Component pgName="{!$CurrentPage.Name}"/> -->
+                    <div class="application">
+                     <div class="content content-body">
+                        <apex:form id="frm">
+                            
+                                <H3 style="font-size: 25px;">Instruction</H3>
+                                <p>&nbsp;</p>
+<p><br /> &nbsp; The consolidated application allows LEAs (districts and other eligible entities, referred to in this application collectively as <br /> &nbsp; districts) to apply for funding for any combination of the following federal programs of the Elementary and Secondary <br /> &nbsp; Education Act (ESEA), as most recently reauthorized by the Every Student Succeeds Act (2015) (ESSA):<br /> <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &bull; Title I, Parts A &amp; D (Fund Code 305)<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &bull; Title II, Part A&nbsp; (Fund Code 140)<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &bull; Title III, Part A (Fund Code 180 only)<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &bull; Title IV, Part A (Fund Code 309)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br /> <br /> <p>You may notice that some requirements of past applications have been omitted or are requested in a different way, which is permitted by ESSA to reduce burden to districts when applying for grants.&nbsp; However, all districts are still required to meet all statutory requirements for any program for which they receive funds.&nbsp; If you have questions about these requirements, please refer to our Federal Grant Programs web pages and/or contact the Federal Programs Specialist assigned to your district for guidance.</p><br /> <br /><p>First Step:&nbsp; Saving the FileSave this file to your computer (Important: ensure macros are enabled).&nbsp; Rename the file by replacing the words 'leacode' in the file name with your 4-digit district code. For example, Abington (0001) would rename the file as 'FY20CA-0001.xlsm'. Do not change the filename except for your district's 4-digit code. Users of Macintosh computers must save as a macro-enabled file (with an .xlsm extension) for the workbook to function properly. Tips for Completing the Consolidated Application&nbsp; </p><br /> &nbsp;Workflow and printing:&nbsp; <br /> &nbsp;&nbsp;&nbsp; &bull; Complete each tab that applies to your district in the order that they are numbered unless instructed otherwise.&nbsp; If one of the <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; numbered tabs does not apply to&nbsp; your district, skip to the next set of numbered tabs (for example, skip Tab 12. "Title III, Part A<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Narrative" and Tab. 13. "Title III, Part A Budget" if your district does not receive an allocation for Title III and go on to Tab 14).&nbsp; Pay<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; particular attention to completing Tab 5 (Districtwide Strategies) prior to working on any Title narrative tabs.&nbsp; Those tabs will <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; automatically import information from Tab 5 to help you complete the narrative questions.<br /> <br /> &nbsp;&nbsp;&nbsp; &bull; Complete the steps on each tab in the order that they are numbered (for example, on Tab 7, begin with Step 7.1, then complete 7.2).<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Note that some steps may not be required for your district and may be skipped.<br /> <br /> &nbsp;&nbsp; &bull;&nbsp; Budget worksheets appearing after the tabs for each Title narrative must be completed for each grant.&nbsp; They mirror the budget entry <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; page in EdGrants with the addition of checkboxes to indicate whether funds are used for private school services and for <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Title II, Part A and Title IV, Part A, to indicate whether funds were flexed.&nbsp; These budget worksheets are mandatory, in addition to <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entering budget information in EdGrants. <br /> <br /> &nbsp;&nbsp; &bull;&nbsp; This workbook is structured to be used in electronic format.&nbsp; However, you can print a copy using Excel's print preview functions <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; to set the appearance and paper orientation to best fit your completed application.&nbsp; <br /> &nbsp;&nbsp; <br /> &nbsp; Color-coding and cell features:<br /> &nbsp;&nbsp; &bull;&nbsp; Those cells that appear light yellow require districts to input information.&nbsp; Text may be pasted into these cells as long as<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the source of the information has no excel formulas.&nbsp; <br /> <br /> &nbsp;&nbsp; &bull;&nbsp; Those cells that appear light gray will automatically populate based on information your district supplies on the application or from<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; preloaded data already reported to the Department of Elementary and Secondary Education (DESE) (for example, SIMS data).&nbsp;&nbsp; <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Do not cut and paste information from other pages or sources into gray cells! &nbsp;<br /> <br /> &nbsp;&nbsp; &bull;&nbsp; Those cells that appear in light orange offer a dropdown menu from which districts can choose a supplied response or <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "other," which requires districts to supply a brief description where indicated.&nbsp;&nbsp; Do not cut and paste information from other pages <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; or sources into orange cells!&nbsp; <br /> <br /> &nbsp;&nbsp; &bull;&nbsp; Throughout the tabs of this application you will find instruction boxes (gray), tip boxes (pink) to help avoid common mistakes, <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and resource boxes (tan) that include links to materials outside the application with more detailed, grant-related information.<br /><br /> &nbsp;&nbsp; &bull;&nbsp; If boxes/cells containing text in some parts of the application appear to be cut off, please enlarge the "view" of that page using your <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Zoom feature (usually a slide bar appearing in the lower corner of your Excel screen), which should solve the problem.&nbsp; 100% is best <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; in most cases.<br /> <br /> &nbsp;Last Steps:<br /> &nbsp;&nbsp; &bull;&nbsp; Signature Page (Tab 1) :&nbsp; Once the application has been completed, print, sign, date (using date of submission), scan and upload <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a signed copy of the signature page with each of the district's EdGrants submissions (once for each fund code).&nbsp;&nbsp; We cannot approve<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; any grant without an uploaded, signed, and properly dated signature page!<br /> <br /> &nbsp;&nbsp; &bull;&nbsp; NEW! Federal Grant Assurances Signature Page : Each district must review the FY20 Federal Grant Assurances and submit a signed, <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; scanned (pdf) signature page indicating such review and assurance of compliance with the requirements contained therein. Once the<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; application has been completed,print, sign, date (using date of submission), scan and upload as an attachment to to its Title I Edgrants<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; submission (Fund Code 305). If your district does not receive a Title I grant, contact your district's DESE grant liaison for submission<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; instructions.&nbsp; We cannot&nbsp; approve&nbsp; any federal entitlement grant without an uploaded, signed, and properly dated signature page from<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the federal grant assurance document!<br /> <br /> &nbsp;&nbsp; &bull;&nbsp; All tabs related to programs for which a district has received an allocation must be complete and budgets submitted in <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EdGrants for each of those fund codes in order for an application to be substantially approvable and ready for review. &nbsp;No partial <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; submissions will be accepted.<br /> &nbsp;<br /> &nbsp;&nbsp; &bull;&nbsp; A completed consolidated workbook should be submitted only once, as an attachment in EdGrants with each district's Title I<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; submission. It does not need to be submitted with any other ESSA entitlement grant EdGrants submission.&nbsp; If your district does not <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; receive a Title I allocation, please contact your district liaison for submission instructions.</p>
+<p>&nbsp;</p>
+                          
+
+                            <apex:actionFunction name="saveBudgetInfo" action="{!saveBudgetInfo}" oncomplete="showSuccessMsg(); showMessage(); rerenderHover();"
+                                status="status" rerender="frm, scriptPanel">
+                                <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                                <apex:param value="" name="isNextClicked" assignTo="{!isNextClicked}" />
+                            </apex:actionFunction>
+
+                            <apex:actionFunction name="previous" action="{!previous}" rerender="application" immediate="true" status="status">
+                                <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                            </apex:actionFunction>
+
+                            <apex:actionFunction name="next" action="{!next}" rerender="application" status="status">
+                                <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                            </apex:actionFunction>
+
+                        </apex:form>
+                        </div>
+                    </div>
+                    </div>
+
+                    <footer>
+                        <div class="content flex controls sm">
+                            <div class="left">
+                                <a href="javascript:void(0)" onclick="previous('{!$CurrentPage.Name}')" class="btn-bs btn-lg btn-blank">Previous</a>
+                            </div>
+                            <div class="right">
+                                
+
+                                <a href="/psr/PROPOSAL_CORE_Contact_Page?ProjectId=a3i030000008QfoAAE" class="btn-bs btn-lg btn-primary continueBtn">Continue</a>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </apex:define>
+    </apex:composition>
+
+    <c:PROPOSAL_CORE_Due_Date_Passed />
+    <apex:outputPanel id="scriptPanel">
+        <script>
+            $(document).ready(function () {
+                jQuery("html").attr("lang", "en");
+                $('.totalCost').attr("disabled", "disabled");
+                calculateTotalCost();
+
+            });
+
+            // Allowed only number in input field
+            function isNumberOnly(evt) {
+                var charCode = (evt.which) ? evt.which : evt.keyCode;
+                if (evt.shiftKey) {
+                    evt.preventDefault();
+                    return false;
+                }
+                if ((charCode > 47 && charCode < 58) || (charCode >= 96 && charCode <= 105) || charCode == 8 || charCode == 9 ||
+                    (charCode >= 37 && charCode <= 40) || charCode == 190 || charCode == 110) {
+                    return true;
+                } else {
+                    evt.preventDefault();
+                    return false;
+                }
+            }
+
+            function calculateTotalCost() {
+                var totalCost = 0;
+                if ($('.proposedCost').val() != undefined && $('.proposedCost').val() != '') {
+                    totalCost += formatStringIntoNumber($('.proposedCost').val());
+                }
+                if ($('.costShare').val() != undefined && $('.costShare').val() != '') {
+                    totalCost += formatStringIntoNumber($('.costShare').val());
+                }
+                $('.totalCost').val(formatNumber(totalCost));
+            }
+
+            function formatStringIntoNumber(number) {
+                if (number != null && number != undefined && number != '') {
+                    if (typeof (number) == 'string') {
+                        number = number.replace(new RegExp(',', 'g'), '');
+                        number = parseFloat(number);
+                    }
+                }
+                return number;
+            }
+
+            function formatNumber(number, decimalPoint) {
+                if (number != null && number != undefined && number != '') {
+                    if (typeof (number) == 'string') {
+                        number = formatStringIntoNumber(number);
+                    }
+                    if (typeof (number) == 'number') {
+                        if (decimalPoint == undefined) {
+                            number = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                        } else {
+                            if (decimalPoint == 0) {
+                                number = number.toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                number = number.substring(0, number.length - 2);
+                            }
+                        }
+                    }
+                }
+                return number;
+            }
+
+            function StartSaveBudget(currentPageName, isNextClicked) {
+                $('#validationErrorMessage1').hide();
+                $('#successMessage').hide();
+
+                if ('{!projectRec.Program_Version__r.NY_Green_Bank_RFP__c}' == 'true' && ($('.proposedCost').val() == undefined || $('.proposedCost').val() == '')) {
+                    $('#validationErrorMessage1').html('You must enter Estimated Total Project Costs.');
+                    $('#validationErrorMessage1').show();
+                    return false;
+                }
+
+                if ($('.proposedCost').val() == undefined || $('.proposedCost').val() == '') {
+                    $('#validationErrorMessage1').html('<strong>Error!</strong> Proposed Cost: You must enter a value.');
+                    $('#validationErrorMessage1').show();
+                    return false;
+                }
+
+                if ('{!projectRec.Program_Version__r.Proposed_Cost_Share_Required__c}' == 'true' && ($('.costShare').val() == undefined || $('.costShare').val() == '')) {
+                    $('#validationErrorMessage1').html('<strong>Error!</strong> Proposed Cost Share: You must enter a value.');
+                    $('#validationErrorMessage1').show();
+                    return false;
+                }
+
+                saveBudgetInfo(currentPageName, isNextClicked);
+            }
+
+            function showSuccessMsg() {
+                if ('{!isDueDatePassed}' == 'false' || '{!isExceptionalAccessProvided}' == 'true') {
+                    if ('{!projectRec.Program_Version__r.NY_Green_Bank_RFP__c}' == 'true') {
+                        $('#successMessage').html('<strong>Success!</strong> Estimated Total Project Costs Saved.');
+                    } else {
+                        $('#successMessage').html('<strong>Success!</strong> Budget Information Saved.');
+                    }
+
+                    $('#successMessage').show();
+                }
+            }
+
+            function showMessage() {
+                if ('{!isDueDatePassed}' == 'true' && '{!isExceptionalAccessProvided}' == 'false') {
+                    $('#dueDatePassedModal').modal('show');
+                }
+            }
+
+            function rerenderHover() {
+                $(".icon-help").popover();
+            }
+
+        </script>
+    </apex:outputPanel>
+   
+    <c:Grants_Site_Footer />
+</apex:page>

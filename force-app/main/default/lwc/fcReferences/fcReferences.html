@@ -1,0 +1,141 @@
+<template>
+    <template if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+    </template>
+    <div class="slds-grid slds-wrap">
+        <div class="slds-col slds-size_1-of-1">
+            <div class="page-header">
+                <h1 class="page-title">References</h1>
+            </div>
+        </div>
+        <div class="slds-col slds-size_1-of-1">
+            <c-fc-intake-form-help-text help-text={helpText}></c-fc-intake-form-help-text>
+        </div>
+        <div class="slds-col slds-size_1-of-1">
+            <lightning-card>
+                <div slot="title">
+                    <div class="slds-float_right">
+                        <lightning-button variant="Brand" label="Add Reference" onclick={onAddContact}></lightning-button>
+                    </div>
+                </div>
+                <table aria-multiselectable="true"
+                    class="slds-table slds-no-cell-focus slds-table_bordered slds-table_edit slds-table_fixed-layout slds-table_resizable-cols"
+                    role="grid" style="width: 100%;">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th scope="col" class="slds-is-resizable">
+                                <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate column-padding">
+                                    <div class="slds-truncate slds-text-body_medium slds-p-around_x-small" title="First Name">
+                                        First Name
+                                    </div>
+                                </div>
+                            </th>
+                            <th scope="col" class="slds-is-resizable">
+                                <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate column-padding">
+                                    <div class="slds-truncate slds-text-body_medium slds-p-around_x-small" title="Last Name">
+                                        Last Name
+                                    </div>
+                                </div>
+                            </th>
+                            <th scope="col" class="slds-is-resizable">
+                                <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate column-padding">
+                                    <div class="slds-truncate slds-text-body_medium slds-p-around_x-small" title="Email">
+                                        Email
+                                    </div>
+                                </div>
+                            </th>
+                            <th scope="col" class="slds-is-resizable">
+                                <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate column-padding">
+                                    <div class="slds-truncate slds-text-body_medium slds-p-around_x-small" title="Phone">
+                                        Phone
+                                    </div>
+                                </div>
+                            </th>
+                            <th scope="col" class="slds-is-resizable" style="width:100px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={contacts} for:item='item' for:index='index'>
+                            <tr class="slds-hint-parent" key={item.firstName}>
+                                <td role="gridcell" style="word-break:break-word;white-space: normal;padding:0 !important">
+                                    <div class="">
+                                        {item.firstName}
+                                    </div>
+                                </td>
+                                <td role="gridcell" style="word-break:break-word;white-space: normal;padding:0 !important">
+                                    <div class="">
+                                        {item.lastName}
+                                    </div>
+                                </td>
+                                <td role="gridcell" style="word-break:break-word;white-space: normal;padding:0 !important">
+                                    <div class="">
+                                        {item.email}
+                                    </div>
+                                </td>
+                                <td role="gridcell" style="word-break:break-word;white-space: normal;padding:0 !important">
+                                    <div class="">
+                                        {item.phone}
+                                    </div>
+                                </td>
+                                <td role="gridcell" >
+                                    <lightning-icon icon-name="utility:delete" size="x-small" variant="error"
+                                        alternative-text="Remove" data-index={index} onclick={removeReference}>
+                                    </lightning-icon>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+                <div class="slds-p-around_medium" if:true={isOpenModal}>
+                    <template if:true={isOpenModal}>
+                            <div style="">
+                                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                                    aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_large">
+                                    <div class="slds-modal__container">
+                                        <header class="slds-modal__header">
+                                            <button
+                                                class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                                title="Close" onclick={handleCloseModal}>
+                                                <lightning-icon icon-name="utility:close" variant="inverse"
+                                                    alternative-text="Close" size="medium">
+                                                </lightning-icon>
+                                                <span class="slds-assistive-text">Close</span>
+                                            </button>
+                                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Add Reference
+                                            </h2>
+                                        </header>
+                                        <div class="slds-modal__content" id="modal-content-id-1">
+                                            <!-- <div class="padding-horizontal slds-m-around_small">
+                                                <c-psr-help-text help-text={Portal_Add_New_Contact_Help_Text}></c-psr-help-text>
+                                            </div> -->
+                                            <div class="container slds-p-around_medium">
+                                                <div class="slds-grid slds-wrap slds-gutters">
+                                                    <div class="slds-size_6-of-12 slds-p-around_small">
+                                                        <lightning-input name="firstName" type="text" label="First Name" placeholder="" required onchange={handleInputChange}></lightning-input> 
+                                                    </div>
+                                                    <div class="slds-size_6-of-12 slds-p-around_small">
+                                                        <lightning-input name="lastName" type="text" label="Last Name" placeholder="" required onchange={handleInputChange}></lightning-input>      
+                                                    </div>
+                                                    <div class="slds-size_6-of-12 slds-p-around_small">
+                                                        <lightning-input name="email" type="email" label="Email" placeholder="" required onchange={handleInputChange}></lightning-input>        
+                                                    </div>
+                                                    <div class="slds-size_6-of-12 slds-p-around_small">
+                                                        <lightning-input name="phone" type="number" label="Phone" placeholder="" required onchange={handleInputChange}></lightning-input>   
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <footer class="slds-modal__footer">
+                                            <lightning-button label="Cancel" class="slds-m-right_medium" variant="neutral" onclick={handleCloseModal}></lightning-button>
+                                            <lightning-button label="Add" variant="brand" onclick={handleAddContact}></lightning-button>
+                                        </footer>
+                                    </div>
+                                </section>
+                                <div class="slds-backdrop slds-backdrop_open"></div>
+                            </div>
+                    </template>
+                </div>
+            </lightning-card>
+        </div>
+    </div>
+</template>

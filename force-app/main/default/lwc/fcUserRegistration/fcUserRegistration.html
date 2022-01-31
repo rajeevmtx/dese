@@ -1,0 +1,202 @@
+<template>
+    <!-- Spinner -->
+    <div class="backdrop" if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </div>
+    </div>
+
+    <!-- Heading -->
+    <div class="has-shadow slds-p-vertical_medium slds-m-bottom_medium heading_header_registration">
+        <div class="container d-flex justify-space-between">
+            <h1 class="app-title">{title}</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="app-container">
+            <!-- Flow Steps -->
+            <div class="app-sidebar">
+                <c-fc-user-registration-steps current-step={currentStep} original-step={originalStep}>
+                </c-fc-user-registration-steps>
+            </div>
+
+            <div class="app-content">
+                <!-- Error Message -->
+                <span if:true={erroMsg}>
+                    <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+                        <span class="slds-assistive-text">error</span>
+                        <h2>
+                            {erroMsg}
+                        </h2>
+                    </div>
+                </span>
+
+                <!-- Step-1: Varification Page -->
+                <div if:true={showRegistrationInformation}>
+
+                    <div class="slds-form slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+                        <div class="slds-form__row">
+                            <div class="slds-form__item"> 
+                                <lightning-input type="text" autocomplete="none" label="First Name" value={userData.FirstName}
+                                    message-when-pattern-mismatch={nameValidation} maxlength=80 required onblur={handelInput}
+                                    name="firstName" class="firstName" style="width: 100%;">
+                                </lightning-input> 
+                            </div>
+                        </div>
+            
+                        <div class="slds-form__row"> 
+                            <div class="slds-form__item">
+                                <lightning-input type="text" autocomplete="none" label="Last Name" value={userData.LastName}
+                                    message-when-pattern-mismatch={nameValidation} maxlength=80 required onblur={handelInput}
+                                    name="lastName"  style="width: 100%;">
+                                </lightning-input>
+                            </div>
+                        </div>
+
+                        <div class="slds-form__row"> 
+                            <div class="slds-form__item">
+                                <lightning-input type="email" autocomplete="none" label="Username" value={userData.Username}
+                                    message-when-pattern-mismatch={nameValidation} maxlength=80 required onblur={handelInput}
+                                    name="username" class="username" style="width: 100%;">
+                                </lightning-input>
+                            </div>
+                        </div>
+
+                        <div class="slds-form__row"> 
+                            <div class="slds-form__item">
+                                <lightning-input type="email" autocomplete="none" label="Email" value={userData.Email}
+                                    message-when-pattern-mismatch={nameValidation} maxlength=80 required onblur={handelInput}
+                                    name="email" class="email" style="width: 100%;">
+                                </lightning-input>
+                            </div>
+                        </div>
+
+                        <div class="slds-form__row"> 
+                            <div class="slds-form__item">
+                                <lightning-input type="tel" autocomplete="none" label="Phone Number" value={userData.Phone}
+                                    message-when-pattern-mismatch={nameValidation} maxlength=80 required onblur={handelInput}
+                                    name="phoneNumber" class="phoneNumber" style="width: 100%;">
+                                </lightning-input>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="controls">
+                        <lightning-button variant="brand" label="Next" onclick={navigateToAdditionalInfo}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+
+                <!--Step-2: 2 Step Verification Page -->
+                <div if:true={showAdditionalInformation}>
+
+                    <div class="slds-form slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+                        <h1 class="app-title">Parenting Information</h1>
+                    </div>
+
+                    <div class="slds-form slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+               
+                        <div class="slds-form__row">
+                            <div class="slds-form__item"> 
+                                <lightning-radio-group 
+                                name="applicantType"
+                                label="Are you making an inquiry as a single applicant or two applicants?"
+                                options={applicantOptions}
+                                value={userData.ApplicantType}
+                                onchange={handelInput}
+                                type="radio"></lightning-radio-group>
+                            </div>
+                        </div>                        
+                        
+                        <div class="slds-box" if:false={isSingle}>
+                            <div class="slds-form__row"> 
+                                <div class="slds-form__item">
+                                    <lightning-input type="text" autocomplete="none" label="First Name" value={userData.ApplicantFirstName}
+                                        message-when-pattern-mismatch={nameValidation} maxlength=80 required onblur={handelInput}
+                                        name="applicantFirstName" style="width: 100%;">
+                                    </lightning-input>
+                                </div>
+                            </div>
+    
+                            <div class="slds-form__row"> 
+                                <div class="slds-form__item">
+                                    <lightning-input type="text" autocomplete="none" label="Last Name" value={userData.ApplicantLastName}
+                                        message-when-pattern-mismatch={nameValidation} maxlength=80 required onblur={handelInput}
+                                        name="applicantLastName" style="width: 100%;">
+                                    </lightning-input>
+                                </div>
+                            </div>
+    
+                            <div class="slds-form__row"> 
+                                <div class="slds-form__item">
+                                    <lightning-input type="email" autocomplete="none" label="Email Address" value={userData.ApplicantEmail}
+                                        message-when-pattern-mismatch={nameValidation} maxlength=80 required onblur={handelInput}
+                                        name="applicantEmail" style="width: 100%;">
+                                    </lightning-input>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-form__row"> 
+                            <div class="slds-form__item">
+                                <lightning-combobox
+                                    name="source"
+                                    label="How did you learn about our agency?"
+                                    value={userData.Source}
+                                    placeholder="Please select an Option"
+                                    options={sourceOptions}
+                                    onchange={handelInput} ></lightning-combobox>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="controls">
+                        <lightning-button class="slds-m-right_medium" onclick={navigateToRegistrationInfo} label="Back">
+                        </lightning-button>
+                        <lightning-button variant="brand" label="Next" onclick={navigateToLoginInformation}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                <!--Step-3: 3 Login information -->
+                <div if:true={showLoginInformation}>
+                    <div class="slds-form slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+                        <h1 class="app-title">Login Information</h1>
+                    </div>
+                    <div class="slds-form slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+                        <div class="slds-form__row"> 
+                            <div class="slds-form__item">
+                                <lightning-input type="password" autocomplete="none" label="Password" value={userData.Password}
+                                    message-when-pattern-mismatch={nameValidation} maxlength=80 required onblur={handelInput}
+                                    name="password"  style="width: 100%;">
+                                </lightning-input>
+                            </div>
+                        </div>
+                        <template if:true={passwordShort}>
+                            <span style="color:red;">Password should be of 8 characters long.</span>
+                        </template>
+                        <div class="slds-form__row"> 
+                            <div class="slds-form__item">
+                                <lightning-input type="password" autocomplete="none" label="Re Enter Password" value={userData.Repassword}
+                                    message-when-pattern-mismatch={nameValidation} maxlength=80 required onblur={handelInput}
+                                    name="re-password" style="width: 100%;">
+                                </lightning-input>
+                            </div>
+                        </div>
+                        <template if:false={passwordMatch}>
+                            <span style="color:red;">Password is not matching. Please enter same password.</span>
+                        </template>
+                      
+                    </div>
+                    <div class="controls">
+                        <lightning-button class="slds-m-right_medium" onclick={navigateToLoginInformation} label="Back">
+                        </lightning-button>
+                         <lightning-button variant="brand" label="Save" onclick={saveUser}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</template>

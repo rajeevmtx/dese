@@ -1,0 +1,963 @@
+<apex:page sidebar="false" controller="PROPOSAL_CORE_Review_Controller" applyBodyTag="false" standardStylesheets="false"
+    action="{!getApplicationReviewInfo}">
+    <style>
+        #validationErrorMessage1 {
+            display: none;
+        }
+
+        #successMessage {
+            display: none;
+        }
+
+        .checkbox-width {
+            width: 2%;
+        }
+
+        .certification-label {
+            width: 96%;
+        }
+
+        .text-justify {
+            text-align: justify;
+        }
+
+        .width70 {
+            width: 70%
+        }
+
+        .subTitle {
+            font-size: 12px;
+        }
+
+        .width100 {
+            width: 100%
+        }
+
+        .width20 {
+            width: 20%;
+        }
+
+        .width40 {
+            width: 40%;
+        }
+
+        .border-top {
+            border-top: 1px solid #ddd;
+        }
+
+        .tableDiv {
+            border-top: 0px solid #ddd;
+            border: 1px solid #ddd;
+            padding: 1%;
+            font-family: "Proxima Nova", sans-serif;
+            color: #333;
+            font-size: 13px;
+        }
+
+        .tableContent {
+            border-top: 0px solid #ddd !important;
+            border: 1px solid #ddd;
+            padding-left: 1%;
+            padding-right: 1%;
+            font-family: "Proxima Nova", sans-serif;
+            color: #333;
+            font-size: 13px;
+        }
+
+        .row {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        .col-md-12 {
+            padding: 1%;
+        }
+
+        .col-md-6 {
+            padding: 1%;
+        }
+
+        .part-heading {
+            color: black;
+            font-size: 25px;
+            font-weight: bold;
+            margin: 1%;
+        }
+
+        .sub-heading1 {
+            padding-left: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .part2-heading {
+            padding-left: 1%;
+            padding-right: 1%;
+            font-family: "Proxima Nova", sans-serif;
+            color: #333;
+            font-size: 13px;
+        }
+
+        .box-group+.box-group {
+            margin-top: 20px;
+        }
+
+        .p0 {
+            padding: 0;
+        }
+
+        .checklist-question tbody>tr>td:first-of-type {
+            width: 60%;
+        }
+
+        .content-question tbody>tr>td:first-of-type {
+            width: 60%;
+        }
+
+        .font13 {
+            font-size: 13px;
+        }
+
+        .font14 {
+            font-size: 14px;
+        }
+
+        .table-borderless td,
+        .table-borderless th {
+            border: 0;
+        }
+
+        .table-borderless tbody>tr>td:first-of-type {
+            width: 40%;
+            text-align: right;
+            padding-right: 10%;
+        }
+
+        .width50 {
+            width: 50%
+        }
+
+        .contact-table {
+            margin-top: 3%;
+            border: 2px solid #ddd;
+            margin-bottom: 2%;
+        }
+
+        .site-table {
+            border: 2px solid #ddd;
+            margin-bottom: 2%;
+        }
+
+        .explanation-div {
+            max-width: 490px;
+            word-break: break-all;
+        }
+
+        .mt20 {
+            margin-top: 20px;
+        }
+
+        .justify-space-between {
+            justify-content: space-between;
+        }
+
+        .help-link {
+            font-size: 14px;
+            color: #1d49cc;
+            padding-top: 2%;
+            margin-left: 50px;
+        }
+
+        .slds-button_outline-brand {
+            border-color: #0d3cc8;
+            color: #0d3cc8;
+        }
+
+        .timeline {
+            border-left: 2px solid #dfe4f2;
+            border-bottom-right-radius: 4px;
+            border-top-right-radius: 4px;
+            margin-left: 12px;
+            letter-spacing: 0;
+            position: relative;
+            position: -webkit-sticky;
+            position: sticky;
+            top: 2rem;
+            line-height: 1.4em;
+            font-size: 14px;
+            padding: 0 25px;
+            list-style: none;
+            text-align: left;
+            counter-reset: li-counter;
+            margin: 3rem 2rem;
+        }
+
+        .timeline .event:after {
+            border: 2px solid #656566;
+            border: 5px solid #f7f7f7;
+            position: absolute;
+            display: block;
+            top: 0;
+            left: -43px;
+            background: #dfe4f2;
+            border-radius: 50%;
+            height: 21px;
+            width: 25px;
+            content: "";
+            top: 5px;
+            top: 10px;
+            text-align: center;
+            content: attr(steplabel);
+            counter-increment: li-counter;
+            color: black;
+            padding-top: 4px;
+        }
+
+        .timeline .event {
+            padding-bottom: 17.5px;
+            position: relative;
+            padding-top: 17.5px;
+            min-width: 200px;
+            cursor: pointer;
+        }
+
+        .timeline .event:after else {
+            border: 2px solid #0f43e0;
+        }
+
+        .timeline .event.completed {
+            color: #0070d2;
+        }
+
+        .timeline .event.completed:after {
+            background: #0070d2;
+            padding-top: 4px;
+            color: white;
+            content: '✓';
+            text-align: center;
+        }
+
+        .timeline .event.active {
+            color: #128ec3;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .timeline .event.active:after {
+            background-color: #479eeb;
+            color: white;
+        }
+
+        .timeline .event:first-of-type {
+            padding-top: 7.5px;
+        }
+
+        .timeline .event:first-of-type:after {
+            top: -2px;
+        }
+
+        .timeline .event:last-of-type {
+            padding-bottom: 0;
+            margin-bottom: 0;
+            border: none;
+        }
+
+        .timeline .event:last-of-type:after {
+            top: auto;
+            top: 10px;
+            bottom: 0;
+        }
+
+        footer {
+            background: #fff;
+            position: relative !important;
+        }
+
+        .card--new {
+            background: #fff;
+            padding: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24);
+            transition: all .3s cubic-bezier(.25, .8, .25, 1);
+            border: none;
+            border-radius: 0;
+            margin: 1rem 2rem;
+        }
+
+        .bodyDiv {
+            background: #F5F7FA !important;
+        }
+
+        .has-shadow {
+            width: 100%;
+            margin-bottom: 1rem;
+            padding: 2rem;
+            background-color: #fff;
+            box-shadow: 4px 1px 2px 1px rgba(0, 0, 0, .05);
+            text-align: left;
+        }
+    </style>
+
+    <apex:composition template="CORE_APPINTAKE_Template_Page">
+        <apex:define name="body">
+            <div class="has-shadow slds-p-vertical_medium slds-m-bottom_medium heading_header_registration">
+                <c:CORE_StepNav_Component pgName="{!$CurrentPage.Name}" />
+            </div>
+            <div class="container row">
+                <div class="col-md-2">
+                    <ol class="timeline">
+                        <li class="event completed" value="0" steplabel="0">Instructions</li>
+                        <li class="event completed" value="1" steplabel="1">Proposer Contact Information</li>
+                        <li class="event completed" value="2" steplabel="2">Private School Information</li>
+                        <li class="event completed" value="3" steplabel="3">Allocation and Flexing</li>
+                        <li class="event completed" value="4" steplabel="4">Proposal Documents</li>
+                        <li class="event active" value="5" steplabel="5">Authorizd Signature and Certification</li>
+                        <li class="event" value="6" steplabel="6">Proposal Submission</li>
+                    </ol>
+                </div>
+                <div class="col-md-10 card--new">
+                    <div class="page">
+
+                        <!-- <div class="sub-heading">Application Number:&nbsp;<apex:outputfield value="{!project.Application_Number__c}" /></div> -->
+                        <!-- <c:CORE_StepNav_Component pgName="PROPOSAL_CORE_Review_page"/> -->
+                        <apex:form id="frm">
+                            <div class="application">
+                                <div class="content content-body">
+                                    <apex:outputPanel id="errorPanel">
+                                        <div class="alert-container p0">
+                                            <apex:pageMessages id="pageErrors" />
+                                            <div class="alert alert-info">
+                                                <apex:outputPanel rendered="{!!project.Program_Version__r.NY_Green_Bank_RFP__c}" layout="none">
+                                                    <apex:outputPanel rendered="{!!project.Concept_Paper__c}">
+                                                        {!$Label.Proposal_Review_Page_Help_Text}
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!project.Concept_Paper__c}">
+                                                        {!$Label.Proposal_Concept_Paper_Review_Page_Help_Text}
+                                                    </apex:outputPanel>
+                                                </apex:outputPanel>
+                                                <!--        <apex:outputPanel rendered="{!project.Program_Version__r.NY_Green_Bank_RFP__c}" layout="none">
+                                            <apex:outputPanel rendered="{!!project.Concept_Paper__c}" >
+                                                {!$Label.Proposal_NYGB_Review_Page_Help_Text}
+                                            </apex:outputPanel> 
+                                        </apex:outputPanel> -->
+                                            </div>
+                                            <div class="alert alert-danger" id="validationErrorMessage1"></div>
+                                            <div class="alert alert-success" id="successMessage"></div>
+                                        </div>
+                                    </apex:outputPanel>
+
+                                    <apex:actionFunction name="checkSigningStatus" action="{!checkSigningStatus}" rerender="errorPanel, electronicSignPanel, btnPanel"
+                                        status="status"></apex:actionFunction>
+
+                                    <div class="row">
+                                        &nbsp;
+                                    </div>
+
+                                    <!-- <div class="box-group">
+                                <div class="heading">
+                                    <div class="title">Proposal Information</div>
+                                </div>
+                                <div class="content box reset">
+                                    <table class="table table-default table-condensed table-striped app-review">
+                                        <tbody>
+                                            <tr class="odd">
+                                                <td>Solicitation Name</td>
+                                                <td>{!project.Program_Version__r.Name}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div> -->
+
+                                    <apex:outputPanel rendered="{!AND(primaryProjectRoleList != null, primaryProjectRoleList.size > 0)}">
+                                        <div class="box-group">
+                                            <div class="heading">
+                                                <div class="title">Primary Company Contacts</div>
+                                            </div>
+                                        </div>
+
+                                        <table class="font13 table-condensed table-borderless width50 pull-left">
+                                            <tr>
+                                                <td>Company Name:</td>
+                                                <td>{!primaryProjectRoleList[0].Company_name__c}</td>
+                                            </tr>
+                                            <apex:outputPanel rendered="{!project.Program_Version__r.NY_Green_Bank_RFP__c}" layout="none">
+                                                <tr>
+                                                    <td>Company Type:</td>
+                                                    <td>{!primaryProjectRoleList[0].Company_Type__c}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Company Website:</td>
+                                                    <td>{!primaryProjectRoleList[0].Company_Website__c}</td>
+                                                </tr>
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!!project.Program_Version__r.NY_Green_Bank_RFP__c}" layout="none">
+                                                <tr>
+                                                    <td>Tax identification type:</td>
+                                                    <td>{!primaryProjectRoleList[0].Tax_Identification_Type__c}</td>
+                                                </tr>
+                                                <apex:outputPanel rendered="{!primaryProjectRoleList[0].Tax_Identification_Type__c == 'EIN'}">
+                                                    <tr>
+                                                        <td>Employer Identification Number (EIN):</td>
+                                                        <td class="formatEIN"></td>
+                                                    </tr>
+                                                </apex:outputPanel>
+                                                <tr>
+                                                    <td>DUNS Number:</td>
+                                                    <td>{!primaryProjectRoleList[0].DUNS_Number__c}</td>
+                                                </tr>
+                                            </apex:outputPanel>
+                                        </table>
+                                        <table class="font13 table-condensed table-borderless width50">
+                                            <tr>
+                                                <td>Address 1:</td>
+                                                <td>{!primaryProjectRoleList[0].Address_1__c}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Address 2:</td>
+                                                <td>{!primaryProjectRoleList[0].Address_2__c}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>City:</td>
+                                                <td>{!primaryProjectRoleList[0].City__c}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>State:</td>
+                                                <td>{!primaryProjectRoleList[0].State__c}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Zip:</td>
+                                                <td>{!primaryProjectRoleList[0].Zip__c}</td>
+                                            </tr>
+                                        </table>
+
+                                        <table class="table table-default table-condensed table-striped contact-table">
+                                            <thead>
+                                                <th>Name</th>
+                                                <th>{!$ObjectType.Project_Role__c.fields.Email__c.Label}</th>
+                                                <th>{!$ObjectType.Project_Role__c.fields.Title__c.Label}</th>
+                                                <th>{!$ObjectType.Project_Role__c.fields.Phone__c.Label}</th>
+                                                <th>{!$ObjectType.Project_Role__c.fields.Role__c.Label}</th>
+                                                <th>Primary</th>
+                                            </thead>
+                                            <tbody>
+                                                <apex:repeat value="{!primaryProjectRoleList}" var="projectRole">
+                                                    <tr>
+                                                        <td>{!IF(isblank(projectRole.FirstName__c),'', projectRole.FirstName__c)}
+                                                            {!if(isblank(projectRole.LastName__c),'', projectRole.LastName__c)}
+                                                        </td>
+                                                        <td>{!projectRole.Email__c}</td>
+                                                        <td>{!projectRole.Title__c}</td>
+                                                        <td>{!projectRole.Phone__c}</td>
+                                                        <td>{!projectRole.Role__c}</td>
+                                                        <td>{!If(projectRole.Primary_Customer_Contact__c, 'Yes', 'No')}</td>
+                                                    </tr>
+                                                </apex:repeat>
+                                            </tbody>
+                                        </table>
+                                    </apex:outputPanel>
+
+                                    <apex:outputPanel rendered="{!AND(alternatePartyProjectRoleList != null, alternatePartyProjectRoleList.size > 0)}">
+                                        <div class="box-group">
+                                            <div class="heading">
+                                                <div class="title">Alternate Party Contacts</div>
+                                            </div>
+                                        </div>
+
+                                        <table class="font13 table-condensed table-borderless width50 pull-left">
+                                            <tr>
+                                                <td>Company Name:</td>
+                                                <td>{!alternatePartyProjectRoleList[0].Company_name__c}</td>
+                                            </tr>
+                                            <apex:outputPanel rendered="{!!project.Program_Version__r.NY_Green_Bank_RFP__c}">
+                                                <tr>
+                                                    <td>Tax identification type:</td>
+                                                    <td>{!alternatePartyProjectRoleList[0].Tax_Identification_Type__c}</td>
+                                                </tr>
+                                                <apex:outputPanel rendered="{!alternatePartyProjectRoleList[0].Tax_Identification_Type__c == 'EIN'}">
+                                                    <tr>
+                                                        <td>Employer Identification Number (EIN):</td>
+                                                        <td>{!alternatePartyProjectRoleList[0].Employee_Identification_Number_EIN__c}</td>
+                                                    </tr>
+                                                </apex:outputPanel>
+                                                <tr>
+                                                    <td>DUNS Number:</td>
+                                                    <td>{!alternatePartyProjectRoleList[0].DUNS_Number__c}</td>
+                                                </tr>
+                                            </apex:outputPanel>
+                                        </table>
+                                        <table class="font13 table-condensed table-borderless width50">
+                                            <tr>
+                                                <td>Address 1:</td>
+                                                <td>{!alternatePartyProjectRoleList[0].Address_1__c}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Address 2:</td>
+                                                <td>{!alternatePartyProjectRoleList[0].Address_2__c}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>City:</td>
+                                                <td>{!alternatePartyProjectRoleList[0].City__c}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>State:</td>
+                                                <td>{!alternatePartyProjectRoleList[0].State__c}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Zip:</td>
+                                                <td>{!alternatePartyProjectRoleList[0].Zip__c}</td>
+                                            </tr>
+                                        </table>
+
+                                        <table class="table table-default table-condensed table-striped contact-table">
+                                            <thead>
+                                                <th>Name</th>
+                                                <th>{!$ObjectType.Project_Role__c.fields.Email__c.Label}</th>
+                                                <th>{!$ObjectType.Project_Role__c.fields.Title__c.Label}</th>
+                                                <th>{!$ObjectType.Project_Role__c.fields.Phone__c.Label}</th>
+                                                <th>{!$ObjectType.Project_Role__c.fields.Role__c.Label}</th>
+                                                <th>Primary</th>
+                                            </thead>
+                                            <tbody>
+                                                <apex:repeat value="{!alternatePartyProjectRoleList}" var="projectRole">
+                                                    <tr>
+                                                        <td>{!IF(isblank(projectRole.FirstName__c),'', projectRole.FirstName__c)}
+                                                            {!if(isblank(projectRole.LastName__c),'', projectRole.LastName__c)}
+                                                        </td>
+                                                        <td>{!projectRole.Email__c}</td>
+                                                        <td>{!projectRole.Title__c}</td>
+                                                        <td>{!projectRole.Phone__c}</td>
+                                                        <td>{!projectRole.Role__c}</td>
+                                                        <td>{!If(projectRole.Primary_Customer_Contact__c, 'Yes', 'No')}</td>
+                                                    </tr>
+                                                </apex:repeat>
+                                            </tbody>
+                                        </table>
+                                    </apex:outputPanel>
+
+                                    <apex:outputPanel rendered="{!projectSiteList.size > 0}" layout="none">
+                                        <div class="box-group">
+                                            <div class="heading">
+                                                <div class="title">Site Information</div>
+                                            </div>
+                                        </div>
+
+                                        <table class="table table-default table-condensed table-striped site-table">
+                                            <thead>
+                                                <th>Site Name</th>
+                                                <th>Address</th>
+                                                <th>Electric Utility</th>
+                                                <th>Gas Utility</th>
+                                                <th>Paying SBC?</th>
+                                            </thead>
+                                            <tbody>
+                                                <apex:repeat value="{!projectSiteList}" var="projectSite">
+                                                    <tr>
+                                                        <td>{!projectSite.Site_Name__c}</td>
+                                                        <td>{!projectSite.Address_1__c}
+                                                            <br/>
+                                                            <apex:outputPanel rendered="{!projectSite.Address_2__c != null}" layout="none">
+                                                                {!projectSite.Address_2__c}
+                                                                <br/>
+                                                            </apex:outputPanel>
+                                                            {!IF(isblank(projectSite.City__c),'', projectSite.City__c)}, {!If(isblank(projectSite.State__c),'', projectSite.State__c)},
+                                                            {!If(isblank(projectSite.Zip__c),'', projectSite.Zip__c)}
+                                                        </td>
+                                                        <td>
+                                                            <apex:outputPanel rendered="{!projectSite.Utility_Company__c != null}" layout="none">
+                                                                {!projectSite.Utility_Company__c}
+                                                                <br/>
+                                                            </apex:outputPanel>
+                                                            <apex:outputPanel rendered="{!projectSite.Electric_Utility_Account_Number__c != null}" layout="none">
+                                                                {!projectSite.Electric_Utility_Account_Number__c}
+                                                            </apex:outputPanel>
+                                                        </td>
+                                                        <td>
+
+                                                        </td>
+                                                        <td>{!projectSite.Is_Contributing_to_SBC__c}</td>
+                                                    </tr>
+                                                </apex:repeat>
+                                            </tbody>
+                                        </table>
+                                    </apex:outputPanel>
+
+                                    <div class="box-group">
+                                        <div class="heading">
+                                            <apex:outputPanel rendered="{!!project.Concept_Paper__c}">
+                                                <div class="title">Proposal Information</div>
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!project.Concept_Paper__c}">
+                                                <div class="title">Concept Paper Information</div>
+                                            </apex:outputPanel>
+                                        </div>
+                                        <div class="content box reset">
+                                            <table class="table table-default table-condensed table-striped app-review">
+                                                <tbody>
+                                                    <apex:outputPanel rendered="{!!project.Program_Version__r.NY_Green_Bank_RFP__c}">
+                                                        <tr>
+                                                            <td>{!$ObjectType.Project__c.fields.Proposed_Proposal_Category__c.Label}</td>
+                                                            <td>{!project.Proposed_Proposal_Category__c}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Proposer Company Information</td>
+                                                            <td>{!project.Company_Information__c}</td>
+                                                        </tr>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!(project.Program_Version__r.NY_Green_Bank_RFP__c && !project.Concept_Paper__c)}">
+
+                                                        <apex:outputPanel rendered="{!project.Program_Version__r.End_User_Types__c}">
+                                                            <tr>
+                                                                <td>{!$ObjectType.Project__c.fields.End_User_Type__c.Label}</td>
+                                                                <td>
+                                                                    <apex:outputField value="{!project.End_User_Type__c}" />
+                                                                </td>
+                                                            </tr>
+                                                        </apex:outputPanel>
+
+                                                        <apex:outputPanel rendered="{!project.Program_Version__r.Regions__c}">
+                                                            <tr>
+                                                                <td>{!$ObjectType.Project__c.fields.Regions__c.Label}</td>
+                                                                <td>
+                                                                    <apex:outputField value="{!project.Regions__c}" />
+                                                                </td>
+                                                            </tr>
+                                                        </apex:outputPanel>
+
+                                                        <!--  <apex:outputPanel rendered="{!project.Program_Version__r.Energy_System_Classification__c}">
+                                                              <tr>
+                                                                  <td>{!$ObjectType.Project__c.fields.Energy_System_Classification__c.Label}</td>
+                                                                  <td><apex:outputField value="{!project.Energy_System_Classification__c}" /></td>
+                                                              </tr>
+                                                  </apex:outputPanel> 
+
+                                                  <apex:outputPanel rendered="{!project.Program_Version__r.Primary_Supporting_Technologies__c}">
+                                                              <tr>
+                                                                  <td>{!$ObjectType.Project__c.fields.Primary_Supporting_Technology__c.Label}</td>
+                                                                  <td><apex:outputField value="{!project.Primary_Supporting_Technology__c}" /></td>
+                                                              </tr>
+                                                  </apex:outputPanel> 
+
+                                                  <apex:outputPanel rendered="{!project.Program_Version__r.Size_of_Project_s__c}">
+                                                              <tr>
+                                                                  <td>{!$ObjectType.Project__c.fields.Total_System_Size__c.Label}</td>
+                                                                  <td><apex:outputField value="{!project.Total_System_Size__c}" /></td>
+                                                              </tr>
+                                                  </apex:outputPanel> 
+
+                                                  <apex:outputPanel rendered="{!project.Program_Version__r.Panel_Manufacturer__c}">
+                                                              <tr>
+                                                                  <td>{!$ObjectType.Project__c.fields.Panel_Manufacturer__c.Label}</td>
+                                                                  <td><apex:outputField value="{!project.Panel_Manufacturer__c}" /></td>
+                                                              </tr> 
+                                                  </apex:outputPanel>
+
+                                                  <apex:outputPanel rendered="{!project.Program_Version__r.Inverter_Manufacturer__c}">
+                                                              <tr>
+                                                                  <td>{!$ObjectType.Project__c.fields.Inverter_Manufacturer__c.Label}</td>
+                                                                  <td><apex:outputField value="{!project.Inverter_Manufacturer__c}" /></td>
+                                                              </tr> 
+                                                  </apex:outputPanel> -->
+
+                                                    </apex:outputPanel>
+
+                                                    <tr>
+                                                        <td>Proposal Description</td>
+                                                        <td>{!project.Description__c}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <apex:outputPanel rendered="{!!project.Concept_Paper__c}" layout="none">
+                                        <div class="box-group">
+                                            <div class="heading">
+                                                <div class="title">Checklist Questions</div>
+                                            </div>
+                                            <div class="content box reset">
+                                                <table class="table table-default table-condensed table-striped checklist-question">
+                                                    <tbody>
+                                                        <apex:repeat value="{!checklistQuestionList}" var="question">
+                                                            <tr>
+                                                                <td>{!question.Display_Label__c}</td>
+                                                                <td>{!question.Proposal_Question_Answer__c}
+                                                                    <apex:outputPanel layout="none" rendered="{!question.Description__c != null}">
+                                                                        <br/>
+                                                                        <div class="explanation-div">{!question.Description__c}</div>
+                                                                    </apex:outputPanel>
+                                                                </td>
+                                                            </tr>
+                                                        </apex:repeat>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <apex:outputPanel styleclass="box-group" rendered="{!contentQuestionList.size > 0}" layout="block">
+                                            <div class="heading">
+                                                <div class="title">Proposal Contents</div>
+                                            </div>
+                                            <div class="content box reset">
+                                                <table class="table table-default table-condensed table-striped content-question">
+                                                    <tbody>
+                                                        <apex:repeat value="{!contentQuestionList}" var="question">
+                                                            <tr>
+                                                                <td>{!question.Display_Label__c}</td>
+                                                                <td>{!question.Proposal_Question_Answer__c}
+                                                                    <apex:outputPanel layout="none" rendered="{!question.Description__c != null}">
+                                                                        <apex:outputPanel rendered="{!question.Explanation_Required_On__c != ''}">
+                                                                            <br/>
+                                                                        </apex:outputPanel>
+                                                                        <div class="explanation-div">{!question.Description__c}</div>
+                                                                    </apex:outputPanel>
+                                                                </td>
+                                                            </tr>
+                                                        </apex:repeat>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </apex:outputPanel>
+
+                                        <apex:outputPanel styleclass="box-group" rendered="{!disclosureQuestionList.size > 0}" layout="block">
+                                            <div class="heading">
+                                                <div class="title">Disclosure of Prior Findings of Non-Responsibility</div>
+                                            </div>
+                                            <div class="content box reset">
+                                                <table class="table table-default table-condensed table-striped checklist-question">
+                                                    <tbody>
+                                                        <apex:repeat value="{!disclosureQuestionList}" var="disclosure">
+                                                            <apex:outputPanel rendered="{!IF(disclosure.Question_Type__c == 'Yes/No', disclosure.Proposal_Question_Answer__c != null,
+                                                                                    IF(disclosure.Question_Type__c == 'Input Text', disclosure.Description__c != null,
+                                                                                       IF(disclosure.Question_Type__c == 'Date', disclosure.Date_Value__c != null, false)))}"
+                                                                layout="none">
+                                                                <tr>
+                                                                    <td>{!disclosure.Display_Label__c}</td>
+                                                                    <apex:outputPanel layout="none" rendered="{!disclosure.Question_Type__c == 'Yes/No'}">
+                                                                        <td>
+                                                                            {!disclosure.Proposal_Question_Answer__c}
+                                                                            <apex:outputPanel layout="none" rendered="{!disclosure.Description__c != null}">
+                                                                                <br/>
+                                                                                <div class="explanation-div">{!disclosure.Description__c}</div>
+                                                                            </apex:outputPanel>
+                                                                        </td>
+                                                                    </apex:outputPanel>
+
+                                                                    <apex:outputPanel layout="none" rendered="{!disclosure.Question_Type__c == 'Input Text'}">
+                                                                        <td>{!disclosure.Description__c}</td>
+                                                                    </apex:outputPanel>
+
+                                                                    <apex:outputPanel layout="none" rendered="{!disclosure.Question_Type__c == 'Date'}">
+                                                                        <td>
+                                                                            <apex:outputText value="{0,date,MM/dd/yyyy}">
+                                                                                <apex:param value="{!disclosure.Date_Value__c}" />
+                                                                            </apex:outputText>
+                                                                        </td>
+                                                                    </apex:outputPanel>
+                                                                </tr>
+                                                            </apex:outputPanel>
+                                                        </apex:repeat>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+
+                                    <div class="box-group mt20">
+                                        <div class="heading">
+                                            <apex:outputPanel rendered="{!!project.Program_Version__r.NY_Green_Bank_RFP__c}">
+                                                <apex:outputPanel rendered="{!!project.Concept_Paper__c}">
+                                                    <div class="title">Proposal Budget Information</div>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!project.Concept_Paper__c}">
+                                                    <div class="title">Concept Paper Budget Information</div>
+                                                </apex:outputPanel>
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!project.Program_Version__r.NY_Green_Bank_RFP__c}">
+                                                <div class="title">Estimated Total Project Costs</div>
+                                            </apex:outputPanel>
+                                        </div>
+                                        <div class="content box reset">
+                                            <table class="table table-default table-condensed table-striped app-review">
+                                                <tbody>
+                                                    <apex:outputPanel rendered="{!!project.Program_Version__r.NY_Green_Bank_RFP__c}">
+                                                        <tr>
+                                                            <!--                                                     <td>{!$ObjectType.Project__c.fields.Proposed_NYSERDA_Cost__c.Label}</td> -->
+                                                            <td>Proposed Funding</td>
+                                                            <td>
+                                                                <apex:outputField value="{!project.Proposed_NYSERDA_Cost__c}"
+                                                                />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>{!$ObjectType.Project__c.fields.Propsoed_Cost_Share__c.Label}</td>
+                                                            <td>
+                                                                <apex:outputField value="{!project.Propsoed_Cost_Share__c}" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>{!$ObjectType.Project__c.fields.Proposed_Total_Cost__c.Label}</td>
+                                                            <td>
+                                                                <apex:outputField value="{!project.Proposed_Total_Cost__c}" />
+                                                            </td>
+                                                        </tr>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!project.Program_Version__r.NY_Green_Bank_RFP__c}">
+                                                        <tr>
+                                                            <td>Estimated Total Project Costs</td>
+                                                            <td>
+                                                                <apex:outputField value="{!project.Proposed_Total_Cost__c}" />
+                                                            </td>
+                                                        </tr>
+                                                    </apex:outputPanel>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="box-group">
+                                        <div class="row">
+                                            <div class="col-xs-1 checkbox-width">
+                                                <div style="display:none;">
+                                                    <label for="{!$Component.termsCondition}">CheckBox</label>
+                                                </div>
+                                                <!-- Accessibility Issues -->
+                                                <apex:inputCheckbox value="{!project.TermsCondition__c}" id="termsCondition" styleClass="termsCheckbox" />
+                                            </div>
+
+                                            <div class="form-group col-xs-11 certification-label">
+                                                <div class="field text-justify font14">
+                                                    <apex:outputField rendered="{!project.Statement__c != NULL}" value="{!project.Statement__c}" />
+                                                    <apex:outputText rendered="{!project.Statement__c == NULL }" escape="false" value="{!$Label.CORE_Default_Solicitation_AttestationStatement}"
+                                                    />
+                                                </div>
+                                                <!-- /.field -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="box-group">
+                                        <div class="form-group">
+                                            <apex:outputPanel id="electronicSignPanel">
+                                                <apex:outputPanel rendered="{! AND(project.Signed_Date__c == null)}">
+                                                    <a class="btn-bs btn-primary btn-lg" onclick="startSignApplication();" href="javascript:void(0)">Electronic Signature</a>
+                                                </apex:outputPanel>
+
+                                                <script>
+                                                    /*var signedDate = '{!project.Signed_Date__c}';
+                                                        var isSigned = '{!$CurrentPage.parameters.event}';
+                                                        console.log('signedDate>>>',signedDate);
+                                                        if ((typeof(signedDate) == 'undefined' || signedDate == null || signedDate == '') && (typeof(isSigned) != 'undefined' && isSigned != null && isSigned != '' && isSigned == 'signing_complete')) {
+                                                            checkSigningStatus();
+                                                            console.log('In If');
+                                                        }
+                                                        console.log('out of If');*/
+                                                </script>
+                                            </apex:outputPanel>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  <apex:outputPanel styleclass="alert-container" layout="block" rendered="{!project.Program_Version__r.NY_Green_Bank_RFP__c}">
+                            <div class="alert alert-info">
+                                <apex:outputText value="{!$Label.Proposal_NYGB_Support_Help_Text}" escape="false"/>
+                            </div>
+                        </apex:outputPanel> -->
+                            </div>
+
+                            <apex:actionFunction name="previous" action="{!previous}" immediate="true" status="status" rerender="application">
+                                <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                            </apex:actionFunction>
+                            <apex:actionFunction name="next" action="{!saveAndNext}" status="status" rerender="application">
+                                <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                            </apex:actionFunction>
+
+                        </apex:form>
+                    </div>
+
+                    <footer>
+                        <div class="content flex controls sm">
+                            <a href="javascript:void(0)" onclick="previous('PROPOSAL_CORE_Review_page')" class="btn-bs btn-lg btn-blank">Previous</a>
+                            <a href="javascript:void(0)" onclick="nextAction('PROPOSAL_CORE_Review_page')" class="btn-bs btn-lg btn-primary continueBtn">Continue</a>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </apex:define>
+    </apex:composition>
+
+    <script>
+        $(document).ready(function () {
+            jQuery("html").attr("lang", "en");
+            var signedDate = '{!project.Signed_Date__c}';
+            var isSigned = '{!$CurrentPage.parameters.event}';
+            if ((typeof (signedDate) == 'undefined' || signedDate == null || signedDate == '') && (typeof (isSigned) != 'undefined' && isSigned != null && isSigned != '' && isSigned == 'signing_complete')) {
+                checkSigningStatus();
+            }
+        });
+
+        /*function signApplication() {
+                //var exp1 = getResponseFromCheckbox('.exp1');
+                //var exp2 = getResponseFromCheckbox('.exp2');
+                //var exp3 = getResponseFromCheckbox('.exp3');
+                //var exp4 = getResponseFromCheckbox('.exp4');
+        
+                var selectedDocument = '';
+                $('.documentSelection:checked').each(function(){
+                    if(selectedDocument != ''){
+                        selectedDocument += ';';
+                    }
+                    selectedDocument += $(this).attr('name');
+                });
+        
+                //saveResponse(exp1, exp2, exp3, exp4, selectedDocument);
+                saveResponse(selectedDocument);
+            }*/
+
+        function startSignApplication() {
+            console.log('Inside Sign App');
+            Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.PROPOSAL_CORE_Review_Controller.getSiginingUrl}', '{!projectId}', '{!domainURL}', 'PROPOSAL_CORE_Review_Page', 'PROPOSAL_CORE_Review_PDFPage', function (result, event) {
+                if (event.status) {
+                    var params = ['height=' + screen.height, 'width=' + screen.width, 'fullscreen=yes'].join(',');
+                    var popup = window.open(result, '_self');
+                    console.log('status success');
+                    //popup.moveTo(0,0);
+                } else if (event.type === 'exception') { } else {
+                    console.log(event.message);
+                }
+            }, {
+                escape: true
+            });
+        }
+
+        function nextAction(currentPage) {
+            $('#validationErrorMessage1').hide();
+            if ($('.termsCheckbox:checked').length == 0) {
+                if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'true') {
+                    $('#validationErrorMessage1').html('Certify the information on this page to complete your submission.');
+                } else if ('{!project.Concept_Paper__c}' == 'true') {
+                    $('#validationErrorMessage1').html('<strong>Error!</strong> You must certify the information on this page to submit your concept paper.');
+                } else {
+                    $('#validationErrorMessage1').html('<strong>Error!</strong> You must certify the information on this page to submit your proposal.');
+                }
+
+                $('#validationErrorMessage1').show();
+                return false;
+            }
+            next(currentPage);
+        }
+    </script>
+
+    <apex:outputPanel layout="none" rendered="{!primaryProjectRoleList.size > 0}">
+        <script>
+            $(document).ready(function () {
+                var EIN = '{!primaryProjectRoleList[0].Employee_Identification_Number_EIN__c}';
+                if (EIN) {
+                    var formatEIN = EIN.substr(0, 2) + '-' + EIN.substr(2, EIN.length);
+                    $('.formatEIN').html(formatEIN);
+                }
+            });
+
+        </script>
+    </apex:outputPanel>
+    <c:Grants_Site_Footer />
+</apex:page>

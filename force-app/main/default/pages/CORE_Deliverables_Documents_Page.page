@@ -1,0 +1,405 @@
+<apex:page docType="html-5.0" sidebar="false" applyBodyTag="false" standardController="Project_Milestones__c" extensions="CORE_Deliverables_Documents_Controller">
+    <title>Milestone and Deliverables</title>
+    <apex:composition template="CORE_TemplateBlank">
+        <apex:define name="body">
+            <div class="page">
+                <apex:form >
+                    <script>
+                        function hideFileList(id, val) {
+                            if ($('.' + id).find(":selected").text() == 'New') {
+                                $('.' + val).hide();
+                            } else {
+                                $('.' + val).show();
+                            }
+                        }
+                    </script>
+
+                    <apex:actionStatus id="status1">
+                <apex:facet name="start">
+                  <div class="sk-folding-cube">
+                    <div class="sk-cube1 sk-cube"></div>
+                    <div class="sk-cube2 sk-cube"></div>
+                    <div class="sk-cube4 sk-cube"></div>
+                    <div class="sk-cube3 sk-cube"></div>
+                  </div>
+                  <div class="loading-overlay"></div>
+                </apex:facet>
+             </apex:actionStatus>
+
+                    <div class="application paperwork deliverables">
+                        <div class="alert-container">
+                            <div id="errorText" class="alert alert-danger hidden">
+                                Please fill the missing fields.
+                            </div>
+                        </div>
+                        <div class="content content-body documents">
+                            <apex:repeat value="{!listOfProjectMilestones}" var="mst">
+                                <div class="box-group">
+                                    <div class="heading">
+                                        <div class="title">{!mst.Name} - Deliverables (Documents)</div>
+                                    </div>
+                                    <table class="table table-responsive table-striped table-default">
+                                        <thead>
+                                            <tr>
+                                                <th>Deliverable name</th>
+                                                <th>Status</th>
+                                                <th>Uploaded document</th>
+                                                <th>Add / update document</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <apex:repeat value="{!mst.Project_Deliverables1__r}" var="deliverable">
+                                                <tr class="{!IF(mapOfDeliverableIdAndRequiredStatus[deliverable.id] == true && mapOfIdAndDeliverables[deliverable.Id].Project_Documents__r.size == 0,'required-row','')}">
+                                                    <td>
+                                                        <!-- <a onclick="$('.opendetails{!deliverable.id}').show();">open</a> -->
+                                                        <a role="button" data-toggle="collapse" class="deliverable-expand collapsed" href="#deliverable{!deliverable.id}" aria-expanded="false" aria-controls="deliverable{!deliverable.id}">
+                                                          <img class="ic-sm" src="{!URLFOR($Resource.NS_Design, 'img/arrow-down.svg')}"  />
+                                                          <apex:outputText value="{!deliverable.Deliverable_Name__c}" />
+                                                        </a>
+
+                                                    </td>
+                                                    <td>
+                                                        <div class="status-row">
+                                                            <apex:outputPanel layout="none" rendered="{!profileaccess}">
+                                                              <apex:inputField value="{!deliverable.Status__c}" styleClass="form-control input-xs input{!deliverable.id}" style="display: none" />
+                                                              <a class="icon_save input{!deliverable.id} btn-save-edit" onclick="saveStatus('{!deliverable.id}',this.value);" style="display: none">
+                                                                  <img class="ic-sm" src="{!URLFOR($Resource.NS_Design, 'img/save.svg')}" alt="Save Changes" />
+                                                              </a>
+                                                            </apex:outputPanel>
+                                                            <!--
+                                                            <a class="icon_save input{!deliverable.id} btn-cancel-edit" onclick="hideIO('.input{!deliverable.id}','.output{!deliverable.id}')" style="display: none">
+                                                                <img class="ic-sm" src="{!URLFOR($Resource.NS_Design, 'img/cancel.svg')}" alt="Cancel" />
+                                                            </a>
+                                                            -->
+                                                            <apex:outputText value="{!deliverable.Status__c}" styleClass="output{!deliverable.id} outputStatusVal{!deliverable.id}" />
+                                                            <apex:outputPanel layout="none" rendered="{!profileaccess}">
+                                                              <a class="icon_pencil output{!deliverable.id} btn-edit-status" onclick="hideOP('.input{!deliverable.id}','.output{!deliverable.id}')">
+                                                                  <img class="ic-sm" src="{!URLFOR($Resource.NS_Design, 'img/edit.svg')}" alt="Edit Status" />
+                                                              </a>
+                                                            </apex:outputPanel>
+                                                        </div><!-- /.status-row -->
+                                                    </td>
+                                                    <td>
+                                                        <div class="document-row">
+                                                            <div>
+                                                                <apex:repeat value="{!mapOfIdAndDeliverables[deliverable.Id].Project_Documents__r}" var="projDoc">
+                                                                    <a class="btn-history" href="#" onclick="getHistory('{!projDoc.Id}')"><img class="ic-sm" src="{!URLFOR($Resource.NS_Design, 'img/versions.svg')}" alt="Attachment history" /></a>
+                                                                </apex:repeat>
+                                                            </div>
+                                                            <apex:outputPanel layout="block" rendered="{!mapOfIdAndDeliverables[deliverable.Id].Project_Documents__r.size > 0}">
+                                                                <apex:repeat value="{!mapOfIdAndDeliverables[deliverable.Id].Project_Documents__r}" var="projDoc">
+                                                                    <a target="_blank" class="btn-attachment" href="/servlet/servlet.FileDownload?file={!mapOfIdAndDocuments[mapOfChildParent[projDoc.Id][0].id].Attachments[0].Id}"><img class="ic-sm" src="{!URLFOR($Resource.NS_Design, 'img/attachment.svg')}" alt="Attachment history" />{!mapOfIdAndDocuments[mapOfChildParent[projDoc.Id][0].id].Attachments[0].name}</a>
+                                                                </apex:repeat>
+                                                            </apex:outputPanel>
+                                                        </div><!-- /.document-row -->
+                                                    </td>
+
+
+                                                    <td width="1%">
+                                                        <div class="flex-row upload-controls">
+                                                            <apex:selectList value="{!mapSelectedoption[deliverable.id].selectedValue}" styleclass="form-control input-xs selectList{!deliverable.id}" size="1" multiselect="false" onchange="hideFileList('selectList{!deliverable.id}','hideList{!deliverable.id}')" rendered="{!mapSelectedoption[deliverable.id].showValueList}">
+                                                                <apex:selectOptions value="{!mapSelectedoption[deliverable.id].lioption}" />
+                                                            </apex:selectList>
+                                                            <apex:selectList value="{!mapSelectedoption[deliverable.id].selectedParent}" styleclass="form-control input-xs hideList{!deliverable.id}" size="1" multiselect="false" rendered="{!mapSelectedoption[deliverable.id].showparentList  }">
+                                                                <apex:selectOptions value="{!mapSelectedoption[deliverable.id].liparent}" />
+                                                            </apex:selectList>
+                                                            <apex:inputFile styleclass="doc-body" value="{!attachmentWrapperMap[deliverable.Id].attachmentBody}" fileName="{!attachmentWrapperMap[deliverable.Id].attachmentName}" />
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="4" class="reset">
+                                                        <div class="collapse" id="deliverable{!deliverable.id}">
+                                                            <div class="wrapper">
+                                                                <div class="flex-row two-col flex-start deliverable-details">
+                                                                    <div class="notes">
+                                                                        <label for="notes{!deliverable.id}">Notes:</label>
+                                                                        <div class="field m-b-sm">
+                                                                            <apex:inputField value="{!deliverable.Notes__c}" styleClass="form-control inputNotes{!deliverable.id}" style="display: none" />
+                                                                            <apex:outputtext id="outputNotes" value="{!deliverable.Notes__c}" styleClass="disabled-notes outputNotes{!deliverable.id} outputNotesVal{!deliverable.id}" />
+                                                                        </div><!-- /.field -->
+                                                                        <apex:outputPanel layout="none" rendered="{!profileaccess}">
+                                                                        <a class="btn-bs btn-primary btn-xs icon_save inputNotes{!deliverable.id}" onclick="saveNotes('{!deliverable.id}',this.value);" style="display: none">Save</a>
+                                                                        <!-- <a class="icon_save inputNotes{!deliverable.id}" onclick="hideIO('.inputNotes{!deliverable.id}','.outputNotes{!deliverable.id}')" style="display: none">cancel</a> -->
+                                                                        <a class="btn-bs btn-default btn-xs icon_pencil outputNotes{!deliverable.id}" onclick="hideOP('.inputNotes{!deliverable.id}','.outputNotes{!deliverable.id}')">Edit</a>
+                                                                        </apex:outputPanel>
+                                                                    </div>
+                                                                    <div>
+                                                                        <label for="communications{!deliverable.id}">Communications:</label>
+                                                                        <div class="field">
+                                                                            <apex:outputPanel layout="block" styleclass="flex-row" rendered="{!litask.size > 0}">
+                                                                                <table id="tasktable" class="table table-condensed table-striped table-default upper table-bordered" cellspacing="0" width="100%">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th>Subject</th>
+                                                                                            <th>Activity Date</th>
+                                                                                            <th>Created By</th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <apex:variable var="i" value="{!0}" />
+                                                                                        <apex:repeat value="{!litask}" var="var">
+                                                                                            <tr>
+                                                                                                <td>{!var.subject} </td>
+                                                                                                <td><apex:outputField value="{!var.createddate}" /> </td>
+                                                                                                <td><apex:outputField value="{!var.createdby.name}" /> </td>
+                                                                                            </tr>
+                                                                                        </apex:repeat>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </apex:outputPanel>
+                                                                        </div><!-- /.field -->
+                                                                        <a class="btn-bs btn-default btn-xs" href="/apex/CustomEmail_Page?projectDeliverableid={!deliverable.id}&projectId={!$CurrentPage.parameters.projectid}">Email&nbsp;<apex:outputtext value="Contractor" rendered="{!!contractor}"/><apex:outputtext value="Project Manager" rendered="{!contractor}"/></a>
+                                                                    </div>
+                                                                </div><!-- /.flex-row -->
+                                                            </div><!-- /.wrapper -->
+                                                        </div>
+                                                    </td>
+                                                    <!-- <td colspan="4">
+                                                        <div class="opendetails{!deliverable.id}" style="display:none;">
+                                                            <apex:inputField value="{!deliverable.Notes__c}" styleClass="inputNotes{!deliverable.id}" style="display: none" />
+                                                            <a class="icon_save inputNotes{!deliverable.id}" onclick="saveNotes('{!deliverable.id}',this.value);" style="display: none">
+                                                            save
+                                                        </a>
+                                                            <a class="icon_save inputNotes{!deliverable.id}" onclick="hideIO('.inputNotes{!deliverable.id}','.outputNotes{!deliverable.id}')" style="display: none">
+                                                            cancel
+                                                        </a>
+                                                            <div>
+                                                                <apex:outputtext id="outputNotes" value="{!deliverable.Notes__c}" styleClass="outputNotes{!deliverable.id} outputNotesVal{!deliverable.id}" />
+                                                            </div>
+                                                            <a class="icon_pencil outputNotes{!deliverable.id}" onclick="hideOP('.inputNotes{!deliverable.id}','.outputNotes{!deliverable.id}')">
+                                                            Edit
+                                                        </a>
+                                                        </div>
+                                                    </td>
+
+                                                    <td>
+                                                        <div class="opendetails{!deliverable.id}" style="display:none;">
+                                                            Communications:
+                                                            <apex:outputPanel layout="block" styleclass="flex-row" rendered="{!litask.size > 0}">
+
+                                                                <table id="tasktable" class="table table-condensed table-striped table-default upper table-bordered" cellspacing="0" width="100%">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Subject</th>
+                                                                            <th>Activity Date</th>
+                                                                            <th>Created By</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <apex:variable var="i" value="{!0}" />
+                                                                        <apex:repeat value="{!litask}" var="var">
+                                                                            <tr>
+                                                                                <td>{!var.subject} </td>
+                                                                                <td>
+                                                                                    <apex:outputField value="{!var.createddate}" /> </td>
+                                                                                <td>
+                                                                                    <apex:outputField value="{!var.createdby.name}" /> </td>
+                                                                            </tr>
+                                                                        </apex:repeat>
+                                                                    </tbody>
+                                                                </table>
+                                                                <br/>
+                                                                <p >
+                                                                <a class="btn-bs btn-default" href="{!URLFOR($page.CustomEmail_Page,'',[projectDeliverableid=deliverable.id])}">Email Contractor</a>
+                                                                </p>
+                                                            </apex:outputPanel>
+                                                        </div>
+                                                    </td> -->
+                                                </tr>
+                                            </apex:repeat>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </apex:repeat>
+                        </div>
+
+                        <apex:outputPanel id="historyModal">
+                            <div class="modal fade" id="historyPopup" role="dialog">
+                                <div class="modal-dialog modal-md">
+                                    <div class="modal-content" style="width: 150%; left: -25%;">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <apex:outputPanel >
+                                                <h4 class="modal-title">Attachment History</h4>
+                                            </apex:outputPanel>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <table class="table table-responsive table-striped table-default">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Document Name</th>
+                                                        <th>Uploaded Attachment</th>
+                                                        <th>Version Number</th>
+                                                        <th>Created Date</th>
+                                                        <th>Created By</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <apex:repeat value="{!mapOfChildParent[selectedDeliverabeldId]}" var="doc" rendered="{!selectedDeliverabeldId != null}">
+                                                        <tr>
+                                                            <td>{!doc.Name}</td>
+                                                            <td>
+                                                                <a href="/servlet/servlet.FileDownload?file={!mapOfIdAndDocuments[doc.Id].Attachments[0].Id}" target="_blank">{!mapOfIdAndDocuments[doc.Id].Attachments[0].Name}</a>
+                                                            </td>
+                                                            <td style="text-align:center;"> {!doc.Version__c} </td>
+                                                            <td>
+                                                                <apex:outputText value="{0, date, MM/dd/yyyy hh:mm:ss}">
+                                                                    <apex:param value="{!doc.CreatedDate}" />
+                                                                </apex:outputText>
+                                                            </td>
+                                                            <td> {!doc.CreatedBy.Name} </td>
+                                                        </tr>
+                                                    </apex:repeat>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <div class="row">
+                                                <div class="col-lg-10 col-md-10">
+
+                                                </div>
+                                                <div class="col-lg-2 col-md-2" style="padding-left: 0" id="cancelBtnDiv">
+                                                    <button id="cancelBtn" type="button" class="btn-bs btn-default form-control form-group" data-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+
+                    </div>
+                    <apex:actionFunction name="saveDoc" action="{!saveDocuments}" />
+                    <apex:actionRegion >
+                        <apex:actionFunction name="getHistory" onComplete="openHistoryPopup();" rerender="historyModal" status="status1">
+                            <apex:param value="" name="selectedDeliverabeldId" assignTo="{!selectedDeliverabeldId}" />
+
+                        </apex:actionFunction>
+                    </apex:actionRegion>
+                </apex:form>
+            </div>
+            <footer>
+                <div class="content flex controls">
+                    <a href="{!URLFOR($page.CORE_Deliverables_Page)}?id={!projMilestone.project__c}" class="btn-bs btn-blank right btn-lg">Previous</a>
+                    <a href="#" onclick="checkRequiredDocAndSave()" class="btn-bs btn-primary btn-lg">Upload</a>
+                </div>
+            </footer>
+        </apex:define>
+    </apex:composition>
+    <script>
+        function checkRequiredDocAndSave() {
+          if(!checkFileSize()){
+                $("#errorText").removeClass('hidden');
+            }else{
+              var hasMissingFields = false;
+              $(".required-row .doc-body").each(function() {
+                  if ($(this).get(0).files.length === 0) {
+                      $(this).closest('tr').addClass('has-error');
+                      hasMissingFields = true;
+                  }
+              });
+              if (hasMissingFields == false){
+                  $('.sk-folding-cube').parent().show();
+                  saveDoc();
+              }else{
+                  $("#errorText").removeClass('hidden');
+                  $('.sk-folding-cube').parent().hide();
+              }
+          }
+        }
+
+        function openHistoryPopup() {
+            $('#historyPopup').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+        }
+
+        function hideIO(input, output) {
+            $(input).hide();
+            $(output).show();
+        }
+
+        function hideOP(input, output) {
+            $(input).show();
+            $(output).hide();
+        }
+
+        function saveStatus(deliverabelid, status) {
+            console.log('Before status => ' + status);
+            status = $('.input' + deliverabelid).val();
+            console.log('status => ' + status);
+            $("[Id*='status1']").show();
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.CORE_Deliverables_Documents_Controller.updateStatus}',
+                deliverabelid, status,
+                function(result, event) {
+                    console.log(result);
+                    if (event.status) {
+
+                        if (result) {
+                            hideIO('.input' + deliverabelid, '.output' + deliverabelid);
+                            $('.outputStatusVal' + deliverabelid).html(status);
+                            $("[Id*='status1']").hide();
+                        } else {
+
+                        }
+
+                    } else if (event.type === 'exception') {
+                        // Handle error here
+                    }
+                }, {
+                    escape: false
+                }
+            );
+        }
+
+        function saveNotes(deliverabelid, notes) {
+            notes = $('.inputNotes' + deliverabelid).val();
+            $("[Id*='status1']").show();
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.CORE_Deliverables_Documents_Controller.updateNotes}',
+                deliverabelid, notes,
+                function(result, event) {
+                    console.log(result);
+
+                    if (event.status) {
+
+                        if (result) {
+                            hideIO('.inputNotes' + deliverabelid, '.outputNotes' + deliverabelid);
+                            $('.outputNotesVal' + deliverabelid).html(notes);
+                            $("[Id*='status1']").hide();
+                        } else {
+
+                        }
+
+                    } else if (event.type === 'exception') {
+                        // Handle error here
+                    }
+                }, {
+                    escape: false
+                }
+            );
+        }
+
+        function checkFileSize(){
+          var goodSize = true;
+          $('input[type=file]').each(function(){
+              if(typeof this.files[0] !== 'undefined' && typeof this.files[0] !== false && this.files[0] !==null ){
+                  console.log(typeof this.files[0]);
+                  var file = this.files[0],
+                      size = typeof ActiveXObject !== 'undefined' ? getIEFileSize(file) : file.fileSize || file.size;
+                  goodSize = 100000000 > size;
+                  if(!goodSize) {
+                      $("#errorText").text('Sorry! We are unable to upload '+this.files[0].name +'. Document can be at most 100MB in size.');
+                  }
+
+                  return goodSize;
+              }
+          });
+          return goodSize;
+      }
+    </script>
+</apex:page>

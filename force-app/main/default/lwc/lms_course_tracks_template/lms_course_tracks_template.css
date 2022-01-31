@@ -1,0 +1,170 @@
+.course-enrolled-icon{
+    background:#a1b6f4;
+  }
+
+  .course-tile-setting{
+    background-color: white;
+  }
+
+ 
+
+  .course-enrolled-text{
+    color: #54a9de;
+  }
+
+  .left-container-enrolled{
+    background: cadetblue;
+    position : relative;
+  }
+  .left-container-not-enrolled{
+    background: gray;
+  }
+  
+
+  .left-container-note{
+    text-align: center;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: white;
+  }
+
+  .left-container-note-complete{
+    font-weight: 500;
+    font-size: 0.9rem;
+    color:white;
+    bottom : 3%;
+    text-align: center;
+    padding-left: 20%;
+    position: absolute;
+    padding-left: 25%;
+  }
+
+  .enroll-button{
+    float:right;
+  }
+  .slds-badge{
+    white-space: normal !important;
+    line-height: 2rem;
+    font-weight: normal;
+  }
+  .course-open a:link {
+    text-decoration: none;
+    color:#555555;
+  }
+  
+  a{
+    cursor: pointer !important;
+    text-decoration: none !important;
+    color: #555555 !important;
+    font-weight: 500 !important;
+    font-size: 20px !important;
+  }
+  .course-open a:visited {
+    text-decoration: none;
+  }
+  
+  .course-open a:hover {
+    text-decoration: underline;
+  }
+  
+  .course-open a:active {
+    text-decoration: underline;
+  }
+
+  
+
+  .like-content{
+    align-items: center;
+    /* position: relative; */
+    display: flex;
+    float: left;
+  }
+
+  .like-button{
+    float: left;
+  }
+
+  .show-hide{
+    display : none;
+  }
+
+  .Dashboard---All-Courses {
+    width: 100%;
+    background-color: #f6f7fb !important;
+  }
+
+
+  .card-header{
+    padding: 20px 20px 0px 20px;
+  }
+
+  .line{
+    margin-top: 1% !important;
+    margin-bottom: 1% !important;
+    background-color: black;
+    height: 1px;
+    opacity: .2;
+  }
+
+  .card-footer{
+    padding-left: 20px;
+    padding-bottom: 1%;
+  }
+
+  .like-icon{
+    padding-top: 5%;
+  }
+
+  .summary-text{
+    text-align: justify;
+    text-justify: inter-word;
+    font-size: 16px !important;
+  }
+
+  .Sidebar-Background {
+    border-radius: 3px;
+    box-shadow: 2px 2px 20px 2px rgba(0, 0, 0, 0.05);
+    background-color: #ffffff;
+    margin-bottom: 20px;
+  }
+  .title-line{
+    width: 40px;
+    height: 3px;
+    background: #376dc8;
+    margin-top: 1% !important;
+    margin-bottom: 1% !important;
+  }
+
+  .completed-text{
+    float: left;
+    font-size: 14px;
+  }
+  .completed-bar{
+    float: right;
+    padding-top: 4%;
+  }
+
+  .side-panel-enrolled{
+    background-color: #5595ff;
+    height: 100%;
+    border-right: 5px solid #376dc8;
+    position: relative;
+  }
+
+  .side-panel-not-enrolled{
+    background-color: #9b9b9b;
+    height: 100%;
+    border-right: 5px solid #555555;
+  }
+
+  .side-panel-enrolled-completed{
+    background-color: #2eb291;
+    height: 100%;
+    border-right: 5px solid #37bc9b;
+    position: relative;
+  }
+  .more-less{
+    font-size: 16px !important;
+    color: #376dc8 !important;
+
+  }

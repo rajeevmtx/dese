@@ -1,0 +1,235 @@
+<template>
+    <div class="page-header">
+        <h1 class="page-title">Other Adults / Adult Children</h1>
+    </div>
+    <div class="app-container slds-grid slds-gutters slds-wrap">
+        <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <c-fc-intake-form-help-text help-text={helpTextVerification}></c-fc-intake-form-help-text>
+        </div>
+    </div>
+    <lightning-radio-group name="minorChildrenInFamilty"
+        class="horizontal-radio slds-p-bottom_medium slds-m-bottom_small slds-m-top_small" label="Do you have any other
+        adults (18 or over), including adult children of applicant(s), that reside in the home or that are regularly
+        present in the home?" options={yesNoOption} type="radio" onchange={handleInputChange}
+        value={dataObj.minorChildrenInFamilty} required>
+    </lightning-radio-group>
+    
+    <div if:true={isMinorChildrenInFamilty} class="slds-form">
+        <lightning-card>
+            <div class="app-container slds-grid slds-gutters slds-wrap">
+
+                <!-- <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12"> -->
+                    <!-- <c-fc-intake-form-help-text help-text={otherHelpText}></c-fc-intake-form-help-text> -->
+                    <!-- {otherHelpText} -->
+                <!-- </div> -->
+                <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+                    <lightning-button  class="slds-float_right button-padding slds-p-around_small" variant="Brand" label="Add New" onclick={onAddOther}></lightning-button>
+                </div>
+            </div>
+           <table aria-multiselectable="true"
+                class="slds-table slds-no-cell-focus slds-table_bordered slds-table_edit slds-table_fixed-layout slds-table_resizable-cols"
+                role="grid" style="width: 100%;">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th scope="col" class="slds-is-resizable">
+                            <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate column-padding">
+                                <div class="slds-truncate slds-text-body_medium slds-p-around_x-small" title="Full Name">
+                                    Full Name
+                                </div>
+                            </div>
+                        </th>
+                        <th scope="col" class="slds-is-resizable">
+                            <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate column-padding">
+                                <div class="slds-truncate slds-text-body_medium slds-p-around_x-small" title="Date of birth">
+                                    Date of birth
+                                </div>
+                            </div>
+                        </th>
+                        <th scope="col" class="slds-is-resizable">
+                            <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate column-padding">
+                                <div class="slds-truncate slds-text-body_medium slds-p-around_x-small" title="Relationship">
+                                    Relationship
+                                </div>
+                            </div>
+                        </th>
+                        <th scope="col" class="slds-is-resizable">
+                            <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate column-padding">
+                                <div class="slds-truncate slds-text-body_medium slds-p-around_x-small" title="Residing in your home or regularly present?">
+                                    Residing or regularly present?
+                                </div>
+                            </div>
+                        </th>
+                        <th scope="col" class="slds-is-resizable" style="width:100px;"></th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={adultArray} for:item='item' for:index="index">
+                        <tr class="slds-hint-parent" key={item.firstName}>
+                            <td role="gridcell" style="word-break:break-word;white-space: normal;padding:0 !important">
+                                <div class="">
+                                    {item.name}
+                                </div>
+                            </td>
+                            <td role="gridcell" style="word-break:break-word;white-space: normal;padding:0 !important">
+                                <div class="">
+                                    {item.dob}
+                                </div>
+                            </td>
+                            <td role="gridcell" style="word-break:break-word;white-space: normal;padding:0 !important">
+                                <div class="">
+                                    {item.relationship}
+                                </div>
+                            </td>
+                            <td role="gridcell" style="word-break:break-word;white-space: normal;padding:0 !important">
+                                <div class="">
+                                    {item.residing}
+                                </div>
+                            </td>
+                            <td role="gridcell" >
+                                <lightning-icon icon-name="utility:delete" size="x-small"
+                                data-record-id={index} variant="error" onclick={deleteAdult}></lightning-icon>
+                            </td>
+                            <!-- <td role="gridcell" >
+                                <span class="iconHeightWidth" data-value="edit" data-id={item.id} data-contactid={item.contactId} onclick={handleRowAction}>
+                                    <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="edit" class="svg-inline--fa fa-edit fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"></path></svg>
+                                </span>
+                            </td> -->
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            <div class="slds-p-around_medium" if:true={isOpenModal}>
+                <template if:true={isOpenModal}>
+                    <div style="">
+                        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_large">
+                            <div class="slds-modal__container">
+                                <header class="slds-modal__header">
+                                    <button
+                                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                        title="Close" onclick={handleCloseModal}>
+                                        <lightning-icon icon-name="utility:close" variant="inverse"
+                                            alternative-text="Close" size="medium">
+                                        </lightning-icon>
+                                        <span class="slds-assistive-text">Close</span>
+                                    </button>
+                                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Add Other Adults / Adult Children 
+                                    </h2>
+                                </header>
+                                <div class="slds-modal__content" id="modal-content-id-1">
+                                    <!-- <div class="padding-horizontal slds-m-around_small">
+                                        <c-psr-help-text help-text={Portal_Add_New_Contact_Help_Text}></c-psr-help-text>
+                                    </div> -->
+
+                                <div class="app-container slds-grid slds-gutters slds-wrap slds-p-bottom_xx-large">
+                                    <div class="slds-form slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+                                        <div class="slds-grid slds-gutter slds-wrap">
+                                            <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12 slds-p-top_small">
+                                                <lightning-input class="slds-p-bottom_medium" type="text" label="Full name (first, middle initial and last)"
+                                                    data-record-id={index} onchange={handleModelInput} name="name" required>
+                                                </lightning-input>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12 slds-p-top_small">
+                                                <lightning-input class="slds-p-bottom_medium" type="date" label="Date of birth" data-record-id={index}
+                                                    onchange={handleModelInput} name="dob"></lightning-input>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                                <lightning-combobox class="slds-p-bottom_medium" label="Relationship to applicant(s)" options={relationShipOptions}
+                                                    data-record-id={index} onchange={handleModelInput} name="relationship" required>
+                                                </lightning-combobox>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                                <lightning-radio-group
+                                                    class="horizontal-radio slds-p-bottom_medium slds-m-bottom_small slds-m-top_small"
+                                                    label="Is this person residing in your home or regularly present?"
+                                                    options={residingOption} type="radio" data-record-id={index}
+                                                    onchange={handleModelInput} name="residing" required>
+                                                </lightning-radio-group>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                <footer class="slds-modal__footer">
+                                    <lightning-button label="Cancel" class="slds-m-right_medium" variant="neutral" onclick={handleCloseModal}></lightning-button>
+                                    <lightning-button label="Add" variant="brand" onclick={handleAddOther}></lightning-button>
+                                </footer>
+                            </div>
+                        </section>
+                        <div class="slds-backdrop slds-backdrop_open"></div>
+                    </div>
+            </template>
+            </div>
+        </lightning-card>
+    </div>
+        
+    <!--
+    <div if:true={isMinorChildrenInFamilty} class="slds-form">
+        <article class="slds-card">
+            <div class="slds-card__header slds-grid">
+                <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                    <div class="slds-media__body">
+                        <h2 class="slds-card__header-title">
+                            <a href="javascript:void(0);" class="slds-card__header-link slds-truncate">
+                                <span>Other Adult</span>
+                                <div><i>List all other adults, including adult children of Applicant(s), that are
+                                        residing
+                                        or regularly present in the home. <br />(Please identify Nonminor Dependents
+                                        placed in
+                                        your home in the Child / Nonminor Dependent Desired section.)</i></div>
+                            </a>
+                        </h2>
+                    </div>
+                    <div class="slds-no-flex">
+                        <lightning-button label="Add Another" title="Add Another" onclick={handleAddRow}
+                            class="slds-m-left_x-small"></lightning-button>
+                    </div>
+                </header>
+            </div>
+            <div class="slds-card__body slds-card__body_inner">
+                <template for:each={adultArray} for:item='item' for:index="index">
+                    <div key={item.key}
+                        class="slds-card slds-border_top slds-border_right slds-border_bottom slds-border_left">
+                        <div class="slds-card__header slds-grid slds-border_bottom">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <a href="javascript:void(0);" class="slds-card__header-link slds-truncate"
+                                            title="Accounts">
+                                            <span>{item.heading}</span>
+                                        </a>
+                                    </h2>
+                                </div>
+                            </header>
+                        </div>
+                        <div class="slds-card__body slds-card__body_inner slds-border_bottom">
+
+                            <lightning-input type="text" label="Full name (first, middle initial and last)"
+                                data-record-id={index} onchange={handleInputChange} name="name" required>
+                            </lightning-input>
+
+                            <lightning-input type="date" label="Date of birth" data-record-id={index}
+                                onchange={handleInputChange} name="dob"></lightning-input>
+
+                            <lightning-combobox label="Relationship to applicant(s)" options={relationShipOptions}
+                                data-record-id={index} onchange={handleInputChange} name="relationship" required>
+                            </lightning-combobox>
+
+                            <lightning-radio-group
+                                class="horizontal-radio slds-p-bottom_medium slds-m-bottom_small slds-m-top_small"
+                                label="Is this person residing in your home or regularly present?"
+                                options={residingOption} type="radio" data-record-id={index}
+                                onchange={handleInputChange} name="residing" required>
+                            </lightning-radio-group>
+                        </div>
+                        <footer class="slds-card__footer slds-clearfix">
+                            <lightning-button label="Remove" title="Remove" onclick={handleRemove}
+                                data-record-id={index} class="slds-m-left_x-small slds-float_right"></lightning-button>
+                        </footer>
+                    </div>
+                </template>
+            </div>
+        </article>
+    </div>-->
+</template>

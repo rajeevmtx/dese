@@ -1,0 +1,184 @@
+<template>
+    <div class="page-header">
+        <h1 class="page-title">Minor Children</h1>
+    </div>
+    <div class="app-container slds-grid slds-gutters slds-wrap">
+        <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <c-fc-intake-form-help-text help-text={helpTextVerification}></c-fc-intake-form-help-text>
+        </div>
+    </div>
+    <lightning-radio-group name="minorChildrenInFamilty"
+        class="horizontal-radio slds-p-bottom_medium slds-m-bottom_small slds-m-top_small" label="Do you have any minor
+        children (under the age of 18) residing in the home?(Please identify dependent children placed in your home in
+        the Child / Nonminor Dependent Desired section.)" options={yesNoOption} type="radio"
+        onchange={handleInputChange} value={dataObj.minorChildrenInFamilty} required>
+    </lightning-radio-group>
+
+    <div if:true={isMinorChildrenInFamilty} class="slds-form">
+        <article class="slds-card">
+            <div class="slds-card__header slds-grid">
+                <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                    <div class="slds-media__body">
+                        <h2 class="slds-card__header-title">
+                            <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="Accounts">
+                                <span>Minor Child</span>
+                            </a>
+                        </h2>
+                    </div>
+                    <div class="slds-no-flex">
+                        <lightning-button label="Add New" title="Add Minor Child" onclick={handleAddAnotherChildren} 
+                            variant="brand"
+                            class="slds-m-left_x-small"></lightning-button>
+                    </div>
+                </header>
+            </div>
+            <div class="slds-card__body">
+                <table class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal">
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                <div class="slds-truncate slds-cell-wrap" title="Name">Name</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate slds-cell-wrap" title="Gender">Gender</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate slds-cell-wrap" title="DOB">Date of Birth</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate slds-cell-wrap" title="Relationship">Relationship</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate slds-cell-wrap" title="Financially Supporting">Financially Supporting</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate slds-cell-wrap" title="Actions"></div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={minorChildArray} for:item="item" for:index="index">
+                            <tr key={item.key}> 
+                                <th data-label="" scope="row">
+                                    <div class="slds-truncate slds-cell-wrap">
+                                        {item.nameMinorChild}
+                                    </div>
+                                </th>
+                                <td data-label="">
+                                    <div class="slds-truncate slds-cell-wrap">
+                                        {item.gender}
+                                    </div>
+                                </td>
+                                <td data-label="">
+                                    <div class="slds-truncate slds-cell-wrap">
+                                        <lightning-formatted-date-time value={item.dob}
+                                                                    year="numeric"
+                                                                    month="2-digit"
+                                                                    day="2-digit">
+                                        </lightning-formatted-date-time>
+                                    </div>
+                                </td>
+                                <td data-label="">
+                                    <div class="slds-truncate slds-cell-wrap">
+                                        {item.relationship}
+                                    </div>
+                                </td>
+                                <td data-label="">
+                                    <div class="slds-truncate slds-cell-wrap">
+                                        {item.finantiallySupport}
+                                    </div>
+                                </td>
+                                <td data-label="">
+                                    <div class="slds-truncate slds-cell-wrap">
+                                        <lightning-icon icon-name="utility:delete" 
+                                                            alternative-text="Delete" 
+                                                            size="x-small"
+                                                            title="Delete" 
+                                                            variant="error"
+                                                            onclick={handleRemoveMinorChild}
+                                                            data-record-id={item.key}>
+                                        </lightning-icon>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+            <br/>
+        </article>
+    </div>
+    <!-- Add new minor children-->
+    <template if:true={openAddMinorChildren}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-one" 
+                aria-modal="true" aria-describedby="modal-content-one" 
+                class="slds-modal slds-fade-in-open slds-modal_large">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <button title="Close"
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" >
+                    <lightning-button-icon icon-name="utility:close" 
+                                            variant="bare-inverse" 
+                                            size="large" 
+                                            alternative-text="Close" 
+                                            title="Close"
+                                            onclick={closeMinorChildModal}>
+                    </lightning-button-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-one" class="slds-modal__title slds-hyphenate">
+                    Add new minor child
+                </h2>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-one">
+                <div class="app-container slds-grid slds-gutters slds-wrap slds-p-bottom_xx-large">
+                    <div class="slds-form slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+                        <div class="slds-grid slds-gutter slds-wrap">
+                                <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                    <lightning-input type="text" label="Name of minor child" 
+                                                    onchange={setMinorChildDetail} name="nameMinorChild" required
+                                                    message-when-value-missing="Name is required !">
+                                    </lightning-input>
+                                </div>
+                               <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                    <lightning-radio-group
+                                        class="horizontal-radio slds-m-top_small"
+                                        label="Gender" options={maleFemaleOption} onchange={setMinorChildDetail}
+                                            type="radio" name="gender" required 
+                                            message-when-value-missing="Gender is required !">
+                                    </lightning-radio-group>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                    <lightning-input class="slds-m-top_small" type="date" name="dob" label="Date of birth" onchange={setMinorChildDetail}
+                                        ></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+
+                                    <lightning-combobox name="relationship" class="slds-m-top_small"
+                                        label="Relationship to applicant(s)" options={relationShipOptions}
+                                        onchange={setMinorChildDetail} required 
+                                        message-when-value-missing="Relationship is required !">
+                                    </lightning-combobox>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                    <lightning-radio-group
+                                        class="horizontal-radio slds-m-top_small"
+                                        label="Do you financially support this child?" options={yesNoOption}
+                                        onchange={setMinorChildDetail}  type="radio"
+                                        name="finantiallySupport" required 
+                                        message-when-value-missing="This is required !">
+                                    </lightning-radio-group>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+            <footer class="slds-modal__footer">
+                <button class="slds-button slds-button_neutral" onclick={closeMinorChildModal}>Cancel</button>
+                <button class="slds-button slds-button_brand" onclick={handleSaveAction}>Save</button>
+            </footer>
+        </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

@@ -1,0 +1,82 @@
+<template>
+    <div class="backdrop" if:true={showSpinner}>
+      <div class="spinner">
+        <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+      </div>
+    </div>
+    <!-- Save and Exit Button-->
+    <div
+      class="has-shadow slds-p-vertical_medium slds-m-bottom_medium heading_header_registration"
+    >
+      <div class="container d-flex justify-space-between">
+        <h5>{getHeading}</h5>
+        <template if:true={showSaveAndExitButtons}>
+          <lightning-button
+            variant="Neutral"
+            label="Save and Exit"
+            onclick={handleClick}
+            class="slds-m-left_x-small"
+          >
+          </lightning-button>
+        </template>
+      </div>
+    </div>
+  
+    <div class="container">
+      <div class="app-container slds-grid slds-gutters slds-wrap">
+        <!-- Side Steps Nav Bar Start -->
+        <div
+          class="app-sidebar slds-col slds-size_1-of-1 slds-large-size_2-of-12"
+        >
+        
+          <c-psr-cancel-permit-flow-steps
+            current-step={currentStep}
+            original-step={originalStep} 
+            is-licensed-user={isLicensedUser}
+          ></c-psr-cancel-permit-flow-steps>
+        </div>
+        <!-- Side Steps Nav Bar End -->
+        <div class="app-content slds-size_1-of-1 slds-large-size_10-of-12">
+
+          <div if:true={enableInstructions}>
+            <c-psr-help-text help-text={Portal_Instructions_Help_Text}></c-psr-help-text>
+            <c-psr-instructions></c-psr-instructions>
+          </div>
+
+          <div if:true={enableAppInformation}>
+            <c-psr-help-text help-text={Portal_Instructions_Help_Text}></c-psr-help-text>
+            <c-psr-cancel-permit-information
+            ></c-psr-cancel-permit-information>
+          </div>
+        </div>
+      </div>
+      <!-- Back and Next Buttons Section -->
+      <div class="buttonPanel">
+        <lightning-button
+          if:true={enableSubmitButton}
+          variant="Brand"
+          label="Submit"
+          onclick={handleSubmit}
+          class="slds-float_right"
+        ></lightning-button>
+        <lightning-button
+          if:true={enableNextButton}
+          variant="Brand"
+          label="Next"
+          onclick={handleNextButton}
+          class="slds-float_right"
+        ></lightning-button>
+        <lightning-button
+          if:true={enableBackButton}
+          variant="Neutral"
+          label="Back"
+          onclick={handleBackButton}
+          class="slds-float_right backButton"
+        ></lightning-button>
+      </div>
+    </div>
+  
+    <!--<div class="slds-m-top_large text-center newfooter">
+      <p>Copyright © 2020 State of New Mexico - All rights reserved.</p>
+  </div>-->
+  </template>

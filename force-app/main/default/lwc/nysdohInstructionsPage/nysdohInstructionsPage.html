@@ -1,0 +1,23 @@
+<template>
+    <div class="app-container slds-grid slds-gutters slds-wrap">
+        <div class="slds-col slds-size_1-of-1 slds-large-sze_12-of-12">
+            <c-psr-help-text help-text={instructionsHelpText}></c-psr-help-text>
+        </div>
+        <div class="slds-col slds-size_1-of-1 slds-large-sze_12-of-12">
+            <div class="d-flex">
+                <h4>Instruction Page</h4>
+                <span>(Step 1 of 5)</span>
+            </div>
+            <br/>
+            <div>
+                <p>
+                    {instructionsText}
+                </p>
+            </div>
+        </div>
+        <div class="slds-col slds-size_1-of-1 slds-large-sze_12-of-12">
+            <lightning-button variant="brand" style="float: right;" label="Next" onclick={goNext}>
+            </lightning-button>
+        </div>
+    </div>
+</template>

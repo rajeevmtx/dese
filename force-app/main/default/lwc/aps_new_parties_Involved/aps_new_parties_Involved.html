@@ -1,0 +1,124 @@
+<!--
+ - Created by AshishP on 21-01-2020.
+ -->
+
+<!-- psrNewContact -->
+<template>
+    <div style="">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close" onclick={handleCloseModal}>
+                        <lightning-icon icon-name="utility:close" variant="inverse" alternative-text="Close"
+                            size="medium">
+                        </lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+
+                    <h2 if:true={isEdit} class="slds-text-heading_medium slds-hyphenate">{modalbuttonedit}</h2>
+                    <h2 if:false={isEdit} class="slds-text-heading_medium slds-hyphenate">{modalbuttonadd}</h2>
+
+                </header>
+                <div class="slds-modal__content" id="modal-content-id-1">
+                    <!-- <div class="padding-horizontal slds-m-around_small">
+                        <c-psr-help-text help-text={Portal_Add_New_Contact_Help_Text}></c-psr-help-text>
+                    </div> -->
+                    <div style="padding: 20px;min-height: 400px;">
+
+                        <div class="slds-grid">
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input type="text" label="First Name" name="FirstName"
+                                    value={contact.FirstName} onblur={handleInput} required>
+                                </lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input type="text" label="Last Name" name="LastName" value={contact.LastName}
+                                    onblur={handleInput} required>
+                                </lightning-input>
+                            </div>
+                        </div>
+
+                        <div class="slds-grid">
+                            <!-- <div class="slds-col slds-size_1-of-2">
+                                <lightning-input type="number" label="Age" name="Age" value={contact.Age__c} onblur={handleInput}>
+                                </lightning-input>
+                            </div> -->
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-combobox name="Gender" label="Gender" placeholder="Select gender"
+                                    options={genderOptions} onchange={handleInput} style="width: 100%;" required>
+                                </lightning-combobox>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-combobox name="Relation_to_AV" label="Relation to AV" placeholder="Select"
+                                    options={relationtoAVOptions} onchange={handleInput} style="width: 100%;">
+                                </lightning-combobox>
+                            </div>
+
+                        </div>
+                        <!-- 
+                        <div class="slds-grid">
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input type="text" name="MailingStreet" label="Street"
+                                    value={contact.MailingStreet}></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input type="text" name="MailingCity" label="City"
+                                    value={contact.MailingCity}></lightning-input>
+                            </div>
+                        </div> -->
+
+                        <!-- <div class="slds-grid">
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input type="text" name="MailingState" label="State"
+                                    value={contact.MailingState}></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input type="text" name="MailingPostalCode" label="Postal Code"
+                                    value={contact.MailingPostalCode}></lightning-input>
+                            </div>
+                        </div> -->
+
+                        <!-- Parties Involved -->
+                        <!-- <div class="slds-grid">
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-combobox name="CollateralType" label="Collateral Type" placeholder="Select"
+                                    options={collateralTypeOptions} onchange={handleInput} style="width: 100%;">
+                                </lightning-combobox>
+
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-combobox name="ResourceType" label="Resource Type" placeholder="Select"
+                                    options={resourceTypeOptions} onchange={handleInput} style="width: 100%;">
+                                </lightning-combobox>
+                            </div>
+                        </div>
+                        <div class="slds-grid">
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-combobox name="Relation_to_AV" label="Relation to AV" placeholder="Select"
+                                    options={relationtoAVOptions} onchange={handleInput} style="width: 100%;">
+                                </lightning-combobox>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-combobox name="Resource_Type" label="Resource Type" placeholder="Select"
+                                    options={genderOptions} onchange={handleInput} style="width: 100%;">
+                                </lightning-combobox>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+
+                <footer class="slds-modal__footer">
+                    <lightning-button class="slds-m-top_small" label="Cancel" onclick={handleCloseModal}>
+                    </lightning-button>
+                    <lightning-button class="slds-m-top_small slds-p-left_small" variant="brand" label="Save"
+                        onclick={handleSave}></lightning-button>
+                </footer>
+
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>P
+</template>

@@ -1,0 +1,740 @@
+<apex:page sidebar="false" tabStyle="Application__tab" controller="PROPOSAL_CORE_Documents_Controller" action="{!getProjectContentList}">
+    <style>
+        .errorClass {
+            border: 1px solid red;
+            background-color: lightgoldenrodyellow;
+        }
+
+        .fileType .icon-help {
+            font-size: 16px;
+            position: relative;
+            top: 2px;
+        }
+
+        .fileType {
+            margin: -2px 0 0 10px;
+        }
+
+        .not-active {
+            pointer-events: none;
+            cursor: text !important;
+            color: #000 !important;
+        }
+
+        #successMessage {
+            display: none;
+        }
+
+        #supportedFiles {
+            font-size: 14px;
+        }
+
+        .justify-space-between {
+            justify-content: space-between;
+        }
+
+        .help-link {
+            font-size: 14px;
+            color: #1d49cc;
+            padding-top: 2%;
+            margin-left: 50px;
+        }
+
+        .slds-button_outline-brand {
+            border-color: #0d3cc8;
+            color: #0d3cc8;
+        }
+
+        .timeline {
+            border-left: 2px solid #dfe4f2;
+            border-bottom-right-radius: 4px;
+            border-top-right-radius: 4px;
+            margin-left: 12px;
+            letter-spacing: 0;
+            position: relative;
+            position: -webkit-sticky;
+            position: sticky;
+            top: 2rem;
+            line-height: 1.4em;
+            font-size: 14px;
+            padding: 0 25px;
+            list-style: none;
+            text-align: left;
+            counter-reset: li-counter;
+            margin: 3rem 2rem;
+        }
+
+        .timeline .event:after {
+            border: 2px solid #656566;
+            border: 5px solid #f7f7f7;
+            position: absolute;
+            display: block;
+            top: 0;
+            left: -43px;
+            background: #dfe4f2;
+            border-radius: 50%;
+            height: 21px;
+            width: 25px;
+            content: "";
+            top: 5px;
+            top: 10px;
+            text-align: center;
+            content: attr(steplabel);
+            counter-increment: li-counter;
+            color: black;
+            padding-top: 4px;
+        }
+
+        .timeline .event {
+            padding-bottom: 17.5px;
+            position: relative;
+            padding-top: 17.5px;
+            min-width: 200px;
+            cursor: pointer;
+        }
+
+        .timeline .event:after else {
+            border: 2px solid #0f43e0;
+        }
+
+        .timeline .event.completed {
+            color: #0070d2;
+        }
+
+        .timeline .event.completed:after {
+            background: #0070d2;
+            padding-top: 4px;
+            color: white;
+            content: '✓';
+            text-align: center;
+        }
+
+        .timeline .event.active {
+            color: #128ec3;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .timeline .event.active:after {
+            background-color: #479eeb;
+            color: white;
+        }
+
+        .timeline .event:first-of-type {
+            padding-top: 7.5px;
+        }
+
+        .timeline .event:first-of-type:after {
+            top: -2px;
+        }
+
+        .timeline .event:last-of-type {
+            padding-bottom: 0;
+            margin-bottom: 0;
+            border: none;
+        }
+
+        .timeline .event:last-of-type:after {
+            top: auto;
+            top: 10px;
+            bottom: 0;
+        }
+
+        footer {
+            background: #fff;
+            position: relative !important;
+        }
+
+        .card--new {
+            background: #fff;
+            padding: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24);
+            transition: all .3s cubic-bezier(.25, .8, .25, 1);
+            border: none;
+            border-radius: 0;
+            margin: 1rem 2rem;
+        }
+
+        .bodyDiv {
+            background: #F5F7FA !important;
+        }
+
+        .has-shadow {
+            width: 100%;
+            margin-bottom: 1rem;
+            padding: 2rem;
+            background-color: #fff;
+            box-shadow: 4px 1px 2px 1px rgba(0, 0, 0, .05);
+            text-align: left;
+        }
+    </style>
+
+    <apex:composition template="CORE_APPINTAKE_Template_Page">
+        <apex:define name="body">
+            <div class="has-shadow slds-p-vertical_medium slds-m-bottom_medium heading_header_registration">
+                <c:CORE_StepNav_Component pgName="{!$CurrentPage.Name}" />
+            </div>
+            <div class="container row">
+                <div class="col-md-2">
+                    <ol class="timeline">
+                        <li class="event active" value="0" steplabel="0">Instructions</li>
+                        <li class="event active" value="1" steplabel="1">Proposer Contact Information</li>
+                        <li class="event completed" value="1" steplabel="1">Proposer Contact Information</li>
+                        <li class="event completed" value="2" steplabel="2">Private School Information</li>
+                        <li class="event completed" value="3" steplabel="3">Allocation and Flexing</li>
+                        <li class="event active" value="4" steplabel="4">Proposal Documents</li>
+                        <li class="event" value="5" steplabel="5">Authorizd Signature and Certification</li>
+                        <li class="event" value="6" steplabel="6">Proposal Submission</li>
+                    </ol>
+                </div>
+                <div class="col-md-10 card--new">
+                    <div class="page">
+                        <!-- <div class="sub-heading">Application Number:&nbsp;<apex:outputfield value="{!project.Application_Number__c}"/></div> -->
+                        <!-- <c:CORE_StepNav_Component pgName="{!$CurrentPage.Name}"/> -->
+                        <div class="application paperwork">
+                            <apex:form id="frm" enctype="multipart/form-data">
+                                <div class="alert-container">
+                                    <apex:outputPanel rendered="{!!project.Program_Version__r.NY_Green_Bank_RFP__c}" layout="none">
+                                        <!-- SF-26961 Modified: RK 2/22/2019 ---- Update Banner -->
+                                        <div class="alert alert-info">
+                                            The following documents listed below under the 'Required' and 'Optional' section must be uploaded as outlined within this
+                                            <a style="color:#0071C2;" href="apex/CORE_Solicitation_Detail_Page?SolicitationId={!project.Program_Version__c}"
+                                                target="_blank">
+                                                <span class="sr-only">Opens in a new tab:</span>
+                                                <b> solicitation. </b>
+                                            </a>
+                                            <p>
+                                                <strong>Please note: You can only upload one attachment per submission field, unless
+                                                    otherwise noted. If there are multiple parts to your Concept Paper or
+                                                    Proposal, the files must be combined and uploaded as one file.</strong>
+                                            </p>
+                                        </div>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!project.Program_Version__r.NY_Green_Bank_RFP__c}" layout="none">
+                                        <div class="alert alert-info">
+                                            The following document must be uploaded as outlined within this
+                                            <a href="apex/CORE_Solicitation_Detail_Page?SolicitationId={!project.Program_Version__c}" target="_blank"> RFP. </a>
+                                            Refer to the Proposal Contents section within the RFP for descriptions of required and optional documents.
+                                        </div>
+                                    </apex:outputPanel>
+
+                                    <apex:outputPanel id="errorMsg">
+                                        <apex:pageMessages />
+                                    </apex:outputPanel>
+
+                                    <div id="errorText" class="alert alert-danger hidden">
+                                    </div>
+
+                                    <apex:outputPanel rendered="{!isSavedFunctionCalled}">
+                                        <div class="alert alert-success">
+                                            Files have been saved successfully.
+                                        </div>
+                                    </apex:outputPanel>
+
+                                    <apex:outputPanel id="errorPanel">
+                                        <apex:outputPanel rendered="{!AND(hasError, !project.Program_Version__r.NY_Green_Bank_RFP__c)}">
+                                            <div style="margin: 0">
+                                                <div class="alert alert-danger" id="errMsg" style="margin: 0">
+                                                    <strong>ERROR..!! There are required documents not uploaded.</strong>
+                                                </div>
+                                            </div>
+                                        </apex:outputPanel>
+
+                                        <apex:outputPanel rendered="{!AND(hasError, project.Program_Version__r.NY_Green_Bank_RFP__c)}">
+                                            <div style="margin: 0">
+                                                <div class="alert alert-danger" id="errMsg" style="margin: 0">
+                                                    <span>Attach a proposal.</span>
+                                                </div>
+                                            </div>
+                                        </apex:outputPanel>
+
+
+                                        <apex:outputPanel rendered="{!AND((isDueDatePassed && !isExceptionalAccessProvided), isSavedFunctionCalled)}">
+                                            <div style="margin: 0">
+                                                <div class="alert alert-danger" id="errorMessage1" style="margin: 0">
+                                                    <strong>Sorry, the due date and time passed for this solicitation and we are
+                                                        not able to accept your changes.</strong>
+                                                </div>
+                                            </div>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+
+                                    <div class="hidden" id="errorMsg2">
+                                        <div class="alert alert-danger" id="errDiv" style="margin: 0">
+                                            <strong>ERROR..!! The uploaded document does not match the supported file type for that
+                                                document.</strong>
+                                        </div>
+                                    </div>
+
+                                    <div class="alert alert-danger hidden" id="errorMsg3">
+                                        <strong>ERROR..!! The file name must not exceed 80 characters.</strong>
+                                    </div>
+                                </div>
+
+
+                                <div class="content content-body">
+                                    <div class="box-group">
+                                        <!-- <span id="supportedFiles">**Supported File type(s): {!supportedFileType}</span><br/> -->
+                                        <div class="heading">
+                                            <div class="title">Required Documents</div>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-condensed table-striped">
+
+                                                <thead>
+                                                    <tr>
+                                                        <th>Document Name</th>
+                                                        <th>Recent Uploaded Document</th>
+                                                        <th>Upload History</th>
+                                                        <th>Status</th>
+                                                        <th>
+                                                            <div class="flex-content justify-start">
+                                                                Add / Update Document
+                                                                <div class="fileType" tabindex="0" data-trigger="hover focus" data-toggle="popover" data-placement="left" title="Supported File types"
+                                                                    data-content="{!supportedFileType}">
+                                                                    <span class="icon-help"></span>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <apex:variable value="{!1}" var="rowNum" />
+                                                    <script>
+                                                        var rowNumber = 0;
+                                                    </script>
+                                                    <apex:repeat value="{!projectContent}" var="projContent">
+                                                        <apex:outputPanel layout="none" rendered="{!If(projContent.Concept_Paper__c, true,
+                                                                                OR(projContent.Mandatory_by_default__c, projContentIdToConditionallyRequiredMap[projContent.Id]))}">
+                                                            <tr>
+                                                                <td class="doc">{!projContent.Document_Title__c}</td>
+                                                                <td>
+                                                                    <apex:outputLink rendered="{!projContentIdToAttachmentRecMap[projContent.Id].Name != null}" value="/servlet/servlet.FileDownload?file={!projContentIdToAttachmentRecMap[projContent.Id].id}"
+                                                                        style="height: 75px; width: 215px; word-break: break-all;"
+                                                                        target="_blank">
+                                                                        <span class="sr-only">Opens in a new tab:</span>
+                                                                        {!projContentIdToAttachmentRecMap[projContent.Id].Name}
+                                                                    </apex:outputLink>
+                                                                </td>
+                                                                <td>
+                                                                    <apex:outputPanel rendered="{!AND(projContentIdToAttachmentRecMap[projContent.Id] != null, projContentIdToAttachmentRecMap[projContent.Id].Name != null)}">
+                                                                        <a href="javascript:void(0);" onclick="getHistory('{!projContent.Document_Title__c}', '{!projContent.Id}');" style="cursor: pointer;">
+                                                                        Attachment History </a>
+                                                                    </apex:outputPanel>
+                                                                </td>
+                                                                <td>{!projContentIdToDocStatusMap[projContent.Id]}</td>
+                                                                <td>
+                                                                    <div class="flex-content justify-start">
+                                                                        <apex:actionRegion >
+                                                                            <div>
+                                                                                <label class="sr-only" for="{!$Component.fileUpd}">File</label>
+                                                                            </div>
+                                                                            <!-- Accessibility Issues -->
+                                                                            <apex:inputfile id="fileUpd" value="{!projContentIdToNewAttachMap[projContent.Id].body}" filename="{!projContentIdToNewAttachMap[projContent.Id].Name}"
+                                                                                styleClass="doc{!rowNum}" rendered="{!IF(isReadOnlyApplicationWizard,(projContentIdToDocStatusMap[projContent.Id] == 'Reject'),true)}"
+                                                                            />
+                                                                        </apex:actionRegion>
+                                                                    </div>
+                                                                    <!-- /.flex-row -->
+
+                                                                </td>
+                                                            </tr>
+                                                            <script>
+                                                                rowNumber++;
+                                                            </script>
+                                                            <apex:variable var="rowNum" value="{!rowNum + 1}" />
+                                                        </apex:outputPanel>
+                                                    </apex:repeat>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <apex:outputPanel id="optionalDocPanel" layout="block" styleClass="box-group" rendered="{!AND(!project.Concept_Paper__c, otherDocumentList.size > 0)}">
+                                        <div class="heading">
+                                            <div class="title">Optional Documents</div>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-condensed table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Document Name</th>
+                                                        <th>
+                                                            <div class="flex-content justify-start">
+                                                                Add / Update Document
+                                                                <div class="fileType" tabindex="0" data-trigger="hover focus" data-toggle="popover" data-placement="left" title="Supported File types"
+                                                                    data-content="{!supportedFileType}">
+                                                                    <span class="icon-help"></span>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th>Recent Uploaded Document</th>
+                                                        <th>Upload History</th>
+                                                        <th>Status</th>
+                                                        <!--                                             <th></th> -->
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <apex:variable value="{!0}" var="docNum" />
+                                                    <apex:repeat value="{!otherDocumentList}" var="otherDoc">
+                                                        <tr>
+                                                            <td>
+                                                                <span class="doc docName{!docNum}">{!otherDoc.documentName}</span>
+                                                                <!-- <apex:inputText html-placeholder="Document Name" value="{!otherDoc.documentName}" styleClass="form-control docName{!docNum}" disabled="{!AND(isReadOnlyApplicationWizard, NOT(ISBLANK(otherDoc.documentName)), otherDoc.documentName != '')}"/> -->
+                                                            </td>
+                                                            <td>
+                                                                <div>
+                                                                    <label class="sr-only" for="{!$Component.fileUpd1}">File</label>
+                                                                </div>
+                                                                <!-- Accessibility Issues -->
+                                                                <apex:inputfile id="fileUpd1" value="{!otherDoc.attach.body}" filename="{!otherDoc.attach.Name}" styleClass="docBody{!docNum}"
+                                                                    rendered="{!IF(isReadOnlyApplicationWizard,(otherDoc.status == 'Reject'),true)}"
+                                                                />
+                                                            </td>
+                                                            <td>
+                                                                <apex:outputLink rendered="{!otherDoc.recentAttach.Name != null}" value="/servlet/servlet.FileDownload?file={!otherDoc.recentAttach.id}"
+                                                                    styleClass="docId{!docNum}" style="height: 75px; width: 215px; word-break: break-all;"
+                                                                    target="_blank">
+                                                                    {!otherDoc.recentAttach.Name}
+                                                                </apex:outputLink>
+                                                            </td>
+                                                            <td>
+                                                                <apex:outputPanel rendered="{!otherDoc.recentAttach.Name != null}">
+                                                                    <a href="javascript:void(0);" onclick="getHistory('{!otherDoc.documentName}', '{!otherDoc.documentId}');" style="cursor: pointer;">
+                                                                    Attachment History </a>
+                                                                </apex:outputPanel>
+                                                            </td>
+                                                            <td>{!otherDoc.status}</td>
+                                                            <!--                                                 <td><a onclick="removeDocument({!docNum});" href="javascript:void(0)" class="btn-bs btn-blank">X</a></td> -->
+                                                        </tr>
+                                                        <apex:variable var="docNum" value="{!docNum + 1}" />
+                                                    </apex:repeat>
+                                                    <!-- <tr class="add-new">
+                                                <td colspan="6">
+                                                    <a href="javascript:void(0)" onclick="addMoreDocument();" class="add-button">Add another document</a>
+                                                </td>
+                                            </tr> -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </apex:outputPanel>
+                                </div>
+                                <!--
+            <apex:outputPanel styleclass="alert-container" layout="block" rendered="{!project.Program_Version__r.NY_Green_Bank_RFP__c}">
+                          <div class="alert alert-info">
+                              <apex:outputText value="{!$Label.Proposal_NYGB_Support_Help_Text}" escape="false"/>
+                          </div>
+                      </apex:outputPanel>
+                      -->
+
+                                <apex:actionRegion >
+                                    <apex:actionFunction name="next" action="{!validateAndNext}">
+                                        <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                                    </apex:actionFunction>
+
+                                    <apex:actionFunction name="previous" action="{!previous}" rerender="frm" status="status">
+                                        <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                                    </apex:actionFunction>
+
+                                    <apex:actionFunction name="saveProjectDocuments" action="{!saveProjectContentList}">
+                                    </apex:actionFunction>
+
+                                    <apex:actionFunction name="addMoreDocument" action="{!addDocumentInOtherDocumentList}" rerender="optionalDocPanel, scriptPanel"
+                                        status="status">
+                                    </apex:actionFunction>
+
+                                    <apex:actionFunction name="removeDocumentFromList" action="{!removeDocumentFromList}" rerender="optionalDocPanel, scriptPanel"
+                                        status="status">
+                                        <apex:param value="" name="rowNumber" assignTo="{!rowNumber}" />
+                                    </apex:actionFunction>
+
+                                    <apex:actionFunction name="getHistory" action="{!getAttachmentHistory}" onComplete="openHistoryPopup();" rerender="modal"
+                                        status="status">
+                                        <apex:param value="" name="projectContentName" assignTo="{!projectContentName}" />
+                                        <apex:param value="" name="projectContentId" assignTo="{!projectContentId}" />
+                                    </apex:actionFunction>
+                                </apex:actionRegion>
+
+
+                                <div class="modal fade" id="historyPopup" tabindex="0" role="dialog">
+                                    <apex:outputPanel id="modal">
+                                        <div class="modal-dialog modal-md">
+                                            <div class="modal-content" style="width: 150%; left: -25%;">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <apex:outputPanel >
+                                                        <h4 class="modal-title">Attachment History</h4>
+                                                    </apex:outputPanel>
+                                                </div>
+
+                                                <div class="modal-body paperwork">
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Document Name</th>
+                                                                <th>Uploaded Attachment</th>
+                                                                <th>Version Number</th>
+                                                                <th>Created Date</th>
+                                                                <th>Created By</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <apex:repeat value="{!attachmentHistory}" var="attach">
+                                                                <tr>
+                                                                    <td> {!projectContentName} </td>
+                                                                    <td>
+                                                                        <a href="/servlet/servlet.FileDownload?file={!attach.Attachments[0].Id}" class="not-active" target="_blank">{!attach.Attachments[0].Name}</a>
+                                                                    </td>
+                                                                    <td style="text-align:center;"> {!attach.Version__c} </td>
+                                                                    <td>
+                                                                        <c:Convert_TimeZone_Date AttachmentDateTime="{!attach.CreatedDate}" TimeZoneToConvert="EST">
+                                                                        </c:Convert_TimeZone_Date>
+                                                                    </td>
+                                                                    <td> {!attach.CreatedBy.Name} </td>
+                                                                </tr>
+                                                            </apex:repeat>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <div class="controls">
+                                                        <div class="right" id="cancelBtnDiv">
+                                                            <button id="cancelBtn" type="button" class="btn-bs btn-default" data-dismiss="modal">Cancel</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </apex:outputPanel>
+                                </div>
+
+                                <input type="submit" value="submit" class="sr-only" />
+                                <!-- Accessibility Fix -->
+
+                                <!-- <apex:actionFunction name="discardChanges" action="{!discardChanges}" rerender="frm" status="status" ></apex:actionFunction> -->
+                            </apex:form>
+                        </div>
+                    </div>
+                    <footer>
+                        <apex:outputPanel layout="block" id="saveBtn" styleClass="content flex controls sm">
+                            <div class="left">
+                                <!--  <a href="javascript:void(0)" class="btn-bs btn-lg btn-default" onclick="previous('{!$CurrentPage.Name}')">Back</a> -->
+                                <a href="javascript:void(0)" onclick="previous('{!$CurrentPage.Name}')" class="btn-bs btn-lg btn-blank">Previous</a>
+                            </div>
+                            <!-- /.left -->
+                            <div class="right">
+                                <apex:outputPanel rendered="{!!isReadOnlyApplicationWizard}">
+                                    <a href="javascript:void(0);" class="btn-bs btn-lg btn-default save" onclick="checkForDocumentType(false)">Save</a>
+                                </apex:outputPanel>
+                                <a href="javascript:void(0);" class="btn-bs btn-lg btn-primary" onclick="checkForDocumentType(true)">Continue</a>
+                            </div>
+                            <!-- /.right -->
+
+
+
+                        </apex:outputPanel>
+                    </footer>
+                </div>
+            </div>
+        </apex:define>
+    </apex:composition>
+    <apex:outputPanel id="scriptPanel">
+        <script>
+            function checkDocumentName(isNext) {
+                $('#errorMsg2').addClass('hidden');
+                var hasError = false;
+                var otherDocsLength = parseInt('{!otherDocumentList.size}');
+                if ('{!project.Concept_Paper__c}' == 'false') {
+                    /*for(var i = 0; i < otherDocsLength; i++) {
+                        $('.docName' + i).removeClass('errorClass');
+                        $('.docBody' + i).removeClass('errorClass');
+
+                        if(($('.docName' + i).text() == '' || $('.docName' + i).text() == null || $('.docName' + i).text() == undefined)
+                                && $('.docBody' + i).val() != '' && $('.docBody' + i).val() != undefined) {
+                            hasError = true;
+                            $('#errorMsg2').removeClass('hidden');
+                            $('#errDiv').html('<Strong>Error..!!! Please fill Document Name for row ' + (i + 1) + ' before uploading');
+                            $('.docName' + i).addClass('errorClass');
+                            $('.docName' + i).focus();
+                            break;
+                        }
+                        if(($('.docBody' + i).val() == '' || $('.docBody' + i).val() == null || $('.docBody' + i).val() == undefined)
+                                && $('.docName' + i).text() != '' && $('.docId' + i).text().trim() == '') {
+                            hasError = true;
+                            $('#errorMsg2').removeClass('hidden');
+                            $('#errDiv').html('<Strong>Error..!!! Please select Document for row ' + (i + 1) + ' before uploading');
+                            $('.docBody' + i).addClass('errorClass');
+                            $('.docName' + i).focus();
+                            break;
+                        }
+                    }*/
+                }
+                if (!hasError) {
+                    saveDocument(isNext);
+                }
+            }
+        </script>
+    </apex:outputPanel>
+
+    <script>
+        function openHistoryPopup() {
+            $('#historyPopup').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+        }
+
+        $(document).ready(function () {
+            jQuery("html").attr("lang", "en");
+            setFavicon();
+        });
+
+
+        function setFavicon() {
+            var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+            link.type = 'image/x-icon';
+            link.rel = 'shortcut icon';
+            document.getElementsByTagName('head')[0].appendChild(link);
+        }
+
+        //var rowNumber = 0;
+
+        function checkForDocumentType(isNext) {
+            if (!checkFileSize()) {
+                $("#errorText").removeClass('hidden');
+            } else {
+                var isValid = true;
+                var isValidName = true;
+                var requiredTypeFromTable = '{!supportedFileType}';
+                $('#errorMsg2').addClass('hidden');
+                //$('#errorMessage').hide();
+
+                if (typeof (requiredTypeFromTable) != 'undefined' && requiredTypeFromTable != null) {
+                    //required document
+                    for (var i = 1; i <= rowNumber; i++) {
+                        if ($('.doc' + i).length == 0) {
+                            continue;
+                        }
+                        var fup = $('.doc' + i)[0];
+                        var fileName = fup.value;
+                        if (fileName == '' || fileName == undefined) {
+                            continue;
+                        }
+
+                        //console.log(fileName);
+                        //console.log(fileName.length);
+
+                        fileName = fileName.replace("C:\\fakepath\\", "");
+
+                        //console.log('after -- ' + fileName);
+
+                        if (fileName.length <= 80) {
+                            $('.doc' + i).removeClass('errorClass');
+                        } else {
+                            $('.doc' + i).addClass('errorClass');
+                            isValidName = false;
+                        }
+
+                        ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+                        if (requiredTypeFromTable.toLowerCase().indexOf(ext.toLowerCase()) > -1) {
+                            $('.doc' + i).removeClass('errorClass');
+                        } else {
+                            $('.doc' + i).addClass('errorClass');
+                            isValid = false;
+                        }
+                    }
+                    //Other documents
+                    for (var i = 0; i < parseInt('{!otherDocumentList.size}'); i++) {
+                        if ($('.docBody' + i).length == 0) {
+                            continue;
+                        }
+                        var fup = $('.docBody' + i)[0];
+                        var fileName = fup.value;
+
+                        if (fileName == '' || fileName == undefined) {
+                            continue;
+                        }
+
+                        //console.log(fileName);
+                        //console.log(fileName.length);
+
+                        fileName = fileName.replace("C:\\fakepath\\", "");
+
+                        //console.log('after -- ' + fileName);
+
+
+                        if (fileName.length <= 80) {
+                            $('.docBody' + i).removeClass('errorClass');
+                        } else {
+                            $('.docBody' + i).addClass('errorClass');
+                            isValidName = false;
+                        }
+
+                        ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+                        if (requiredTypeFromTable.toLowerCase().indexOf(ext.toLowerCase()) > -1) {
+                            $('.docBody' + i).removeClass('errorClass');
+                        } else {
+                            $('.docBody' + i).addClass('errorClass');
+                            isValid = false;
+                        }
+                    }
+                }
+                //isValid = true;
+                if (!isValid) {
+                    $('#errorMsg2').removeClass('hidden');
+                    $('#errorMsg2').show();
+                    scrollToTop();
+                    return;
+                }
+
+                if (!isValidName) {
+                    $('#errorMsg3').removeClass('hidden');
+                    $('#errorMsg3').show();
+                    scrollToTop();
+                    return;
+                }
+
+                checkDocumentName(isNext);
+            }
+        }
+
+        function scrollToTop() {
+            $("html, body").animate({
+                scrollTop: 0
+            }, "slow");
+        }
+
+        function removeDocument(docNumber) {
+            if (confirm('Are you sure?')) {
+                removeDocumentFromList(docNumber);
+            }
+        }
+
+        function saveDocument(isNextClicked) {
+            $('#errorPanel').hide();
+            if (isNextClicked) {
+                next('{!$CurrentPage.Name}');
+            } else {
+                saveProjectDocuments();
+            }
+        }
+
+        function checkFileSize() {
+            var goodSize = true;
+            $('input[type=file]').each(function () {
+                if (typeof this.files[0] !== 'undefined' && typeof this.files[0] !== false && this.files[0] !== null) {
+                    var file = this.files[0],
+                        size = typeof ActiveXObject !== 'undefined' ? getIEFileSize(file) : file.fileSize || file.size;
+                    goodSize = 100000000 > size;
+                    if (!goodSize) {
+                        $("#errorText").text('Sorry! We are unable to upload ' + this.files[0].name + '. Document can be at most 100MB in size.');
+                    }
+
+                    return goodSize;
+                }
+            });
+            return goodSize;
+        }
+    </script>
+<c:Grants_Site_Footer />
+</apex:page>

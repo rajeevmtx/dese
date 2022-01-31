@@ -1,0 +1,349 @@
+<apex:page standardController="Licensing_Transaction__c" showheader="false" sidebar="false" extensions="EEC_MissingElementsExtension">
+    <c:eec_javascriptcsscontainer includeJquery="true" includeBootStrapJS="true" includeLightningCSS="true"/>
+    <script>
+        $(document).ready(function () {
+            $('[id$="start"]').show();
+            $('[data-toggle="tooltip"]').tooltip(); 
+            setTimeout(function () {
+                $('[id$="start"]').hide();
+            }, 3000);
+        });
+    </script>
+    <style>
+        .tooltip {
+            position: absolute;
+            z-index: 1070;
+            display: block;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: normal;
+            line-height: 1.42857143;
+            text-align: left;
+            text-align: start;
+            text-decoration: none;
+            text-shadow: none;
+            text-transform: none;
+            letter-spacing: normal;
+            word-break: normal;
+            word-spacing: normal;
+            word-wrap: normal;
+            white-space: normal;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            line-break: auto;
+        }
+        .tooltip.in {
+            filter: alpha(opacity=90);
+            opacity: .9;
+        }
+        .tooltip.top {
+            padding: 5px 0;
+            margin-top: -3px;
+        }
+        .tooltip.right {
+            padding: 0 5px;
+            margin-left: 3px;
+        }
+        .tooltip.bottom {
+            padding: 5px 0;
+            margin-top: 3px;
+        }
+        .tooltip.left {
+            padding: 0 5px;
+            margin-left: -3px;
+        }
+        .tooltip-inner {
+            max-width: 200px;
+            padding: 3px 8px;
+            color: #fff;
+            text-align: center;
+            background-color: #000;
+            border-radius: 4px;
+        }
+        .tooltip-arrow {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-color: transparent;
+            border-style: solid;
+        }
+        .tooltip.top .tooltip-arrow {
+            bottom: 0;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px 5px 0;
+            border-top-color: #000;
+        }
+        .tooltip.top-left .tooltip-arrow {
+            right: 5px;
+            bottom: 0;
+            margin-bottom: -5px;
+            border-width: 5px 5px 0;
+            border-top-color: #000;
+        }
+        .tooltip.top-right .tooltip-arrow {
+            bottom: 0;
+            left: 5px;
+            margin-bottom: -5px;
+            border-width: 5px 5px 0;
+            border-top-color: #000;
+        }
+        .tooltip.right .tooltip-arrow {
+            top: 50%;
+            left: 0;
+            margin-top: -5px;
+            border-width: 5px 5px 5px 0;
+            border-right-color: #000;
+        }
+        .tooltip.left .tooltip-arrow {
+            top: 50%;
+            right: 0;
+            margin-top: -5px;
+            border-width: 5px 0 5px 5px;
+            border-left-color: #000;
+        }
+        .tooltip.bottom .tooltip-arrow {
+            top: 0;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 0 5px 5px;
+            border-bottom-color: #000;
+        }
+        .tooltip.bottom-left .tooltip-arrow {
+            top: 0;
+            right: 5px;
+            margin-top: -5px;
+            border-width: 0 5px 5px;
+            border-bottom-color: #000;
+        }
+        .tooltip.bottom-right .tooltip-arrow {
+            top: 0;
+            left: 5px;
+            margin-top: -5px;
+            border-width: 0 5px 5px;
+            border-bottom-color: #000;
+        }
+        .loading-spinner {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            width: 100%;
+            height: 100%;
+            background: rgba(22, 50, 92, 0.6);
+            z-index: 9002;
+        }
+        .loading-spinner-inner {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            align-content: center;
+            height: 100%;
+            color: #ffffff;
+            text-transform: uppercase;
+        }
+        .loading-spinner img {
+            max-width: 120px;
+        }
+        .displayHidden {
+            display: none;
+        }
+        .BlackStyle {
+            color: #0c0c0c !important;
+            text-decoration: none !important;
+        }
+        .helpOrb {
+            background-position: top right;
+            height: 15px !important;
+        }
+        .helpOrbautomate {
+            width: 16px !important;
+            height: 16px !important;
+        }
+        .btnNeutralClass {
+            padding: 6px 12px !important;
+            line-height: 1.42857143 !important;
+            color: #555 !important;
+            width: 8rem !important;
+            font-size: medium !important;
+        }
+        .btnBrandClass {
+            padding: 6px 12px !important;
+            line-height: 1.42857143 !important;
+            width: 8rem !important;
+            font-size: medium !important;
+        }
+        .fixColumnWidthChecklist {
+            width: 52%;
+        }
+        .fixColumnWidth {
+            width: 13%;
+        }
+        .wordBreak {
+            white-space: normal;
+            word-break: break-word;
+        }
+        .duediligenceTable th,
+        .duediligenceTable td {
+            padding: 8px !important;
+            line-height: 1.42857143 !important;
+            vertical-align: top !important;
+        }
+    </style>
+    <div class="slds-scope">
+        <apex:form id="frm">
+            <apex:outputPanel rendered="{!transactionDueDiligenceList.size == 0}">
+                <div class="slds-box slds-text-align_center">
+                    There is no Due Diligence Checklist available.
+                </div>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!transactionDueDiligenceList.size > 0}">
+                <div class="slds-p-top_x-small slds-p-bottom_x-small">
+                    <apex:outputPanel rendered="{!!Licensing_Transaction__c.Is_Under_Approval_Process__c || isManager}">
+                        <apex:outputPanel rendered="{!!isEditMode}">
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-col slds-size_1-of-2 slds-p-top_x-small">
+                                    <img class="helpOrb helpOrbautomate" style="max-width:70px;" src="{!URLFOR($Resource.EEC_Bootstrap,'EEC_Bootstrap/img/automated.png')}"
+                                    />&nbsp; Automated &nbsp; |&nbsp;
+                                    <img src="/img/s.gif" alt="" style="margin-bottom:4px;" class="helpOrb glyphicon" title="" />&nbsp;Help Text &nbsp; | &nbsp;
+                                    <img class="helpOrb helpOrbautomate" style="max-width:70px;" src="{!URLFOR($Resource.EEC_Bootstrap,'EEC_Bootstrap/img/video.png')}"
+                                    />&nbsp; Video Instruction
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <apex:outputpanel rendered="{! Licensing_Transaction__c.Status__c != 'Unsubmitted' && Licensing_Transaction__c.Status__c != 'Closed'}">
+                                        <apex:commandButton StyleClass="slds-button slds-button_neutral btnNeutralClass" value="Edit" action="{!setEditMode}" onComplete="reloadToolTip();removePicklistValue();"
+                                            rerender="frm" status="status" />
+                                    </apex:outputPanel>
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!isEditMode}">
+                        <div class="slds-text-align_center">
+                            <apex:commandButton StyleClass="slds-button slds-button_brand btnBrandClass" value="Save" action="{!saveTransactionDueDiligence}"
+                                rerender="frm,pageMessage" onComplete="reloadToolTip();refresh('{!reloadPage}');" status="status"
+                            />&nbsp;&nbsp;&nbsp;&nbsp;
+                            <apex:commandButton StyleClass="slds-button slds-button_neutral btnNeutralClass" value="Cancel" action="{!cancelChanges}"
+                                rerender="frm" onComplete="reloadToolTip();" status="status" />
+                        </div>
+                    </apex:outputPanel>
+                </div>
+                <apex:pageMessages id="pageMessage" />
+                <apex:outputfield value="{!Licensing_Transaction__c.Associated_Fee__c}" rendered="false" />
+               <!-- <apex:outputfield value="{!Licensing_Transaction__c.Fee_Paid__c}" rendered="false" /> -->
+                <apex:outputfield value="{!Licensing_Transaction__c.License_Type__c}" rendered="false" />
+                <apex:outputfield value="{!Licensing_Transaction__c.License_Issue_Date__c}" rendered="false" />
+                <apex:outputfield value="{!Licensing_Transaction__c.License_Expiration_Date__c}" rendered="false" />
+                <apex:outputfield value="{!Licensing_Transaction__c.Capacity__c}" rendered="false" />
+                <apex:outputfield value="{!Licensing_Transaction__c.Current_Provider_Capacity__c}" rendered="false" />
+               <!-- <apex:outputfield value="{!Licensing_Transaction__c.No_Visit_Needed__c}" rendered="false" /> -->
+              <!--  <apex:outputfield value="{!Licensing_Transaction__c.Record_Type__c}" rendered="false" /> -->
+                <apex:outputfield value="{!Licensing_Transaction__c.Checking_Provider_Record_Type_Name__c}" rendered="false" />
+                <table class="slds-table slds-table_bordered slds-table_striped duediligenceTable slds-table_fixed-layout">
+                    <thead>
+                        <tr>
+                            <th class="fixColumnWidthChecklist">Checklist Item</th>
+                            <th class="fixColumnWidth">Responsible Party</th>
+                            <th class="fixColumnWidth">Status</th>
+                            <th class="fixColumnWidth">Completion Date</th>
+                            <th class="fixColumnWidth">Completed By</th>
+                            <th class="displayHidden">Enable Not Applicable</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <apex:repeat value="{!transactionDueDiligenceList}" var="transactionDueDiligence">
+                            <tr>
+                                <td class="wordBreak">
+                                    <apex:outputField value="{!transactionDueDiligence.Checklist_Name__c}" />
+                                    <apex:outputpanel rendered="{! IF(transactionDueDiligence.Help_Text__c != null , true,false)}">
+                                        <a data-toggle="tooltip" data-placement="bottom" class="BlackStyle" title="{!transactionDueDiligence.Help_Text__c}" data-html="true">
+                                            <img src="/img/s.gif" alt="" class="helpOrb glyphicon" title="" />
+                                        </a>
+                                    </apex:outputpanel>
+                                    <apex:outputpanel rendered="{!transactionDueDiligence.Automated__c}">
+                                        <a data-toggle="tooltip" data-placement="bottom" class="BlackStyle">
+                                            <img class="helpOrb helpOrbautomate" style="max-width:70px;" src="{!URLFOR($Resource.EEC_Bootstrap,'EEC_Bootstrap/img/automated.png')}"
+                                            />
+                                        </a>
+                                    </apex:outputpanel>
+                                    <apex:outputpanel rendered="{!transactionDueDiligence.Video_Link__c != null}">
+                                        <a data-toggle="tooltip" data-placement="bottom" target="_blank" class="BlackStyle" href="{!transactionDueDiligence.Video_Link__c}">
+                                            <img class="helpOrb helpOrbautomate" style="max-width:70px;" src="{!URLFOR($Resource.EEC_Bootstrap,'EEC_Bootstrap/img/video.png')}"
+                                            />
+                                        </a>
+                                    </apex:outputpanel>
+                                    <apex:outputText value=" [Alert: Licensor recommendation is missing for variance items.]" styleclass="text-danger wordBreak"
+                                        rendered="{! AND(IF(transactionDueDiligence.Unique_API_Name__c == varianceChecklistItem,true,false),isMissinglicensorRecommendation)}"
+                                    />
+                                    <apex:outputText value=" [Alert: Final decision is missing for variance items.]" styleclass="text-danger wordBreak" rendered="{! AND(IF(transactionDueDiligence.Unique_API_Name__c == superVisorChecklistItem,true,false),isPendingVariance)}"
+                                    />
+                                    <apex:outputText value=" [Alert: Approve all documents below and review all documents in the document library.]" styleclass="text-danger wordBreak"
+                                        rendered="{! AND(IF(transactionDueDiligence.Unique_API_Name__c == reviewDocumnetCheklistItem,true,false),isPendingDoc)}"
+                                    />
+                                    
+                                    <apex:outputText value=" [Alert: Expected payment is not reflected.]" styleclass="text-danger wordBreak" rendered="{! AND(IF(transactionDueDiligence.Unique_API_Name__c == feePaymentChecklistItem,true,false), AND( Licensing_Transaction__c.Associated_Fee__c != null, Licensing_Transaction__c.Associated_Fee__c > 0))}"
+                                    />
+                                    <apex:outputText value=" [Alert: Missing Information.]" styleclass="text-danger wordBreak" rendered="{! AND(IF(transactionDueDiligence.Unique_API_Name__c == filledCapacityChecklistItem,true,false), Licensing_Transaction__c.Capacity__c == null)}"
+                                    />
+                                    <apex:outputText value=" [Alert: Missing Information.]" styleclass="text-danger wordBreak" rendered="{! AND(IF(transactionDueDiligence.Unique_API_Name__c == filledFilledLicenseTypeChecklistItem,true,false), Licensing_Transaction__c.License_Type__c == null)}"
+                                    />
+                                    <apex:outputText value=" [Alert: Missing Information.]" styleclass="text-danger wordBreak" rendered="{! AND(IF(transactionDueDiligence.Unique_API_Name__c == certifiedAssistantCapacity,true,false), Licensing_Transaction__c.Certificate_Granted__c == null)}"
+                                    />
+                                    <apex:outputText value=" [Alert: Missing Information.]" styleclass="text-danger wordBreak" rendered="{! AND(IF(transactionDueDiligence.Unique_API_Name__c == filledLicensedIssueDateExpirationDateChecklistItem,true,false), OR(Licensing_Transaction__c.License_Issue_Date__c == null,Licensing_Transaction__c.License_Expiration_Date__c == null))}"
+                                    />
+                                   
+                                    <!--   <apex:outputText value="[Alert: Please fill Minimum and maximum age of children.]" styleclass="text-danger wordBreak" rendered="{! AND(IF(transactionDueDiligence.Unique_API_Name__c == reviewandFillAgeofChildernServedGrandted,true,false), AND(Licensing_Transaction__c.Min_age_of_children_served_granted__c == null,Licensing_Transaction__c.Max_Age_of_Children_served_granted__c == null))}"/> -->
+                                </td>
+                                <td class="slds-text-align_center">
+                                    <apex:outputField value="{!transactionDueDiligence.Responsible_Party__c}" />
+                                </td>
+                                <td>
+                                    <apex:inputField value="{!transactionDueDiligence.Status__c}" styleclass="status" rendered="{!isEditMode}" />
+                                    <apex:outputField value="{!transactionDueDiligence.Status__c}" rendered="{!!isEditMode}" />
+                                </td>
+                                <td>
+                                    <apex:outputField value="{!transactionDueDiligence.Completion_Date__c}" />
+                                </td>
+                                <td>
+                                    <apex:outputField value="{!transactionDueDiligence.LastModifiedBy.name}" rendered="{! transactionDueDiligence.Completion_Date__c != null}"
+                                    />
+                                </td>
+                                <td>
+                                    <apex:inputText value="{!transactionDueDiligence.Enable_Not_Applicable__c}" styleclass="applicableClass displayHidden" />
+                                </td>
+                            </tr>
+                        </apex:repeat>
+                    </tbody>
+                </table>
+            </apex:outputPanel>
+        </apex:form>
+    </div>
+    <script>
+        function reloadToolTip() {
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        }
+        function refresh(reloadPage) {
+            if (reloadPage == 'true') {
+                window.top.location.href = '/{!Licensing_Transaction__c.Id}';
+            }
+        }
+        function removePicklistValue() {
+            $('.duediligenceTable > tbody  > tr').each(function () {
+                var isApplicable = $(this).find('.applicableClass').val();
+                if (isApplicable == 'false') {
+                    $(this).find('.status option').each(function (i) {
+                        if ($(this).text() == 'Not Applicable') {
+                            $(this).remove();
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+</apex:page>

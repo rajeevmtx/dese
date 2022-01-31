@@ -1,0 +1,137 @@
+<template>
+    <!-- <div class="backdrop" if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </div>
+    </div> -->
+    <div class="slds-card has-header slds-p-around_x-large card-div">
+        <div class="page-header" style="font-size: medium;">
+            <h2 class="page-title">PERSONAL INFORMATION</h2>
+        </div>
+        <div class="slds-m-top_x-small">Tell us the following about yourself</div>
+        <div class="slds-form">
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="text" autocomplete="none" label="First Name" name="firstName"
+                        onchange={handleInput} value={dataObj.firstName} style="width: 100%;" required>
+                    </lightning-input>
+                </div>
+                <div class="slds-form__item">
+                    <lightning-input type="text" autocomplete="none" label="Last Name" value={dataObj.lastName}
+                        name="lastName" onchange={handleInput} style="width: 100%;" required>
+                    </lightning-input>
+                </div>
+            </div>
+            <br />
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="text" autocomplete="none" label="MI" value={dataObj.mi} name="mi"
+                        onchange={handleInput} style="width: 100%;" required>
+                    </lightning-input>
+                </div>
+                <div class="slds-form__item">
+                    <lightning-input type="email" autocomplete="none" label="Email Address" name="email"
+                        value={dataObj.email} style="width: 100%;" required onchange={handleInput}>
+                    </lightning-input>
+                </div>
+
+
+
+            </div>
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="text" autocomplete="none" label="Phone Number" value={dataObj.phoneNumber}
+                        name="phoneNumber" onchange={handleInput} style="width: 100%;" required>
+                    </lightning-input>
+                </div>
+                <div class="slds-form__item">
+                    <lightning-input type="text" autocomplete="none" label="Ext" value={dataObj.ext} name="ext"
+                        onchange={handleInput} style="width: 100%;" required>
+                    </lightning-input>
+                </div>
+            </div>
+            <br />
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="text" autocomplete="none" label="Street" name="street" value={dataObj.street}
+                        style="width: 100%;" required onchange={handleInput}>
+                    </lightning-input>
+                </div>
+                <div class="slds-form__item">
+                    <lightning-input type="text" autocomplete="none" label="Unit/Apt" value={dataObj.unit} name="unit"
+                        onchange={handleInput} style="width: 100%;" required>
+                    </lightning-input>
+                </div>
+
+
+            </div>
+            <br />
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-combobox name="city" label="City" value={dataObj.city} placeholder="Select City"
+                        options={city} onchange={handleInput} style="width: 100%;"></lightning-combobox>
+                </div>
+
+                <div class="slds-form__item">
+                    <lightning-combobox name="state" label="State" value={dataObj.state} placeholder="Select State"
+                        options={state} onchange={handleInput} style="width: 100%;"></lightning-combobox>
+                </div>
+            </div>
+            <br />
+            <div class="slds-form__row">
+                <!-- <label class="slds-form-element__label" for="horizontal-input-id-01"><abbr class="slds-required"
+                        style="width:100%" title="required">* </abbr>HOW MANY YEARS HAVE YOU LIVED IN NEW HAMPSHIRE
+                </label> -->
+                <!-- class="slds-form-element slds-form-element_horizontal" class="slds-form-element__control" -->
+                <div class="slds-form__item">
+                    <lightning-input type="text" autocomplete="none" label="Zipcode" value={dataObj.Zipcode}
+                        name="zipcode" onchange={handleInput} style="width: 100%;" required>
+                    </lightning-input>
+                </div>
+                <div class="slds-form__item">
+                    <lightning-input type="text" label="HOW MANY YEARS HAVE YOU LIVED IN NEW HAMPSHIRE"
+                        value={dataObj.years} name="years" style="width:40%" required onchange={handleInput}
+                        variant="label-stacked"></lightning-input>
+                </div>
+            </div>
+            <div class="slds-form__row slds-m-top_x-small">
+                <div class="slds-form__item">
+                    <lightning-radio-group name="adoptingInterest" class="horizontal-radio customRadioCls"
+                        label="ARE YOU INTEREST IN FOSTERING/ADOPTING AN IN STATE-RELATIVE?"
+                        value={dataObj.adoptingInterest} options={yesNoOption} type="radio" onchange={handleInput}
+                        style="width: 100%;" required>
+                    </lightning-radio-group>
+
+                </div>
+            </div>
+            <div class="slds-form__row slds-m-top_x-small">
+                <div class="slds-form__item">
+                    <lightning-radio-group name="married" class="horizontal-radio customRadioCls"
+                        label="ARE YOU MARRIED OR LIVING WITH A SIGNIFICANT OTHER?" value={dataObj.married}
+                        options={yesNoOption} type="radio" onchange={handleInput} style="width: 100%;" required>
+                    </lightning-radio-group>
+
+                </div>
+            </div>
+            <div class="slds-form__row slds-m-top_x-small">
+                <div class="slds-form__item">
+                    <lightning-radio-group name="anyOtherHousehold" class="horizontal-radio customRadioCls"
+                        label="IS THERE ANYONE ELSE IN YOUR HOUSEHOLD?" options={yesNoOption}
+                        value={dataObj.anyOtherHousehold} type="radio" onchange={handleInput} style="width: 100%;"
+                        required>
+                    </lightning-radio-group>
+
+                </div>
+            </div>
+            <div class="slds-form-element slds-m-top_x-small">
+                <div>
+                    <!-- <label class="slds-form-element__label" for="textarea-id-01">COMMENTS:(REMAINING
+                        CHARACTERS:{rem})</label> -->
+                    <lightning-textarea label={commentsLabel} value={dataObj.myVal} name="textArea"
+                        onchange={handleInput} max-length="1000" style="width: 100%;">
+                    </lightning-textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

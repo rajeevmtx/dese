@@ -1,0 +1,6 @@
+/**
+ * Created by arunm on 22-03-2020.
+ */
+ lightning-map .slds-map_container .slds-p-around_medium .slds-button_brand {
+    display: none !important;
+}

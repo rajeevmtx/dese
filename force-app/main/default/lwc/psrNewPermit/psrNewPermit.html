@@ -1,0 +1,114 @@
+<template>
+  <div class="backdrop" if:true={showSpinner}>
+    <div class="spinner">
+      <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+    </div>
+  </div>
+  <!-- Save and Exit Button-->
+  <div class="has-shadow slds-p-vertical_medium slds-m-bottom_medium heading_header_registration">
+    <div class="container d-flex justify-space-between">
+      <h5>{getHeading}</h5>
+      <template if:true={showSaveAndExitButtons}>
+        <lightning-button variant="Neutral" label="Save and Exit" onclick={handleClick} class="slds-m-left_x-small">
+        </lightning-button>
+      </template>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="app-container slds-grid slds-gutters slds-wrap">
+      <!-- Side Steps Nav Bar Start -->
+      <div class="app-sidebar slds-col slds-size_1-of-1 slds-large-size_2-of-12">
+        <c-psr-new-permit-flow-steps current-step={currentStep} original-step={originalStep}
+          is-licensed-user={isLicensedUser} is-provider={isProvider}></c-psr-new-permit-flow-steps>
+      </div>
+      <!-- Side Steps Nav Bar End -->
+      <div class="app-content slds-size_1-of-1 slds-large-size_10-of-12">
+        <!-- <div if:true={enableLicenseValidation}>
+          <c-psr-help-text help-text={Portal_License_Validation_Help_Text}></c-psr-help-text>
+          <c-psr-license-validation
+            disabled-fields={isReadOnly}
+          ></c-psr-license-validation>
+        </div> -->
+
+        <div if:true={enableInstructions}>
+          <!-- <c-psr-help-text help-text={Portal_Instructions_Help_Text}></c-psr-help-text> -->
+          <c-psr-instructions></c-psr-instructions>
+        </div>
+
+
+
+        <!-- <div if:true={enableAppInformation}>
+          <c-psr-help-text help-text={Portal_Application_Information_Help_Text}></c-psr-help-text>
+          <c-psr-application-information
+            disabled-fields={isReadOnly}
+          ></c-psr-application-information>
+        </div> -->
+
+        <div if:true={enableStudent}>
+          <div class="contactList">
+            <c-psr-help-text help-text={contact_help}></c-psr-help-text>
+            <c-psr-contact-list onclosemodal={handleCloseModal}></c-psr-contact-list>
+          </div>
+        </div>
+        <div if:true={enableStaff}>
+          <div class="contactList">
+            <c-psr-help-text help-text={staff_help}></c-psr-help-text>
+            <c-psr-staff-list onclosemodal={handleCloseModal}></c-psr-staff-list>
+          </div>
+        </div>
+
+        <!-- <div if:true={enableAssignWorkOrder}>
+          <c-psr-help-text help-text={Portal_Assign_Work_Order_Help_Text}></c-psr-help-text>
+          <c-psr-application-work-order
+            record-id={appId}
+          ></c-psr-application-work-order>
+        </div> -->
+
+        <div if:true={enableDocuments}>
+          <c-psr-help-text help-text={Portal_Documents_Help_Text}></c-psr-help-text>
+
+          <div class="slds-card has-header slds-p-around_medium">
+            <c-psr-document-details onsuccess={handleSuccess} onerror={handleError}></c-psr-document-details>
+          </div>
+        </div>
+        <div if:true={enableAssessment}>
+          <c-psr-help-text help-text={assessment_helptext}></c-psr-help-text>
+          <div class="slds-card has-header slds-p-around_medium">
+            <c-psr-assessment-questionaire disabled-fields={isReadOnly}></c-psr-assessment-questionaire>
+          </div>
+        </div>
+        <div if:true={enableReview}>
+          <c-psr-help-text help-text={review_help}></c-psr-help-text>
+          <c-psr-application-review disabled-fields={isReadOnly}></c-psr-application-review>
+        </div>
+        <!-- <div if:true={enablePayment}>
+          <c-psr-help-text help-text={Portal_Payment_Help_Text}></c-psr-help-text>
+          <div class="slds-card has-header slds-p-around_medium">
+            <c-psr-payments disabled-fields={isReadOnly}></c-psr-payments>
+          </div>
+        </div> -->
+
+        <div if:true={enableSubmission}>
+          <c-psr-help-text help-text={submission_helptext}></c-psr-help-text>
+          <div class="slds-card has-header slds-p-around_medium">
+            <c-psr-submission oncheckboxchange={handleCheckboxChange}></c-psr-submission>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Back and Next Buttons Section -->
+    <div class="buttonPanel slds-p-bottom_medium">
+      <lightning-button if:true={enableSubmitButton} variant="Brand" label="Submit" onclick={handleSubmit}
+        class="slds-float_right"></lightning-button>
+      <lightning-button if:true={enableNextButton} variant="Brand" label="Next" onclick={handleNextButton}
+        class="slds-float_right"></lightning-button>
+      <lightning-button if:true={enableBackButton} variant="Neutral" label="Back" onclick={handleBackButton}
+        class="slds-float_right backButton"></lightning-button>
+    </div>
+  </div>
+
+  <!--<div class="slds-m-top_large text-center newfooter">
+    <p>Copyright © 2020 State of New Mexico - All rights reserved.</p>
+</div>-->
+</template>

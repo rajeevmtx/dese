@@ -1,0 +1,56 @@
+<template>
+    <div class="tab slds-m-around_large shadow-card">
+        <div class="container padding-bottom-container">
+            <div class="slds-m-bottom_x-large doh-card-heading">
+                <h1 class="section-title">Work Order</h1>
+            </div>
+            <c-psr-help-text help-text={Portal_Work_Order_Help_Text}></c-psr-help-text>
+
+            <div if:true={isHospital} class="license-grid">
+                <lightning-button variant="Neutral" label="New" onclick={setupNewRequest}>
+                </lightning-button>
+            </div>
+        <div class="slds-grid slds-wrap woTable">
+            <table style="margin-top: 0" class="slds-table">
+                <tr class="table_header_brand">
+                    <td><b>Work Order Number</b></td>
+                    <td><b>Start Date</b></td>
+                    <td><b>End Date</b></td>
+                    <td><b>Status</b></td>
+                </tr>
+                <tr>
+                    <td >3686</td>
+                    <td>01/17/2020</td>
+                    <td>02/07/2020</td>
+                    <td>In Progress</td>
+                </tr>
+                <tr>
+                    <td >8976</td>
+                    <td>03/25/2019</td>
+                    <td>04/19/2019</td>
+                    <td>In Progress</td>
+                </tr>
+                <tr>
+                    <td >5643</td>
+                    <td>09/04/2018</td>
+                    <td>10/19/2019</td>
+                    <td>Completed</td>
+                </tr>
+                <tr>
+                    <td >3457</td>
+                    <td>02/19/2019</td>
+                    <td>08/29/2019</td>
+                    <td>In Progress</td>
+                </tr>
+                <tr>
+                    <td >1987</td>
+                    <td>07/30/2019</td>
+                    <td>09/28/2019</td>
+                    <td>Completed</td>
+                </tr>
+            </table>
+        </div>
+        </div>
+        </div>
+    
+</template>

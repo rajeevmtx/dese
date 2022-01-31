@@ -1,0 +1,70 @@
+<template>
+    <!-- Spinner -->
+    <template if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+    </template>
+
+    <div class="app-container slds-grid slds-gutters slds-wrap">
+        <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <c-psr-help-text help-text={symptomsHelpText}></c-psr-help-text>
+        </div>
+
+        <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <div class="container">
+                <div class="d-flex">
+                    <h4>Symptoms Information</h4>
+                    <span> (Steps 6 of 7)</span>
+                </div>
+
+                <br />
+
+                <lightning-record-edit-form object-api-name="Symptoms__c" density="comfy" onsuccess={handleFormSuccess}
+                    onsubmit={handleFormSubmit} onload={handleOnLoad} onerror={handleOnError} record-id={symptomsId}>
+                    <lightning-messages></lightning-messages>
+                    <div class="slds-grid slds-gutters slds-wrap">
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Abdominal_Pain__c" required></lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Chills__c" required></lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Cough__c" required></lightning-input-field>
+                        </div>
+
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Fever__c" required></lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Headache__c" required></lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Muscle_Aches__c" required></lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Sore_Throat__c" required></lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Vomiting__c" required></lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Difficulty_Breathing__c" required>
+                            </lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Date_of_Symptom_Reported__c" required>
+                            </lightning-input-field>
+                        </div>
+                    </div>
+                    <lightning-input-field field-name="Subject__c" value={subjectId} style="display:none;">
+                    </lightning-input-field>
+                    <lightning-button variant="brand" style="float: right;" class="slds-m-top_medium" type="submit"
+                        label="Next">
+                    </lightning-button>
+                    <lightning-button style="float: right;" class="slds-m-right_small slds-m-top_medium" label="Back"
+                        onclick={goBack}></lightning-button>
+                </lightning-record-edit-form>
+            </div>
+        </div>
+    </div>
+</template>

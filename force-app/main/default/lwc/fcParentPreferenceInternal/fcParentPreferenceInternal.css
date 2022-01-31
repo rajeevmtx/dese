@@ -1,0 +1,70 @@
+body {
+    background: #dfe9ff;
+    font-family: Lato, sans-serif;
+  }
+  
+  .container{
+    margin: 0 auto;
+      padding-left: 2rem;
+      padding-right: 2rem;
+      max-width: 1330px;
+  }
+
+
+/*Start Code for Card layout*/
+.nh-preference--card {
+  box-shadow: 0 0.5px 1.2px rgba(0, 0, 0, 0.011), 0 1.1px 2.8px rgba(0, 0, 0, 0.016), 0 2.1px 5.3px rgba(0, 0, 0, 0.02), 0 3.8px 9.4px rgba(0, 0, 0, 0.024), 0 7.1px 17.5px rgba(0, 0, 0, 0.029), 0 17px 42px rgba(0, 0, 0, 0.04);
+  margin-bottom: 2rem;
+  display: grid;
+  background-color: white;
+  grid-template-columns: 10fr 1fr;
+}
+
+
+.pre--ppn {
+  font-size: 12px;
+  font-style: italic;
+  color: #888;
+  padding: 1rem 1rem 0rem 1rem;
+}
+.pre-value{
+  font-size: 14px;
+}
+
+.pre-type {
+  font-size: 12px;
+  padding: 0rem 1rem 1rem 1rem;
+}
+
+.pre-content {
+   grid-column: 1 / 3;
+   padding: 0rem 1rem;
+}
+
+.pre-date {
+  grid-column: 1 / 3;
+  padding: 0rem 1rem 1rem 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.pre-action {
+  display:flex;
+  justify-content: flex-end;
+  padding: 1rem;
+}
+
+.pre-weightage { 
+  grid-column: 1 / 3;
+  padding: 1rem;
+  background-color: #f5f5f5;
+}
+.pre-label {
+  margin-bottom: .4rem;
+  font-weight: 600;
+}
+/*End Code for Card layout*/
+
+.gridButton{
+    text-align: right;
+}

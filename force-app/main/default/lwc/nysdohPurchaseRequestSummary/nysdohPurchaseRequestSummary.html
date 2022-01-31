@@ -1,0 +1,81 @@
+<!--
+ - Created by arunm on 23-03-2020.
+ -->
+
+<!-- NYSDOH Purchase Request Summary -->
+<template>
+    <template if:true={summary}>
+        <!-- <div class="slds-grid slds-gutters pointer-event-none pageTextheading">
+            <div class="slds-p-right_small">
+                <lightning-icon icon-name="standard:proposition" size="medium"></lightning-icon>
+            </div>
+            <div>
+                <h2>{supplierName}</h2>
+            </div>
+        </div> -->
+
+        <div class="slds-card parent-card">
+            <div class="container d-flex justify-space-between">
+                <div class="d-flex justify-space-between">
+                    <h2 class="section-title">My Purchase Request</h2>
+                </div>
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col slds-grid statuscard">
+                        <div class="slds-col slds-size_1-of-3 approveddarken ">
+                        <span class="custom_icon">
+                            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check"
+                                 class="svg-inline--fa fa-check fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
+                                 viewBox="0 0 512 512"><path fill="currentColor"
+                                                             d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path></svg>
+                        </span>
+                        </div>
+                        <div class="slds-col slds-size_2-of-3 approved">
+                            <div class="card-content">
+                                <div class="row">
+                                    <h3 class="card-stats-number">{summary.fulfilledBids}</h3>
+                                    <p class="card-stats-heading">Fulfilled</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-grid statuscard">
+                        <div class="slds-col slds-size_1-of-3 submitteddarken">
+                        <span class="custom_icon">
+                            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="spinner"
+                                 class="svg-inline--fa fa-spinner fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
+                                 viewBox="0 0 512 512"><path fill="currentColor"
+                                                             d="M304 48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-48 368c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm208-208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zM96 256c0-26.51-21.49-48-48-48S0 229.49 0 256s21.49 48 48 48 48-21.49 48-48zm12.922 99.078c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.491-48-48-48zm294.156 0c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.49-48-48-48zM108.922 60.922c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.491-48-48-48z"></path></svg>
+                        </span>
+                        </div>
+                        <div class="slds-col slds-size_2-of-3 submitted">
+                            <div class="card-content">
+                                <div class="row">
+                                    <h3 class="card-stats-number">{summary.outstandingBids}</h3>
+                                    <p class="card-stats-heading">Bid Outstanding</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-grid statuscard">
+                        <div class="slds-col slds-size_1-of-3 draftdarken">
+                        <span class="custom_icon">
+                            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="clipboard"
+                                 class="svg-inline--fa fa-clipboard fa-w-12" role="img"
+                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor"
+                                                                                                d="M384 112v352c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V112c0-26.51 21.49-48 48-48h80c0-35.29 28.71-64 64-64s64 28.71 64 64h80c26.51 0 48 21.49 48 48zM192 40c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24m96 114v-20a6 6 0 0 0-6-6H102a6 6 0 0 0-6 6v20a6 6 0 0 0 6 6h180a6 6 0 0 0 6-6z"></path></svg>
+                        </span>
+                        </div>
+                        <div class="slds-col slds-size_2-of-3 draft">
+                            <div class="card-content">
+                                <div class="row">
+                                    <h3 class="card-stats-number">{summary.openBids}</h3>
+                                    <p class="card-stats-heading">Open to Bid</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+</template>

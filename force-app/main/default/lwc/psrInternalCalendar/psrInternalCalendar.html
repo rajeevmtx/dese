@@ -1,0 +1,115 @@
+<template>
+    <div class ="fullCalendar">
+    <template if:true={recordId}>
+        <template if:true={isToBeSchedule}>
+            <center>
+                <lightning-button label="Schedule Inspection" variant="brand" onclick={openmodal}></lightning-button>
+            </center> 
+        </template>    
+    </template>
+    <template if:true={openmodel}>
+        <div class="createInspection">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                            <lightning-icon icon-name="utility:close" variant="inverse" alternative-text="Close" size="medium">
+                            </lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Schedule Visitation</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                      <template if:true={inspectionObj}>
+
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input label="Work Order Number" value={inspectionObj.Application_Work_Order__r.Name} disabled></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input type="text" label="Work Order Type" value={inspectionObj.Application_Work_Order__r.Work_Order_Type__c} disabled></lightning-input>
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-gutters slds-m-top_medium slds-dropdown_bottom" >
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input class="slds-datetime-picker" type="datetime" label="Inspection Start Date" value={inspectionObj.inspectionStartDate} onchange={startDateChange}></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input class="slds-datetime-picker" type="datetime" label="Inspection End Date"  value={inspectionObj.inspectionEndDate} onchange={endDateChange}></lightning-input>
+                            </div>
+                        </div>
+                        </template>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning-button label="Cancel" variant="neutral" onclick={closeModal}></lightning-button>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <lightning-button label="Save" variant="brand" onclick={scheduleInspection}></lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+        </template>
+
+        <template if:true={detailModal}>
+            <div class="detailInspectionModal">
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container inspectionDetail">
+                        <header class="slds-modal__header">
+                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeDetailModal}>
+                                <lightning-icon icon-name="utility:close" variant="inverse" alternative-text="Close" size="medium">
+                                </lightning-icon>
+                                <span class="slds-assistive-text">Close</span>
+                            </button>
+                            <h2 id="detail-modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Inspection Detail</h2>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium" id="deatil-modal-content-id-1">
+                          <template if:true={inspectionDetail}>
+
+
+                            <div class="slds-grid slds-gutters slds-m-top_medium" >
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input label="Inspection Number" value={inspectionDetail.Name} disabled></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input label="Inspection Status" value={inspectionDetail.Inspection_Status__c} disabled></lightning-input>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-gutters slds-m-top_medium" >
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input type="text" label="Work Order Number" value={inspectionDetail.Application_Work_Order__r.Name} disabled></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input type="text" label="Work Order Type" value={inspectionDetail.Application_Work_Order__r.Work_Order_Type__c} disabled></lightning-input>
+                                </div>
+                            </div>
+
+                            <div class="slds-grid slds-gutters slds-m-top_medium" >
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input type="datetime" label="Inspection Start Date" value={inspectionDetail.Inspection_Start_Date__c} disabled></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input type="datetime" label="Inspection End Date" value={inspectionDetail.Inspection_End_Date__c} disabled></lightning-input>
+                                </div>
+                            </div>
+                            
+                            </template>
+                        </div>
+                        <footer class="slds-modal__footer">
+                            <lightning-button label="Cancel" variant="neutral" onclick={closeDetailModal}></lightning-button>    
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </div>
+            </template>
+
+    <!-- Let's give it a white background -->
+    <div style="background:#ffffff;" class="slds-grid slds-p-around_small">
+    <!-- This is where the calendar gets loaded. -->
+    <!-- We'll use the class name "fullcalendarjs" as our dom target instead of the ID -->
+    <!-- In LWC, the id can changed dynamically -->
+    <div id="calendar" class="fullcalendarjs"></div>
+    </div>
+    </div>
+
+ </template>

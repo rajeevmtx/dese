@@ -1,0 +1,28 @@
+<template>
+    <div slot="body">
+        <div class="tab slds-m-around_large shadow-card">
+            <div class="container padding-bottom-container">
+                <div class="slds-m-bottom_x-large doh-card-heading">
+                    <h1 class="section-title">Mass Creation</h1>
+                </div>
+                <c-psr-help-text help-text={Portal_Work_Order_Help_Text}></c-psr-help-text>
+               
+                <div>
+                    <lightning-input class="startdate"  type="date" name="startDate" label="Start Date" value={startDate} onchange={startDateChangeHandler}  ></lightning-input>
+                    <lightning-input class="enddate" type="date" name="endDate" label="End Date" value={endDate} onchange={endDateChangeHandler} ></lightning-input>
+                    <lightning-combobox
+                        name="shift"
+                        label="Shift Type"
+                        value={selectedvalue}
+                        placeholder="Select Shift"
+                        options={options}
+                        onchange={selectionChangeHandler} ></lightning-combobox>
+                    <lightning-input type="text" name="hospitalName" label="Hospital Name" value={accountName} read-only></lightning-input>
+                </div>
+                <div class="slds-float_right slds-m-bottom_large">
+                    <lightning-button variant="brand" label="Create" title="Create Assignment" onclick={createAssignment}></lightning-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

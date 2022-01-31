@@ -1,0 +1,96 @@
+<!-- <apex:page controller="CORE_Proposal_Review_Controller" contentType="application/vnd.ms-excel#{!fedexCSVfilename}" cache="true">
+    <head>
+        <style>
+            .grid-panel > table td {
+                border: solid 1px #000;
+                border-spacing: 0;
+                border-collapse: collapse;
+            }       
+        </style>
+    </head>
+    
+    <apex:form >
+    <apex:variable var="i" value="{!0}" />
+    <apex:outputPanel styleClass="grid-panel">
+    <apex:dataTable value="{!liproposalWrapper}" var="lpw" styleClass="grid-table">
+        <apex:column > {!lpw.pro.Proposed_Proposal_Category__c} </apex:column>
+        <apex:column rendered="{!OR(isSolicitationManager, isContractOfficeManager, isProjectCoordinator)}">
+            {!lpw.pro.Proposal_Rank__c}
+        </apex:column>
+        <apex:column > {!lpw.roleContractor.Account_Name_Hidden__c} </apex:column>
+        <apex:column > {!lpw.pro.name} </apex:column>
+        <apex:column rendered="{!!isContractOfficeManager}"> {!lpw.pro.Description__c} </apex:column>
+        <apex:column rendered="{!!isContractOfficeManager}"> {!lpw.pro.Impacts_Benefits__c} </apex:column>
+        <apex:column rendered="{!!isContractOfficeManager}"> {!lpw.pro.Proposal_Strengths__c} </apex:column>
+        <apex:column rendered="{!!isContractOfficeManager}"> {!lpw.pro.Proposal_Weaknesses__c} </apex:column>
+        <apex:column rendered="{!!OR(isConceptPaper, isContractOfficeManager)}"> {!lpw.pro.Proposal_Risks__c} </apex:column>
+        <apex:column > {!lpw.pro.Proposed_NYSERDA_Cost__c} </apex:column>
+        <apex:column rendered="{!!OR(isConceptPaper, isProgramStaff, isScoringCommiteeMember)}"> {!lpw.pro.Recommended_NYSERDA_Funding__c} </apex:column>
+        <apex:column rendered="{!!isContractOfficeManager}"> {!lpw.pro.Contingencies_Recommendations__c} </apex:column>
+        <apex:column rendered="{!OR(isSolicitationManager, isContractOfficeManager, isProjectCoordinator)}"> {!lpw.pro.Scoring_Committee_Recommendation__c} </apex:column>
+        <apex:column rendered="{!OR(isSolicitationManager, isContractOfficeManager, isProjectCoordinator)}"> {!lpw.pro.Team_Recommendation__c} </apex:column>
+        <apex:column rendered="{!OR(isSolicitationManager, isContractOfficeManager, isProjectCoordinator)}"> {!lpw.pro.Recommendation__c} </apex:column>
+        <apex:column rendered="{!!OR(isConceptPaper, isScoringCommiteeMember, isProgramStaff)}"> {!lpw.pro.Recoupment__c} </apex:column>
+        <apex:column rendered="{!!OR(isConceptPaper, isScoringCommiteeMember, isProgramStaff)}"> {!lpw.pro.Exceptions_to_T_C__c} </apex:column>
+        <apex:column rendered="{!!isConceptPaper}"> {!lpw.roleManager.User__c} </apex:column>
+        
+        
+                                        
+                                        
+                                        <td style="padding: 0;{!IF(OR(isConceptPaper, isScoringCommiteeMember, isProgramStaff), 'display:none', '')}">
+                                            <table class="table table-condensed table-striped table-default upper table-bordered" cellspacing="0" style="width:730px; height: 46px;">
+                                                <apex:outputPanel rendered="{!lpw.proFund.size > 0}" layout="none">
+                                                    <apex:variable var="j" value="{!1}" />
+                                                    <apex:repeat value="{!lpw.proFund}" var="funding">
+                                                        <tr>
+                                                            <apex:outputPanel rendered="{!lpw.proFund.size > 1}" layout="none">
+                                                                <td style="width:50px">
+                                                                    <apex:inputCheckbox value="{!lpw.projectFundIdToIsSelectedMap[funding.Fund__c]}" styleClass="amountCB{!i}{!j}" onclick="setAmountField({!lpw.pro.Recommended_NYSERDA_Funding__c}, {!i}, {!j})"/>
+                                                                </td>
+                                                                <td style="width:200px">
+                                                                    <apex:outputField styleClass="input-sm" value="{!funding.Fund__c}"/>
+                                                                </td>
+                                                            </apex:outputPanel>
+                                                            <apex:outputPanel rendered="{!lpw.proFund.size <= 1}" layout="none">
+                                                                <td style="width:250px">
+                                                                    <apex:outputField styleClass="input-sm" value="{!funding.Fund__c}"/>
+                                                                </td>
+                                                            </apex:outputPanel>
+    
+    
+    
+                                                            <td class="w180">
+                                                                <apex:outputPanel rendered="{!lpw.proFund.size <= 1}" >
+                                                                    <apex:outputField styleClass="input-sm currency" value="{!funding.Distribution_Amount__c}"/>
+                                                                </apex:outputPanel>
+                                                                <apex:outputPanel rendered="{!lpw.proFund.size > 1}">
+                                                                    <apex:inputText styleClass="input-sm currency disAmount{!i}{!j}" value="{!funding.Distribution_Amount__c}"/>
+                                                                </apex:outputPanel>
+                                                            </td>
+                                                            <td class="w100"> {!funding.Project_ID__c} </td>
+                                                            <td class="w100"> {!funding.Activity_ID__c}</td>
+                                                            <td class="w100"> {!funding.Account_Number__c}</td>
+                                                        </tr>
+                                                        <apex:variable var="j" value="{!j+1}" />
+                                                    </apex:repeat>
+                                                </apex:outputPanel>
+    
+                                                <apex:outputPanel rendered="{!lpw.proFund.size == 0}" layout="none">
+                                                    <tr>
+                                                        <td style="width:250px"></td>
+                                                        <td class="w180"> </td>
+                                                        <td class="w100"> </td>
+                                                        <td class="w100"> </td>
+                                                        <td class="w100"> </td>
+                                                    </tr>
+                                                </apex:outputPanel>
+                                            </table>
+                                        </td>
+    </apex:dataTable>
+    </apex:outputPanel>
+    </apex:form> 
+</apex:page> -->
+
+<apex:page controller="CORE_Proposal_Review_Controller" sidebar="false" showheader="false" contenttype="text/csv#{!fedexCSVfilename}" cache="true">
+{!dataDownload}
+</apex:page>

@@ -1,0 +1,543 @@
+<apex:page controller="EEC_TransactionWizardController" showheader="false" sidebar="false" standardStylesheets="false">
+    <title>EEC</title>
+    <c:EEC_Header id="pageHeader" />
+    <style>
+        .visibilityHidden {
+            visibility: hidden;
+        }
+        .emp-history {
+            margin-bottom: 20px;
+        }
+        .parsley-errors-list {
+            margin-top: 14px;
+            margin-left: -50px;
+            position: absolute; 
+            width: 50%;
+        }
+        .desc-panel .parsley-errors-list {
+            margin-top: -20px;
+            margin-left: 0px;
+            position: relative;
+            width: 100%;
+        }
+        .desc-panel .parsley-error {
+            border: 2px solid #c00;
+        }
+        .emp-history .parsley-errors-list {
+            margin-top: -20px;
+            margin-left: 0px;
+            position: relative;
+            width: 100%;
+        }
+        .person .parsley-errors-list {
+            margin-top: 0px;
+            margin-left: 0px;
+            position: relative;
+            width: 100%;
+        }
+        .md-button.md-raised.md-eec,
+        .md-button.md-raised.md-eec {
+            color: rgb(250, 250, 250);
+            background-color: #853F3F;
+        }
+        .md-button.md-raised.md-eec:hover,
+        .md-button.md-raised.md-eec:hover {
+            color: rgb(250, 250, 250);
+            background-color: #703E3E;
+        }
+        .md-button.md-raised,
+        .md-button.md-raised {
+            background-color: #f7f7f7;
+        }
+        .md-button span {
+            padding: 6px;
+        }
+        .top-level-label {
+            font-weight: 600;
+            margin-right: 5px;
+            line-height: 20px;
+            color: rgba(0, 0, 0, 0.54);
+        }
+        table {
+            border-collapse: separate;
+            border-spacing: 2px;
+        }
+        input[type="radio"],
+        input[type="checkbox"] {
+            margin: 4px 7px 0;
+        }
+        .reasonErrorMessage {
+            display: none;
+        }
+        .visible {
+            display: block;
+        }
+        .command-button-container {
+            position: relative;
+            top: -2px;
+        }
+        .commandBtn {
+            margin: -1px 0px -2px;
+        }
+        .transaction-info-row {
+            margin-left: 0px;
+        }
+        .required-input-with-error {
+            margin-bottom: 10px;
+        }
+        .eec-subhead {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-left: 0px;
+        }
+        .form-control {
+            color: rgba(0, 0, 0, .87);
+        }
+        .navigation-buttons {
+            overflow: visible;
+        }
+        .not-visible {
+            display: none;
+        }
+        textarea {
+            margin-bottom: 20px;
+        }
+        label {
+            margin-bottom: 10px;
+            font-weight: normal;
+        }
+        .requiredInput {
+            margin-left: 0px;
+        }
+        .desc-panel {
+            margin-left: 15px;
+            width: 90%;
+        }
+        .technical-info-container {
+            margin-bottom: 100px;
+        }
+        textarea.form-control {
+            margin-left: 0px;
+            width: 100%;
+        }
+        textarea.form-control {
+            height: 100px !important;
+        }
+        @media only screen and (min-width: 0px) and (max-width: 959px) {
+            .household-form-container {
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .navigation-buttons .md-button {
+                width: 98%;
+            }
+            .navigation-buttons md-content {
+                width: 100%;
+            }
+            .add-button-container {
+                padding-right: 0;
+                width: 100%;
+            }
+        }
+    </style>
+    <script type="text/javascript">
+        j$(document).ready(function () {
+            j$('.phonenumber').inputmask({ "mask": "(999) 999-9999" }); //specifying options
+            var isSubmitted = '{!isSubmitted}';
+            if (isSubmitted == 'true') {
+                j$('.saveButton').addClass('visibilityHidden');
+                jQuery("input[type=radio]").prop('disabled', true);
+                jQuery("input[type=text]").prop('disabled', true);
+                jQuery("textarea").prop('disabled', true);
+                jQuery("selectlist").prop('disabled', true);
+            }
+        });
+    </script>
+    <body ng-app="eecApp">
+        <c:eec_nav_bar id="navBar" rendered="{!loggedUser.UserType == 'PowerPartner' || loggedUser.UserType == 'PowerCustomerSuccess' || loggedUser.UserType == 'CspLitePortal' || loggedUser.UserType == 'CustomerSuccess'}"
+        />
+        <div class="technical-info-container" layout-wrap="true" layout-lg="row" layout-gt-lg="row" layout="column" layout-padding="true"
+            layout-margin="true" ng-controller="TransactionController as ctrl">
+            <md-content style="margin-top: 20px;" ng-show="ctrl.checkForMessages()" layout="row" flex="100" layout-align="center center">
+                <md-whiteframe class="md-whiteframe-z2 ng-cloak" layout="column" layout-padding="true" flex="75">
+                    <!--<apex:pageMessages id="showmsg"></apex:pageMessages>-->
+                </md-whiteframe>
+            </md-content>
+            <div class="technical-form-container col-lg-8 col-md-8 col-sm-12" style="margin-bottom:100px;margin-top:30px;">
+                <apex:form id="InvolvementExperienceForm" styleClass="involvment-form" html-layout="column" html-layout-padding="true">
+                    <div class="top-header-section">
+                        <div class="header-name-section">
+                            <h3 class="md-display-1 header-display-name">{!applicationDisplayName}</h3>
+                            <h4 class="step-name">Involvement / Professional Experience</h4>
+                            <h5 class="base-label trans-number">Application number: {!licenseTransation.Name}</h5>
+                        </div>
+                    </div>
+                    <md-divider class="ng-cloak" layout-align="center center"></md-divider>
+                    <!--                     <div class="transaction-info"> -->
+                    <!--                       <h3 class="eec-subhead">Transaction Information</h3> -->
+                    <!--                       <md-content class="transaction-info-row" layout="row"> -->
+                    <!--                         <p class="md-subhead top-level-label">Transaction Type: </p> -->
+                    <!--                         <apex:outputText value="{!LicenseRecordTypeLabel}" /> -->
+                    <!--                       </md-content> -->
+                    <!--                       <md-content class="transaction-info-row" layout="row"> -->
+                    <!--                         <p class="md-subhead top-level-label">Transaction Number: </p> -->
+                    <!--                         <apex:outputText value="{!licenseTransation.Name}" /> -->
+                    <!--                       </md-content> -->
+                    <!--                      </div> -->
+                    <div class="background-form-container card-row form-block" layout-wrap="true">
+                        <apex:outputPanel rendered="{!LicenseRecordTypeName !='Informal_Care_New_Application'}">
+                            <h3 class="eec-subhead" flex="95" layout-margin="true">EEC Involvement and Experience</h3>
+                            <br/>
+                            <apex:outputPanel >
+                                <apex:outputLabel styleClass="top-level-label required" value="Have you ever had previous involvement with EEC due to unlicensed child care?"/>
+                                <span class="required">*</span>
+                                <apex:outputPanel >
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <apex:selectRadio value="{!licenseTransation.Previous_Involvement_with_EEC_for_Unlice__c}">
+                                            <apex:actionSupport event="onchange" action="{!showLSDesc}" reRender="pacbDesc" status="status"/>
+                                            <apex:selectOptions value="{!items}" html-data-parsley-required="true" />
+                                        </apex:selectRadio>
+                                    </div>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                            <apex:outputpanel id="pacbDesc">
+                                <apex:outputPanel rendered="{!licenseTransation.Previous_Involvement_with_EEC_for_Unlice__c == 'Yes'}">
+                                    <apex:outputLabel styleClass="top-level-label required" value="Please Describe the type of involvement with EEC due to child Care"/>
+                                    <span class="required">*</span>
+                                    <apex:InputField styleClass="form-control" value="{!licenseTransation.Previous_Involvement_with_EEC__c}" html-data-parsley-required="true"/>
+                                </apex:outputPanel>
+                            </apex:outputpanel>
+                            <apex:outputPanel >
+                                <apex:outputLabel styleClass="top-level-label required" value="Have you ever applied for or been issued a certificate or license by the Department of Early Education and Care or its’ predecessor agencies (OCCS, OFC)?"/>
+                                <span class="required">*</span>
+                                <apex:actionRegion >
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <apex:selectRadio value="{!licenseTransation.Previous_Application_Certif_with_EEC__c}">
+                                            <apex:actionSupport event="onchange" action="{!showLSDesc}" reRender="pacDesc" status="status"/>
+                                            <apex:selectOptions value="{!items}" html-data-parsley-required="true" />
+                                        </apex:selectRadio>
+                                    </div>
+                                </apex:actionRegion>
+                            </apex:outputPanel>
+                            <apex:outputpanel id="pacDesc">
+                                <apex:outputPanel rendered="{!licenseTransation.Previous_Application_Certif_with_EEC__c == 'Yes'}">
+                                    <apex:outputLabel styleClass="top-level-label required" value="Please list the type of care, the license number(s) and expiration date(s) of any licenses/certificates you have held"/>
+                                    <span class="required">*</span>
+                                    <apex:InputField styleClass="form-control" value="{!licenseTransation.Prev_App_Certif_with_EEC_Descrip__c}" html-data-parsley-required="true"/>
+                                </apex:outputPanel>
+                            </apex:outputpanel>
+                            <apex:outputPanel >
+                                <apex:outputLabel styleClass="top-level-label required" value="Have you ever applied for or been issued a child care license or certificate by any other state?"/>
+                                <span class="required">*</span>
+                                <apex:actionRegion >
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <apex:selectRadio value="{!licenseTransation.Prev_App_Certif_with_Another_State__c}">
+                                            <apex:actionSupport event="onchange" action="{!showLSDesc}" reRender="pacaDesc" status="status"/>
+                                            <apex:selectOptions value="{!items}" html-data-parsley-required="true" />
+                                        </apex:selectRadio>
+                                    </div>
+                                </apex:actionRegion>
+                            </apex:outputPanel>
+                            <apex:outputpanel id="pacaDesc">
+                                <apex:outputPanel styleClass="top-level-label required" rendered="{!licenseTransation.Prev_App_Certif_with_Another_State__c == 'Yes'}">
+                                    <apex:outputLabel value="If yes, please list the state, type of care, the license number(s) and expiration date(s) of any licenses/certificates you have held:"
+                                        style="font-weight: bold !important;" />
+                                    <span class="required">*</span>
+                                    <apex:InputField styleClass="form-control" value="{!licenseTransation.Prev_App_Certif_with_Another_State_Desc__c}" html-data-parsley-required="true"
+                                        style="font-weight: normal;" />
+                                </apex:outputPanel>
+                            </apex:outputpanel>
+                        </apex:outputPanel>
+                        <div class="row col-md-12" style="margin-left:0px; margin-top:10px;padding-left:0px;">
+                            <h3 class="eec-subhead" flex="95" layout-margin="true">Certificate / License History</h3>
+                            <div class="col-lg-12 col-md-12" style="padding-left:0px;">
+                                <apex:outputPanel >
+                                    <apex:outputLabel styleClass="top-level-label required" value="Has any certificate or license ever been denied, revoked, suspended?"
+                                        style="font-weight: bold !important;" rendered="{!LicenseRecordTypeName !='Informal_Care_New_Application'}"
+                                    />
+                                    <apex:outputLabel styleClass="top-level-label required" value="Have you ever been a licensed or approved caregiver?"
+                                        style="font-weight: bold !important;" rendered="{!LicenseRecordTypeName == 'Informal_Care_New_Application'}"
+                                    />
+                                    <span class="required">*</span>
+                                    <apex:actionRegion >
+                                        <div class="requiredInput">
+                                            <div class="requiredBlock"></div>
+                                            <apex:selectRadio value="{!licenseTransation.Certificate_of_License_Revoked_Suspend__c}">
+                                                <apex:actionSupport event="onchange" action="{!showLSDesc}" reRender="rssDesc" status="status"/>
+                                                <apex:selectOptions value="{!items}" html-data-parsley-required="true" />
+                                            </apex:selectRadio>
+                                        </div>
+                                    </apex:actionRegion>
+                                </apex:outputPanel>
+                                <apex:outputPanel >
+                                    <div class="col-lg-12 col-md-12">
+                                        <apex:outputpanel id="rssDesc">
+                                            <apex:outputPanel rendered="{!licenseTransation.Certificate_of_License_Revoked_Suspend__c == 'Yes' }">
+                                                <apex:outputPanel rendered="{!LicenseRecordTypeName == 'Informal_Care_New_Application'}">
+                                                        <apex:outputLabel styleClass="top-level-label required" value="Please Explain" />
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!LicenseRecordTypeName != 'Informal_Care_New_Application'}">
+                                                        <apex:outputLabel styleClass="top-level-label required" value="Please describe the reasons why" />
+                                                </apex:outputPanel>
+                                                <span class="required">*</span>
+                                                <apex:InputField styleClass="form-control" value="{!licenseTransation.Revocation_Suspension_Surrender_Reas__c}" html-data-parsley-required="true"/>
+                                            </apex:outputPanel>
+                                        </apex:outputpanel>
+                                    </div>
+                                    <!-- <apex:outputLabel styleClass="top-level-label required" value="Have you ever voluntarily surrendered your certificate or license?"/>
+                                    <span class="required">*</span>
+                                    <apex:actionRegion >
+                                        <div class="requiredInput">
+                                            <div class="requiredBlock"></div>
+                                            <apex:selectRadio value="{!licenseTransation.Certificate_or_License_Surrendered__c}">
+                                                <apex:actionSupport event="onchange" action="{!showLSDesc}" reRender="rssDesc1" status="status"/>
+                                                <apex:selectOptions value="{!items}" html-data-parsley-required="true" />
+                                            </apex:selectRadio>
+                                        </div>
+                                    </apex:actionRegion> -->
+                                </apex:outputPanel>
+                            </div>
+                            <!-- <div class="col-lg-12 col-md-12">
+                                <apex:outputpanel id="rssDesc1">
+                                    <apex:outputPanel rendered="{!licenseTransation.Certificate_or_License_Surrendered__c == 'Yes'}">
+                                        <apex:outputLabel styleClass="top-level-label required" value="Please describe the reasons why" />
+                                        <span class="required">*</span>
+                                        <apex:InputField styleClass="form-control" value="{!licenseTransation.Surrendered_Certificate_License__c}" html-data-parsley-required="true"/>
+                                    </apex:outputPanel>
+                                </apex:outputpanel>
+                            </div> -->
+                            <!-- <apex:outputPanel rendered="{!LicenseRecordTypeName == 'Informal_Care_New_Application'}">
+                                <apex:outputLabel styleClass="top-level-label required" value="Have you ever been approved to provide care to a subsidised child previously?"
+                                    style="font-weight: bold !important;" rendered="{!LicenseRecordTypeName == 'Informal_Care_New_Application'}"/>
+                                <span class="required">*</span>
+                                <apex:actionRegion >
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <apex:selectRadio value="{!licenseTransation.Approved_to_care_subsidized_Child__c}">
+                                            <apex:actionSupport event="onchange" action="{!showLSDesc}" reRender="everBeenSubsidized" status="status"/>
+                                            <apex:selectOptions value="{!items}" html-data-parsley-required="true" />
+                                        </apex:selectRadio>
+                                    </div>
+                                </apex:actionRegion>
+                            </apex:outputPanel> -->
+                            <!-- <apex:outputpanel id="everBeenSubsidized">
+                                <apex:outputPanel rendered="{!licenseTransation.Approved_to_care_subsidized_Child__c == 'Yes'}">
+                                    <apex:outputLabel styleClass="top-level-label required" value="If so, has approval ever been revoked and why?" />
+                                    <span class="required">*</span>
+                                    <apex:InputField styleClass="form-control" value="{!licenseTransation.Approved_to_care_subsidized_child_desc__c}" html-data-parsley-required="true"/>
+                                </apex:outputPanel>
+                            </apex:outputpanel> -->
+                            <!-- <apex:outputPanel rendered="{!LicenseRecordTypeName == 'Informal_Care_New_Application'}">
+                                <apex:outputLabel styleClass="top-level-label" value="What is the purpose of your program ?" style="font-weight: bold !important;"/>
+                                <span class="required">*</span>
+                                <apex:actionRegion >
+                                    <div class="">
+                                        <div class="requiredBlock"></div>
+                                        <apex:inputField value="{!licenseTransation.What_is_the_purpose_of_your_program__c}" styleClass="form-control" />
+                                    </div>
+                                </apex:actionRegion>
+                            </apex:outputPanel> -->
+                        </div>
+                    </div>
+                    <apex:outputpanel id="employmentPanel" styleClass="row" rendered="{!LicenseRecordTypeName !='Informal_Care_New_Application' && LicenseRecordTypeName !='Child_Care_Licensing_Exemption'}">
+                        <script>
+                            j$('.phonenumber').inputmask({ "mask": "(999) 999-9999" }); //specifying options
+                        </script>
+                        <h3 class="eec-subhead" flex="95" layout-margin="true">Employment History</h3>
+                        <apex:outputPanel styleClass="desc-panel emp-history" style="margin-left:0px;">
+                            <apex:outputLabel styleClass="top-level-label required" value="EEC’s family child care regulations require at least one year of full time experience caring for children or a combination of experience and education and training.  Please describe how you meet these qualifications. "
+                            />
+                            <span class="required">*</span>
+                            <apex:InputField styleClass="form-control" value="{!licenseTransation.Experience_Caring_for_Children_QUalifica__c}" html-data-parsley-required="true">
+                                <apex:actionSupport event="onchange" action="{!showLSDesc}" reRender="assistantsPanel" status="status"/>
+                            </apex:InputField>
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <p class="md-subhead top-level-label" style="margin-bottom: 10px;margin-top:35px;">Please list early education and care related positions you have held in the last five years (babysitting
+                                experience does not count toward this requirement)</p>
+                        </apex:outputPanel>
+                        <apex:outputPanel id="assistantsPersonPanels">
+                            <apex:outputpanel id="assistantsPersonPanel">
+                                <script>
+                                    j$('.phonenumber').inputmask({ "mask": "(999) 999-9999" }); //specifying options
+                                </script>
+                                <apex:variable var="rowNum" value="{!0}" />
+                                <apex:repeat value="{!ehList}" var="fa" id="personsRepeater">
+                                    <apex:outputPanel layout="block" styleClass="person col-md-12">
+                                        <div class="well col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label class="top-level-label required">Position
+                                                        <span class="required">*</span>
+                                                    </label>
+                                                    <apex:inputField styleClass="form-control" required="false" value="{!fa.Position__c}" html-data-parsley-required="true" />
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="top-level-label required">Employment Start Date
+                                                        <span class="required">*</span>
+                                                    </label>
+                                                    <c:nodatelink >
+                                                        <apex:inputField styleClass="form-control" required="false" value="{!fa.Start_Date__c}" html-data-parsley-required="true"
+                                                            html-data-provide="datepicker" html-data-date-end-date="0d" />
+                                                    </c:nodatelink>
+                                                </div>
+                                            </div>
+                                            <div class="row val-row">
+                                                <div class="col-md-6">
+                                                    <label class="top-level-label required">Employment End Date </label>
+                                                    <c:nodatelink >
+                                                        <apex:inputField styleClass="form-control end-date" required="false" value="{!fa.End_Date__c}" html-data-provide="datepicker"/>
+                                                    </c:nodatelink>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="top-level-label required">Reason for Leaving</label>
+                                                    <apex:inputField styleClass="form-control reason-leaving" required="false" value="{!fa.Reason_for_Leaving__c}" style="margin-bottom: 0px;"/>
+                                                    <div>
+                                                        <p class="errorMsg  reasonErrorMessage">If the End Date is provided, Reason for Leaving is mandatory.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label class="top-level-label required">Employer
+                                                        <span class="required">*</span>
+                                                    </label>
+                                                    <apex:inputField styleClass="form-control" required="false" value="{!fa.Employer__c}" html-data-parsley-required="true" />
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="top-level-label required">Address</label>
+                                                    <apex:inputField styleClass="form-control" required="false" value="{!fa.Employer_Address__c}" />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label class="top-level-label required">Telephone</label>
+                                                    <apex:inputText styleClass="form-control phonenumber" required="false" value="{!fa.Employer_Phone__c}" html-data-parsley-pattern="{!$Label.Phone_Number_Validation}"
+                                                        html-data-parsley-pattern-message="{!$Label.Phone_Number_Validation_Error}"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div class="md-actions" layout="row" layout-align="end center">
+                                                <apex:commandLink action="{!delRowEH}" value="Remove" styleClass="md-button md-raised" rerender="employmentPanel">
+                                                    <apex:param value="{!rowNum}" name="index" />
+                                                </apex:commandLink>
+                                                <apex:variable var="rowNum" value="{!rowNum+1}" />
+                                            </div>
+                                        </div>
+                                    </apex:outputPanel>
+                                </apex:repeat>
+                            </apex:outputpanel>
+                        </apex:outputPanel>
+                    </apex:outputpanel>
+                    <apex:outputPanel rendered="{!!isSubmitted && LicenseRecordTypeName !='Informal_Care_New_Application' && LicenseRecordTypeName !='Child_Care_Licensing_Exemption'}">
+                        <div class="row add-button-container">
+                            <apex:commandButton styleClass="md-button md-raised md-eec" status="status" value="Add Employment History" action="{!addRowEH}" reRender="assistantsPersonPanel"/>
+                        </div>
+                    </apex:outputPanel>
+                    <md-divider layout-align="center center" class="marginTop"></md-divider>
+                    <div class="row">
+                        <md-content class="navigation-buttons" layout="column" layout-lg="row" layout-align="space-between center" layout-gt-lg="row"
+                            layout-align-sm="center center" layout-align-md="center center">
+                            <apex:commandLink styleClass="md-button md-raised md-button md-default-theme" value="Previous" action="{!SaveAndPreviousEH}"
+                                html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" status="status"/>
+                            <apex:commandLink styleClass="md-button md-raised md-button md-default-theme btn-pullLeft" value="Close" action="{!closeAndreturnToHome}"
+                                html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" status="status"/>
+                            <apex:commandLink styleClass="md-button md-raised md-eec save-btn btn-pullRight saveButton" onclick="if(!form.validate() || !validateReasonLeaving()){addMargin(); return false;}"
+                                value="Save" action="{!SaveAndNextEH}" html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1"
+                                html-md-button="true" status="status">
+                                <apex:param name="isSaveOnly" value="true" assignTo="{!isSaveOnly}" />
+                            </apex:commandLink>
+                            <apex:commandLink styleClass="md-button md-raised md-eec save-btn" onclick="if(!form.validate() || !validateReasonLeaving()){addMargin(); return false;}"
+                                action="{!SaveAndNextEH}" html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1"
+                                html-md-button="true" status="status">
+                                <apex:outputText rendered="{!!isSubmitted}">Save and</apex:outputText>
+                                Next
+                            </apex:commandLink>
+                        </md-content>
+                        <!--                 <md-content class="navigation-buttons" layout="column" layout-lg="row" layout-align="space-between center" layout-gt-lg="row" layout-align-sm="center center" layout-align-md="center center">     -->
+                        <!--                     <apex:commandLink status="status" styleClass="md-button md-raised"   immediate="true" action="{!CancelTransaction}" value="Cancel {!formattedLicenseRecordTypeLabel} Transaction"  onclick="return confirm('Are you sure to cancel the transaction?');" html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true"/> -->
+                        <!--                     <apex:commandLink status="status" styleClass="md-button md-raised" onclick="if(!form.validate() || !validateReasonLeaving()){addMargin(); return false;}" value="Save and Return to Provider" action="{!SaveAndReturnEH}"  html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true"/> -->
+                        <!--                 </md-content>   -->
+                    </div>
+                    <md-divider layout-align="center center"></md-divider>
+                    <apex:actionFunction action="{!SaveAndNextEH}" name="SaveNext" />
+                    <apex:actionFunction action="{!SaveAndPreviousEH}" name="SavePrevious" >
+                        <apex:param name="previousPage" assignTo="{!previousPageName}" value="" />
+                    </apex:actionFunction>
+                    
+                </apex:form>
+            </div>
+            <eec-wizard btn-progress-color="#fff" class="col-lg-3" flex="30" passed-btn-bg-color="#4CAF50" btn-bg-color="#FAFAFA" active-btn-bg-color="#0288D1"
+                hide="true" show-gt-md="true">
+                <c:EEC_Navigation current="Involvement / Professional Experience" recordTypeDeveloperName="{!LicenseRecordTypeName}" highest="{!highestStepReached}"
+                    providerRecordType="{!licenseTransation.providerRecordTypeDeveloperName__c}">
+                </c:EEC_Navigation>
+            </eec-wizard>
+        </div>
+        <c:eec_site_footer id="siteFooter" />
+        <script>
+            function addMargin() {
+                j$(".required-input").addClass("required-input-with-error");
+            }
+            function validateReasonLeaving() {
+                var reasonLeavingRow = j$(".val-row");
+                var flag = 0;
+                reasonLeavingRow.each(function (i) {
+                    var endDate = j$(this).find(".end-date");
+                    var reasonLeaving = j$(this).find(".reason-leaving");
+                    if (endDate.val().length != 0 && reasonLeaving.val().length == 0) {
+                        j$(this).find(".reasonErrorMessage").addClass("visible");
+                        flag = 1;
+                    }
+                    if (reasonLeaving.val().length > 0 && j$(this).find(".reasonErrorMessage").hasClass(".visible")) {
+                        j$(this).find(".reasonErrorMessage").removeClass("visible");
+                    }
+                });
+                if (flag == 1) { return false; }
+                return true;
+            }
+            var form = j$(".involvment-form").parsley({
+                errorsWrapper: '<div class="parsley-errors-list"></div>',
+                errorTemplate: '<p class="errorMsg"></p>'
+            });
+            app.controller('TransactionController', ['$scope', '$location', 'Util', function ($scope, $location, Util) {
+                // Instance of controller.
+                var tranCtrl = this;
+                // Controller level variables.
+                tranCtrl.funcId = null;
+                tranCtrl.wizardElements = Util.generateWizardElements("{!licenseRecordTypeName}", 'Involvement & Professional Experience');
+                tranCtrl.selected = [];
+                // Function to check for messages available due to errors.
+                tranCtrl.checkForMessages = function () {
+                    // TODO: Switch this to use Angular and now jQuery.            
+                    var ele = jQuery('[id*="showmsg"]');
+                    if (ele.children().length > 0) {
+                        return true;
+                    }
+                    return false;
+                };
+            }]);
+            function doNavigate(previousPage, nextPage) {
+                if (nextPage != '') {
+                    if (!form.validate()) {
+                        return false;
+                    }
+                    else {
+                        SaveNext();
+                    }
+                }
+                else if (previousPage != '') {
+                    /*if(!form.validate()){
+                     return false;
+                    }
+                    else{*/
+                    SavePrevious();
+                    //}
+                }
+            }
+        </script>
+    </body>
+</apex:page>

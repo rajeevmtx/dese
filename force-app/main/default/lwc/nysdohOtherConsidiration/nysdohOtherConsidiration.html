@@ -1,0 +1,51 @@
+<template>
+    <!-- Spinner -->
+    <template if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+    </template>
+
+    <div class="app-container slds-grid slds-gutters slds-wrap">
+        <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <c-nysdoh-help-text help-text={showOther}></c-nysdoh-help-text>
+        </div>
+
+        <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <div class="container">
+                <div class="d-flex">
+                    <h4>Other Considiration</h4>
+                    <span> (Steps 4 of 7)</span>
+                </div>
+                <br/>
+                <div class="slds-form">
+                    <div class="slds-form__row">
+                        <div class="slds-form__item check-group">
+                            <lightning-combobox name="experience"
+                            label="Distance willing to travel"
+                            placeholder="Distance willing to travel" options={distance} value={volunteer.Distance_Willing_To_Travel__c} style="width: 100%;" >
+                        </lightning-combobox>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-gutters slds-wrap slds-m-bottom_medium">
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+                            <lightning-combobox name="travel" label="Travel and Lodging reimbursement needed?"
+                                    options={travel} value={volunteer.Travel_Lodging_Reimbursement_Needed__c} ></lightning-combobox>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-gutters slds-wrap slds-m-bottom_medium">
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+                            <lightning-combobox name="child" label="Child Care Assistance Needed?"
+                            options={child} value={volunteer.Child_Care_Assistance_Needed__c}></lightning-combobox>
+                        </div>
+                    </div>
+
+                    <div class="controls">
+                        <lightning-button label="Back" class="slds-m-right_medium"
+                            onclick={goBack}></lightning-button>
+                        <lightning-button variant="brand" type="submit" label="Next"
+                            onclick={goNext}></lightning-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,38 @@
+<apex:page standardController="Application__c" extensions="GeneratePermitController" sidebar="false" showHeader="false"  applyBodyTag="false" >
+    
+    <head>
+        <style type="text/css">
+        </style>
+    </head> 
+    
+    <body>
+        <div class="container">
+            
+            <div>
+                <div class="governor-name">
+                    <strong><em>{!$Label.License_Certification_Governor_Name_Label}</em></strong>
+                </div>
+            </div>
+            <Table>
+                <thead>
+                    <tr>
+                        <th>License Type</th>
+                        <th>Site Name</th>
+                        <th>City</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>License Type</td>
+                        <td>Site Name</td>
+                        <th>City</th>
+                    </tr>
+                </tbody>
+            </Table>
+            
+            <apex:outputLabel value="License Type"> </apex:outputLabel><br/>
+            <apex:outputLabel value="Site Name"> </apex:outputLabel><br/>
+            <apex:outputLabel value="City"> </apex:outputLabel><br/>
+        </div>
+    </body>
+</apex:page>

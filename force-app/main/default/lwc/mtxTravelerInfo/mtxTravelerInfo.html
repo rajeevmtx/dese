@@ -1,0 +1,199 @@
+<template>
+    <!-- Spinner -->
+    <template if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+    </template>
+
+    <div class="app-container slds-grid slds-gutters slds-wrap">
+        <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <c-psr-help-text help-text={travelerHelpText}></c-psr-help-text>
+        </div>
+
+        <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <div class="container">
+                <div class="d-flex">
+                    <h4>Traveler Information</h4>
+                    <span> (Steps 2 of 7)</span>
+                </div>
+
+                <br />
+
+                <lightning-record-edit-form record-id={subjectId} object-api-name="Subject__c" onload={handleFormLoad}
+                    onsubmit={handleFormSubmit} onsuccess={handleFormSuccess}>
+                    <lightning-messages></lightning-messages>
+                    <div class="slds-grid slds-gutters slds-wrap">
+                        <!-- 1st row -->
+                        <div class="slds-col slds-size_1-of-3">
+                            <lightning-input-field field-name="First_Name__c" required onchange={checkValidity} class="inputFirstName" data-id="firstName"></lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-3">
+                            <lightning-input-field field-name="Middle_Name__c"></lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-3">
+                            <lightning-input-field field-name="Last_Name__c" required  onchange={checkValidity} data-id="lastName"></lightning-input-field>
+                        </div>
+
+                        <!-- 2nd row -->
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Date_of_Birth__c" required onchange={handleDOBChange}>
+                            </lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Gender__c" required>
+                            </lightning-input-field>
+                            <!-- <lightning-input-field type="date" label="Age" value={age} readonly></lightning-input-field> -->
+                        </div>
+
+                        <!-- 3rd row -->
+                        <div class="slds-col slds-size_1-of-2">
+                            <!-- <fieldset class="slds-form-element">
+                                <legend class="slds-form-element__legend slds-form-element__label">Gender
+                                </legend>
+                                <div class="slds-form-element__control d-flex">
+                                    <span class="slds-radio">
+                                        <input type="radio" id="radio-41" value="radio-41" name="default" />
+                                        <label class="slds-radio__label" for="radio-41">
+                                            <span class="slds-radio_faux"></span>
+                                            <span class="slds-form-element__label">Male</span>
+                                        </label>
+                                    </span>
+                                    <span class="slds-radio">
+                                        <input type="radio" id="radio-42" value="radio-42" name="default" />
+                                        <label class="slds-radio__label" for="radio-42">
+                                            <span class="slds-radio_faux"></span>
+                                            <span class="slds-form-element__label">Female</span>
+                                        </label>
+                                    </span>
+                                    <span class="slds-radio">
+                                        <input type="radio" id="radio-43" value="radio-42" name="default" />
+                                        <label class="slds-radio__label" for="radio-43">
+                                            <span class="slds-radio_faux"></span>
+                                            <span class="slds-form-element__label">Other</span>
+                                        </label>
+                                    </span>
+                                </div>
+                            </fieldset> -->
+
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                        </div>
+
+                        <!-- 4th row -->
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field class={errorClass} field-name="Primary_Cell_Number__c"
+                                onchange={checkCellNumber} required data-id="cellNumber">
+                            </lightning-input-field>
+
+                            <template if:true={invalidTelephone}>
+                                <div role="alert" class="slds-form-element__help text-error-field">
+                                    Phone number is invalid.
+                                </div>
+                            </template>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Landline_Number__c">
+                            </lightning-input-field>
+                        </div>
+
+                        <!-- 5th row -->
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Email_Address__c">
+                            </lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Language_Spoken_at_home__c">
+                            </lightning-input-field>
+                        </div>
+
+                        <!-- 6th row -->
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Employer_School_Name__c">
+                            </lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <!-- <lightning-combobox label="Race" placeholder="Race"
+                                options={raceOptions}></lightning-combobox> -->
+
+                        </div>
+
+                        <!-- 7th row -->
+                        <div class="slds-col slds-size_1-of-2">
+                            <!-- <lightning-combobox label="Ethnicity" placeholder="Ethnicity"
+                                options={ethnicityOptions}></lightning-combobox> -->
+                            <lightning-input-field field-name="Ethnicity__c">
+                            </lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Race__c">
+                            </lightning-input-field>
+                        </div>
+
+                        <!-- 8th row -->
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Passport_Country_Code__c">
+                            </lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Passport_Number__c">
+                            </lightning-input-field>
+                        </div>
+
+                        <!-- 9th row -->
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Conveyance_Name__c">
+                            </lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Flight__c">
+                            </lightning-input-field>
+                        </div>
+
+                        <!-- 10th row -->
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Seat_Number__c">
+                            </lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <!-- <lightning-input-field type="text" label="CDC ID" required>
+                            </lightning-input-field> -->
+                            <lightning-input-field type="date" field-name="Departure_Date__c">
+                            </lightning-input-field>
+                        </div>
+
+                        <!-- 11th row -->
+                        <div class="slds-col slds-size_1-of-2">
+
+                        </div>
+
+
+                        <div class="slds-col slds-size_1-of-2"></div>
+
+                    </div>
+
+                    <div class="slds-float_right slds-m-top_small slds-m-bottom_small">
+                        <lightning-button label="Back" class="slds-m-right_medium" onclick={goBack}>
+                        </lightning-button>
+                        <lightning-button variant="brand" type="submit" label="Next">
+                        </lightning-button>
+                    </div>
+                </lightning-record-edit-form>
+            </div>
+        </div>
+    </div>
+    <c-psr_modal classes='slds-modal newModal slds-fade-in-open zindex9004'
+        backdrop-class="slds-backdrop slds-backdrop_open zindex9003" if:true={showDuplicateSubjectModal}>
+        <span slot="header">Confirmation</span>
+        <div slot="body">
+            <span>Duplicate record already exist in the system, do you want to update existing record or create new
+                one?</span>
+        </div>
+        <div slot="footer">
+            <lightning-button variant="brand" label="Update Existing" onclick={handleUpdateExisting}
+                class="slds-m-left_x-small"></lightning-button>
+
+            <lightning-button class="slds-p-right_xx-small slds-m-left_x-small" label="Create New"
+                onclick={handleCreateNew}>
+            </lightning-button>
+        </div>
+    </c-psr_modal>
+</template>

@@ -1,0 +1,506 @@
+<apex:page showHeader="false" sidebar="false" controller="CORE_CONAPP_Application_Controller" action="{!getNYSUNProjectContentList}" standardStylesheets="false" title="Paperwork Record">
+     <style>
+        .errorClass {
+            border: 1px solid red;
+            background-color: lightgoldenrodyellow;
+        }
+
+        .fileType .icon-help {
+            font-size:16px;
+            position: relative;
+            top: 2px;
+        }
+     </style>
+     <apex:composition template="CORE_CONAPP_Template_Page">
+        <apex:define name="body">
+            <div class="page">
+                <c:CORE_StepNav_Component pgName="{!$CurrentPage.Name}"/>
+                <div class="application paperwork">
+                    <apex:form id="frm" enctype="multipart/form-data">
+                        <div class="alert-container">
+                            <apex:outputPanel id="errorMsg">
+                                <apex:pageMessages />
+
+                                <script>
+                                	$('.loading').parent().hide();
+                                </script>
+                            </apex:outputPanel>
+
+                            <apex:outputPanel id="errorPanel">
+                                <apex:outputPanel rendered="{!hasError}" >
+                                    <div class="row" style="margin: 0">
+                                        <div class="alert alert-danger" id="errorMessage" style="margin: 0">
+                                            <strong>ERROR..!! There are required documents not uploaded.</strong>
+                                        </div>
+                                    </div>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+
+                            <div class="row hidden" id="errorMsg2" >
+                                <div class="alert alert-danger" id="errDiv">
+                                    <strong>ERROR..!! The uploaded document does not match the supported file type for that document.</strong>
+                                </div>
+                            </div>
+
+                             <div class="row hidden" id="errorMsg3" >
+                                <div class="alert alert-danger" id="errDiv">
+                                    <strong>ERROR..!! Please select a file to upload.</strong>
+                                </div>
+                            </div>
+
+                            <div class="row hidden" id="requiredFieldMissingError" >
+                                <div class="alert alert-danger" id="errDiv1">
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="content content-body">
+                            <div class="box-group">
+                                <div class="heading">
+                                    <div class="title">Required Documents</div>
+                                </div>
+                                <table class="table table-responsive table-condensed table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Document Name</th>
+                                            <th>Recent Uploaded Document</th>
+                                            <th>Upload History</th>
+                                            <th>Status</th>
+                                            <th>Add / Update Document</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <apex:variable value="{!1}" var="rowNum" />
+                                        <script>
+                                            var rowNumber = 0;
+                                        </script>
+                                        <apex:repeat value="{!nysunApplicationContents}" var="appContent">
+                                            <apex:outputPanel layout="none" rendered="{!OR(appContent.Mandatory_by_Default__c, appContentIdToConditionallyRequiredMap[appContent.Id])}">
+                                                <tr>
+                                                    <td class="doc">
+                                                    	<apex:outputPanel layout="none" rendered="{!appContent.Document_Title__c == 'Certificate of Insurance'}">
+                                                    		{!appContent.Document_Title__c}&nbsp;(Click <a href="{!URLFOR($Resource.NYSUN_CONAPP_Certificate_of_Insurance)}" target="_blank">here</a> for required language)
+                                                        </apex:outputPanel>
+
+                                                        <apex:outputPanel layout="none" rendered="{!appContent.Document_Title__c != 'Certificate of Insurance'}">
+                                                    		{!appContent.Document_Title__c}
+                                                        </apex:outputPanel>
+                                                    </td>
+                                                    <td>
+                                                        <apex:outputLink rendered="{!nysunAppContentNameToAttachmentRecMap[appContent.Id].Name != null}" value="/servlet/servlet.FileDownload?file={!nysunAppContentNameToAttachmentRecMap[appContent.Id].id}" style="height: 75px; width: 215px; word-break: break-all;" target="_blank">
+                                                            {!nysunAppContentNameToAttachmentRecMap[appContent.Id].Name}
+                                                        </apex:outputLink>
+                                                    </td>
+                                                    <td> 
+                                                        <apex:outputPanel rendered="{!nysunAppContentNameToAttachmentRecMap[appContent.Id].Name != null}" >
+                                                            <a onclick="getHistory('{!appContent.Document_Title__c}', '{!appContent.Id}');" style="cursor: pointer;"> Attachment History </a>
+                                                        </apex:outputPanel>
+                                                    </td>
+                                                    <td>{!appContentNameToDocStatusMap[appContent.Id]}</td>
+                                                    <td>
+                                                        <div class="flex-content justify-start">
+                                                            <apex:actionRegion >
+                                                              <div style="display:none;"><label for="{!$Component.fileUpd}">File</label></div> <!-- Accessibility Issues -->
+                                                                <apex:inputfile id="fileUpd" value="{!nysunAppContentNameToNewAttachMap[appContent.Id].body}" filename="{!nysunAppContentNameToNewAttachMap[appContent.Id].Name}" styleClass="doc{!rowNum}"/>
+                                                            </apex:actionRegion>
+                                                            <div class="fileType{!rowNum} fileType" data-trigger="hover" data-toggle="popover" data-placement="left" title="Supported File types" data-content="{!supportedFileType}">
+                                                                <span class="icon-help"></span>
+                                                            </div>
+                                                        </div><!-- /.flex-row -->
+
+                                                    </td>
+                                                </tr>
+                                                <script>
+                                                    rowNumber++;
+                                                </script>
+                                                <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                                            </apex:outputPanel>
+                                        </apex:repeat>
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                            <apex:outputPanel id="optionalDocPanel" layout="block" styleClass="box-group">
+                                <div class="heading">
+                                    <div class="title">Other Documents</div>
+                                </div>
+                                <table class="table table-responsive table-condensed table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Document Name</th>
+                                            <th>Add / Update Document</th>
+                                            <th>Recent Uploaded Document</th>
+                                            <th>Upload History</th>
+                                            <th>Status</th>
+                                            <th><div style="display:none;">blank</div></th> <!-- Accessibility Issues -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <apex:variable value="{!0}" var="docNum" />
+                                        <apex:repeat value="{!otherDocumentList}" var="otherDoc">
+                                            <tr class="docRow docRow{!docNum}">
+                                                <td class="doc">
+                                                    <div style="display:none;"><label for="{!$Component.docName}">Name</label></div> <!-- Accessibility Issues -->
+                                                    <apex:inputText id="docName" html-placeholder="Document Name" value="{!otherDoc.documentName}" styleClass="form-control docName{!docNum}" />
+                                                </td>
+                                                <td>
+                                                    <div style="display:none;"><label for="{!$Component.fileUpd1}">File</label></div> <!-- Accessibility Issues -->
+                                                    <apex:inputfile id="fileUpd1" value="{!otherDoc.attach.body}" filename="{!otherDoc.attach.Name}" styleClass="docBody{!docNum}"/>
+                                                </td>
+                                                <td>
+                                                    <apex:outputLink rendered="{!otherDoc.recentAttach.Name != null}"
+                                                                     value="/servlet/servlet.FileDownload?file={!otherDoc.recentAttach.id}"
+                                                                     style="height: 75px; width: 215px; word-break: break-all;"
+                                                                     target="_blank">
+                                                        {!otherDoc.recentAttach.Name}
+                                                    </apex:outputLink>
+                                                </td>
+                                                <td>
+                                                    <apex:outputPanel rendered="{!otherDoc.recentAttach.Name != null}" >
+                                                         <a onclick="getHistory('{!otherDoc.documentName}', '{!otherDoc.documentId}');" style="cursor: pointer;"> Attachment History </a>
+                                                    </apex:outputPanel>
+                                                </td>
+                                                <td class="docStatus{!docNum}">{!otherDoc.status}</td>
+                                                <td><a onclick="removeDocument({!docNum});" href="javascript:void(0)" class="btn-bs btn-blank">X</a></td>
+                                            </tr>
+                                            <apex:variable var="docNum" value="{!docNum + 1}"/>
+                                        </apex:repeat>
+                                        <tr class="add-new">
+                                            <td colspan="6">
+                                                <a href="javascript:void(1)" onclick="addOtherDoc();" class="add-button">Add another document</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <input type="hidden" id="otherDocSize" value="{!otherDocumentList.size}" />
+
+                                <script>
+                                   try{
+                                	hideExtraDocRow(false);
+                                   }catch(err){}
+                                </script>
+                            </apex:outputPanel>
+                        </div>
+
+
+
+                        <apex:actionRegion >
+                            <apex:actionFunction name="next" action="{!validateAndNext}" >
+                                <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                            </apex:actionFunction>
+
+                            <apex:actionFunction name="previous" action="{!previous}" rerender="frm">
+                                <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                            </apex:actionFunction>
+
+                            <apex:actionFunction name="saveApplicationContentList" action="{!saveApplicationContentList}" status="status">
+                            </apex:actionFunction>
+
+                            <apex:actionFunction name="addMoreDocument" action="{!saveOtherDocumentsBeforeAddMore}" status="status">
+                            </apex:actionFunction>
+
+                            <apex:actionFunction name="removeDocumentFromList" action="{!removeDocumentFromList}" rerender="scriptPanel" status="status">
+                                <apex:param value="" name="rowNumber" assignTo="{!rowNumber}" />
+                            </apex:actionFunction>
+
+                            <apex:actionFunction name="getHistory" action="{!getAttachmentHistory}" onComplete="openHistoryPopup();" rerender="modal" status="status">
+                                <apex:param value="" name="applicationContentName" assignTo="{!applicationContentName}" />
+                                <apex:param value="" name="applicationContentId" assignTo="{!applicationContentId}" />
+                            </apex:actionFunction>
+                        </apex:actionRegion>
+
+
+                        <div class="modal fade" id="historyPopup" role="dialog">
+                            <apex:outputPanel id="modal">
+                                <div class="modal-dialog modal-md">
+                                    <div class="modal-content" style="width: 150%; left: -25%;">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <apex:outputPanel >
+                                                <h4 class="modal-title">Attachment History</h4>
+                                            </apex:outputPanel>
+                                        </div>
+
+                                        <div class="modal-body paperwork">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Document Name</th>
+                                                        <th>Uploaded Attachment</th>
+                                                        <th>Version Number</th>
+                                                        <th>Created Date</th>
+                                                        <th>Created By</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <apex:repeat value="{!attachmentHistory}" var="attach" >
+                                                        <tr>
+                                                            <td> {!applicationContentName} </td>
+                                                            <td>
+                                                                <a href="/servlet/servlet.FileDownload?file={!attach.Attachments[0].Id}" target="_blank">{!attach.Attachments[0].Name}</a>
+                                                            </td>
+                                                            <td style="text-align:center;"> {!attach.Version__c} </td>
+                                                            <td>
+                                                                <apex:outputText value="{0, date, MM/dd/yyyy hh:mm:ss}">
+                                                                     <apex:param value="{!attach.CreatedDate}" />
+                                                                </apex:outputText>
+                                                            </td>
+                                                            <td> {!attach.CreatedBy.Name} </td>
+                                                        </tr>
+                                                    </apex:repeat>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <div class="row">
+                                                <div class="col-lg-10 col-md-10">
+
+                                                </div>
+                                                <div class="col-lg-2 col-md-2" style="padding-left: 0" id="cancelBtnDiv">
+                                                    <button id="cancelBtn" type="button" class="btn-bs btn-default form-control form-group" data-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+                        </div>
+                    </apex:form>
+                </div>
+            </div>
+            <footer class="footer-nav">
+                <div class="content flex controls sm">
+                    <a href="javascript:void(0)" onclick="previous('CORE_CONAPP_Documents_Page')" class="btn-bs btn-lg btn-blank">Previous</a>
+                    <a href="javascript:void(0)" onclick="checkForDocumentType(false, false)" class="btn-bs btn-lg btn-default save">Save</a>
+                    <a href="javascript:void(0)" onclick="checkForDocumentType(true, false)" class="btn-bs btn-lg btn-primary">Continue</a>
+                </div>
+            </footer>
+        </apex:define>
+    </apex:composition>
+
+    <apex:outputPanel id="scriptPanel">
+        <script>
+            function checkDocumentName(isNext, isSaveOtherDoc) {
+                $('#requiredFieldMissingError').addClass('hidden');
+                $('#saveInfoDiv').addClass('hidden');
+                var hasError = false;
+                var otherDocsLength = parseInt($('#otherDocSize').val());
+
+				var rowIndexNumber = 0;
+
+                for(var i = 0; i < otherDocsLength; i++) {
+                    $('.docName' + i).removeClass('errorClass');
+                    $('.docBody' + i).removeClass('errorClass');
+
+                    if($('.docRow' + i).css('display') != 'none'){
+                    	rowIndexNumber += 1;
+                    }
+
+                    if(isSaveOtherDoc){
+                    	if($('.docBody' + i).val() == '' && $('.docStatus' + i).text() == '') {
+	                        hasError = true;
+	                        $('#requiredFieldMissingError').removeClass('hidden');
+	                        $('#errDiv1').html('<Strong>Error..!!! Please upload document for row ' + (rowIndexNumber) + ' before adding another document');
+	                        $('.docName' + i).addClass('errorClass');
+	                        //$('.docName' + i).focus();
+	                        break;
+	                    }
+                    }
+
+                    if(($('.docName' + i).val() == '' || $('.docName' + i).val() == null || $('.docName' + i).val() == undefined)
+                            && ($('.docBody' + i).val() != '' || $('.docStatus' + i).text() != '')
+                            && (!$('.docRow' + i).hasClass('permanentRemove'))) {
+                        hasError = true;
+                        $('#requiredFieldMissingError').removeClass('hidden');
+                        $('#errDiv1').html('<Strong>Error..!!! Please fill Document Name for row ' + (rowIndexNumber) + ' before uploading');
+                        $('.docName' + i).addClass('errorClass');
+                        //$('.docName' + i).focus();
+                        break;
+                    }
+                }
+                if(!hasError) {
+                    if(isSaveOtherDoc){
+                    	addMoreDocument();
+                    }else{
+                    	saveDocument(isNext);
+                    }
+                }else{
+                	$('.loading').parent().hide();
+                }
+            }
+        </script>
+    </apex:outputPanel>
+
+    <script>
+    	var totalAddedRows = 0;
+
+        function openHistoryPopup() {
+            $('#historyPopup').modal({
+                backdrop : 'static',
+                keyboard : false
+            });
+        }
+
+        $(document).ready(function() {
+
+        jQuery("html").attr("lang", "en");
+
+            $('#errorMsg2').hide();
+
+            hideExtraDocRow(true);
+        });
+
+        //var rowNumber = 0;
+
+		function addOtherDoc(){
+        	var otherDocsLength = parseInt($('#otherDocSize').val());
+
+        	var addRows = 0;
+
+        	var index = 0;
+
+        	$('.docRow').each(function(){
+
+        		if($(this).css('display') == 'none' && $('.docStatus' + index).text() == ''){
+        			if(addRows == 0){
+        				$(this).show();
+        				addRows = 1;
+        			}
+        		}
+
+        		index = index + 1;
+        	});
+
+        	if(addRows == 1){
+        		totalAddedRows += 1;
+        	}else{
+        		checkForDocumentType(false, true);
+        	}
+        }
+
+		function hideExtraDocRow(isOnLoad){
+        	var otherDocsLength = parseInt('{!otherDocumentList.size}');
+
+            var counter = 0;
+
+            for(var i = 0; i < otherDocsLength; i++) {
+                if(isOnLoad){
+                	if($('.docBody' + i).val() == '' && $('.docStatus' + i).text() == '') {
+	               		if(counter > 0){
+	               			$('.docRow' + i).hide();
+	               		}
+
+	               		counter += 1;
+	               	}
+                }else{
+                	if(i >= totalAddedRows){
+                		$('.docRow' + i).hide();
+                	}
+                }
+            }
+
+            if(isOnLoad){
+            	$('.docRow').each(function(){
+	        		if($(this).css('display') != 'none'){
+	        			totalAddedRows += 1;
+	        		}
+	        	});
+            }
+        }
+
+        function checkForDocumentType(isNext, isSaveOtherDoc) {
+        	$('.loading').parent().show();
+            var isValid = true;
+            $('#errorMsg2').addClass('hidden');
+            $('#errorMessage').hide();
+            $('#errorMsg3').addClass('hidden');
+
+            // rahuls91221 [I-00745]: on click on save button, removing validation on documents.
+            /*
+            if(isNext === false){
+            	hasFile = false;
+
+	            $('input[type="file"]').each(function(){
+
+	            	if($(this).val() != '' &&
+	            	   $(this).val() != null &&
+	            	   typeof($(this).val()) != 'undefined'){
+	            		hasFile = true;
+	            	}
+	            });
+
+	            if(hasFile === false){
+	            	$('#errorMsg3').removeClass('hidden');
+	                scrollToTop();
+	                return;
+	            }
+            }
+            */
+
+            for(var i = 1; i <= rowNumber; i++) {
+
+                var fup = $('.doc' + i)[0];
+                var requiredTypeFromTable = '{!supportedFileTypes}';
+
+                if(typeof(requiredTypeFromTable) != 'undefined' && requiredTypeFromTable != null){
+	                var fileName = fup.value;
+	                if (fileName == '' || fileName == undefined) {
+	                    continue;
+	                }
+	                ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+	                if(requiredTypeFromTable.toLowerCase().indexOf(ext.toLowerCase()) > -1) {
+	                    $('.doc' + i).removeClass('errorClass');
+	                } else {
+	                    $('.doc' + i).addClass('errorClass');
+	                    isValid = false;
+	                }
+                }
+            }
+            if(!isValid) {
+                $('#errorMsg2').removeClass('hidden');
+                $('#errorMsg2').show();
+                scrollToTop();
+                $('.loading').parent().hide();
+                return;
+            }
+            checkDocumentName(isNext, isSaveOtherDoc);
+        }
+
+        function scrollToTop() {
+        	$("html, body").animate({
+                scrollTop : 0
+            }, "slow");
+       	}
+
+        function removeDocument(docNumber) {
+            if(confirm('Are you sure?')) {
+            	if($('.docStatus' + docNumber).text() == ''){
+            		$('.docName' + docNumber).val('');
+            	}else{
+            		$('.docRow' + docNumber).addClass('permanentRemove');
+            	} 
+
+            	$('.docBody' + docNumber).val('');
+            	$('.docName' + docNumber).removeClass('errorClass');
+                $('.docBody' + docNumber).removeClass('errorClass');
+            	$('.docRow' + docNumber).hide();
+
+                removeDocumentFromList(docNumber);
+
+                totalAddedRows = (totalAddedRows - 1);
+            }
+        }
+
+        function saveDocument(isNextClicked) {
+            $('#errorPanel').hide();
+            if(isNextClicked) {
+                next('NYSUN_CONAPP_Documents_Page');
+            } else {
+                saveApplicationContentList();
+            }
+        }
+    </script>
+</apex:page>

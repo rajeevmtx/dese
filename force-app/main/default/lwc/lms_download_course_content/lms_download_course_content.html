@@ -1,0 +1,71 @@
+<template>
+    <template if:true={showtable}>
+    <div class="slds-grid module-grid-base module-base-height"> 
+        <div class="slds-col slds-size_8-of-12 module-content-padding heading-color">
+            Name
+        </div>     
+        <div class="slds-col slds-size_2-of-12 module-content-padding heading-color">
+            Type
+        </div>
+        <div class="slds-col slds-size_2-of-12">
+        
+        </div>   
+    </div>
+    
+    <template for:each={recordsToDisplay} for:item="record">
+        <template for:each={record.attachmentWrapperList} for:item="attach">
+            <hr key={attach.id} class="module-grid-line">
+            <div class="slds-grid module-grid-base-content module-base-height" key={attach.id}>
+                <div class="slds-col slds-size_8-of-12 icon-conatiner module-content-padding ">
+                    {attach.fileName}
+                </div>
+                <div class="slds-col slds-size_2-of-12 module-content-padding content-color">
+                    {attach.docType}
+                </div>  
+                <div class="slds-col slds-size_2-of-12 module-content-padding content-color">
+                        <lightning-button  
+                        label = "Download"                                  
+                        icon-name="utility:download"
+                        icon-position="right"
+                        value={attach.documentURL}
+                        variant="brand" 
+                        onclick={downloadfile}>                                    
+                </lightning-button>
+                </div>  
+            </div>
+        </template>
+    </template>
+</template>
+<template if:false={showtable}>
+    <a ><img class="nodownloadimg" src={nodownloads}></a>
+</template>
+    <!-- <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+        <thead>
+            <tr class="slds-line-height_reset">                        
+                <th style="width:50%">Name</th>
+                <th style="width:50%">Type</th>                        
+                <th></th>
+            </tr>
+        </thead> 
+        <tbody>
+            <template for:each={recordsToDisplay} for:item="record">
+                <template for:each={record.attachmentWrapperList} for:item="attach">
+                    <tr key={attach.id}>                
+                    <th>{attach.fileName}</th>
+                    <th>{attach.docType}</th>                
+                    
+                   <th> <lightning-button  
+                                    label = "Download"                                  
+                                    icon-name="utility:download"
+                                    icon-position="right"
+                                    value={attach.documentURL}
+                                    variant="brand" 
+                                    onclick={downloadfile}>                                    
+                                    
+                            </lightning-button></th>
+                    </tr>
+                </template>
+                </template>
+        </tbody>
+    </table> -->
+</template>

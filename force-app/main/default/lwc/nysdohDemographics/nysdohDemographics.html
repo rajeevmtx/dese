@@ -1,0 +1,144 @@
+<!--
+ - Created by hardikranjan on 22/03/20.
+ -->
+<!-- Nysdoh Demographics -->
+<template>
+    <c-psr-help-text help-text={instructionsHelpText}></c-psr-help-text>
+
+    <h2 class="section-title">Contact Information</h2>
+
+    <div class="slds-form">
+
+        <div class="slds-form__row">
+            <div class="slds-form__item">
+                <lightning-input type="text" label="First Name" pattern=^[a-zA-Z0-9]*$ required onblur={handleInput}
+                    name="firstName" style="width: 100%;" maxlength=40></lightning-input>
+            </div>
+            <div class="slds-form__item">
+                <lightning-input type="text" label="Middle Name" pattern=^[a-zA-Z0-9]*$ onblur={handleInput}
+                    name="middleName" style="width: 100%;" maxlength=40></lightning-input>
+            </div>
+        </div>
+
+
+        <div class="slds-form__row">
+            <div class="slds-form__item">
+                <lightning-input type="text" label="Last Name" pattern=^[a-zA-Z0-9]*$ required onblur={handleInput}
+                    name="lastName" style="width: 100%;" maxlength=80></lightning-input>
+            </div>
+            <div class="slds-form__item" style="display: block;">
+
+                <lightning-combobox name="gender" label="Gender" placeholder="Select Gender" options={genderOptions}
+                    onchange={handleInput} style="width: 100%;" required></lightning-combobox>
+            </div>
+        </div>
+
+        <div class="slds-form__row">
+            <div class="slds-form__item">
+                <template if:true={phoneTypeFieldInfo.data}>
+                    <lightning-combobox name="phoneType" label="Phone Type" placeholder="Select a phone type"
+                        options={phoneTypeFieldInfo.data.values} onchange={handleInput} style="width: 100%;" required>
+                    </lightning-combobox>
+                </template>
+            </div>
+            <div class="slds-form__item">
+                <lightning-input type="tel" label="Phone" pattern="^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$"
+                    message-when-pattern-mismatch={telephoneError} required onkeyup={handleInput} onblur={handleInput}
+                    maxlength="14" minlength="14" message-when-too-short="Phone number is too short"
+                    name="telephoneNumber" style="width: 100%;"></lightning-input>
+            </div>
+        </div>
+
+        <div class="slds-form__row">
+            <div class="slds-form__item">
+                <lightning-input type="date" name="dob" label="Birth Date" id="dateOfBirth" required
+                    style="width: 100%;" onchange={handleInput}></lightning-input>
+                <template if:true={dobError}>
+                    <p style="color: rgb(194, 57, 52);">Date Should not be greater than today.</p>
+                </template>
+            </div>
+
+            <div class="slds-form__item">
+                <template if:true={OccupationFieldInfo.data}>
+                    <lightning-combobox name="occupation"
+                        label="Please select any of the following apply to you:" placeholder="Select Occupation"
+                        options={OccupationFieldInfo.data.values} onchange={handleInput} style="width: 100%;" required>
+                    </lightning-combobox>
+                </template>
+            </div>
+        </div>
+
+        <div class="slds-form__row">
+            <div class="slds-form__item">
+                <lightning-radio-group name="newyorkEmp" label="Are you a New York State employee?"
+                    options={yesNoOptions} type="radio" onchange={handleInput} style="width: 100%;" required>
+                </lightning-radio-group>
+            </div>
+            <div class="slds-form__item">
+                <lightning-input type="text" label="Facility of Residence (If applicable)"
+                    name="facilityofResidence" style="width: 100%;" onblur={handleInput}></lightning-input>
+            </div>
+        </div>
+
+        <div class="slds-form__row">
+            <div class="slds-form__item">
+                <lightning-input type="email" label="Email"
+                    pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
+                    message-when-type-mismatch={emailError} required onblur={handleInput} name="email"
+                    style="width: 100%;"></lightning-input>
+            </div>
+
+            <div class="slds-form__item">
+                <lightning-input label="Comments" name="comments" onchange={handleInput} style="width: 100%;"
+                    placeholder="Comments">
+                </lightning-input>
+            </div>
+        </div>
+
+        <!--  Address Information -->
+        <div class="slds-m-top_large slds-p-top_large">
+            <h2 class="section-title">Address Information</h2>
+        </div>
+
+        <div class="slds-form__row">
+            <div class="slds-form__item">
+                <lightning-input type="text" label="Street" required onblur={handleInput} name="street"
+                    style="width: 100%;" maxlength=255></lightning-input>
+            </div>
+            <div class="slds-form__item">
+                <lightning-input type="text" label="Apartment/Suite#" onblur={handleInput} name="apartmentSuite"
+                    style="width: 100%;" maxlength=255></lightning-input>
+            </div>
+        </div>
+
+        <div class="slds-form__row">
+            <div class="slds-form__item">
+                <lightning-input type="text" label="City" required onblur={handleInput} name="city" style="width: 100%;"
+                    maxlength=40></lightning-input>
+            </div>
+            <div class="slds-form__item">
+                <template if:true={stateOfInformationFieldInfo.data}>
+                    <lightning-combobox name="state" label="State" placeholder="Select State"
+                        options={stateOfInformationFieldInfo.data.values} onchange={handleInput} style="width: 100%;"
+                        required value={dataObj.state}></lightning-combobox>
+                </template>
+            </div>
+        </div>
+
+        <div class="slds-form__row">
+            <div class="slds-form__item">
+                <lightning-input type="text" label="Zip" pattern="^[0-9]*$" message-when-pattern-mismatch={zipError}
+                    minlength=5 maxlength=5 required onblur={handleInput} name="zip" style="width: 100%;">
+                </lightning-input>
+            </div>
+            <div class="slds-form__item">
+                <template if:true={countyResFieldInfo.data}>
+                    <lightning-combobox name="countyRes" label="County of Residence" placeholder="County of Residence"
+                        options={countyResFieldInfo.data.values} onchange={handleInput} style="width: 100%;" required>
+                    </lightning-combobox>
+                </template>
+            </div>
+        </div>
+
+    </div>
+</template>

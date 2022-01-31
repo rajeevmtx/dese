@@ -1,0 +1,103 @@
+<template>
+    <!-- <lightning-button variant="brand" label="Show Modal" title="Show Modal" onclick={showModal}
+       class="slds-m-left_x-small"></lightning-button> -->
+    <div class="add-btn">
+        <lightning-button label="Add New School" title="Download action" icon-name="utility:add" onclick={showModal}
+            class="slds-m-left_x-small" disabled={readOnly}></lightning-button>
+    </div>
+
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+        aria-describedby="modal-content-id-1" class={modalClass}>
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close"
+                    onclick={closeModal}>
+                    <lightning-icon icon-name="utility:close" alternative-text="Close Modal" variant="inverse"
+                        size="small">
+                    </lightning-icon>
+                </button>
+                <div class="modal-header">
+                    Add Private Schools Serving Eligible Children Residing in District
+                </div>
+            </header>
+            <div class="slds-modal__content slds-p-around_xx-large" id="modal-content-id-1">
+                <div class="modal-content">
+                    <div class="paragraph slds-m-bottom_xx-small">Name private school located within or outside district
+                        boundaries that have enrolled students who reside in a Title I-served school attendance area
+                    </div>
+                    <div class="sample-box slds-m-bottom_small">
+                        <lightning-input type="text" variant="label-hidden" placeholder="" data-id="PSS_School_Name__c"
+                            onchange={genericHandler} label="Enter some text" value={school.PSS_School_Name__c}
+                            disabled={readOnly}></lightning-input>
+                    </div>
+                    <div class="slds-grid slds-gutters">
+                        <div class="slds-col  slds-size_1-of-2">
+                            <lightning-radio-group name="radioGroup"
+                                label="Will this Private School Participate in Title I?"
+                                data-id="Participate_in_Title_I__c" onchange={genericHandler} options={options}
+                                value={school.Participate_in_Title_I__c} type="radio" disabled={readOnly}>
+                            </lightning-radio-group>
+                        </div>
+                        <div class="slds-col   slds-size_1-of-2">
+                            <lightning-input type="text" label="Grades Served" placeholder="" value={Grades_Served__c}
+                                data-id="Grades_Served__c" disabled={readOnly}>
+                            </lightning-input>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-gutters slds-m-top_medium">
+                        <div class="slds-col   slds-size_1-of-2">
+                            <lightning-input type="number" step="0" 
+                                label="Number of children who reside in Title I-served attendance area" placeholder=""
+                                value={school.No_Children_in_Title_I_area__c} data-id="No_Children_in_Title_I_area__c"
+                                onchange={genericHandler} disabled={readOnly}>
+                            </lightning-input>
+                        </div>
+                        <div class="slds-col  slds-size_1-of-2">
+                            <lightning-input type="number" step="0" 
+                                label="Number of children who are low-income using methodology described below"
+                                placeholder="" value={school.No_Children_with_low_income__c}
+                                data-id="No_Children_with_low_income__c" onchange={genericHandler} disabled={readOnly}>
+                            </lightning-input>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-gutters">
+                        <div class="slds-col  slds-size_1-of-2">
+                            <lightning-input type="number" step="0"
+                                label="Estimated number of children who will participate in the Title I Program"
+                                placeholder="" value={school.Estimate_participant_in_Title_I__c}
+                                data-id="Estimate_participant_in_Title_I__c" onchange={genericHandler}
+                                disabled={readOnly}>
+                            </lightning-input>
+                        </div>
+                        <div class="slds-col   slds-size_1-of-2">
+                            <lightning-input type="number" step="0" formatter="currency"
+                                label="Amount Per Low Income Student based on Title I Allocation" placeholder=""
+                                value={school.PSS_Amount_per_Low_Income_Student__c}
+                                data-id="PSS_Amount_per_Low_Income_Student__c" onchange={genericHandler}
+                                disabled={readOnly}>
+                            </lightning-input>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-gutters slds-m-top_medium">
+                        <div class="slds-col   slds-size_1-of-2">
+                            <lightning-input type="number" step="0" formatter="currency" label="Allocation Per School for Services" placeholder=""
+                                value={school.Allocation_per_School_for_Service__c}
+                                data-id="Allocation_per_School_for_Service__c" onchange={genericHandler}
+                                disabled={readOnly}>
+                            </lightning-input>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <footer class="slds-modal__footer">
+                <lightning-button variant="neutral" label="Cancel" title="Cancel" onclick={closeModal}>
+                </lightning-button>
+                <lightning-button variant="brand" class="slds-m-left_x-small" label="Save" title="Save"
+                    onclick={handleSave}>
+                </lightning-button>
+            </footer>
+        </div>
+    </section>
+    <div class={modalBackdropClass}></div>
+</template>

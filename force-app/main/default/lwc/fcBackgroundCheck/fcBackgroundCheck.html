@@ -1,0 +1,24 @@
+<template>
+    <div class="slds-grid slds-wrap">
+        <div class="slds-col slds-size_1-of-1 page-header">
+            <h1 class="page-title">Background Consent</h1>
+        </div>
+        <div class="slds-col slds-size_1-of-1">
+            <c-fc-intake-form-help-text help-text={helpText}></c-fc-intake-form-help-text>
+        </div>
+        <div class="slds-col slds-size_1-of-1 slds-card__header">
+            <h6 class="text-500">Read the below carefully</h6> 
+        </div>
+        <div class="slds-col slds-size_1-of-1">
+            <div class="slds-grid slds-wrap slds-gutters">
+                <div class="slds-col slds-size_1-of-1">
+                    <p>{Portal_Submission_Submission_Message}</p>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-m-top_medium">
+                    <lightning-input  type="checkbox" label="I agree" onchange={handleChange} ></lightning-input>
+        
+                </div>
+            </div>    
+        </div>
+    </div>
+</template>

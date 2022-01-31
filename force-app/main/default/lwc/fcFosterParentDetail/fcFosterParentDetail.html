@@ -1,0 +1,886 @@
+<template>
+    <div class="slds-vertical-tabs">
+        <!-- <ul class="slds-vertical-tabs__nav" role="tablist" aria-orientation="vertical">
+            <li class="slds-vertical-tabs__nav-item slds-is-active" title="Overview" role="presentation">
+                <a class="slds-vertical-tabs__link" href="javascript:void(0)" onclick={saveMethod} role="tab"
+                    tabindex="0" aria-selected="true" aria-controls="slds-vertical-tabs-0"
+                    id="slds-vertical-tabs-0__nav">
+                    <span class="slds-vertical-tabs__left-icon"></span>
+                    <span class="slds-truncate" title="Overview">Overview</span>
+                    <span class="slds-vertical-tabs__right-icon"></span>
+                </a>
+            </li>
+            <li class="slds-vertical-tabs__nav-item" title="Joseph Wayne" role="presentation">
+                <a class="slds-vertical-tabs__link" href="javascript:void(0)" onclick={saveMethod} role="tab"
+                    tabindex="-1" aria-selected="false" aria-controls="slds-vertical-tabs-1"
+                    id="slds-vertical-tabs-1__nav">
+                    <span class="slds-vertical-tabs__left-icon"></span>
+                    <span class="slds-truncate" title="Joseph Wayne">Joseph Wayne</span>
+                    <span class="slds-vertical-tabs__right-icon"></span>
+                </a>
+            </li>
+            <li class="slds-vertical-tabs__nav-item" title="Brandy Wayne" role="presentation">
+                <a class="slds-vertical-tabs__link" href="javascript:void(0)" onclick={saveMethod} role="tab"
+                    tabindex="-1" aria-selected="false" aria-controls="slds-vertical-tabs-2"
+                    id="slds-vertical-tabs-2__nav">
+                    <span class="slds-vertical-tabs__left-icon"></span>
+                    <span class="slds-truncate" title="Brandy Wayne">Brandy Wayne </span>
+                    <span class="slds-vertical-tabs__right-icon"></span>
+                </a>
+            </li>
+        </ul> -->
+        <lightning-tabset variant="vertical">
+            <lightning-tab label="Overview">
+                <div class="slds-vertical-tabs__content slds-show" id="slds-vertical-tabs-0" role="tabpanel"
+                    aria-labelledby="slds-vertical-tabs-0__nav">
+                    <div class="slds-text-longform">
+                        <div class="container top_margin">
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-m-bottom_medium slds-size_12-of-12 slds-large-size_8-of-12">
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-m-bottom_medium slds-size_12-of-12 section-title">
+                                            Foster parent(s)
+                                        </div>
+                                        <div class="slds-m-bottom_medium slds-size_12-of-12 slds-large-size_4-of-12">
+                                            <img class="profile-picture" src={profileimage1} />
+                                            <div class="profile-user_name slds-m-top_large">Joseph Wayne</div>
+                                            <div class="profile-designation">Full-time employee</div>
+                                            <div class="profile-age">Age: 34</div>
+                                            <div class="profile-phone slds-m-top_large">
+                                                <div class="phone--icon">
+                                                    <lightning-icon icon-name="utility:call" alternative-text="Call!"
+                                                        title="Call" size="x-small"></lightning-icon>
+                                                </div>
+                                                <div class="phone--title">Phone</div>
+                                                <div class="phone--number">508-541-1400x202</div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-m-bottom_medium slds-size_12-of-12 slds-large-size_4-of-12">
+                                            <img class="profile-picture" src={profileimage2} />
+                                            <div class="profile-user_name slds-m-top_large">Brandy Wayne</div>
+                                            <div class="profile-designation">Full-time employee</div>
+                                            <div class="profile-age">Age: 30</div>
+                                            <div class="profile-phone slds-m-top_large">
+                                                <div class="phone--icon">
+                                                    <lightning-icon icon-name="utility:email" alternative-text="Email!"
+                                                        title="Email" size="x-small"></lightning-icon>
+                                                </div>
+                                                <div class="phone--title">Email</div>
+                                                <div class="phone--number">bwayne@gmail.com</div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-m-bottom_medium slds-size_12-of-12 slds-large-size_4-of-12">
+                                            <ul>
+                                                <li class="slds-grid slds-wrap list-view">
+                                                    <span class="slds-size_6-of-12 label-heading">Homeowner
+                                                        status</span>
+                                                    <span class="slds-size_6-of-12 value-data">Own</span>
+                                                </li>
+                                                <li class="slds-grid slds-wrap list-view">
+                                                    <span class="slds-size_6-of-12 label-heading">Age preference</span>
+                                                    <span class="slds-size_6-of-12 value-data">Infant - 5yrs</span>
+                                                </li>
+                                                <li class="slds-grid slds-wrap list-view">
+                                                    <span class="slds-size_6-of-12 label-heading">Marrital status</span>
+                                                    <span class="slds-size_6-of-12 value-data">Married</span>
+                                                </li>
+                                                <li class="slds-grid slds-wrap list-view">
+                                                    <span class="slds-size_6-of-12 label-heading">Gender
+                                                        preference</span>
+                                                    <span class="slds-size_6-of-12 value-data">Any</span>
+                                                </li>
+                                                <li class="slds-grid slds-wrap list-view">
+                                                    <span class="slds-size_6-of-12 label-heading">Risk score</span>
+                                                    <span class="slds-size_6-of-12 value-data">7%</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-m-bottom_medium slds-size_6-of-12 slds-large-size_4-of-12">
+                                    <div class="slds-m-bottom_medium slds-size_12-of-12 section-title">
+                                        Home address
+                                    </div>
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-m-bottom_medium slds-size_1-of-1">
+                                            <img class="location-map" src={map} />
+                                            <div class="loaction-address slds-m-top_large">27 Elgar City Pkwy Cityname,
+                                                NH 03158
+                                            </div>
+                                            <div class="get-direction slds-m-top_medium"><a>Get Directions</a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </lightning-tab>
+            <lightning-tab label="Joseph Wayne">
+                <div class="slds-vertical-tabs__content slds-show" id="slds-vertical-tabs-1" role="tabpanel"
+                    aria-labelledby="slds-vertical-tabs-1__nav">
+                    <div class="slds-text-longform">
+                        <div class="container top_margin sub-contact-section">
+                            <div class="slds-m-bottom_medium">
+                                <img class="sub-profile-picture" src={profileimage1} />
+                            </div>
+                            <div class="slds-m-bottom_medium">
+                                <div class="profile-user_name">Joseph Wayne</div>
+                                <div class="profile-designation">Full-time employee</div>
+                                <div class="profile-age">Age: 34</div>
+                            </div>
+                            <div class="slds-m-bottom_medium">
+                                <div class="profile-phone">
+                                    <div class="phone--icon">
+                                        <lightning-icon icon-name="utility:call" alternative-text="Call!" title="Call"
+                                            size="x-small"></lightning-icon>
+                                    </div>
+                                    <div class="phone--title">Phone</div>
+                                    <div class="phone--number">508-541-1400x202</div>
+                                </div>
+                            </div>
+                            <div class="slds-m-bottom_medium">
+                                <div class="profile-phone">
+                                    <div class="phone--icon">
+                                        <lightning-icon icon-name="utility:email" alternative-text="Email!"
+                                            title="Email" size="x-small"></lightning-icon>
+                                    </div>
+                                    <div class="phone--title">Email</div>
+                                    <div class="phone--number">bwayne@gmail.com</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container top_margin sub-contact-details">
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-m-bottom_medium slds-size_12-of-12 details-section">
+                                    <div class="details-heading">Education Information</div>
+                                    <div class="details-information">
+                                        <!-- <div class="nh_grid-container"> -->
+                                        <!-- <div class="nh_grid-item">
+                                                Degree
+                                                <span class="item-value">Post Graduate</span>
+                                            </div> -->
+                                        <!-- <div class="nh_grid-item">
+                                            Lorem ipsem
+                                            <span class="item-value">Lorem ipsem</span>
+                                        </div>
+                                        <div class="nh_grid-item">
+                                            Lorem ipsem
+                                            <span class="item-value">Lorem ipsem</span>
+                                        </div> -->
+                                        <table class="slds-table slds-table_cell-buffer ">
+                                            <thead>
+                                                <tr class="slds-line-height_reset">
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Degree">
+                                                            Degree</div>
+                                                    </th>
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="University Name">
+                                                            School/University Name
+                                                        </div>
+                                                    </th>
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Completion Date">Start
+                                                            Date
+                                                        </div>
+                                                    </th>
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Completion Date">End Date
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="slds-hint-parent">
+                                                    <td data-label="Degree 1">
+                                                        <div class="slds-truncate" title="Degree 1">Graduation</div>
+                                                    </td>
+                                                    <td data-label="New Hampton School">
+                                                        <div class="slds-truncate" title="New Hampton School">New
+                                                            Hampton School</div>
+                                                    </td>
+                                                    <td data-label="Nov, 1995">
+                                                        <div class="slds-truncate" title="Nov, 1995">Nov, 1995
+                                                        </div>
+                                                    </td>
+                                                    <td data-label="Nov, 2000">
+                                                        <div class="slds-truncate" title="Nov, 2000">Nov, 2000</div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="slds-hint-parent">
+                                                    <td data-label="Degree 1">
+                                                        <div class="slds-truncate" title="Degree 1">Post Graduation
+                                                        </div>
+                                                    </td>
+                                                    <td data-label="Southern New Hampshire University">
+                                                        <div class="slds-truncate"
+                                                            title="Southern New Hampshire University">Southern New
+                                                            Hampshire University</div>
+                                                    </td>
+                                                    <td data-label="Nov, 1995">
+                                                        <div class="slds-truncate" title="Nov, 1995">Dec, 2000
+                                                        </div>
+                                                    </td>
+                                                    <td data-label="Nov, 2000">
+                                                        <div class="slds-truncate" title="Nov, 2000">Nov, 2002</div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <!-- </div> -->
+                                    </div>
+                                </div>
+                                <div class="slds-m-bottom_medium slds-size_12-of-12 details-section">
+                                    <div class="details-heading">Financial Information</div>
+                                    <div class="details-information">
+                                        <!-- <div class="nh_grid-container set-grid">
+                                            <div class="nh_grid-item">
+                                                Gross Income
+                                                <span class="item-value">$85000</span>
+                                            </div>
+                                            <div class="nh_grid-item">
+                                                Food Stamps
+                                                <span class="item-value">$5000</span>
+                                            </div>
+                                            <div class="nh_grid-item">
+                                                Other Income
+                                                <span class="item-value">$10000</span>
+                                            </div>
+                                            <div class="nh_grid-item">
+                                                Total Income
+                                                <span class="item-value">$100000</span>
+                                            </div>
+
+                                            
+                                        </div> -->
+                                        <table class="slds-table slds-table_cell-buffer ">
+                                            <thead>
+                                                <tr class="slds-line-height_reset">
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Degree">
+                                                            Gross Income</div>
+                                                    </th>
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="University Name">
+                                                            Food Stamps
+                                                        </div>
+                                                    </th>
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Completion Date">Other Income
+                                                        </div>
+                                                    </th>
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Completion Date">Total Income
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="slds-hint-parent">
+                                                    <td data-label="Degree 1">
+                                                        <div class="slds-truncate" title="Degree 1">$85000</div>
+                                                    </td>
+                                                    <td data-label="New Hampton School">
+                                                        <div class="slds-truncate" title="New Hampton School">$5000
+                                                        </div>
+                                                    </td>
+                                                    <td data-label="Nov, 1995">
+                                                        <div class="slds-truncate" title="Nov, 1995">$10000
+                                                        </div>
+                                                    </td>
+                                                    <td data-label="Nov, 2000">
+                                                        <div class="slds-truncate" title="Nov, 2000">$100000</div>
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="slds-m-bottom_medium slds-size_12-of-12 details-section">
+                                    <div class="details-heading">Employment Information</div>
+                                    <div class="details-information">
+                                        <!-- <div class="nh_grid-container">
+                                            <div class="nh_grid-item">
+                                                Employment Status
+                                                <span class="item-value">Employed</span>
+                                            </div>
+                                            <div class="nh_grid-item">
+                                                Employer Name
+                                                <span class="item-value">ABC Corp.</span>
+                                            </div>
+                                            
+                                        </div> -->
+                                        <table class="slds-table slds-table_cell-buffer ">
+                                            <thead>
+                                                <tr class="slds-line-height_reset">
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Employer Name">
+                                                            Employer Name</div>
+                                                    </th>
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Year">
+                                                            Year of Starting
+                                                        </div>
+                                                    </th>
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Year">
+                                                            Year of Leaving
+                                                        </div>
+                                                    </th>
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Title">Title
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="slds-hint-parent">
+                                                    <td data-label="Raymond James Financial Services">
+                                                        <div class="slds-truncate"
+                                                            title="Raymond James Financial Services">Raymond James
+                                                            Financial Services</div>
+                                                    </td>
+                                                    <td data-label="2015">
+                                                        <div class="slds-truncate" title="2015">2015</div>
+                                                    </td>
+                                                    <td data-label="2015">
+                                                        <div class="slds-truncate" title="2015">2019</div>
+                                                    </td>
+                                                    <td data-label="Sr. Financial planner">
+                                                        <div class="slds-truncate" title="Sr. Financial planner">Sr.
+                                                            Financial planner
+                                                        </div>
+                                                    </td>
+                                                    <!-- <td data-label="Nov, 2000">
+                                                        <div class="slds-truncate" title="Nov, 2000">Nov, 2000</div>
+                                                    </td> -->
+                                                </tr>
+                                                <tr class="slds-hint-parent">
+                                                    <td data-label="Degree 1">
+                                                        <div class="slds-truncate" title="Degree 1">CIT Group</div>
+                                                    </td>
+                                                    <td data-label="Southern New Hampshire University">
+                                                        <div class="slds-truncate"
+                                                            title="Southern New Hampshire University">2010</div>
+                                                    </td>
+                                                    <td data-label="Southern New Hampshire University">
+                                                        <div class="slds-truncate"
+                                                            title="Southern New Hampshire University">2015</div>
+                                                    </td>
+                                                    <td data-label="Financial planner">
+                                                        <div class="slds-truncate" title="Financial planner">Financial
+                                                            planner
+                                                        </div>
+                                                    </td>
+                                                    <!-- <td data-label="Nov, 2000">
+                                                        <div class="slds-truncate" title="Nov, 2000">Nov, 2002</div>
+                                                    </td> -->
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="slds-m-bottom_medium slds-size_12-of-12 details-section">
+                                    <div class="details-heading">Medical Information</div>
+                                    <div class="details-information">
+                                        <table class="slds-table slds-table_cell-buffer ">
+                                            <thead>
+                                                <tr class="slds-line-height_reset">
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Degree">
+                                                            Heart Disease</div>
+                                                    </th>
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="University Name">
+                                                            Diabetes
+                                                        </div>
+                                                    </th>
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Completion Date">Alchohal
+                                                            Abuse
+                                                        </div>
+                                                    </th>
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Completion Date">Mental Health
+                                                            Issues
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="slds-hint-parent">
+                                                    <td data-label="Degree 1">
+                                                        <div class="slds-truncate" title="Degree 1">
+                                                            <span class="item-value">
+                                                                <lightning-input type="checkbox" variant="label-hidden"
+                                                                    label="Disabled option" name="input3" checked
+                                                                    disabled>
+                                                                </lightning-input>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td data-label="New Hampton School">
+                                                        <div class="slds-truncate" title="New Hampton School">
+                                                            <span class="item-value">
+                                                                <lightning-input type="checkbox" variant="label-hidden"
+                                                                    label="Disabled option" name="input3" disabled>
+                                                                </lightning-input>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td data-label="Nov, 1995">
+                                                        <div class="slds-truncate" title="Nov, 1995">
+                                                            <span class="item-value">
+                                                                <lightning-input type="checkbox" variant="label-hidden"
+                                                                    label="Disabled option" name="input3" disabled>
+                                                                </lightning-input>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td data-label="Nov, 2000">
+                                                        <div class="slds-truncate" title="Nov, 2000">
+                                                            <span class="item-value">
+                                                                <lightning-input type="checkbox" variant="label-hidden"
+                                                                    label="Disabled option" name="input3" disabled>
+                                                                </lightning-input>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                        <!-- <div class="nh_grid-container set-grid">
+                                            <div class="nh_grid-item">
+                                                Heart Disease
+                                                <span class="item-value">
+                                                    <lightning-input type="checkbox" variant="label-hidden"
+                                                        label="Disabled option" name="input3" checked disabled>
+                                                    </lightning-input>
+                                                </span>
+                                            </div>
+                                            <div class="nh_grid-item">
+                                                Diabetes
+                                                <span class="item-value">
+                                                    <lightning-input type="checkbox" variant="label-hidden"
+                                                        label="Disabled option" name="input3" disabled>
+                                                    </lightning-input>
+                                                </span>
+                                            </div>
+                                            <div class="nh_grid-item">
+                                                Alchohal Abuse
+                                                <span class="item-value">
+                                                    <lightning-input type="checkbox" variant="label-hidden"
+                                                        label="Disabled option" name="input3" disabled>
+                                                    </lightning-input>
+                                                </span>
+                                            </div>
+                                            <div class="nh_grid-item">
+                                                Mental Health Issues
+                                                <span class="item-value">
+                                                    <lightning-input type="checkbox" variant="label-hidden"
+                                                        label="Disabled option" name="input3" disabled>
+                                                    </lightning-input>
+                                                </span>
+                                            </div>
+                                            
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </lightning-tab>
+            <lightning-tab label="Brandy Wayne">
+                <div class="slds-vertical-tabs__content slds-show" id="slds-vertical-tabs-2" role="tabpanel"
+                    aria-labelledby="slds-vertical-tabs-2__nav">
+                    <div class="slds-text-longform">
+                        <div class="container top_margin sub-contact-section">
+                            <div class="slds-m-bottom_medium">
+                                <img class="sub-profile-picture" src={profileimage2} />
+                            </div>
+                            <div class="slds-m-bottom_medium">
+                                <div class="profile-user_name">Brandy Wayne</div>
+                                <div class="profile-designation">Full-time employee</div>
+                                <div class="profile-age">Age: 30</div>
+                            </div>
+                            <div class="slds-m-bottom_medium">
+                                <div class="profile-phone">
+                                    <div class="phone--icon">
+                                        <lightning-icon icon-name="utility:call" alternative-text="Call!" title="Call"
+                                            size="x-small"></lightning-icon>
+                                    </div>
+                                    <div class="phone--title">Phone</div>
+                                    <div class="phone--number">508-541-1400x202</div>
+                                </div>
+                            </div>
+                            <div class="slds-m-bottom_medium">
+                                <div class="profile-phone">
+                                    <div class="phone--icon">
+                                        <lightning-icon icon-name="utility:email" alternative-text="Email!"
+                                            title="Email" size="x-small"></lightning-icon>
+                                    </div>
+                                    <div class="phone--title">Email</div>
+                                    <div class="phone--number">bwayne@gmail.com</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container top_margin sub-contact-details">
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-m-bottom_medium slds-size_12-of-12 details-section">
+                                    <div class="details-heading">Education Information</div>
+                                    <div class="details-information">
+                                        <!-- <div class="nh_grid-container"> -->
+                                        <!-- <div class="nh_grid-item">
+                                                Degree
+                                                <span class="item-value">Post Graduate</span>
+                                            </div> -->
+                                        <!-- <div class="nh_grid-item">
+                                            Lorem ipsem
+                                            <span class="item-value">Lorem ipsem</span>
+                                        </div>
+                                        <div class="nh_grid-item">
+                                            Lorem ipsem
+                                            <span class="item-value">Lorem ipsem</span>
+                                        </div> -->
+                                        <table class="slds-table slds-table_cell-buffer ">
+                                            <thead>
+                                                <tr class="slds-line-height_reset">
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Degree">
+                                                            Degree</div>
+                                                    </th>
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="University Name">
+                                                            School/University Name
+                                                        </div>
+                                                    </th>
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Completion Date">Start
+                                                            Date
+                                                        </div>
+                                                    </th>
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Completion Date">End Date
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="slds-hint-parent">
+                                                    <td data-label="Degree 1">
+                                                        <div class="slds-truncate" title="Degree 1">Graduation</div>
+                                                    </td>
+                                                    <td data-label="New Hampton School">
+                                                        <div class="slds-truncate" title="New Hampton School">The White
+                                                            Mountain School</div>
+                                                    </td>
+                                                    <td data-label="Nov, 1995">
+                                                        <div class="slds-truncate" title="Nov, 1995">Nov, 1998
+                                                        </div>
+                                                    </td>
+                                                    <td data-label="Nov, 2000">
+                                                        <div class="slds-truncate" title="Nov, 2000">Nov, 2003</div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="slds-hint-parent">
+                                                    <td data-label="Degree 1">
+                                                        <div class="slds-truncate" title="Degree 1">Post Graduation
+                                                        </div>
+                                                    </td>
+                                                    <td data-label="Southern New Hampshire University">
+                                                        <div class="slds-truncate"
+                                                            title="Southern New Hampshire University">University of New
+                                                            Hampshire
+                                                        </div>
+                                                    </td>
+                                                    <td data-label="Nov, 1995">
+                                                        <div class="slds-truncate" title="Nov, 1995">Dec, 2003
+                                                        </div>
+                                                    </td>
+                                                    <td data-label="Nov, 2000">
+                                                        <div class="slds-truncate" title="Nov, 2000">Nov, 2005
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <!-- </div> -->
+                                    </div>
+                                </div>
+                                <div class="slds-m-bottom_medium slds-size_12-of-12 details-section">
+                                    <div class="details-heading">Financial Information</div>
+                                    <div class="details-information">
+                                        <!-- <div class="nh_grid-container set-grid">
+                                            <div class="nh_grid-item">
+                                                Gross Income
+                                                <span class="item-value">$85000</span>
+                                            </div>
+                                            <div class="nh_grid-item">
+                                                Food Stamps
+                                                <span class="item-value">$5000</span>
+                                            </div>
+                                            <div class="nh_grid-item">
+                                                Other Income
+                                                <span class="item-value">$10000</span>
+                                            </div>
+                                            <div class="nh_grid-item">
+                                                Total Income
+                                                <span class="item-value">$100000</span>
+                                            </div>
+
+                                            
+                                        </div> -->
+                                        <table class="slds-table slds-table_cell-buffer ">
+                                            <thead>
+                                                <tr class="slds-line-height_reset">
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Degree">
+                                                            Gross Income</div>
+                                                    </th>
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="University Name">
+                                                            Food Stamps
+                                                        </div>
+                                                    </th>
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Completion Date">Other Income
+                                                        </div>
+                                                    </th>
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Completion Date">Total Income
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="slds-hint-parent">
+                                                    <td data-label="Degree 1">
+                                                        <div class="slds-truncate" title="Degree 1">$85000</div>
+                                                    </td>
+                                                    <td data-label="New Hampton School">
+                                                        <div class="slds-truncate" title="New Hampton School">$5000
+                                                        </div>
+                                                    </td>
+                                                    <td data-label="Nov, 1995">
+                                                        <div class="slds-truncate" title="Nov, 1995">$10000
+                                                        </div>
+                                                    </td>
+                                                    <td data-label="Nov, 2000">
+                                                        <div class="slds-truncate" title="Nov, 2000">$100000</div>
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="slds-m-bottom_medium slds-size_12-of-12 details-section">
+                                    <div class="details-heading">Employment Information</div>
+                                    <div class="details-information">
+                                        <!-- <div class="nh_grid-container">
+                                            <div class="nh_grid-item">
+                                                Employment Status
+                                                <span class="item-value">Employed</span>
+                                            </div>
+                                            <div class="nh_grid-item">
+                                                Employer Name
+                                                <span class="item-value">ABC Corp.</span>
+                                            </div>
+                                            
+                                        </div> -->
+                                        <table class="slds-table slds-table_cell-buffer ">
+                                            <thead>
+                                                <tr class="slds-line-height_reset">
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Employer Name">
+                                                            Employer Name</div>
+                                                    </th>
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Year">
+                                                            Year of Starting
+                                                        </div>
+                                                    </th>
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Year">
+                                                            Year of Leaving
+                                                        </div>
+                                                    </th>
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Title">Title
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="slds-hint-parent">
+                                                    <td data-label="Raymond James Financial Services">
+                                                        <div class="slds-truncate"
+                                                            title="Raymond James Financial Services">Dollar Tree
+                                                        </div>
+                                                    </td>
+                                                    <td data-label="2015">
+                                                        <div class="slds-truncate" title="2015">2015</div>
+                                                    </td>
+                                                    <td data-label="2015">
+                                                        <div class="slds-truncate" title="2015">2019</div>
+                                                    </td>
+                                                    <td data-label="Sr. Financial planner">
+                                                        <div class="slds-truncate" title="Sr. Financial planner">
+                                                            Store Manager
+                                                        </div>
+                                                    </td>
+                                                    <!-- <td data-label="Nov, 2000">
+                                                        <div class="slds-truncate" title="Nov, 2000">Nov, 2000</div>
+                                                    </td> -->
+                                                </tr>
+                                                <tr class="slds-hint-parent">
+                                                    <td data-label="Degree 1">
+                                                        <div class="slds-truncate" title="Degree 1">Monro, Inc. </div>
+                                                    </td>
+                                                    <td data-label="Southern New Hampshire University">
+                                                        <div class="slds-truncate"
+                                                            title="Southern New Hampshire University">2012</div>
+                                                    </td>
+                                                    <td data-label="Southern New Hampshire University">
+                                                        <div class="slds-truncate"
+                                                            title="Southern New Hampshire University">2017</div>
+                                                    </td>
+                                                    <td data-label="Financial planner">
+                                                        <div class="slds-truncate" title="Financial planner">Assistant
+                                                            Store Manager
+                                                        </div>
+                                                    </td>
+                                                    <!-- <td data-label="Nov, 2000">
+                                                        <div class="slds-truncate" title="Nov, 2000">Nov, 2002</div>
+                                                    </td> -->
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="slds-m-bottom_medium slds-size_12-of-12 details-section">
+                                    <div class="details-heading">Medical Information</div>
+                                    <div class="details-information">
+                                        <table class="slds-table slds-table_cell-buffer ">
+                                            <thead>
+                                                <tr class="slds-line-height_reset">
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Degree">
+                                                            Heart Disease</div>
+                                                    </th>
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="University Name">
+                                                            Diabetes
+                                                        </div>
+                                                    </th>
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Completion Date">Alchohal
+                                                            Abuse
+                                                        </div>
+                                                    </th>
+                                                    <th class="" scope="col">
+                                                        <div class="slds-truncate" title="Completion Date">Mental Health
+                                                            Issues
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="slds-hint-parent">
+                                                    <td data-label="Degree 1">
+                                                        <div class="slds-truncate" title="Degree 1">
+                                                            <span class="item-value">
+                                                                <lightning-input type="checkbox" variant="label-hidden"
+                                                                    label="Disabled option" name="input3"
+                                                                    disabled>
+                                                                </lightning-input>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td data-label="New Hampton School">
+                                                        <div class="slds-truncate" title="New Hampton School">
+                                                            <span class="item-value">
+                                                                <lightning-input type="checkbox" variant="label-hidden"
+                                                                    label="Disabled option" name="input3" disabled>
+                                                                </lightning-input>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td data-label="Nov, 1995">
+                                                        <div class="slds-truncate" title="Nov, 1995">
+                                                            <span class="item-value">
+                                                                <lightning-input type="checkbox" variant="label-hidden"
+                                                                    label="Disabled option" name="input3" disabled>
+                                                                </lightning-input>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td data-label="Nov, 2000">
+                                                        <div class="slds-truncate" title="Nov, 2000">
+                                                            <span class="item-value">
+                                                                <lightning-input type="checkbox" variant="label-hidden"
+                                                                    label="Disabled option" name="input3" disabled>
+                                                                </lightning-input>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                        <!-- <div class="nh_grid-container set-grid">
+                                            <div class="nh_grid-item">
+                                                Heart Disease
+                                                <span class="item-value">
+                                                    <lightning-input type="checkbox" variant="label-hidden"
+                                                        label="Disabled option" name="input3" checked disabled>
+                                                    </lightning-input>
+                                                </span>
+                                            </div>
+                                            <div class="nh_grid-item">
+                                                Diabetes
+                                                <span class="item-value">
+                                                    <lightning-input type="checkbox" variant="label-hidden"
+                                                        label="Disabled option" name="input3" disabled>
+                                                    </lightning-input>
+                                                </span>
+                                            </div>
+                                            <div class="nh_grid-item">
+                                                Alchohal Abuse
+                                                <span class="item-value">
+                                                    <lightning-input type="checkbox" variant="label-hidden"
+                                                        label="Disabled option" name="input3" disabled>
+                                                    </lightning-input>
+                                                </span>
+                                            </div>
+                                            <div class="nh_grid-item">
+                                                Mental Health Issues
+                                                <span class="item-value">
+                                                    <lightning-input type="checkbox" variant="label-hidden"
+                                                        label="Disabled option" name="input3" disabled>
+                                                    </lightning-input>
+                                                </span>
+                                            </div>
+                                            
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </lightning-tab>
+            <lightning-tab label="Licensing Cycle">
+                <c-fc-foster-care-life-cycle></c-fc-foster-care-life-cycle>
+            </lightning-tab>
+        </lightning-tabset>
+
+
+
+    </div>
+
+</template>

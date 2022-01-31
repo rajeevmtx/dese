@@ -1,0 +1,186 @@
+<template>
+    <div class="backdrop" if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </div>
+    </div>
+
+    <span if:true={erroMsg}>
+        <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+            <span class="slds-assistive-text">
+                error
+            </span>
+            <h2>
+                {erroMsg}
+            </h2>
+        </div>
+    </span>
+    <div class="gridButton slds-m-bottom_x-small">
+        <lightning-button-icon icon-name="utility:list" variant="brand" alternative-text="List" title="List" name="listType" onclick={changeView}></lightning-button-icon>
+        <lightning-button-icon class="slds-m-left_xx-small" icon-name="utility:tile_card_list" variant="brand" alternative-text="Grid" 
+            title="Grid" name="gridType" onclick={changeView}></lightning-button-icon>
+    </div>    
+    <template if:false={showList}>
+        <div class="slds-grid slds-wrap slds-gutters">
+            <template for:each={dataList} for:item="data">
+                <div class="slds-col slds-size_4-of-12" key={data.patientContacId}>
+                    <div class="nh-preference--card">
+                    <div class="pre-header">
+                        <div class="pre--ppn">{data.pereferenceName}</div>
+                        <div class="pre-type">Type: <b>{data.type}</b></div>
+                    </div>
+                        <div class="pre-action">
+                            <lightning-button-group>
+                                <lightning-button-menu alternative-text="Show menu">
+                                    <lightning-menu-item label="Edit" name={data.preferenceId} data-type={data.type}
+                                        onclick={openModal}>
+                                    </lightning-menu-item>
+                                </lightning-button-menu>
+                            </lightning-button-group>
+                        </div>
+                        <div class="pre-content">
+                            <div class="pre-value">Value: {data.value}</div>
+                        </div>
+                        <div class="pre-date">
+                            <div class="pre-start_date">Start Date: {data.startDate}</div>
+                            <div class="pre-end_date">End Date: {data.endDate}</div>
+                        </div>
+                        <div class="pre-weightage">
+                            <div class="pre-label">Weightage</div>
+                            <lightning-slider class="customSlider" label="Weightage" name={data.preferenceId} step="1"
+                                value={data.weightage} max="5" onchange={handleSliderChange} variant="label-hidden">
+                            </lightning-slider>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </template>    
+    <div>
+        <template if:true={showList}>
+            <table class="slds-table slds-table--bordered">
+                <thead>
+                    <tr class="slds-text-heading--label">
+                        <th style="background-color: #115bb1; color: white;">Type</th>
+                        <th style="background-color: #115bb1; color: white;">Value</th>
+                        <th style="background-color: #115bb1; color: white;">Start Date</th>
+                        <th style="background-color: #115bb1; color: white;">End Date</th>
+                        <th style="background-color: #115bb1; color: white;">Weightage(0-5)</th>
+                        <th style="background-color: #115bb1; color: white;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={dataList} for:item="data">
+                        <tr key={data.patientContacId} class="slds-hint-parent">
+                            <td>
+                                {data.type}
+                            </td>
+                            <td>
+                                {data.value}
+                            </td>
+                            <td>
+                                {data.startDate}
+                            </td>
+                            <td>
+                                {data.endDate}
+                            </td>
+                            <td>
+                                <lightning-slider class="customSlider" label="Weightage" name={data.preferenceId} step="1"
+                                    value={data.weightage} max="5" onchange={handleSliderChange} variant="label-hidden">
+                                </lightning-slider>
+                            </td>
+                            <td>
+                                <lightning-button-group>
+                                    <lightning-button-menu alternative-text="Show menu">
+                                        <lightning-menu-item label="Edit" name={data.preferenceId} data-type={data.type}
+                                            onclick={openModal}>
+                                        </lightning-menu-item>
+                                    </lightning-button-menu>
+                                </lightning-button-group>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            <!-- Modal Window Starts -->
+
+            <template if:true={isShowModal}>
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                    aria-describedby="modal-content-id-1"
+                    class="slds-modal slds-fade-in-open slds-modal_x-small customlistbox" style="margin-top: 4rem;">
+
+                    <div class="slds-modal__container">
+                        <header class="slds-modal__header">
+                            <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Edit Preferences</h2>
+
+                            <span if:true={erroMsg}>
+                                <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error"
+                                    role="alert">
+                                    <span class="slds-assistive-text">
+                                        error
+                                    </span>
+                                    <h2>
+                                        {erroMsg}
+                                    </h2>
+                                </div>
+                            </span>
+
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1"
+                            style="height: 12rem;">
+                            <div class="app-container slds-grid slds-gutters slds-wrap">
+                                <div class="slds-form slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+                                    <div class="slds-grid slds-gutter slds-wrap">
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input type="text" autocomplete="none" label="Type" name="type"
+                                                style="width: 100%;" value={selectedObject.type} disabled>
+                                            </lightning-input>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12"
+                                            if:true={showPicklist}>
+                                            <lightning-combobox name="value" label="Value" options={picklistValues}
+                                                onblur={handleInput} style="width: 100%;" value={selectedObject.value}>
+                                            </lightning-combobox>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12"
+                                            if:false={showPicklist}>
+                                            <lightning-input type="number" autocomplete="none" label="Value" name="type"
+                                                style="width: 100%;" value={selectedObject.value}>
+                                            </lightning-input>
+                                        </div>
+                                    </div>
+                                    <div class="slds-grid slds-gutter slds-wrap" if:true={selectedObject.durationRequired}>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input type="date" value={selectedObject.startDate} label="Strat Date"
+                                                onchange={handleInput} name="startDate" date-style="short"
+                                                style="width: 100%;" required>
+                                            </lightning-input>
+                                        </div>
+
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input type="date" value={selectedObject.endDate} label="End Date"
+                                                onchange={handleInput} name="endDate" date-style="short"
+                                                style="width: 100%;">
+                                            </lightning-input>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <footer class="slds-modal__footer">
+                            <lightning-button label="Cancel" class="slds-p-around_small slds-float--left"
+                                onclick={handleModalClose}>
+                            </lightning-button>
+                            <lightning-button label="Save" class="slds-p-around_small slds-float--right" variant="brand"
+                                onclick={handleSaveRecord}>
+                            </lightning-button>
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </template>
+            <!-- Modal Window End -->
+        </template>    
+    </div>
+</template>

@@ -1,0 +1,34 @@
+.group-name-div {
+    line-height: 1.5rem;
+}
+
+.secondary-data-div {
+    color:grey;
+}
+
+.selected-group {
+    background: white;
+}
+
+.display-none {
+    display: none;
+}
+
+.disableClass{
+    background: #ecebea;
+}
+
+.no-clicks {
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+}
+
+.slds-listbox__item:hover {
+    background-color: #F3F2F2
+}
+
+.dropdown-box {
+    min-height: 1.5rem;
+}

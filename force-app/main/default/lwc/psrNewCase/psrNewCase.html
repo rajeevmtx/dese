@@ -1,0 +1,32 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                New Case
+            </header>
+<div class="slds-modal__content " id="modal-content-id-1">
+    <div class="padding-horizontal">
+    <c-psr-help-text help-text={Portal_New_Case_Help_Text}></c-psr-help-text>
+    </div>
+    <div class="slds-notify__content">
+        <lightning-record-edit-form object-api-name={CASE_OBJECT} style="width: 100%;" onsubmit={handleFormSubmit} onsuccess={handleSuccess}>
+            <div >
+                <lightning-input-field field-name="Subject" class="padding-horizontal" required>
+                </lightning-input-field>
+                <lightning-input-field field-name="Type" class="padding-horizontal" required>
+                </lightning-input-field>
+                <lightning-input-field field-name="Description" class="padding-horizontal" required>
+                </lightning-input-field>            
+                <footer class="slds-modal__footer">
+                    <lightning-button class="slds-m-top_small" label="Cancel" onclick={closeModal}></lightning-button>
+                    <lightning-button class="slds-m-top_small slds-p-left_small" variant="brand" type="submit" label="Save"></lightning-button>
+                </footer>
+            </div>
+        </lightning-record-edit-form>
+    </div>
+</div>
+</div>
+</div>
+</section>
+<div class="slds-backdrop slds-backdrop_open"></div>
+</template>

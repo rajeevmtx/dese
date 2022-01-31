@@ -1,0 +1,14 @@
+.card-setup{
+    margin: 2rem 3rem !important;
+}
+
+.card-right-content{
+    margin: 2rem !important;
+    font-size: 1rem;
+    font-weight: 500;
+}
+@media (max-width: 768px) {
+    .card-setup{
+        margin: 1rem!important;
+    }
+  }

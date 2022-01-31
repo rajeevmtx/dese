@@ -1,0 +1,51 @@
+.pageContainer{
+    padding: 1.6rem 8rem;
+    margin-top:40px;
+    position:relative
+}
+.pageContainer::before{
+    content: " ";
+    position: fixed;
+    top: 186px;
+    background: #f3f3f3;
+    bottom: 0px;
+    height: 100%;
+    z-index: -1;
+    width: 100%;
+    left: 0px;
+
+}
+.programInfoCard{
+    background:#F3F6F9;
+    text-align: center;
+    color:#14558F;
+    border:1px solid #F3F6F9;
+    cursor: pointer;
+    width: 80%;
+    margin: 0 auto;
+
+}
+.programInfoCard img{
+    width:144px;
+    height:144px;
+    margin: 40px 0px;
+}
+.programInfoCard p{
+    background:#CFDCE8;
+    padding:10px;
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+
+.programInfoCard:hover{
+    border:1px solid #14558F;
+    box-shadow: 18px 17px 19px rgba(185, 185, 185, 0.25);
+}
+
+
+.programInfoCard:hover p{
+    border:1px solid #14558F;
+    background:#14558F;
+    color:#fff;
+}

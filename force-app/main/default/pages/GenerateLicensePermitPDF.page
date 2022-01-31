@@ -1,0 +1,232 @@
+<apex:page standardController="Application__c" extensions="GeneratePermitController"   applyBodyTag="false" >
+    <body> 
+    <div style="font-family: sans-serif">
+   	<table class="header masthead" width="100%" style="width:100%;font-size:0.95em;border-bottom-width:0.5px;border-bottom-style:solid;border-bottom-color:#000;margin-bottom:0.5em;" >
+        <tr>
+            <td width="auto" align="left" style="vertical-align:top;padding-top:3px;" >
+            <div>
+                <apex:image dir="LTR" styleClass="floating-logo" url="{!$Resource.LicenseDocumentLogo}" width="175" height="50"/>
+            </div>
+            <!--<img class="floating-logo" src="https://placehold.co/140x60" alt="" style="position:absolute;" />-->
+               <!-- <div class="page-title" style="padding-left:0.5em;font-size:2em;font-weight:bold;padding-top:0.25em;" >{!$Label.Internal_License_Document_Main_Header}</div> -->
+               <!-- <div class="page-subtitle text-center" style="padding-left:0.5em;font-size:0.8em;text-align:center;" >Land use department</div>
+                <div class="page-subtitle text-center" style="padding-left:0.5em;font-size:0.8em;text-align:center;" >Building Permit Permission</div>
+                <div class="page-subtitle text-center" style="padding-left:0.5em;font-size:0.8em;text-align:center;" >200 Lincoln Avenue</div>
+                <div class="page-subtitle text-center" style="padding-left:0.5em;font-size:0.8em;text-align:center;" >Santa Fe, New Mexico 87504-0909</div> -->
+            </td>
+            <td width="auto" align="right" style="vertical-align:top;padding-top:3px;" >
+                Charlie Baker, Governor
+            </td>
+        </tr>
+    </table>
+    <table style="width:100%;font-size:0.95em;" >
+        <tr>
+            <td align="center" class="text-center" style="vertical-align:top;padding-top:3px;text-align:center;" >
+                <h1 style="margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;font-size:1em;" >{!$Label.Internal_License_Document_Header}</h1>
+              <!--   <h1 class="big" style="margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;font-size:1.5em;" >CONSTRUCTION<br/>PERMIT</h1>  -->
+               <h3 class="big" style="margin-bottom:0;" >{!$Label.Internal_License_Document_Sub_Header}</h3>
+            </td>
+        </tr>
+        </table><br/> <br/>
+        <div style="font-size:0.8em;"> Program number: {! Application__c.Applicant_Account__r.Provider_Number__c}
+        <br/> License number: {! Application__c.Name}
+        <br/> In accordance with the provisions of Chapter 15D of the General laws, and regulations established by the Department of Elementary
+        and Secondary Education, a license is hereby granted to:
+        </div>
+
+    <table class="customer-header" style="width:100%;font-size:0.95em;padding:20px;" >
+        <tr>
+            <td width="100%" style="vertical-align:top;padding-top:3px;" >
+                <table style="width:100%;font-size:0.95em;" >
+                    <tr>
+                        <th class="title" width="169" style="text-align:left;font-size:0.8em;" >License no.</th>
+                        <td style="vertical-align:top;padding-top:3px;" >
+                            <div class="underline" style="border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#ccc;width:100%;height:auto;margin-left:0.5em;line-height:1.6;font-size:0.8em;">{! Application__c.Name}</div>
+                        </td>
+                    </tr>
+                    <!-- <tr>
+                        <th class="title" style="text-align:left;font-size:0.8em;" >HUD/Serial Number</th>
+                        <td style="vertical-align:top;padding-top:3px;" >
+                            <div class="underline" style="border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#ccc;width:100%;height:auto;margin-left:0.5em;line-height:1.6;font-size:0.8em;" >{!Application__c.HUD_Serial_Number__c}</div>
+                        </td>
+                    </tr> -->
+                    <!-- <tr>
+                        <th class="title" style="text-align:left;font-size:0.8em;" >Manufacturer </th>
+                        <td style="vertical-align:top;padding-top:3px;" >
+                            <div class="underline" style="border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#ccc;width:100%;height:auto;margin-left:0.5em;line-height:1.6;font-size:0.8em;" >{!Application__c.Manuafacturer__c}</div>
+                        </td>
+                    </tr> -->
+                    <tr>
+                        <th class="title" style="text-align:left;font-size:0.8em;" >Program Name</th>
+                        <td style="vertical-align:top;padding-top:3px;" >
+                            <div class="underline" style="border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#ccc;width:100%;height:auto;margin-left:0.5em;line-height:1.6;font-size:0.8em;" >{!Application__c.Applicant_Account__r.Name}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="title" style="text-align:left;font-size:0.8em;" >Address</th>
+                        <td style="vertical-align:top;padding-top:3px;" >
+                            <div class="underline" style="border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#ccc;width:100%;height:auto;margin-left:0.5em;line-height:1.6;font-size:0.8em;" >{!Application__c.Applicant_Account__r.BillingStreet}, {!Application__c.Applicant_Account__r.BillingCity}, {!Application__c.Applicant_Account__r.BillingState}, {!Application__c.Applicant_Account__r.BillingPostalCode}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="title" style="text-align:left;font-size:0.8em;" >License Owner</th>
+                        <td style="vertical-align:top;padding-top:3px;" >
+                            <div class="underline" style="border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#ccc;width:100%;height:auto;margin-left:0.5em;line-height:1.6;font-size:0.8em;" >{!Application__c.Owner.Name}</div>
+                        </td>
+                    </tr>
+                    <!-- <tr>
+                        <th class="title" style="text-align:left;font-size:0.8em;" >License Type</th>
+                        <td style="vertical-align:top;padding-top:3px;" >
+                            <div class="underline" style="border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#ccc;width:100%;height:auto;margin-left:0.5em;line-height:1.6;font-size:0.8em;" >{!Application__c.License_Type__c}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="title" style="text-align:left;font-size:0.8em;" >Discipline</th>
+                        <td style="vertical-align:top;padding-top:3px;" >
+                            <div class="underline" style="border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#ccc;width:100%;height:auto;margin-left:0.5em;line-height:1.6;font-size:0.8em;" >{!Application__c.Discipline__c}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="title" style="text-align:left;font-size:0.8em;" >Promotor</th>
+                        <td style="vertical-align:top;padding-top:3px;" >
+                            <div class="underline" style="border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#ccc;width:100%;height:auto;margin-left:0.5em;line-height:1.6;font-size:0.8em;" >{!Application__c.Promotor__c}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="title" style="text-align:left;font-size:0.8em;" >Trainer</th>
+                        <td style="vertical-align:top;padding-top:3px;" >
+                            <div class="underline" style="border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#ccc;width:100%;height:auto;margin-left:0.5em;line-height:1.6;font-size:0.8em;" >{!Application__c.Trainer__c}</div>
+                        </td>
+                    </tr> -->
+                    <!-- <tr>
+                        <th class="title" style="text-align:left;font-size:0.8em;" >Size</th>
+                        <td style="vertical-align:top;padding-top:3px;" >
+                            <div class="underline" style="border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#ccc;width:100%;height:auto;margin-left:0.5em;line-height:1.6;font-size:0.8em;" >{!Application__c.Size__c}</div>
+                        </td>
+                    </tr> -->
+                    <!-- <tr>
+                        <th class="title" style="text-align:left;font-size:0.8em;" >Manager</th>
+                        <td style="vertical-align:top;padding-top:3px;" >
+                            <div class="underline" style="border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#ccc;width:100%;height:auto;margin-left:0.5em;line-height:1.6;font-size:0.8em;" >{!Application__c.Manager__c}</div>
+                        </td>
+                    </tr> -->
+                    <tr>
+                        <th class="title" style="text-align:left;font-size:0.8em;" >Issue Date</th>
+                        <td style="vertical-align:top;padding-top:3px;" >
+                            <div class="underline" style="border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#ccc;width:100%;height:auto;margin-left:0.5em;line-height:1.6;font-size:0.8em;" >
+                                <apex:outputText value="{0,date,MM/dd/yy}"> <apex:param value="{!Application__c.Issue_Date__c}" /></apex:outputText>
+                                </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="title" style="text-align:left;font-size:0.8em;" >Expiration Date</th>
+                        <td style="vertical-align:top;padding-top:3px;" >
+                            <div class="underline" style="border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#ccc;width:100%;height:auto;margin-left:0.5em;line-height:1.6;font-size:0.8em;" >
+                                <apex:outputText value="{0,date,MM/dd/yy}"> <apex:param value="{!Application__c.Expiration_Date__c}" /></apex:outputText>
+                                </div>
+                        </td>
+                    </tr>
+                    
+                    <!--<tr>
+                        <th class="title" style="text-align:left;font-size:0.8em;" ></th>
+                        <td style="vertical-align:top;padding-top:3px;" >
+                            <div class="underline" style="border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#ccc;width:100%;height:auto;margin-left:0.5em;line-height:1.6;font-size:0.8em;" ></div>
+                            <p class="placeholder" style="margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;font-size:13px;" >This construction-xxxxxxxxx
+                            </p>
+                        </td>
+                    </tr>-->
+                </table>
+            </td>
+        </tr>
+    </table>
+    
+   <!-- <table style="width:100%;font-size:0.95em;" >
+        <tr>
+            <td class="bold-p" style="vertical-align:top;padding-top:3px;font-weight:bold;text-transform:uppercase;" >Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not on.</td>
+        </tr>
+    </table> 
+    <table class="customer-header" style="width:100%;font-size:0.95em;" >
+        <tbody>
+            <tr>
+                <td width="100%" style="vertical-align:top;padding-top:3px;" >
+                    <table style="width:100%;font-size:0.95em;" >
+                        <tbody>
+                            <tr>
+                                <th class="title" width="60" style="text-align:left;font-size:0.8em;" >Manufacturer</th>
+                                <td style="vertical-align:top;padding-top:3px;" >
+                                    <div class="underline" style="border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#ccc;width:100%;height:24px;margin-left:0.5em;line-height:1.6;font-size:0.8em;" >{!Application__c.Manuafacturer__c}</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="title" width="60" style="text-align:left;font-size:0.8em;" >HUD/Serial Number</th>
+                                <td style="vertical-align:top;padding-top:3px;" >
+                                    <div class="underline" style="border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#ccc;width:100%;height:24px;margin-left:0.5em;line-height:1.6;font-size:0.8em;" >{!Application__c.HUD_Serial_Number__c}</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="title" style="text-align:left;font-size:0.8em;" >Owner Name</th>
+                                <td style="vertical-align:top;padding-top:3px;" >
+                                    <div class="underline" style="border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#ccc;width:100%;height:24px;margin-left:0.5em;line-height:1.6;font-size:0.8em;" >{!Application__c.Owner.Name}</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+        
+    <table class="customer-header" style="width:100%;font-size:0.95em;" >
+        <tbody>
+            <tr>
+                <td width="50%" style="vertical-align:top;padding-top:3px;" >
+                    <table style="width:100%;font-size:0.95em;" >
+                        <tbody>
+                            <tr>
+                                <th class="title" width="90" style="text-align:left;font-size:0.8em;" >Contractor</th>
+                                <td style="vertical-align:top;padding-top:3px;" >
+                                    <div class="underline" style="border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#ccc;width:100%;height:24px;margin-left:0.5em;line-height:1.6;font-size:0.8em;" ></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td width="40" style="vertical-align:top;padding-top:3px;" >&nbsp;</td>
+                <td style="vertical-align:top;padding-top:3px;" >
+                    <table style="width:100%;font-size:0.95em;" >
+                        <tbody>
+                            <tr>
+                                <th class="title" width="90" style="text-align:left;font-size:0.8em;" >License #</th>
+                                <td style="vertical-align:top;padding-top:3px;" >
+                                    <div class="underline" style="border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#ccc;width:100%;height:24px;margin-left:0.5em;line-height:1.6;font-size:0.8em;" > </div>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+        
+   <table class="customer-header" style="width:100%;font-size:0.95em;" >
+        <tbody>
+            <tr>
+                <td width="100%" style="vertical-align:top;padding-top:3px;" >
+                    <table style="width:100%;font-size:0.95em;" >
+                        <tbody>
+                            <tr>
+                                <th class="title" width="60" style="text-align:left;font-size:0.8em;" >Address</th>
+                                <td style="vertical-align:top;padding-top:3px;" >
+                                    <div class="underline" style="border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#ccc;width:100%;height:24px;margin-left:0.5em;line-height:1.6;font-size:0.8em;" ></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table> -->
+    </div>
+    </body>
+</apex:page>

@@ -1,0 +1,61 @@
+<template>
+    <div if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </div>
+
+    <div class="slds-box slds-theme-error slds-theme-inverse-text" if:true={isError}>
+        {errorMessage}
+    </div>
+
+    <template if:true={inspectionRecord}>
+        <div class="slds">
+            <h2 style="margin-bottom: 5px; font-size: 1.4em;">
+                <strong>Select a new Tool to Use for this {typeOfVisit} Visit</strong>
+            </h2>
+            <div class="current-tool-container slds-box" style="margin-bottom: 15px;" if:true={inspectionRecord.Tool__c}>
+                <h4 style="margin-bottom: 5px;">
+                    <strong>Current Tool</strong>
+                </h4>
+                <p style="padding-left: 30px;">{inspectionRecord.Tool__r.Name}</p>
+            </div>
+
+            <div class="other-tools-container slds-box">
+                <h4 style="margin-bottom: 5px;">
+                    <strong>Available tools</strong>
+                </h4>
+                <div class="tool-options-container slds-grid slds-wrap">
+                    <!---->
+                    <!-- None (Remove currently used tool) -->
+                    <!---->
+                    <template if:true={isOtherToolsAvailable}>
+                        <div class="tool-option slds-col slds-size--1-of-1">
+                            <lightning-radio-group name="radioGroup" label="Radio Group" variant="label-hidden"
+                                options={otherToolSelection} value={selectedTool} type="radio"
+                                onchange={handleOnChange}></lightning-radio-group>
+
+                        </div>
+                    </template>
+                    <template if:false={isOtherToolsAvailable}>
+                        <p class="slds-col slds-size--1-of-1">There are no other tools available for this visit.</p>
+                    </template>
+                </div>
+                <template if:true={isOtherToolSelected}>
+                    <div class="other-justification-container slds-grid slds-wrap">
+                        <lightning-textarea name="justification" label="Justification to select another tool:"
+                            value={justificationText} onchange={addJustification}></lightning-textarea>
+                    </div>
+                    <p style="margin-top: 15px;">
+                        <span>*</span> : If you select another tool than the one recommended, please add a justification.
+                        Note that your supervisor
+                        will be informed of this change.</p>
+                </template>
+            </div>
+            <div class="buttons-container" style="margin-top: 25px;">
+                <!-- <a id="go-back-button" href="/{!Inspection__c.Id}" class="slds-button slds-button-neutral slds-button-small" style="float: left;">Cancel</a> -->
+                <lightning-button variant="brand" label="Use this tool for my visit" title="Primary action"
+                    onclick={validationCheck} class="slds-m-left_x-small"></lightning-button>
+            </div>
+        </div>
+
+    </template>
+</template>

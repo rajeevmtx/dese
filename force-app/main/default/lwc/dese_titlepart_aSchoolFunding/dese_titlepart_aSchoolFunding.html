@@ -1,0 +1,246 @@
+<template>
+    <c-allocation-instructions></c-allocation-instructions>
+    <div class="subheader slds-m-top_large">
+        6.3.1 - Low-income data source
+    </div>
+
+    <div class="paragraph slds-m-top_x-large">
+        Select the low income source of data
+    </div>
+    <div class="combobox">
+        <lightning-combobox name="income" variant="label-hidden" value={value1} placeholder="Select" options={options}
+            onchange={handleChange}>
+        </lightning-combobox>
+    </div>
+
+    <div class="paragraph slds-m-top_x-large">
+        Describe Other
+    </div>
+    <div class="describe-box">
+        <div class="slds-form-element">
+            <div class="slds-form-element__control">
+                <!-- <textarea id="textarea-id-03" placeholder="Describe Here" class="slds-textarea"></textarea> -->
+                <lightning-textarea name="Title1OtherIncomeSource" variant="label-hidden" placeholder="Describe Here"
+                    value={Title1OtherIncomeSource} onchange={handledataChange}>
+                </lightning-textarea>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="subheader slds-m-top_large">
+        6.3.2 - Method of qualification
+    </div>
+
+    <div class="paragraph slds-m-top_x-large">
+        Select the method of qualifying Title I Schools
+    </div>
+    <div class="combobox">
+        <lightning-combobox name="qualify" variant="label-hidden" value={value2} placeholder="Select"
+            options={incomeOptions} onchange={handleChange}>
+        </lightning-combobox>
+    </div>
+
+    <div class="paragraph slds-m-top_x-large">
+        Describe Other
+    </div>
+    <div class="describe-box">
+        <div class="slds-form-element">
+            <div class="slds-form-element__control">
+                <!-- <textarea id="textarea-id-04" placeholder="Describe Here" class="slds-textarea"></textarea> -->
+                <lightning-textarea name="Title1OtherQualification" variant="label-hidden" placeholder="Describe Here"
+                    value={Title1OtherQualification} onchange={handledataChange}>
+                </lightning-textarea>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="subheader slds-m-top_large">
+        6.3.3 - FY20 Title I data for district schools
+    </div>
+
+    <div class="privateschool-accordion slds-m-top_small">
+        <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection} active-section-name="A">
+            <lightning-accordion-section name="A" label="">
+                <div class="accordion-content">
+                    <div class="accordion-info">
+                        <div class="info-item">Woodsdale Elementary School</div>
+                        <div class="info-item">0</div>
+                        <div class="info-item">$122</div>
+                        <div class="info-item">
+                            <lightning-icon icon-name="utility:new_direct_message"
+                                alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                            <span>
+                                <lightning-button-icon icon-name="utility:preview" alternative-text="Settings"
+                                    title="Settings"></lightning-button-icon>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="grid-item">
+                            <div class="head">Yes</div>
+                            <div class="body">Private School Participate in Title I</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="head">A</div>
+                            <div class="body">Grades Served</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="head">1</div>
+                            <div class="body">Number of children who reside in Title I-served attendance area
+                            </div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="head">12</div>
+                            <div class="body">Number of children who are low-income using methodology described
+                                below</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="head">123</div>
+                            <div class="body">Estimated number of children who will participate in the Title I
+                                Program</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="head">0</div>
+                            <div class="body">Amount Per Low Income Student based on Title I Allocation</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="head">$ 122</div>
+                            <div class="body">Allocation Per School for Services</div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </lightning-accordion-section>
+
+            <lightning-accordion-section name="B" label="Abington Early Education Program">
+                <div class="accordion-content">
+                    <div class="grid">
+                        <div class="grid-item">
+                            <div class="head">Yes</div>
+                            <div class="body">Private School Participate in Title I</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="head">A</div>
+                            <div class="body">Grades Served</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="head">1</div>
+                            <div class="body">Number of children who reside in Title I-served attendance area
+                            </div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="head">12</div>
+                            <div class="body">Number of children who are low-income using methodology described
+                                below</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="head">123</div>
+                            <div class="body">Estimated number of children who will participate in the Title I
+                                Program</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="head">0</div>
+                            <div class="body">Amount Per Low Income Student based on Title I Allocation</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="head">$ 122</div>
+                            <div class="body">Allocation Per School for Services</div>
+                        </div>
+                    </div>
+
+                </div>
+            </lightning-accordion-section>
+
+
+            <lightning-accordion-section name="C" label="Beaver Brook Elementary">
+                <div class="accordion-content">
+                    <div class="grid">
+                        <div class="grid-item">
+                            <div class="head">Yes</div>
+                            <div class="body">Private School Participate in Title I</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="head">A</div>
+                            <div class="body">Grades Served</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="head">1</div>
+                            <div class="body">Number of children who reside in Title I-served attendance area
+                            </div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="head">12</div>
+                            <div class="body">Number of children who are low-income using methodology described
+                                below</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="head">123</div>
+                            <div class="body">Estimated number of children who will participate in the Title I
+                                Program</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="head">0</div>
+                            <div class="body">Amount Per Low Income Student based on Title I Allocation</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="head">$ 122</div>
+                            <div class="body">Allocation Per School for Services</div>
+                        </div>
+                    </div>
+
+                </div>
+            </lightning-accordion-section>
+
+
+            <lightning-accordion-section name="D" label="Abington Middle School">
+                <div class="accordion-content">
+                    <div class="grid">
+                        <div class="grid-item">
+                            <div class="head">Yes</div>
+                            <div class="body">Private School Participate in Title I</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="head">A</div>
+                            <div class="body">Grades Served</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="head">1</div>
+                            <div class="body">Number of children who reside in Title I-served attendance area
+                            </div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="head">12</div>
+                            <div class="body">Number of children who are low-income using methodology described
+                                below</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="head">123</div>
+                            <div class="body">Estimated number of children who will participate in the Title I
+                                Program</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="head">0</div>
+                            <div class="body">Amount Per Low Income Student based on Title I Allocation</div>
+                        </div>
+                        <div class="grid-item">
+                            <div class="head">$ 122</div>
+                            <div class="body">Allocation Per School for Services</div>
+                        </div>
+                    </div>
+
+                </div>
+            </lightning-accordion-section>
+        </lightning-accordion>
+    </div>
+    <c-modal-window project-id={projectId} onfetch={fetchSchools}>
+    </c-modal-window>
+    <!-- <div class="add-btn">
+        <lightning-button label="Add New School" title="Download action" icon-name="utility:add"
+            class="slds-m-left_x-small"></lightning-button>
+    </div> -->
+
+</template>

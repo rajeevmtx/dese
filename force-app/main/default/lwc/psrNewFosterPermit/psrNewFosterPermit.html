@@ -1,0 +1,134 @@
+<template>
+    <div class="backdrop" if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </div>
+    </div>
+    <!-- Main Header Start -->
+    <div class="has-shadow slds-p-vertical_medium slds-m-bottom_medium heading_header_registration">
+        <div class="container">
+            <h5 class="d-inline-block">{getHeading}</h5>
+            <div class="slds-float_right">
+                <lightning-button variant="base" label="Back" title="Back" icon-name="utility:back"
+                    class="slds-m-top_x-small" onclick={handleBack}>
+                </lightning-button>
+            </div>
+        </div>
+    </div>
+    <!-- Main Header End -->
+
+
+
+    <div class="container">
+        <div class="app-container slds-grid slds-gutters slds-wrap">
+            <!-- Side Steps Nav Bar Start -->
+            <div class="app-sidebar slds-col slds-size_1-of-1 slds-large-size_3-of-12" style="margin-top: 1.2rem;">
+                <!-- Flow Steps -->
+                <c-psr-new-foster-permit-steps current-step={currentStep} original-step={originalStep}>
+                </c-psr-new-foster-permit-steps>
+            </div>
+
+            <div class="app-content slds-size_1-of-1 slds-large-size_9-of-12 slds-m-bottom_large">
+                <div if:true={errMsg} class="errorMsg">{errMsg}</div>
+
+                <!-- Step 1 -->
+                <div style={showInstructionPage}>
+                    <c-psr-help-text help-text={applicationInfoHelpText}></c-psr-help-text>
+                    <c-psr-instructions></c-psr-instructions>
+                    <div class="slds-float_right slds-m-top_small">
+                        <lightning-button variant="brand" type="submit" label="Next" onclick={navigateToPersonalInfo}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div style={showPersonalInfoPage}>
+                    <c-psr-help-text help-text={applicationInfoHelpText}></c-psr-help-text>
+                    <!-- personal infooo -->
+                    <c-psr-foster-personal-information></c-psr-foster-personal-information>
+                    <div class="slds-float_right slds-m-top_small">
+                        <lightning-button label="Back" class="slds-m-right_medium" onclick={navigateToInstruction}>
+                        </lightning-button>
+
+                        <lightning-button variant="brand" type="submit" label="Next" data-action='save'
+                            onclick={navigateToQuestionnaire}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div style={showQuestionnairePage}>
+                    <c-psr-help-text help-text={applicationInfoHelpText}></c-psr-help-text>
+
+                    <c-psr-foster-questionnaire></c-psr-foster-questionnaire>
+
+                    <div class="slds-float_right slds-m-top_small">
+
+                        <lightning-button label="Back" class="slds-m-right_medium" onclick={navigateToPersonalInfo}>
+                        </lightning-button>
+
+                        <lightning-button variant="brand" type="submit" label="Next" data-action='save'
+                            onclick={navigateToFinancialInfo}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div style={showFinancialInfoPage}>
+                    <c-psr-help-text help-text={applicationInfoHelpText}></c-psr-help-text>
+
+                    <div class="slds-p-around_medium">
+                        <c-psr-foster-adoption-history></c-psr-foster-adoption-history>
+                    </div>
+
+                    <div class="slds-float_right slds-m-top_small">
+
+                        <lightning-button label="Back" class="slds-m-right_medium" onclick={navigateToQuestionnaire}>
+                        </lightning-button>
+
+                        <lightning-button variant="brand" type="submit" label="Next" data-action='save'
+                            onclick={navigateToReferences}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div style={showReferencesPage}>
+                    <c-psr-help-text help-text={applicationInfoHelpText}></c-psr-help-text>
+
+                    <div class="slds-card has-header slds-p-around_medium">
+                        <c-psr-document-details></c-psr-document-details>
+                    </div>
+
+                    <div class="slds-float_right slds-m-top_small">
+
+                        <lightning-button label="Back" class="slds-m-right_medium" onclick={navigateToFinancialInfo}>
+                        </lightning-button>
+
+                        <lightning-button variant="brand" type="submit" label="Next" data-action='save'
+                            onclick={navigateToSubmit}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                <!-- Step 6 -->
+                <div style={showSubmitPage}>
+                    <c-psr-help-text help-text={applicationInfoHelpText}></c-psr-help-text>
+
+                    <div class="slds-card has-header slds-p-around_medium">
+                        <c-psr-submission></c-psr-submission>
+                    </div>
+
+                    <div class="slds-float_right slds-m-top_small">
+
+                        <lightning-button variant="brand" type="submit" label="Submit" data-action='save'
+                            onclick={navigateToHome}>
+                        </lightning-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</template>

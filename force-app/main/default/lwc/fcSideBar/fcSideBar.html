@@ -1,0 +1,199 @@
+<template>
+    <div class="container_spacing">
+        <div class="slds-grid slds-gutters mobile-block">
+            <div class="slds-col slds-size_2-of-12 mobile-full-width sidenav-margin">
+                <div>
+                    <lightning-vertical-navigation>
+                        <lightning-vertical-navigation-section>
+                            <button class="padding_space_button" onclick={navigateToPage} data-navigatepage="fchome"
+                                data-modal="registerEntity" style="margin-top: 3rem;">
+                                <div class="slds-grid slds-gutters pointer-event-none">
+                                    <div class="slds-col slds-size_1-of-12">
+                                        <lightning-icon icon-name="utility:identity" size="xx-small"></lightning-icon>
+                                    </div>
+                                    <div class="slds-col slds-size_11-of-12">
+                                        Dashboard
+                                    </div>
+
+                                </div>
+                            </button>
+
+                            <button class="padding_space_button" onclick={navigateToPage}
+                                data-navigatepage="new-application">
+                                <div class="slds-grid slds-gutters pointer-event-none">
+                                    <div class="slds-col slds-size_1-of-12">
+                                        <lightning-icon icon-name="utility:reassign" size="xx-small"></lightning-icon>
+                                    </div>
+                                    <div class="slds-col slds-size_11-of-12">
+                                        New Application
+                                    </div>
+                                </div>
+                            </button>
+
+                            <button class="padding_space_button" onclick={navigateToPage}
+                                data-navigatepage="fcparentpreference">
+                                <div class="slds-grid slds-gutters pointer-event-none">
+                                    <div class="slds-col slds-size_1-of-12">
+                                        <lightning-icon icon-name="utility:work_order_type" size="xx-small">
+                                        </lightning-icon>
+                                    </div>
+                                    <div class="slds-col slds-size_11-of-12">
+                                        My Preferences
+                                    </div>
+                                </div>
+                            </button>
+
+                            <button class="padding_space_button" onclick={navigateToPage}
+                                data-navigatepage="fcchildsearch">
+                                <div class="slds-grid slds-gutters pointer-event-none">
+                                    <div class="slds-col slds-size_1-of-12">
+                                        <lightning-icon icon-name="utility:work_order_type" size="xx-small">
+                                        </lightning-icon>
+                                    </div>
+                                    <div class="slds-col slds-size_11-of-12">
+                                        Matching Kids
+                                    </div>
+                                </div>
+                            </button>
+
+                            <button class="padding_space_button" onclick={navigateToPage}
+                                data-navigatepage="fcsearchchild">
+                                <div class="slds-grid slds-gutters pointer-event-none">
+                                    <div class="slds-col slds-size_1-of-12">
+                                        <lightning-icon icon-name="utility:work_order_type" size="xx-small">
+                                        </lightning-icon>
+                                    </div>
+                                    <div class="slds-col slds-size_11-of-12">
+                                        Search Kids
+                                    </div>
+                                </div>
+                            </button>
+
+                            <button class="padding_space_button" onclick={navigateToPage}
+                                data-navigatepage="mycoursetracks">
+                                <div class="slds-grid slds-gutters pointer-event-none">
+                                    <div class="slds-col slds-size_1-of-12">
+                                        <lightning-icon icon-name="utility:knowledge_base" size="xx-small">
+                                        </lightning-icon>
+                                    </div>
+                                    <div class="slds-col slds-size_11-of-12">
+                                        FACES Training
+                                    </div>
+                                </div>
+                            </button>
+
+
+
+                            <button class="padding_space_button" onclick={navigateToPage}
+                                data-navigatepage="fctechnicalhelpdesk">
+                                <div class="slds-grid slds-gutters pointer-event-none">
+                                    <div class="slds-col slds-size_1-of-12">
+                                        <lightning-icon icon-name="utility:send" size="xx-small">
+                                        </lightning-icon>
+                                    </div>
+                                    <div class="slds-col slds-size_11-of-12">
+                                        Technical Helpdesk
+                                    </div>
+                                </div>
+                            </button>
+                        </lightning-vertical-navigation-section>
+                    </lightning-vertical-navigation>
+                </div>
+            </div>
+            <div class="slds-col slds-size_10-of-12 side_space mobile-full-width">
+                <slot name="body"></slot>
+            </div>
+        </div>
+    </div>
+
+    <template if:false={showHelp}>
+        <!-- <div class="slds-grid slds-gutters mobile-block slds-grid_reverse">
+            <div class="slds-col slds-size_1-of-12 mobile-full-width "> -->
+        <div class="chat-show">
+            <div class="chat-header" onclick={handleHelp}>
+                Help&nbsp;<lightning-icon icon-name="utility:help_center" alternative-text="Help" title="Help">
+                </lightning-icon>
+            </div>
+        </div>
+        <!-- </div>
+        </div> -->
+    </template>
+    <template if:true={showHelp}>
+        <div class="chat-show">
+            <!-- <div class="chat-circle btn-raised">
+                <svg class="icon-speech" viewBox="0 0 48 48">
+                    <use xlink:href="#icon-speech" ></use>
+                </svg> </div> -->
+
+            <div class="chatbot chatbot--closed ">
+                <div class="chatbot__header">
+                    <p><strong>Got a question?</strong>&nbsp;&nbsp;
+                        <!-- <span class="u-text-highlight">Ask us</span> -->
+                    </p>
+                    <!-- <svg class="chatbot__close-button icon-speech" viewBox="0 0 32 32">
+                        <use xlink:href="#icon-speech"></use>
+                    </svg> -->
+                    <!-- <svg class="chatbot__close-button icon-close" viewBox="0 0 32 32">
+                        <use xlink:href="#icon-close" ></use>
+                    </svg> -->
+                    <lightning-button-icon variant="bare-inverse" size="medium" icon-name="utility:close"
+                        alternative-text="Close" onclick={handleHelp}>
+                    </lightning-button-icon>
+                </div>
+                <div class="chatbot__message-window" data-chat="chat">
+                    <ul class="chatbot__messages">
+                        <template for:each={queryList} for:index="index" for:item="each">
+                            <template if:true={each.aiText}>
+                                <li class={each.class} key={each.text}>
+                                    <div class="is-ai__profile-picture">
+                                        <!-- <svg class="icon-avatar" viewBox="0 0 32 32">
+                                    <use xlink:href="#avatar"></use>
+                                </svg> -->
+                                        <lightning-avatar initials="VA" variant="circle"
+                                            fallback-icon-name="standard:account" alternative-text="Avatar"
+                                            class="slds-m-right_small"></lightning-avatar>
+                                    </div>
+                                    <span class="chatbot__arrow chatbot__arrow--left"></span>
+                                    <p class='chatbot__message'>
+                                        <lightning-formatted-rich-text value={each.text}>
+                                        </lightning-formatted-rich-text>
+                                    </p>
+                                </li>
+                            </template>
+                            <template if:false={each.aiText}>
+                                <li class={each.class} key={each.text}>
+                                    <p class="chatbot__message">
+                                        <lightning-formatted-rich-text value={each.text}>
+                                        </lightning-formatted-rich-text>
+                                    </p>
+                                    <span class="chatbot__arrow chatbot__arrow--right"></span>
+                                </li>
+                            </template>
+                            <!-- <span class="slds-icon-typing slds-is-animated" title="User is typing" key={each.text}>
+                                <span class="slds-icon-typing__dot"></span>
+                                <span class="slds-icon-typing__dot"></span>
+                                <span class="slds-icon-typing__dot"></span>
+                                <span class="slds-assistive-text">User is typing</span>
+                            </span> -->
+                        </template>
+                        <!-- Message here -->
+                    </ul>
+                </div>
+                <div class="chatbot__entry chatbot--closed">
+                    <input type="text" class="chatbot__input" placeholder="Ask a question..." onkeyup={handleQuery}
+                        data-query="query" />
+                    <!-- <svg class="chatbot__submit" viewBox="0 0 32 32">
+                        <use xlink:href="#icon-send"></use>
+                    </svg> -->
+                    <lightning-button-icon variant="bare-inverse" size="small" class="chatbot__submit"
+                        data-button="button" onclick={handleQuery} icon-name="utility:send" alternative-text="Send">
+                    </lightning-button-icon>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <div class="slds-m-top_large text-right newfooter" if:true={showFooter}>
+        <p>{footerText}</p>
+    </div>
+</template>

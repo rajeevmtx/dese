@@ -1,0 +1,23 @@
+.inspectionDetail{
+    width: 50%;
+}
+body.detailInspectionModal {
+  height: 100vh;
+  overflow-y: hidden;
+}
+body.createInspection{
+  height: 100vh;
+  overflow-y: hidden;
+}
+.slds-datetime-picker{
+  position: fixed !important;
+  width: 46% !important;
+}
+
+.slds-modal__content {
+  min-height: 200px !important;
+}
+footer{
+  display: flow-root !important;
+    z-index: -99 !important;
+}

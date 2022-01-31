@@ -1,0 +1,152 @@
+<apex:page showheader="false" standardstylesheets="false" sidebar="false" controller="EEC_PortalMyProviderPageController">
+    <title>EEC : Portal Provider Page</title>
+    <c:EEC_Header id="pageHeader" />
+    <script>
+        j$(document).ready(function () {
+            j$('.phonenumber').inputmask({
+                "mask": "(999) 999-9999"
+            }); //specifying options
+            j$("[id*=fccState]").prop("disabled", false);
+            j$('form').bind('submit', function () {
+                j$(this).find(':disabled').removeAttr('disabled');
+            });
+        });
+        function changeState(state) {
+            var regExp = /\(([^)]+)\)/;
+            var st = regExp.exec(j$("select option[value = '" + state.value + "']").text());
+            j$("[id*=fccState]").val(st);
+        }
+    </script>
+    <style type="text/css">
+        .md-button {
+            margin: 0px !important;
+            text-transform: capitalize !important;
+        }
+        .form-label {
+            font-weight: bold;
+            font-size: 14px;
+        }
+        thead {
+            background-color: #f5f5f5;
+        }
+        .header-button {
+            margin-right: 3px;
+        }
+        .not-visible {
+            display: none;
+        }
+        .form-group {
+            width: 100%;
+        }
+        .btn-group {
+            margin-bottom: 100px;
+        }
+        .top-level-label {
+            font-weight: 600;
+            margin-right: 5px;
+            line-height: 20px;
+            color: rgba(0, 0, 0, 0.54);
+        }
+        .table>thead:first-child>tr:first-child>th {
+            border-bottom: 0px;
+            border-top: 1px solid #dddddd;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .table {
+            border-left: 1px solid #dddddd;
+            border-right: 1px solid #dddddd;
+            border-bottom: 1px solid #dddddd;
+        }
+        .radio-group .parsley-errors-list {
+            margin-top: 20px;
+            margin-left: -50px;
+            position: absolute;
+            width: 70%;
+        }
+        .radio-group .parsley-error {
+            border: 0px;
+        }
+        .radio-group label {
+            font-weight: normal;
+        }
+        .licensing-table>thead:first-child>tr:first-child>th {
+            width: 135.43px;
+        }
+        .table-group-one .table>thead:first-child>tr:first-child>th {
+            width: 135.43px;
+        }
+        .table-group-two .table>thead:first-child>tr:first-child>th {
+            width: 189.6px;
+        }
+        .provider-container {
+            margin-bottom: 100px;
+        }
+        @media only screen and (max-width: 800px) {
+            .right-group {
+                padding-right: 3px;
+                width: 100%;
+            }
+        }
+        @media only screen and (max-width: 959px) and (min-width: 0px) {
+            .navigation-buttons input,
+            a {
+                font-size: 12px;
+            }
+        }
+        md-card {
+            font-size: 14px;
+        }
+        .requiredNotificationButton {
+            margin-top: 20px !important;
+        }
+        .panel-group .panel {
+            margin-bottom: 10px !important;
+        }
+        .pullright {
+            float: right;
+        }
+    </style>
+   
+    <div class="container">
+        <apex:form id="providerform" styleClass="provider-form">
+            <apex:pageMessages id="msg" />
+            
+        </apex:form>
+    </div>
+    <c:eec_site_footer id="siteFooter" />
+    <script>
+        var form = j$(".provider-form").parsley({
+            errorsWrapper: '<div class="parsley-errors-list"></div>',
+            errorTemplate: '<p class="errorMsg"></p>'
+        });
+        function requestPortalAccess(id) {
+            requestAccess(id);
+        }
+        function requestDeactivate(id) {
+            requestDeactivation(id);
+        }
+        function checkProviderStatus(status) {
+            if (status == 'Closed') {
+                j$('#showErrorMessageModal').modal('show');
+            } else {
+                submitNewInjuryAF();
+            }
+        }
+        function save() {
+            if (!form.validate()) {
+                return false;
+            } else {
+                saveAF();
+            }
+        }
+        function cancel() {
+            var conf = confirm("Are sure to cancel the changes?");
+            if (conf == true) {
+                cancelAF();
+            } else {
+                return false;
+            }
+        }
+    </script>
+</apex:page>

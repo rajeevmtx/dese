@@ -1,0 +1,34 @@
+<template>
+    <div class="page-header">
+        <h1 class="page-title">Home Contact Info</h1>
+    </div>
+    <div class="app-container slds-grid slds-gutters slds-wrap">
+        <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <c-fc-intake-form-help-text help-text={helpTextVerification}></c-fc-intake-form-help-text>
+        </div>
+    </div>
+    
+    <div class="slds-form">
+
+        <lightning-input type="text" name="physicalStreet" label="Physical Street address" placeholder="" required onchange={handleChange}></lightning-input> 
+        <lightning-input type="text" name="physicalCity" label="City" placeholder="" required onchange={handleChange}></lightning-input> 
+        <lightning-input type="text" name="physicalCounty" label="County" placeholder="" required onchange={handleChange}></lightning-input> 
+        <lightning-input type="text" name="physicalState" label="State" placeholder="" required onchange={handleChange}></lightning-input> 
+        <lightning-input type="text" name="physicalZipCode" label="Zip Code" placeholder="" required onchange={handleChange}></lightning-input> 
+        <lightning-radio-group name="radioGroup"
+        label="Is your mailing address the same as your physical address listed above?"
+        options={options}
+        value={value}
+        required
+        onchange={handleChange}
+        type="radio"></lightning-radio-group>
+        <template if:true={isMailingAddDiff}>
+            <lightning-input type="text" name="mailingAddress" label="Mailing address" placeholder="" required onchange={handleChange}></lightning-input> 
+            <lightning-input type="text" name="mailingCity" label="Mailing City" placeholder="" required onchange={handleChange}></lightning-input> 
+            <lightning-input type="text" name="mailingState" label="Mailing State" placeholder="" required onchange={handleChange}></lightning-input> 
+            <lightning-input type="text" name="mailingZip" label="Mailing Zip Code" placeholder="" required onchange={handleChange}></lightning-input> 
+        </template> 
+        <lightning-input type="tel" name="homePhoneNumber" label="Home phone number" placeholder="" onchange={handleChange}></lightning-input> 
+
+    </div>
+</template>

@@ -1,0 +1,26 @@
+<template>
+    <div if:true={followUpList}>
+        <template for:each={followUpList} for:item="followUp">
+
+            <div class="followUpCard" key={followUp.Id}>
+                <div class="cardHeader">
+                    <h3 class="slds-border_bottom slds-p-around_medium" slot="title">    
+                        Follow Up For : {followUp.createdDate}
+                    </h3>
+                </div>
+                <div class="slds-p-around_small">  
+                    <div>
+                        <div class="slds-box slds-m-around_small">
+                            Question : If you had fever, what's the highest temperature recorded with a thermometer?
+                            </p>Answer : {followUp.temperature} °F
+                        </div> 
+                        <div class="slds-box slds-m-around_small">
+                            Question : Did you take any anti-fever medicine?
+                            </p>Answer : {followUp.isMedicineTaken}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>  
+    </div>
+</template>

@@ -1,0 +1,298 @@
+<apex:page standardcontroller="Account" extensions="GenerateAppointmentControllerr" applybodytag="false" renderAs="advanced_pdf">
+	<head>
+		<style>
+			@page {
+				margin: 1cm;
+			}
+				 
+			@page {
+				margin: 1cm;
+			}
+			html, body {
+				font-family: "Helvetica", Helvetica, sans-serif;
+				font-size: 13px;
+				text-align: center;
+			}
+
+			h1 {
+				margin: 0 0 10px;
+				font-size: 22px
+			}
+
+			h2 {
+				color: #CC3301;
+				font-weight: 500;
+			}
+
+			.date {
+				font-size: 16px;
+				margin-bottom: 20px;
+			}
+
+			.styled {
+				border: 1px solid #333;
+				width: 100%;
+				border-collapse: collapse;
+				margin-bottom: 24px;
+			}
+			.styled.no-border th, .styled.no-border td {
+				border: inherit;
+			}
+			.styled thead th {
+				background: #CC3301;
+				color: white;
+			}
+			.styled th, .styled td {
+				padding: 6px 12px;
+				border: 1px solid #333;
+			}
+
+			.appt-date {
+				font-size: 16px;
+				font-weight: bold;
+			}
+
+			.footer-table {
+				width: 100%;
+			}
+			.footer-table > tbody > tr > td {
+				vertical-align: top;
+			}
+			.footer-table > tbody > tr > td > table {
+				height: 100%;
+				width: 100%;
+			}
+			.box {
+				border: 1px solid #333;
+				
+			}
+			.box .heading {
+				border-bottom: 1px solid #333;
+				color: white;
+				background: #CC3301;
+				padding: 6px 12px;
+            	font-weight: bold;
+			}
+			.box .content {
+				padding: 1rem;
+			}
+		</style>
+	</head>
+
+	<body style="margin-top: 0px; margin-left: 0px;">
+
+		<div id="page_1" style="position: relative; overflow: hidden; padding: 0px; border: none; ">
+			<h1>South Hudson Valley/Rockland/Anthony Wayne Rec Center</h1>
+			<div class="date">03/20/2020</div>
+			<table cellpadding="0" cellspacing="0" class="styled">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>DOB</th>
+						<th>Appointment Date</th>
+					</tr>
+				</thead>
+				<tbody>
+					<apex:repeat value="{!appointmentList}" var="appointment">    
+						<tr>
+							<td>{!appointment.Patient__r.FirstName} {!appointment.Patient__r.LastName}</td>
+							<td>
+								<apex:outputText value="{0,date,MM/dd/yyyy}" >
+									<apex:param value="{!appointment.Patient__r.BirthDate}"/>
+								</apex:outputText>
+							</td>
+							<td>
+								<apex:outputText value="{0,date,MM/dd/yyyy}" >
+									<apex:param value="{!appointment.Appointment_Slot__r.Date__c}"/>
+								</apex:outputText>&nbsp;-&nbsp;
+								{!HOUR(appointment.Appointment_Slot__r.Start_Time__c)}:
+								<apex:outputText value="{0,number,00}">
+									<apex:param value="{!Minute(appointment.Appointment_Slot__r.Start_Time__c)}" />
+								</apex:outputText>
+							</td>
+						</tr>
+					</apex:repeat>
+				</tbody>
+			</table>
+			<div style="page-break-after:always;">&nbsp;</div>
+		</div>
+
+		<apex:repeat value="{!appointmentList}" var="appointment">
+
+			<div class="appt-date">
+				Appointment Date:&nbsp;
+				<apex:outputText value="{0,date,MM/dd/yyyy}" >
+					<apex:param value="{!appointment.Appointment_Slot__r.Date__c}"/>
+				</apex:outputText>&nbsp;-&nbsp; 
+				{!HOUR(appointment.Appointment_Slot__r.Start_Time__c)}:
+				<apex:outputText value="{0,number,00}">
+					<apex:param value="{!Minute(appointment.Appointment_Slot__r.Start_Time__c)}" />
+				</apex:outputText>
+			</div>
+			
+			<h2>BIOREFERENCE COVID-19 REQUISITION</h2>
+			<div style="border: 1px solid #333;margin-bottom: 30px">
+				<table class="styled no-border" style="margin-bottom:0">
+					<thead>
+						<tr>
+							<th colspan="6">Patient</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td colspan="6" style="text-align:left;font-size:12px;padding-left:7px">Comments: </td>
+						</tr>
+						<tr>
+							<td class="tr5 td12" style="border-top: #000000 1px solid; padding: 0px; margin: 0px; width: 116px; vertical-align: bottom; height: 19px;" width="116" height="19" valign="bottom"><p class="p5 ft7" style="font: 12px; line-height: 15px; text-align: left; padding-left: 7px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">Last Name:</p></td>
+							<td class="tr5 td13" style="border-top: #000000 1px solid; padding: 0px; margin: 0px; width: 114px; vertical-align: bottom; height: 19px;" width="114" height="19" valign="bottom"><p class="p8 ft8" style="font: 1px; line-height: 1px; text-align: left; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">&nbsp;</p></td>
+							<td class="tr5 td14" style="border-right: #000000 1px solid; border-top: #000000 1px solid; padding: 0px; margin: 0px; width: 114px; vertical-align: bottom; height: 19px;" width="114" height="19" valign="bottom"><p class="p8 ft8" style="font: 1px; line-height: 1px; text-align: left; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">&nbsp;</p></td>
+							<td class="tr5 td13" style="border-top: #000000 1px solid; padding: 0px; margin: 0px; width: 114px; vertical-align: bottom; height: 19px;" width="114" height="19" valign="bottom"><p class="p13 ft7" style="font: 12px; line-height: 15px; text-align: left; padding-left: 5px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">First Name:</p></td>
+							<td class="tr5 td15" style="border-right: #000000 1px solid; border-top: #000000 1px solid; padding: 0px; margin: 0px; width: 113px; vertical-align: bottom; height: 19px;" width="113" height="19" valign="bottom"><p class="p8 ft8" style="font: 1px; line-height: 1px; text-align: left; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">&nbsp;</p></td>
+							<td class="tr5 td13" style="border-top: #000000 1px solid; padding: 0px; margin: 0px; width: 114px; vertical-align: bottom; height: 19px;" width="114" height="19" valign="bottom"><p class="p13 ft7" style="font: 12px; line-height: 15px; text-align: left; padding-left: 5px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">MI:</p></td>
+						</tr>
+						<tr>
+							<td class="tr6 td16" style="padding: 0px; margin: 0px; width: 116px; vertical-align: bottom; height: 16px;" width="116" height="16" valign="bottom"><p class="p5 ft7" style="font: 12px; line-height: 15px; text-align: left; padding-left: 7px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">{!appointment.Patient__r.LastName}</p></td>
+							<td class="tr6 td17" style="padding: 0px; margin: 0px; width: 114px; vertical-align: bottom; height: 16px;" width="114" height="16" valign="bottom"><p class="p8 ft8" style="font: 1px; line-height: 1px; text-align: left; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">&nbsp;</p></td>
+							<td class="tr6 td18" style="border-right: #000000 1px solid; padding: 0px; margin: 0px; width: 114px; vertical-align: bottom; height: 16px;" width="114" height="16" valign="bottom"><p class="p8 ft8" style="font: 1px; line-height: 1px; text-align: left; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">&nbsp;</p></td>
+							<td class="tr6 td17" style="padding: 0px; margin: 0px; width: 114px; vertical-align: bottom; height: 16px;" width="114" height="16" valign="bottom"><p class="p13 ft7" style="font: 12px; line-height: 15px; text-align: left; padding-left: 5px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">{!appointment.Patient__r.FirstName} </p></td>
+							<td class="tr6 td19" style="border-right: #000000 1px solid; padding: 0px; margin: 0px; width: 113px; vertical-align: bottom; height: 16px;" width="113" height="16" valign="bottom"><p class="p8 ft8" style="font: 1px; line-height: 1px; text-align: left; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">&nbsp;</p></td>
+							<td class="tr6 td17" style="padding: 0px; margin: 0px; width: 114px; vertical-align: bottom; height: 16px;" width="114" height="16" valign="bottom"><p class="p13 ft7" style="font: 12px; line-height: 15px; text-align: left; padding-left: 5px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;"> </p></td>
+						</tr>
+						<tr>
+							<td class="tr2 td20" style="border-bottom: #000000 1px solid; padding: 0px; margin: 0px; width: 116px; vertical-align: bottom; height: 3px;" width="116" height="3" valign="bottom"><p class="p8 ft3" style="font: 1px; line-height: 3px; text-align: left; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">&nbsp;</p></td>
+							<td class="tr2 td21" style="border-bottom: #000000 1px solid; padding: 0px; margin: 0px; width: 114px; vertical-align: bottom; height: 3px;" width="114" height="3" valign="bottom"><p class="p8 ft3" style="font: 1px; line-height: 3px; text-align: left; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">&nbsp;</p></td>
+							<td class="tr2 td22" style="border-right: #000000 1px solid; border-bottom: #000000 1px solid; padding: 0px; margin: 0px; width: 114px; vertical-align: bottom; height: 3px;" width="114" height="3" valign="bottom"><p class="p8 ft3" style="font: 1px; line-height: 3px; text-align: left; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">&nbsp;</p></td>
+							<td class="tr2 td21" style="border-bottom: #000000 1px solid; padding: 0px; margin: 0px; width: 114px; vertical-align: bottom; height: 3px;" width="114" height="3" valign="bottom"><p class="p8 ft3" style="font: 1px; line-height: 3px; text-align: left; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">&nbsp;</p></td>
+							<td class="tr2 td23" style="border-right: #000000 1px solid; border-bottom: #000000 1px solid; padding: 0px; margin: 0px; width: 113px; vertical-align: bottom; height: 3px;" width="113" height="3" valign="bottom"><p class="p8 ft3" style="font: 1px; line-height: 3px; text-align: left; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">&nbsp;</p></td>
+							<td class="tr2 td21" style="border-bottom: #000000 1px solid; padding: 0px; margin: 0px; width: 114px; vertical-align: bottom; height: 3px;" width="114" height="3" valign="bottom"><p class="p8 ft3" style="font: 1px; line-height: 3px; text-align: left; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">&nbsp;</p></td>
+						</tr>
+						<tr>
+							<td class="tr6 td16" style="padding: 0px; margin: 0px; width: 116px; vertical-align: bottom; height: 16px;" width="116" height="16" valign="bottom"><p class="p5 ft7" style="font: 12px; line-height: 15px; text-align: left; padding-left: 7px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">Street:</p></td>
+							<td class="tr6 td17" style="padding: 0px; margin: 0px; width: 114px; vertical-align: bottom; height: 16px;" width="114" height="16" valign="bottom"><p class="p8 ft8" style="font: 1px; line-height: 1px; text-align: left; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">&nbsp;</p></td>
+							<td class="tr6 td24" style="padding: 0px; margin: 0px; width: 115px; vertical-align: bottom; height: 16px;" width="115" height="16" valign="bottom"><p class="p8 ft8" style="font: 1px; line-height: 1px; text-align: left; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">&nbsp;</p></td>
+							<td class="tr6 td19" style="border-right: #000000 1px solid; padding: 0px; margin: 0px; width: 113px; vertical-align: bottom; height: 16px;" width="113" height="16" valign="bottom"><p class="p8 ft8" style="font: 1px; line-height: 1px; text-align: left; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">&nbsp;</p></td>
+							<td class="tr6 td17" style="padding: 0px; margin: 0px; width: 114px; vertical-align: bottom; height: 16px;" width="114" height="16" valign="bottom"><p class="p13 ft7" style="font: 12px; line-height: 15px; text-align: left; padding-left: 5px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">Apt #</p></td>
+							<td class="tr6 td17" style="padding: 0px; margin: 0px; width: 114px; vertical-align: bottom; height: 16px;" width="114" height="16" valign="bottom"><p class="p8 ft8" style="font: 1px; line-height: 1px; text-align: left; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">&nbsp;</p></td>
+						</tr>
+						<tr>
+							<td class="tr7 td20" style="border-bottom: #000000 1px solid; padding: 0px; margin: 0px; width: 116px; vertical-align: bottom; height: 18px;" width="116" height="18" valign="bottom"><p class="p5 ft9" style="font: 11px; line-height: 14px; text-align: left; padding-left: 7px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">{!appointment.Testing_Site__r.BillingStreet}</p></td>
+							<td class="tr7 td21" style="border-bottom: #000000 1px solid; padding: 0px; margin: 0px; width: 114px; vertical-align: bottom; height: 18px;" width="114" height="18" valign="bottom"><p class="p8 ft8" style="font: 1px; line-height: 1px; text-align: left; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">&nbsp;</p></td>
+							<td class="tr7 td25" style="border-bottom: #000000 1px solid; padding: 0px; margin: 0px; width: 115px; vertical-align: bottom; height: 18px;" width="115" height="18" valign="bottom"><p class="p8 ft8" style="font: 1px; line-height: 1px; text-align: left; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">&nbsp;</p></td>
+							<td class="tr7 td23" style="border-right: #000000 1px solid; border-bottom: #000000 1px solid; padding: 0px; margin: 0px; width: 113px; vertical-align: bottom; height: 18px;" width="113" height="18" valign="bottom"><p class="p8 ft8" style="font: 1px; line-height: 1px; text-align: left; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">&nbsp;</p></td>
+							<td class="tr7 td21" style="border-bottom: #000000 1px solid; padding: 0px; margin: 0px; width: 114px; vertical-align: bottom; height: 18px;" width="114" height="18" valign="bottom"><p class="p8 ft8" style="font: 1px; line-height: 1px; text-align: left; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">&nbsp;</p></td>
+							<td class="tr7 td21" style="border-bottom: #000000 1px solid; padding: 0px; margin: 0px; width: 114px; vertical-align: bottom; height: 18px;" width="114" height="18" valign="bottom"><p class="p8 ft8" style="font: 1px; line-height: 1px; text-align: left; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">&nbsp;</p></td>
+						</tr>
+						<tr>
+							<td class="tr6 td26" style="border-right: #000000 1px solid; padding: 0px; margin: 0px; width: 115px; vertical-align: bottom; height: 16px;" width="115" height="16" valign="bottom">
+								<p class="p5 ft7" style="font: 12px; line-height: 15px; text-align: left; padding-left: 7px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">City:</p>
+							</td>
+							<td class="tr6 td19" style="border-right: #000000 1px solid; padding: 0px; margin: 0px; width: 113px; vertical-align: bottom; height: 16px;" width="113" height="16" valign="bottom">
+								<p class="p13 ft7" style="font: 12px; line-height: 15px; text-align: left; padding-left: 5px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">State:</p>
+							</td>
+							<td class="tr6 td18" style="border-right: #000000 1px solid; padding: 0px; margin: 0px; width: 114px; vertical-align: bottom; height: 16px;" width="114" height="16" valign="bottom">
+								<p class="p14 ft7" style="font: 12px; line-height: 15px; text-align: left; padding-left: 6px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">ZIP:</p>
+							</td>
+							<td class="tr6 td19" style="border-right: #000000 1px solid; padding: 0px; margin: 0px; width: 113px; vertical-align: bottom; height: 16px;" width="113" height="16" valign="bottom">
+								<p class="p13 ft7" style="font: 12px; line-height: 15px; text-align: left; padding-left: 5px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">DOB:</p>
+							</td>
+							<td class="tr6 td19" style="border-right: #000000 1px solid; padding: 0px; margin: 0px; width: 113px; vertical-align: bottom; height: 16px;" width="113" height="16" valign="bottom">
+								<p class="p13 ft7" style="font: 12px; line-height: 15px; text-align: left; padding-left: 5px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">Age:</p>
+							</td>
+							<td class="tr6 td17" style="padding: 0px; margin: 0px; width: 114px; vertical-align: bottom; height: 16px;" width="114" height="16" valign="bottom">
+								<p class="p13 ft7" style="font: 12px; line-height: 15px; text-align: left; padding-left: 5px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">Gender:</p>
+							</td>
+						</tr>
+						<tr>
+							<td class="tr7 td27" style="border-right: #000000 1px solid; border-bottom: #000000 1px solid; padding: 0px; margin: 0px; width: 115px; vertical-align: bottom; height: 18px;" width="115" height="18" valign="bottom">
+								<p class="p13 ft7" style="font: 12px; line-height: 15px; text-align: left; padding-left: 5px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">
+									{!appointment.Testing_Site__r.BillingCity}
+								</p>
+							</td>
+							<td class="tr7 td23" style="border-right: #000000 1px solid; border-bottom: #000000 1px solid; padding: 0px; margin: 0px; width: 113px; vertical-align: bottom; height: 18px;" width="113" height="18" valign="bottom">
+								<p class="p13 ft7" style="font: 12px; line-height: 15px; text-align: left; padding-left: 5px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">
+								 {!appointment.Testing_Site__r.BillingState}
+								</p>
+							</td>
+							<td class="tr7 td22" style="border-right: #000000 1px solid; border-bottom: #000000 1px solid; padding: 0px; margin: 0px; width: 114px; vertical-align: bottom; height: 18px;" width="114" height="18" valign="bottom">
+								<p class="p14 ft7" style="font: 12px; line-height: 15px; text-align: left; padding-left: 6px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">
+									{!appointment.Testing_Site__r.BillingPostalCode}
+								</p>
+							</td>
+							<td class="tr7 td23" style="border-right: #000000 1px solid; border-bottom: #000000 1px solid; padding: 0px; margin: 0px; width: 113px; vertical-align: bottom; height: 18px;" width="113" height="18" valign="bottom">
+								<p class="p13 ft7" style="font: 12px; line-height: 15px; text-align: left; padding-left: 5px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">
+									<apex:outputText value="{0,date,MM/dd/yyyy}" >
+										<apex:param value="{!appointment.Patient__r.BirthDate}"/>
+									</apex:outputText> 
+								</p>
+							</td>
+							<td class="tr7 td23" style="border-right: #000000 1px solid; border-bottom: #000000 1px solid; padding: 0px; margin: 0px; width: 113px; vertical-align: bottom; height: 18px;" width="113" height="18" valign="bottom"><p class="p13 ft7" style="font: 12px; line-height: 15px; text-align: left; padding-left: 5px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">45</p></td>
+							<td class="tr7 td21" style="border-bottom: #000000 1px solid; padding: 0px; margin: 0px; width: 114px; vertical-align: bottom; height: 18px;" width="114" height="18" valign="bottom"><p class="p13 ft7" style="font: 12px; line-height: 15px; text-align: left; padding-left: 5px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">{!appointment.Patient__r.Sex__c}</p></td>
+						</tr>
+						<tr>
+							<td colspan="2" class="tr6 td28" style="border-right: #000000 1px solid; padding: 0px; margin: 0px; width: 229px; vertical-align: bottom; height: 16px;" width="229" height="16" valign="bottom"><p class="p5 ft7" style="font: 12px; line-height: 15px; text-align: left; padding-left: 7px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">Patient Phone Number:</p></td>
+							<td class="tr6 td24" style="padding: 0px; margin: 0px; width: 115px; vertical-align: bottom; height: 16px;" width="115" height="16" valign="bottom"><p class="p14 ft7" style="font: 12px; line-height: 15px; text-align: left; padding-left: 6px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">Patient Email:</p></td>
+							<td class="tr6 td19" style="border-right: #000000 1px solid; padding: 0px; margin: 0px; width: 113px; vertical-align: bottom; height: 16px;" width="113" height="16" valign="bottom"><p class="p8 ft8" style="font: 1px; line-height: 1px; text-align: left; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">&nbsp;</p></td>
+							<td colspan="2" class="tr6 td29" style="padding: 0px; margin: 0px; width: 228px; vertical-align: bottom; height: 16px;" width="228" height="16" valign="bottom"><p class="p13 ft7" style="font: 12px; line-height: 15px; text-align: left; padding-left: 5px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">Collected (DATE/TIME):</p></td>
+						</tr>
+						<tr>
+							<td class="tr8 td20" style="border-bottom: #000000 1px solid; padding: 0px; margin: 0px; width: 116px; vertical-align: bottom; height: 17px;" width="116" height="17" valign="bottom"><p class="p5 ft7" style="font: 12px; line-height: 15px; text-align: left; padding-left: 7px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">{!appointment.Patient__r.Phone}</p></td>
+							<td class="tr8 td23" style="border-right: #000000 1px solid; border-bottom: #000000 1px solid; padding: 0px; margin: 0px; width: 113px; vertical-align: bottom; height: 17px;" width="113" height="17" valign="bottom"><p class="p8 ft8" style="font: 1px; line-height: 1px; text-align: left; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">&nbsp;</p></td>
+							<td colspan="2" class="tr8 td7" style="border-right: #000000 1px solid; border-bottom: #000000 1px solid; padding: 0px; margin: 0px; width: 228px; vertical-align: bottom; height: 17px;" width="228" height="17" valign="bottom"><p class="p14 ft7" style="font: 12px; line-height: 15px; text-align: left; padding-left: 6px; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">{!appointment.Patient__r.Email}</p></td>
+							<td class="tr8 td21" style="border-bottom: #000000 1px solid; padding: 0px; margin: 0px; width: 114px; vertical-align: bottom; height: 17px;" width="114" height="17" valign="bottom"><p class="p8 ft8" style="font: 1px; line-height: 1px; text-align: left; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">&nbsp;</p></td>
+							<td class="tr8 td21" style="border-bottom: #000000 1px solid; padding: 0px; margin: 0px; width: 114px; vertical-align: bottom; height: 17px;" width="114" height="17" valign="bottom"><p class="p8 ft8" style="font: 1px; line-height: 1px; text-align: left; margin-top: 0px; margin-bottom: 0px; white-space: nowrap;">&nbsp;</p></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<table class="footer-table" width="100%">
+				<tbody>
+					<tr>
+						<td width="">
+							<div class="box">
+								<div class="heading">Accounts</div>
+								<div class="content">
+									<p>CV100-5</p>
+									<p>NEW YORK STATE COVID-19</p>
+								</div>
+							</div>
+						</td>
+						<td width="30">&nbsp;</td>
+						
+						<td width="">
+							<div class="box">
+								<div class="heading">Physicians</div>
+								<div class="content">
+									<p>Commissioner Standing Order</p>
+									<div>Anthony Wayne Recreation Area,</div>
+									<div>Exit 17 Palisades Parkway,</div>
+									<div>Bear Mountain, NY</div>
+									<p>Standing Order issued pursuant to Executive Order 202</p>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="styled" style="margin-top:30px">
+				<thead>
+					<tr>
+						<th>
+							Nasopharynx (source)
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<apex:outputText escape="false" value="{!appointment.QR_Code__c}"></apex:outputText>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div style="page-break-after:always;">&nbsp;</div>
+
+		</apex:repeat>
+
+	</body>
+
+</apex:page>

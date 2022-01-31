@@ -1,0 +1,733 @@
+<apex:page applyHtmlTag="false" applyBodyTag="false" showHeader="false" sidebar="false" controller="CORE_Solicitation_Detail_Controller"
+    standardStylesheets="false" cache="false">
+    <html lang="en-US">
+    <c:Grants_StyleOverrides id="pageHeader" />
+    <c:Grants_HomePageStyles />
+
+    <head>
+        <title>{!pageTitle}</title>
+        <style>
+            .text-justify {
+                text-align: left;
+            }
+
+            .text-center {
+                text-align: center;
+            }
+
+            #validationErrorMessage1 {
+                display: none;
+            }
+
+            .font20 {
+                font-size: 20px;
+            }
+
+            .file-type {
+                font-size: 13px;
+                color: #666666;
+            }
+
+            .font11 {
+                font-size: 11px;
+            }
+
+            .m0 {
+                margin: 0px;
+                margin-bottom: 5px;
+            }
+
+            .font-bold {
+                font-weight: bold;
+            }
+
+            .pl35 {
+                padding-left: 35px;
+            }
+
+            .sidebar-nav {
+                padding-left: 10px;
+                margin-top: 15px;
+                font-size: 19px;
+                font-family: Proxima Nova !important;
+            }
+
+            .sidebar-nav>a {
+                display: block;
+                padding: 26px 0 10px;
+                border-bottom: 1px solid #DADFE1;
+                color: #2AAAC9;
+                font-weight: 600;
+            }
+
+            .sidebar-nav>a.active {
+                color: #666;
+            }
+
+            .copyright-footer {
+                display: block;
+                color: #000;
+                margin: 1px auto 0 !important;
+                text-align: center;
+                font-size: 10px;
+                width: 100%;
+                padding: 30px 0 10px;
+                background-color: #e5eeee;
+            }
+
+            .copyright-footer a {
+                color: black;
+            }
+
+            .copyright-footer a:hover {
+                text-decoration: underline;
+                color: black;
+            }
+
+            .spacer {
+                height: 8px;
+            }
+
+            .sub-logo {
+                font-family: Proxima Nova !important;
+                font-size: 16px !important;
+                color: #000;
+            }
+
+            .sub-agency-nav {
+                background: #EEE;
+                padding: 10px 0;
+            }
+
+            .modal-content {
+                width: 900px;
+                left: -120px;
+            }
+
+            .warning-modal h1 {
+                color: #000;
+                line-height: 1.5em;
+                font-family: Helvetica, Arial, sans-serif;
+                font-size: 20pt;
+                font-weight: 100;
+                text-align: center;
+                margin-top: 20px;
+            }
+
+            .warning-modal h2 {
+                color: #777;
+                line-height: 1.5em;
+                font-family: Helvetica, Arial, sans-serif;
+                font-size: 18pt;
+                font-weight: 100;
+            }
+
+            .warning-modal a:hover {
+                color: #2a6496;
+                text-decoration: underline;
+            }
+
+            .warning-modal a {
+                text-decoration: none;
+                color: #0075CB;
+            }
+
+            .f13 {
+                font-size: 13px;
+            }
+
+            .modal-backdrop {
+                background: #000;
+                opacity: 0.5 !important;
+            }
+
+            .apply-online-link {
+                word-break: break-all;
+            }
+
+            .logo {
+                font-size: 26px !important;
+                font-family: Proxima Nova !important;
+            }
+
+            .content-header h1 {
+                font-size: 32px !important;
+                font-family: Proxima Nova !important;
+            }
+
+            .agency-nav {
+                height: 75px;
+            }
+
+            .sub-agency-nav {
+                height: 40px;
+
+            }
+
+            .content.content-body {
+                font-family: Proxima Nova !important;
+                font-size: 14px;
+            }
+
+            span {
+                font-family: Proxima Nova !important;
+                font-size: 14px !important;
+            }
+
+            .description1 {
+                font-size: 26px;
+                font-family: Proxima Nova !important;
+            }
+
+            .dueDate {
+                font-family: Proxima Nova !important;
+                font-size: 14px !important;
+            }
+
+            .docs {
+                font-family: Proxima Nova !important;
+                font-size: 14px;
+            }
+
+            .agency-nav a {
+                margin-left: 0px;
+            }
+
+            table.htmlDetailElementTable {
+                line-height: 24px;
+            }
+
+            body {
+                height: 100%;
+            }
+
+            .page-header {
+                margin: 20px 0 20px;
+            }
+
+            .page-header h2 {
+                font-size: 26px;
+            }
+
+            @media (min-width: 1200px) {
+                .container {
+                    width: 100%;
+                }
+                /*
+                .container > .navbar-header{
+                    margin-left: 9%;
+                }*/
+            }
+
+            @media (max-width: 1199px) {
+                .link-desc {
+                    display: none;
+                }
+            }
+
+            .brand {
+                display: none;
+            }
+
+            .navbar-fixed-bottom {
+                position: absolute;
+            }
+
+            .container {
+                display: flex;
+            }
+
+            .welcome-message {
+                margin-bottom: 20px;
+            }
+
+            .left-panel {
+                margin-right: 10px;
+                background-color: #eaeaea;
+                margin-top: -20px;
+                padding-left: 0;
+                padding-right: 0;
+                padding-top: 30px;
+                min-height: 680px;
+            }
+
+            .left-panel-item {
+                margin-top: 15px;
+                background-color: #f6f6f6;
+                padding-left: 20px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                padding-right: 0;
+                height: 90px;
+            }
+
+            .header-img {
+                margin-bottom: 10px;
+                text-align: center;
+                margin-top: -8px;
+                padding-top: 12%;
+                height: 78px;
+            }
+
+            .left-panel-item i {
+                color: #115AB1;
+                font-size: 30px;
+                padding-right: 20px;
+                margin-top: 10px;
+            }
+
+            .left-panel a {
+                color: #000;
+            }
+
+            .left-panel-item .icon-wrapper {
+                margin-right: 10px;
+            }
+
+            .link-desc {
+                font-size: 10px;
+            }
+
+            .left-panel-profile {
+                padding-left: 10%;
+                padding-right: 10%;
+            }
+
+            .left-panel-profile hr {
+                border-top: 2px solid #7a7a7a;
+                margin-bottom: 10px;
+            }
+
+            .left-panel-profile .left-panel-profile-cont {
+                padding-left: 35%;
+                margin-bottom: 20px;
+                color: inherit;
+            }
+
+            .left-panel-profile-cont a {
+                color: inherit;
+            }
+
+            .resources {
+                min-height: 50px;
+                background-color: #cecece;
+                padding: 10px 20px 20px 20px;
+            }
+
+            .link-cont {
+                margin-top: 12px;
+                font-size: 16px;
+            }
+
+            .leftpanel-tooltip i {
+                font-size: 0.8em;
+            }
+
+            @media (max-width: 1200px) {
+                .link-cont {
+                    font-size: 0.8em;
+                }
+                .left-panel-item i {
+                    font-size: 20px;
+                }
+                .leftpanel-tooltip i {
+                    font-size: 0.8em;
+                }
+            }
+
+            @media (max-width: 675px) {
+                .header-img {
+                    margin-top: -30px;
+                    padding-top: 38px;
+                    padding-left: 15%;
+                }
+            }
+
+            @media (max-width: 415px) {
+                .page-header h2 {
+                    font-size: 1em;
+                }
+                .item-content {
+                    font-size: 1em;
+                }
+            }
+
+            .navbar-nav>li>a {
+                height: 100%;
+            }
+
+            .loading-spinner {
+                display: none;
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                margin: auto;
+                width: 100%;
+                height: 100%;
+                background: rgba(22, 50, 92, 0.6);
+                z-index: 9000;
+            }
+
+            .loading-spinner-inner {
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                align-items: center;
+                align-content: center;
+                height: 100%;
+                color: #ffffff;
+                text-transform: uppercase;
+            }
+
+            .loading-spinner img {
+                max-width: 185px;
+            }
+
+            .alert-warning {
+                color: red;
+                margin-top: 15px;
+            }
+
+            .container>.navbar-header {
+                margin: 12px;
+                margin-right: 0;
+                margin-left: 40px;
+            }
+
+            .bodyDiv,
+            .page {
+                background: #F5F7FA !important;
+            }
+            .card--style{
+                background: white;
+            box-shadow: 0 12.5px 10px rgba(0, 0, 0, 0.035), 0 100px 80px rgba(0, 0, 0, 0.07);
+            padding: 2rem;
+            margin-top: 2rem;
+            border-radius: 10px;
+            }
+            .card--apply{
+                margin-top: 2rem;
+                position: sticky;
+                top: 2rem;
+                background: white;
+                border-radius: 10px;
+                padding: 1rem 2rem;
+            }
+            .card--button{
+                padding: 2rem;
+                margin: 0 -2rem -1rem;
+                text-align: center;
+                background: #125ab1;
+                border-radius: 0 0 10px 10px;
+            }
+            .card--button a{
+                color: white;
+                font-size: 2rem;
+            }
+        </style>
+
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="{!metaTagDescription}" />
+        <meta name="keywords" content="{!solicitationRec.Name}, {!solicitationRec.Solicitation_Number__c}, NYSERDA" />
+        <apex:stylesheet value="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600" />
+        <apex:stylesheet value="{!URLFOR($Resource.NYSUN_Design, 'css/custom-bootstrap.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.NYSUN_Design, 'css/main.css')}" />
+
+        <!-- Dev only, remove before production-->
+        <apex:stylesheet value="https://i.icomoon.io/public/9bc07b849f/NYSERDA/style.css" />
+
+        <!--REMOVE COMMENT AFTER REVIEW | Manish : moved jQuery up in the header, as it was needed in other pages-->
+        <script src="//code.jquery.com/jquery-2.2.3.min.js"></script>
+        <script src="{!URLFOR($Resource.NS_Design, 'bower_components/twbs-bootstrap-sass/assets/javascripts/bootstrap.min.js')}"></script>
+
+        <!--         <link rel="SHORTCUT ICON" href="{!$Label.NYSERDA_Favicon_Link}" /> -->
+        <!--  <link rel="SHORTCUT ICON" href="{!URLFOR($Resource.fav, 'fav/mtx.png')}" /> -->
+
+        <script>
+            (function (i, s, o, g, r, a, m) {            
+i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)            
+}, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+            ga('create', 'UA-26477206-1', 'auto');
+            ga('send', 'pageview');
+
+        </script>
+    </head>
+
+    <body>
+
+        <apex:outputPanel rendered="{!!solicitationRec.NY_Green_Bank_RFP__c}" layout="none">
+            <!--             <c:NYS_UniversalNav />
+            <c:NYSUN_Header />  -->
+            <c:Grants_Nav_Bar_Mini />
+            <!--
+            <div class="agency-nav sub-agency-nav">
+                <div class="content flex sm">
+                    <div class="logo sub-logo sublogo1">FUNDING OPPORTUNITY DETAIL</div>
+                </div>
+            </div> -->
+        </apex:outputPanel>
+
+        <c:LoadingOverlay />
+
+        <div class="page">
+            <div class="application">
+                <div class="container-bs">
+                    <apex:form id="frm" rendered="{!isDetailShown}">
+                        <div class="row">
+                            <!--
+                        <div class="col-sm-3">
+                            <div class="sidebar-nav">
+                                    <apex:outputPanel rendered="{!!solicitationRec.NY_Green_Bank_RFP__c}" layout="none">
+                                        <a href=" ">Current Proposals</a>
+                                        <a href=" ">Upcoming Proposals</a>
+                                        <a href=" ">Closed Funding Opportunities</a>
+                                    </apex:outputPanel>
+                            </div>
+                        </div> -->
+                            <div class="col-sm-8">
+                                <div class="card--style">
+                                <div class="content content-header">
+                                    <h1>{!pageTitle}</h1>
+                                    <!--                                 <h1>{!pageTitle}</h1> -->
+                                </div>
+
+                                <div class="alert-container">
+                                    <div class="alert alert-danger" id="validationErrorMessage1"> </div>
+                                </div>
+                                <div class="content">
+                                    <apex:outputPanel rendered="{!dueDate != null}" styleClass="dueDate">
+                                        <b> Due Date:&nbsp;&nbsp;</b>
+                                        <apex:outputText escape="false" value="{!dueDate}" />
+                                    </apex:outputPanel>
+                                </div>
+                                <div class="content content-body">
+
+                                    <h2 class="description1">Description</h2>
+                                    <div id="descriptionFont" class="text-justify description" style="font-family:Proxima Nova !important;">
+                                        <apex:outputField value="{!solicitationRec.Description__c}" styleClass="font-family: Proxima Nova !important;" />
+                                    </div>
+
+
+                                    <apex:outputPanel rendered="{!documentProgramContentList.size > 0}" layout="none">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <h2 class="description1">Associated Documents</h2>
+                                                <ul class="docs">
+                                                    <apex:repeat value="{!documentProgramContentList}" var="progContent">
+                                                        <apex:outputPanel rendered="{!progContent.Attachments.size > 0}" layout="none">
+                                                            <li>
+                                                                <apex:outputLink value="/CORE_Solicitation_Document_Page?documentId={!progContent.Id}" onclick="ga('send', 'event', '{!LOWER(programContentIdToAttachmentTypeMap[progContent.Id])}' , 'funding', '{!programContentIdToScriptTitleMap[progContent.Id]}');"
+                                                                    target="_blank">
+                                                                    {!progContent.Document_Title__c}&nbsp;
+                                                                    <apex:outputPanel >
+                                                                        <apex:outputPanel styleClass="file-type" rendered="{!programContentIdToAttachmentTypeMap[progContent.Id] == 'PDF'}">
+                                                                            [{!programContentIdToAttachmentTypeMap[progContent.Id]}]
+                                                                        </apex:outputPanel>
+                                                                        <apex:outputPanel styleClass="file-type" rendered="{!OR(programContentIdToAttachmentTypeMap[progContent.Id] == 'XLSX', programContentIdToAttachmentTypeMap[progContent.Id] == 'XLS')}">
+                                                                            [{!programContentIdToAttachmentTypeMap[progContent.Id]}]
+                                                                        </apex:outputPanel>
+                                                                        <apex:outputPanel styleClass="file-type" rendered="{!OR(programContentIdToAttachmentTypeMap[progContent.Id] == 'doc', programContentIdToAttachmentTypeMap[progContent.Id] == 'DOCX')}">
+                                                                            [{!programContentIdToAttachmentTypeMap[progContent.Id]}]
+                                                                        </apex:outputPanel>
+                                                                        <apex:outputPanel styleClass="file-type" rendered="{!OR(programContentIdToAttachmentTypeMap[progContent.Id] == 'ppt', programContentIdToAttachmentTypeMap[progContent.Id] == 'PPTX')}">
+                                                                            [{!programContentIdToAttachmentTypeMap[progContent.Id]}]
+                                                                        </apex:outputPanel>
+                                                                    </apex:outputPanel>
+                                                                </apex:outputLink>
+                                                            </li>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!progContent.Attachments.size == 0}" layout="none">
+                                                            <li>{!progContent.Document_Title__c}</li>
+                                                        </apex:outputPanel>
+                                                    </apex:repeat>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                    </apex:outputPanel>
+
+                                </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 card--apply">
+                                <div class="row">
+                                    <apex:outputpanel rendered="{!!solicitationRec.Manual_Submission_Only__c || solicitationRec.Display_Instructions_and_Portal_Guide__c}"
+                                        styleClass="col-xs-12">
+                                        <h2 class="description1">Application Submission</h2>
+                                        <div class="card--button">
+                                            <apex:outputPanel rendered="{!!solicitationRec.Manual_Submission_Only__c}">
+                                                <!-- <li> <a href="{!IF(solicitationRec.Submission_Outside_Salesforce__c, solicitationRec.External_Link__c, 'CORE_Solicitation_Login_Page?SolicitationId='+solicitationRec.Id)}" class="font-bold">Apply Online</a> </li> -->
+                                                    <a onclick="applyOnlineAction()" class="font-bold">Apply Online</a>
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!solicitationRec.Display_Instructions_and_Portal_Guide__c}">
+                                                    <a href="{!$Label.Proposal_Instructions_Link}" target="_blank" onclick="ga('send', 'event', 'pdf' , 'funding', 'application-instructions-and-portal-training-guide');">Application Instructions and Portal Training Guide</a>
+                                                    <apex:outputPanel styleClass="file-type"> &nbsp;[PDF] </apex:outputPanel>
+                                            </apex:outputPanel>
+                                            </div>
+                                            <!-- <li> For assistance, please call {!$Label.Proposal_Help_Phone_Number}</li> -->
+                                    </apex:outputpanel>
+                                </div>
+                            </div>
+                        </div>
+                    </apex:form>
+                </div>
+            </div>
+            <!-- /.container-bs -->
+        </div>
+
+        <!-- Helper Application -->
+        <apex:outputPanel rendered="{!isDetailShown}" layout="none">
+            <div class="container-bs">
+                <div class="row m0" style="display:none;">
+                    <div class="col-sm-9 col-sm-offset-3 font11">
+                        <div class="content">
+                            Some files may require a free "helper" application to view:
+                            <br/>
+                            <a href="javascript:void(0)" onclick="openModalWindow('http://get.adobe.com/reader/');">Adobe Acrobat PDF Reader</a>
+                            <img src="https://www.nyserda.ny.gov/-/media/Images/General/Rest/new-window.gif"
+                                alt="Link opens in new window" />&nbsp;|&nbsp;
+                            <a href="javascript:void(0)" onclick="openModalWindow('https://www.microsoft.com/en-us/download/details.aspx?id=4');">Microsoft Excel Viewer</a>
+                            <img src="https://www.nyserda.ny.gov/-/media/Images/General/Rest/new-window.gif"
+                                alt="Link opens in new window" />&nbsp;|&nbsp;
+                            <a href="javascript:void(0)" onclick="openModalWindow('https://www.microsoft.com/en-us/download/details.aspx?id=10');">Microsoft Word Viewer</a>
+                            <img src="https://www.nyserda.ny.gov/-/media/Images/General/Rest/new-window.gif"
+                                alt="Link opens in new window" />&nbsp;|&nbsp;
+                            <a href="javascript:void(0)" onclick="openModalWindow('https://www.microsoft.com/en-us/download/details.aspx?id=13');">Microsoft PowerPoint Viewer</a>
+                            <img src="https://www.nyserda.ny.gov/-/media/Images/General/Rest/new-window.gif"
+                                alt="Link opens in new window" />
+                        </div>
+                        <!-- /.content -->
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-bs -->
+        </apex:outputPanel>
+
+        <!-- START : Modal window to warn the change of Base URL -->
+        <div class="modal fade" id="modal1" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body warning-modal text-center">
+                        <div>
+                            <h1>You are leaving the
+                                <strong class="base-url"> </strong> website.</h1>
+                            <br/>
+                            <h2>Click the link below to continue to your destination:</h2>
+                            <h3 class="destination-path">Link </h3>
+                            <br/>
+                            <a class="f13" href="javascript:void(0);" onclick="closeModalWindow();">Return to
+                                <span class="base-url"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- FINISH :  Modal window to warn the change of Base URL -->
+
+        <apex:outputPanel rendered="{!!solicitationRec.NY_Green_Bank_RFP__c}" layout="none">
+            <div class="copyright-footer">
+                <div class="container-bs">
+                    <span>{!$Label.Core_Nyserda_Site_Footer}</span>
+                    <div class="spacer"></div>
+                    <span class="hidden-xs" style="display:none;">
+                        <a class="lnkCopyrightLinks" href="https://www.nyserda.ny.gov/Web-Policies">Web Policies</a>&nbsp;|&nbsp;
+                        <a class="lnkCopyrightLinks" href="https://www.nyserda.ny.gov/Web-Policies/Accessibility">Accessibility</a>&nbsp;|&nbsp;
+                        <a class="lnkCopyrightLinks" href="https://www.nyserda.ny.gov/Web-Policies/Disclaimer">Disclaimer </a>&nbsp;|&nbsp;
+                        <a class="lnkCopyrightLinks" href="https://www.nyserda.ny.gov/Web-Policies/Internet-Privacy-Policy">Internet Privacy Policy </a>&nbsp;|&nbsp;
+                        <a class="lnkCopyrightLinks" href="https://www.nyserda.ny.gov/About/New-York-State-Regulations">New York State Regulations</a>
+                    </span>
+                    <span class="visible-xs-block">
+                        <a class="lnkCopyrightMobileLinks" href="https://www.nyserda.ny.gov/About">About NYSERDA</a>&nbsp;|&nbsp;
+                        <a class="lnkCopyrightMobileLinks" href="https://www.nyserda.ny.gov/About/Careers-at-NYSERDA">Careers at NYSERDA</a>&nbsp;|&nbsp;
+                        <a class="lnkCopyrightMobileLinks" href="https://www.nyserda.ny.gov/Web-Policies/Accessibility">Accessibility</a>&nbsp;|&nbsp;
+                        <a class="lnkCopyrightMobileLinks" href="https://www.nyserda.ny.gov/Web-Policies/Disclaimer">Disclaimer </a>&nbsp;|&nbsp;
+                        <a class="lnkCopyrightMobileLinks" href="https://www.nyserda.ny.gov/Web-Policies/Internet-Privacy-Policy">Internet Privacy Policy </a>
+                    </span>
+                </div>
+            </div>
+            <!-- /.container-bs -->
+            <!--                   <iframe title="New York State Universal Footer"  id="nygov-universal-footer-frame" class="nygov-universal-container" width="100%" height="200px" src="//static-assets.ny.gov/load_global_footer/ajax?iframe=true" data-updated="2014-11-07 08:30" frameborder="0" style="border:none; overflow:hidden; width:100%; height:200px;" scrolling="no"> -->
+            <!--                     Your browser does not support iFrames -->
+            <!--                   </iframe> -->
+        </apex:outputPanel>
+        <c:Grants_Site_Footer />
+    </body>
+
+    <script>
+
+        $(document).ready(function () {
+            jQuery("html").attr("lang", "en");
+
+            try {
+                $('.logo').not(".sub-logo").html('<a id="logolink" href="">MTX Grants and Proposals</a>');
+                //$('.agency-nav').not(".sub-agency-nav").css('background-color', '#006BA6');
+            } catch (err) {
+                // Do nothing
+            }
+
+            $('.description').find('a').on('click', function (e) {
+                console.log($(this).attr('href'));
+                var destinationURL = $(this).attr('href');
+                if (destinationURL != '' && (destinationURL.indexOf("nyserda") == -1 && destinationURL.indexOf(".gov") == -1)) {
+                    e.preventDefault();
+                    openModalWindow($(this).attr('href'));
+                }
+            });
+        });
+
+
+        function openModalWindow(destinationURL) {
+            $('#modal1').modal('show');
+            var baseURL = window.location.origin.replace('https://', '').replace('http://', '');
+            $('.base-url').html(baseURL);
+            $('.destination-path').html('<a href="' + destinationURL + '" target="_blank" onclick="closeModalWindow();" class="apply-online-link">' + destinationURL + '</a>');
+        }
+
+        function closeModalWindow() {
+            $('#modal1').modal('hide');
+        }
+
+        function applyOnlineAction() {
+
+            if ('{!solicitationRec.Submission_Outside_Salesforce__c}' == 'true') {
+                var destinationExternalURL = '{!solicitationRec.External_Link__c}';
+                if (!destinationExternalURL.match(/^[a-zA-Z]+:\/\//)) {
+                    destinationExternalURL = 'https://' + destinationExternalURL;  // Handle URL prefix
+
+                }
+
+                if (destinationExternalURL != '' && (destinationExternalURL.indexOf("nyserda") == -1 && destinationExternalURL.indexOf(".gov") == -1)) {
+                    openModalWindow(destinationExternalURL);
+                } else {
+                    window.open(destinationExternalURL, '_self');
+                }
+
+            } else {
+                var baseURL = window.location.origin;
+                if (!window.location.origin) { // IE Support
+                    window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
+                    baseURL = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
+                }
+                //window.open('https://egrants.force.com/corepage/s/', '_self');
+                window.open(baseURL + '/psr/CORE_Solicitation_Login_Page?SolicitationId={!solicitationRec.Id}', '_self');
+            }
+        }
+    </script>
+
+    </html>
+    <style>
+        .sub-logo {
+            font-size: 16px !important;
+        }
+    </style>
+
+</apex:page>

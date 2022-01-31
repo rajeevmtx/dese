@@ -1,0 +1,870 @@
+<apex:page controller="EEC_TransactionWizardController" standardStylesheets="false" action="{!doInsertRooms}" showheader="false"
+ sidebar="false" docType="html-5.0"> 
+	<title>EEC : Transaction - COLLECT INDOOR / OUTDOOR SPACES INFORMATION</title>
+	<c:EEC_Header id="pageHeader" />
+	<script>
+		j$(document).ready(function () {
+			if ('{!LicenseRecordTypeName}' == 'FCC_Assistant_New_License')
+				j$("[id*=requestedLicensePicklistHidden]").val(j$("[id*=requestedLicensePicklist] :selected").text());
+			j$("[id*=mailingState]").prop("disabled", true);
+			j$(".navigation-buttons a").click(function () {
+				//j$("[id*=requestedLicensePicklistHidden]").val(j$("[id*=requestedLicensePicklist] :selected").text());                   
+			});
+			var indoor = j$("[id$=IndoorSqFootage]").val().replace(/,/g, "");
+			j$("[id$=IndoorSqFootage]").val(indoor);
+			var outdoor = j$("[id$=outdoorSqFootage]").val().replace(/,/g, "");
+			j$("[id$=outdoorSqFootage]").val(outdoor);
+			var buildingCap = j$("[id$=MaxBuildingCapacity]").val().replace(/,/g, "");
+			j$("[id$=MaxBuildingCapacity]").val(buildingCap);
+		});
+		function changeState(state) {
+			var regExp = /\(([^)]+)\)/;
+			var st = regExp.exec(j$("select option[value = '" + state.value + "']").text());
+			j$("[id*=mailingState]").val(st[1]);
+		}
+		function changeProviderState(state) {
+			var regExp = /\(([^)]+)\)/;
+			var st = regExp.exec(j$("select option[value = '" + state.value + "']").text());
+			j$("[id*=providerState]").val(st[1]);
+		}
+		function onlyAlphabets(e, t) {
+			try {
+				if (window.event) {
+					var charCode = window.event.keyCode;
+				}
+				else if (e) {
+					var charCode = e.which;
+				}
+				else { return true; }
+				if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123))
+					return true;
+				else
+					return false;
+			}
+			catch (err) {
+				alert(err.Description);
+			}
+		}
+		function onlyAlphabetsBlur(obj) {
+			var val = obj.value;
+			//debugger;
+			for (i = 0; i < val.length; i++) {
+				var code = val.charCodeAt(i);
+				if (code <= 64 || (code >= 91 && code <= 96) || code >= 123) {
+					obj.value = "";
+					return;
+				}
+				/*if(!(code>=65 && code<=91) && !(code >=97 && code<=121) && !(code>=48 && code<=57)){ 
+				   obj.value=""; 
+				   return ; 
+				 }    */
+			}
+		}
+	</script>
+	<style>
+		.bPageBlock .requiredInput .requiredBlock {
+			background-color: #c00;
+			position: absolute;
+			left: -4px;
+			width: 3px;
+			top: 1px;
+			bottom: 1px;
+			top: 20px;
+			display: none;
+		}
+		tr.multiSelectPicklistRow td select.form-control {
+			height: 150px;
+		}
+		td a img.form-control {
+			border-width: 0px;
+		}
+		.parsley-errors-list {
+			width: 50%;
+		}
+		.parsley-error {
+			border: 2px solid #c00;
+		}
+		.my_error_container {
+			position: absolute;
+			bottom: 90px;
+			width: 50%;
+		}
+		.errorMsg {
+			color: #d74c3b;
+		}
+		.message[class*='error'] {
+			background-color: #eee;
+			padding: 0 20px 10px;
+			margin-bottom: 25px;
+			border-radius: 3px;
+			-webkit-box-shadow: 0px 0px 5px 0px rgba(204, 0, 0, 0.4);
+			-moz-box-shadow: 0px 0px 5px 0px rgba(204, 0, 0, 0.4);
+			box-shadow: 0px 0px 5px 0px rgba(204, 0, 0, 0.4);
+		}
+		.message[class*='error'] .messageTable {
+			width: 100%;
+		}
+		.message[class*='error'] .messageText {
+			border-bottom: 1px solid grey;
+			height: 30px;
+		}
+		.transdesignation-info-container {
+			margin-bottom: 120px;
+		}
+		md-input-container {
+			padding-top: 15px;
+		}
+		.md-title,
+		.md-toolbar-tools {
+			margin-bottom: 15px;
+		}
+		md-input-container .input-label {
+			/*top: -50px;*/
+		}
+		md-input-container .input-label-date-picklist {
+			top: -25px;
+		}
+		.base-info {
+			margin-top: 10px;
+		}
+		.input-label {
+			color: rgba(0, 0, 0, 0.54);
+		}
+		.base-info md-content {
+			margin-bottom: 20px;
+		}
+		.provider-checkbox {
+			margin-top: -25px;
+			margin-left: -5px;
+			overflow: visible;
+		}
+		.radio-group .parsley-errors-list {
+			margin-top: 20px;
+			margin-left: -50px;
+			position: absolute;
+			width: 50%;
+		}
+		.radio-group-unique .parsley-errors-list {
+			margin-top: 25px;
+			margin-left: -150px;
+			position: absolute;
+			width: 50%;
+		}
+		.radio-group .parsley-error {
+			border: 0px;
+		}
+		.radio-group-unique .parsley-error {
+			border: 0px;
+		}
+		.new-address-live-at-address {
+			margin-top: 29px;
+		}
+		md-input-container:not(.md-input-invalid).md-input-has-value label {
+			transform: translate3d(0, 6px, 0) scale(1);
+		}
+		/* @see Angular Material - Input */
+		.requiredInput,
+		md-input-container span {
+			-webkit-flex: 1 1 auto;
+			-ms-flex: 1 1 auto;
+			flex: 1 1 auto;
+			-webkit-order: 2;
+			-ms-flex-order: 2;
+			order: 2;
+			display: block;
+			background: 0 0;
+			padding: 2px 0px 1px;
+			border-width: 0 0 1px;
+			line-height: 26px;
+			-ms-flex-preferred-size: 26px;
+			border-radius: 0;
+		}
+		.other-checkbox {
+			padding-top: 20px;
+		}
+		input[type="radio"],
+		input[type="checkbox"] {
+			margin: 4px 7px 0;
+		}
+		.radio-group label {
+			font-weight: normal;
+		}
+		.radio-group-unique label {
+			font-weight: normal;
+		}
+		.commandBtn {
+			-webkit-appearance: none;
+			border: none;
+			box-shadow: none;
+			background: none;
+			text-transform: uppercase;
+			font-weight: 500;
+			font-size: 14px;
+			font-style: inherit;
+			font-variant: inherit;
+			font-family: inherit;
+			outline: none;
+			letter-spacing: .01em;
+			margin: 3px 0px;
+			white-space: normal;
+		}
+		input[type="text"] {
+			width: 70%;
+			margin-bottom: 10px;
+			border-bottom-left-radius: 4px;
+			border-bottom-right-radius: 4px;
+		}
+		textarea.form-control {
+			width: 70%;
+			margin-bottom: 15px;
+			border-bottom-left-radius: 4px;
+			border-bottom-right-radius: 4px;
+		}
+		.navigation-buttons .md-button label {
+			white-space: normal;
+		}
+		.base-label {
+			color: rgba(0, 0, 0, 0.54);
+		}
+		.md-input-has-value {}
+		md-input-container input,
+		md-input-container .md-input {
+			max-width: 200px;
+		}
+		.readonly-input {
+			border-bottom: none;
+			cursor: not-allowed;
+		}
+		.read-only-input {
+			cursor: not-allowed;
+			background: rgba(0, 0, 0, 0.54);
+		}
+		/* TODO: Remove this and use md-select with new Validation. */
+		select {
+			background: none;
+			border: none;
+			border-bottom: 1px solid #ddd;
+		}
+		.errorMsg {
+			color: red;
+		}
+		.city-outputfield {
+			outline: none;
+			text-decoration: none;
+		}
+		@media only screen and (min-width: 0px) and (max-width: 959px) {
+			.navigation-buttons .md-button {
+				width: 100%;
+			}
+			.navigation-buttons md-content {
+				width: 100%;
+			}
+			md-input-container input {
+				max-width: none;
+			}
+		}
+		.base-info {
+			margin-bottom: 20px;
+		}
+		.table-header-after-required:after {
+			content: "*";
+			color: red;
+			width: 1px;
+			height: 1px;
+			position: relative;
+			left: 3px;
+		}
+		.table-header-after-required div {
+			float: left;
+		}
+	</style>
+	<body ng-app="eecApp">
+		<c:eec_nav_bar id="navBar" providerId="{!provider.Id}" accountName="{!provider.Name}" rendered="{!loggedUser.UserType == 'PowerPartner' || loggedUser.UserType == 'PowerCustomerSuccess' || loggedUser.UserType == 'CspLitePortal' || loggedUser.UserType == 'CustomerSuccess'}"
+		/>
+		<div class="transdesignation-info-container" layout-wrap="true" layout-lg="row" layout-gt-lg="row" layout="row" layout-padding="true"
+		 layout-margin="true" ng-controller="TransactionController as ctrl">
+			<md-content style="margin-top: 20px;" ng-show="ctrl.checkForMessages()" layout="row" flex="100" layout-align="center center">
+				<md-whiteframe class="md-whiteframe-z2 ng-cloak" layout="column" layout-padding="true" flex="75">
+					<apex:pageMessages id="showmsg"></apex:pageMessages>
+				</md-whiteframe>
+			</md-content>
+			<apex:form id="TransactionDesignationForm" styleClass="transaction-parsley-form col-lg-8 col-md-8 col-sm-12">
+				<apex:outputPanel style="padding:50px 50px 50px 50px" id="userDetail" styleClass="ng-cloak">
+					<div class="top-header-section">
+						<div class="header-name-section">
+							<h3 class="md-display-1 header-display-name">{!applicationDisplayName}</h3>
+							<h4 class="step-name">INDOOR / OUTDOOR SPACES INFORMATION</h4>
+							<h5 class="base-label trans-number">Application number: {!licenseTransation.Name}</h5>
+						</div>
+					</div>
+					<md-divider layout-align="center center"></md-divider>
+					<apex:pageBlock html-layout="column" html-layout-padding="true" id="designation">
+						<!--Provider / Transaction information -->
+						<!--            <div class="base-info" layout="column" layout-lg="row" layout-gt-lg="row" layout-wrap="true">    -->
+						<!--                 <h3 class="md-title" flex="100">Program / Transaction information</h3> -->
+						<!--                 <md-content flex="50" layout="column"> -->
+						<!--                   <label class="base-label">Program Name</label> -->
+						<!--                   <apex:outputText value="{!provider.Name}" id="providerName" /> -->
+						<!--                 </md-content> -->
+						<!--                 <md-content flex="50" layout="column"> -->
+						<!--                   <label class="base-label">Transaction Type</label> -->
+						<!--                   <apex:outputText value="{!LicenseRecordTypeLabel}" id="transactionTypeTA" /> -->
+						<!--                 </md-content> -->
+						<!--                 <md-content flex="50" layout="column"> -->
+						<!--                   <label class="base-label">Transaction Number</label> -->
+						<!--                   <apex:outputText value="{!licenseTransation.Name}" id="transactionNumberTA" /> -->
+						<!--                 </md-content> -->
+						<!--             </div> -->
+						<!-- <apex:outputPanel id="roomTableContainer" styleClass="margin-top: 0px;">
+            <apex:outputpanel rendered="{!LicenseRecordTypeName =='GSA_Renewal' || LicenseRecordTypeName =='GSA_License_Change' || LicenseRecordTypeName =='GSA_New_License' || LicenseRecordTypeName =='GSA_Move' || LicenseRecordTypeName =='GSA_Temporary_Move'}">             
+             <apex:variable var="rowNum" value="{!0}"  />  
+             <h3 class="md-title" flex="100">Indoor Space Description</h3>
+                <apex:pageBlockTable styleClass="roomTableContainer" value="{!roomList}" var="rm"  columns="7"
+                width="100%" rendered="{!roomTableVisibility}" headerClass="top-level-label" columnswidth="19%, 19%, 15%, 13%, 13%, 17%, 4%">
+                    <apex:column headerValue="Building Name" headerClass="table-header-after-required">
+                        <apex:inputField value="{!rm.Building_Name__c}" styleClass="form-control" style="width:98%" html-data-parsley-required="true"/>
+                    </apex:column>  
+                    <apex:column headerValue="Room Name" headerClass="table-header-after-required">
+                        <apex:inputField value="{!rm.Name}" styleClass="form-control" style="width:98%" html-data-parsley-required="true"/>
+                    </apex:column>           
+                    <apex:column headerValue="Use" headerClass="table-header">
+                        <apex:inputField value="{!rm.Use__c}" styleClass="form-control" style="width:98%;margin-top:3px"/>
+                    </apex:column>
+                    <apex:column headerValue="Dimension - Length (feet)" headerClass="table-header">
+                        <apex:inputField value="{!rm.Dimension_Length_feet__c}" styleClass="form-control" style="width:80%" html-data-number="true"/>
+                    </apex:column>
+                    <apex:column headerValue="Dimension - Width (feet)" headerClass="table-header">
+                        <apex:inputField value="{!rm.Dimension_Width_feet__c}" styleClass="form-control" style="width:80%" html-data-number="true"/>
+                    </apex:column>
+                    <apex:column headerValue="Floor Level" headerClass="table-header">
+                        <apex:inputField value="{!rm.Floor_Level__c}" styleClass="form-control" style="width:80%"/>
+                    </apex:column>
+                    <apex:column headerValue="Delete" style="text-align: center;" headerClass="text-center">
+                        <apex:commandLink action="{!delRowRoom}" immediate="true" reRender="roomTableContainer" style="color: #000;">
+                            <apex:param value="{!rowNum}" name="index" />
+                            <i class="material-icons">&#xE872;</i>
+                        </apex:commandLink>
+                        <apex:variable var="rowNum" value="{!rowNum+1}"/>
+                    </apex:column>  
+                </apex:pageBlockTable>  
+                <apex:outputLabel rendered="{!!roomTableVisibility}" style="padding-left: 15px;">No rooms currently added.</apex:outputLabel>
+                  <div class="roomErrorMessage">Please ensure all room data is entered.</div>
+                  <div class="roomNumErrorMessage">For dimensions, only numbers are allowed.</div>
+            </apex:outputPanel>
+            </apex:outputPanel>
+            <apex:commandButton value="Add Room" action="{!addRowRoom}" reRender="roomTableContainer" status="status" immediate="true" styleClass="md-button md-raised md-eec" style="background: #853F3F;margin-bottom: 45px;"/> -->
+						<!-- Indoor Space/ Building Details -->
+						<apex:outputPanel >
+							<div class="base-info" layout="column" layout-lg="row" layout-gt-lg="row" layout-wrap="true">
+								<h3 class="md-title" flex="100">Additional Indoor Space / Building Information</h3>
+								<div flex="100" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Indoor_Square_Footage__c==null,false,true)}}">
+									<label class="input-label">Indoor Square Footage Used For The Operations
+										<span class="required">*</span>
+									</label>
+									<apex:InputField id="IndoorSqFootage" styleClass="form-control squareFootageOperations Indoor-Sq-Footage disableAfterSubmissiom"
+									 style="width:300px" value="{!licenseTransation.Indoor_Square_Footage__c}" html-data-parsley-required="true" html-data-parsley-type="number"
+									 html-data-parsley-min="0" />
+								</div>
+								<div flex="100">
+									&nbsp;
+								</div>
+								<div flex="100" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Number_of_toilets_c__c==null,false,true)}}">
+									<label class="input-label">Number of Toilets
+										<span class="required">*</span>
+									</label>
+									<!-- <apex:inputfield type="number" styleclass="form-control" style="width:300px" value="{!licenseTransation.Number_of_toilets_c__c}" html-data-parsley-required="true" onblur="return isNumberBlur(this)" onkeypress="return isNumber(event)" />   -->
+									<apex:inputField styleclass="form-control numberOfToliet" style="width:300px" value="{!licenseTransation.Number_of_toilets_c__c}"
+									 html-data-parsley-required="true" html-data-parsley-type="number" html-data-parsley-min="0" />
+								</div>
+								<div flex="100">
+									&nbsp;
+								</div>
+								<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Number_of_sinks__c==null,false,true)}}">
+									<label class="input-label">Number of Sinks
+										<span class="required">*</span>
+									</label>
+									<!-- <apex:InputField type="number" styleClass="form-control" style="width:300px" value="{!licenseTransation.Number_of_sinks__c}" html-data-parsley-required="true" onblur="return isNumberBlur(this)" onkeypress="return isNumber(event)"/>   -->
+									<apex:InputField styleClass="form-control numberOfSink" style="width:300px" value="{!licenseTransation.Number_of_sinks__c}"
+									 html-data-parsley-required="true" html-data-parsley-type="number" html-data-parsley-min="0" />
+								</div>
+								<div flex="100">
+									<apex:outputpanel rendered="{!LicenseRecordTypeName!='GSA_License_Change'}">
+										<div class="radio-group">
+											<div class="requiredBlock"></div>
+											<label class="input-label">Lead paint Construction built prior to July 1st, 1978
+												<span class="required">*</span>
+											</label>
+											<apex:selectradio value="{!licenseTransation.Lead_Paint_Constructed_before_1978__c}">
+												<apex:selectoptions value="{!items}" html-data-parsley-required="true" />
+												<apex:actionsupport event="onchange" reRender="leadpaint" />
+											</apex:selectradio>
+										</div>
+										<div flex="100">
+											&nbsp;
+										</div>
+									</apex:outputpanel>
+								</div>
+								<!--                     <apex:outputpanel id="leadpaint" html-flex="100"> -->
+								<!--                        <div style="display: {!If(licenseTransation.Lead_Paint_Compliance__c == 'No', '', 'none')}"> -->
+								<!--                        <div class="radio-group"> -->
+								<!--                               <div class="requiredBlock"></div> -->
+								<!--                               <label class="input-label">Lead Paint: Constructed before 1978<span class="required">*</span></label> -->
+								<!--                               <apex:selectradio value="{!licenseTransation.Lead_Paint_Constructed_before_1978__c}"> -->
+								<!--                                 <apex:selectoptions value="{!items}" html-data-parsley-required="true" /> -->
+								<!--                               </apex:selectradio> -->
+								<!--                        </div> -->
+								<!--                        </div> -->
+								<!--                        <div flex="100"> -->
+								<!--                         &nbsp; -->
+								<!--                        </div> -->
+								<!--                     </apex:outputpanel> -->
+								<!--                     <div flex="100"> -->
+								<!--                       <apex:outputpanel rendered="{!LicenseRecordTypeName!='GSA_License_Change' && LicenseRecordTypeName!='GSA_Renewal'}" > -->
+								<!--                           <div class="radio-group"> -->
+								<!--                                 <div class="requiredBlock"></div> -->
+								<!--                                  <label class="input-label">Lead Paint: Detailed Inspection<span class="required">*</span></label> -->
+								<!--                                 <apex:selectradio value="{!licenseTransation.Lead_Paint_Detailed_Inspection__c}"> -->
+								<!--                                   <apex:selectoptions value="{!items}" html-data-parsley-required="true" /> -->
+								<!--                                 </apex:selectradio> -->
+								<!--                           </div> -->
+								<!--                       </apex:outputpanel> -->
+								<!--                     </div> -->
+							</div>
+						</apex:outputPanel>
+						<!-- Associated Inspections -->
+						<apex:outputPanel >
+							<div class="base-info" layout="column" layout-lg="row" layout-gt-lg="row" layout-wrap="true">
+								<h3 class="md-title" flex="100">Associated Inspections</h3>
+								<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Building_Inspection_Max_Capacity__c==null,false,true)}}">
+									<apex:outputText rendered="{!LicenseRecordTypeName == 'GSA_License_Change'}">
+										<label class="input-label">Maximum Building Capacity </label>
+									</apex:outputText>
+									<apex:outputText rendered="{!LicenseRecordTypeName != 'GSA_License_Change'}">
+										<label class="input-label">Maximum Building Capacity as mentioned during Building Inspection
+											<apex:outputText rendered="{!LicenseRecordTypeName != 'GSA_New_License'}">
+											</apex:outputText>
+										</label>
+									</apex:outputText>
+									<apex:InputField id="MaxBuildingCapacity" styleClass="form-control" style="width:300px" value="{!licenseTransation.Building_Inspection_Max_Capacity__c}"
+									/>
+								</div>
+								<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Building_inspection_expiration_Date__c==null,false,true)}}">
+									<label class="input-label">Building Inspection Expiration Date
+										<apex:outputText rendered="{!LicenseRecordTypeName != 'GSA_New_License' && LicenseRecordTypeName != 'GSA_Move' && LicenseRecordTypeName != 'GSA_Temporary_Move'}">
+										</apex:outputText>
+									</label>
+									<apex:inputfield styleclass="form-control" style="width:300px" value="{!licenseTransation.Building_inspection_expiration_Date__c}"
+									 html-data-provide="datepicker" />
+								</div>
+								<div flex="100">
+									&nbsp;
+								</div>
+								<!--
+                    <apex:actionFunction name="bldgCode" action="{!bldgCode}" reRender="radioChoose"/>
+                    <div flex="100" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Building_Codes_c__c==null,false,true)}}">
+                      <label class="input-label">Building Codes<span class="required">*</span></label>
+                      <apex:InputField styleClass="form-control" onchange="bldgCode();"  value="{!licenseTransation.Building_Codes_c__c}" html-data-parsley-validate-if-empty="true"/>
+                    </div>
+                    <div flex="100">
+                    <apex:outputPanel id="radioChoose">
+                        <apex:outputPanel html-hidden="true">  
+                              <apex:inputCheckbox selected="{!bldgCheck}" html-hidden="true" html-data-parsley-required="true" />
+                        </apex:outputPanel>
+                    </apex:outputPanel>  
+                    </div>
+                    <div flex="100"> 
+                       &nbsp;
+                    </div> 
+                    -->
+								<div flex="100" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Health_Inspection_Expiration_Date__c==null,false,true)}}">
+									<label class="input-label">Health Inspection Expiration Date
+										<apex:outputText rendered="{!LicenseRecordTypeName != 'GSA_Move' && LicenseRecordTypeName != 'GSA_Temporary_Move' && LicenseRecordTypeName != 'GSA_License_Change'}">
+										</apex:outputText>
+									</label>
+									<apex:InputField styleClass="form-control" style="width:300px" value="{!licenseTransation.Health_Inspection_Expiration_Date__c}"
+									 html-data-provide="datepicker" />
+								</div>
+								<div flex="100">
+									&nbsp;
+								</div>
+								<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Fire_Inspection_Issue_date__c==null,false,true)}}">
+									<label class="input-label">Fire Inspection Issue Date
+										<apex:outputText rendered="{!LicenseRecordTypeName != 'GSA_Move' && LicenseRecordTypeName != 'GSA_Temporary_Move'}">
+										</apex:outputText>
+									</label>
+									<apex:InputField styleClass="form-control" style="width:300px" value="{!licenseTransation.Fire_Inspection_Issue_date__c}"
+									 html-data-provide="datepicker" />
+								</div>
+								<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Integrated_Pest_Management_Date__c==null,false,true)}}">
+									<label class="input-label">Integrated Pest Management Date</label>
+									<apex:inputfield styleclass="form-control" style="width:300px" value="{!licenseTransation.Integrated_Pest_Management_Date__c}"
+									 html-data-provide="datepicker" />
+								</div>
+								<div flex="100">
+									&nbsp;
+								</div>
+								<!--<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Drinking_Water_Source__c==null,false,true)}}">
+                      <label class="input-label">Is the drinking water in your home from TO Drinking water from<span class="required">*</span></label>
+                          <apex:selectradio html-data-mincheck="1" value="{!licenseTransation.Drinking_Water_Source__c}">
+                            <apex:selectOptions html-data-parsley-required="true" html-data-parsley-required-message="" value="{!Supply}"/>
+                            <apex:actionSupport event="onchange" reRender="well" oncomplete="jQuery('.drinkingWaterError').hide(600)"/>
+                          </apex:selectradio>
+                          <apex:outputPanel id="drinkingWaterError" styleClass="drinkingWaterError parsley-errors-list filled" rendered="{!licenseTransation.Drinking_Water_Source__c==null}">
+                            <p class="errorMsg">This value is required.</p>
+                          </apex:outputPanel>
+                    </div>-->
+								<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Drinking_Water_Source__c==null,false,true)}}">
+									<div class="radio-group-unique">
+										<div class="requiredBlock"></div>
+										<apex:outputPanel rendered="{!LicenseRecordTypeName == 'GSA_New_License' || LicenseRecordTypeName == 'GSA_Temporary_Move' || LicenseRecordTypeName == 'GSA_License_Change'}">
+											<label class="input-label">Drinking Water From ?
+												<span class="required">*</span>
+											</label>
+										</apex:outputPanel>
+										<apex:outputPanel rendered="{!LicenseRecordTypeName != 'GSA_New_License' && LicenseRecordTypeName != 'GSA_Temporary_Move' && LicenseRecordTypeName != 'GSA_License_Change'}">
+											<label class="input-label">Is The Drinking Water From
+												<span class="required">*</span>
+											</label>
+										</apex:outputPanel>
+										<apex:selectradio value="{!licenseTransation.Drinking_Water_Source__c}">
+											<apex:selectoptions value="{!Supply}" html-data-parsley-required="true" />
+											<apex:actionsupport event="onchange" reRender="well,pwsNumber" />
+										</apex:selectradio>
+									</div>
+								</div>
+								<apex:outputpanel style="width:50%" id="well">
+									<div style="display: {!If(licenseTransation.Drinking_Water_Source__c=='Private Water Supply', '', 'none')}">
+										<apex:outputPanel rendered="{!licenseTransation.Drinking_Water_Source__c=='Private Water Supply'}">
+											
+										</apex:outputPanel>
+									</div>
+									<apex:outputPanel id="pwsNumber" rendered="{!licenseTransation.Drinking_Water_Source__c=='Private Water Supply' }">
+										<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.PWS_Public_Water_Source_Number__c==null,false,true)}}">
+											<label class="input-label">PWS (Public Water Source) Number</label>
+											<apex:InputField styleClass="form-control disableAfterSubmissiom" style="width:300px" value="{!licenseTransation.PWS_Public_Water_Source_Number__c}"
+											 html-data-parsley-required="false" html-data-parsley-type="number" html-data-parsley-min="0" />
+										</div>
+									</apex:outputPanel>
+								</apex:outputPanel>
+							</div>
+						</apex:outputPanel>
+						<!-- Outdoor Play Area and Transportation -->
+						<apex:outputPanel >
+							<div class="base-info" layout="column" layout-lg="row" layout-gt-lg="row" layout-wrap="true">
+								<h3 class="md-title" flex="100">Outdoor Play Area and Transportation</h3>
+								<div flex="100" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Outdoor_Square_footage__c==null,false,true)}}">
+									<label class="input-label">Outdoor Square Footage Used For The Operations
+										<span class="required">*</span>
+									</label>
+									<apex:InputField id="outdoorSqFootage" styleClass="form-control outdoor-Sq-Footage disableAfterSubmissiom" style="width:300px"
+									 value="{!licenseTransation.Outdoor_Square_footage__c}" html-data-parsley-required="true" html-data-parsley-type="number"
+									 html-data-parsley-min="0" />
+								</div>
+								<div flex="100">
+									&nbsp;
+								</div>
+								<div flex="100" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Do_you_have_a_pool__c==null,false,true)}}">
+									<div class="radio-group">
+										<div class="requiredBlock"></div>
+										<label class="input-label">Do You Have a Pool?
+											<span class="required">*</span>
+										</label>
+										<apex:selectradio value="{!licenseTransation.Do_you_have_a_pool__c}">
+											<apex:selectoptions value="{!items}" html-data-parsley-required="true" />
+											<apex:actionsupport event="onchange" reRender="Ispool" />
+										</apex:selectradio>
+									</div>
+								</div>
+								<apex:outputpanel id="Ispool">
+									<apex:outputPanel rendered="{!licenseTransation.Do_you_have_a_pool__c=='Yes'}">
+										<div flex="100">
+											&nbsp;
+										</div>
+										<div flex="100" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Pool_roof_inspection_date__c==null,false,true)}}">
+											<label class="input-label">Pool Inspection Date</label>
+											<apex:InputField styleClass="form-control" style="width:300px" value="{!licenseTransation.Pool_Inspection_Date__c}" html-data-provide="datepicker"
+											/>
+										</div>
+									</apex:outputpanel>
+									<apex:outputPanel rendered="{!licenseTransation.Do_you_have_a_pool__c=='Yes'}">
+										<div flex="100">
+											&nbsp;
+										</div>
+										<div flex="100" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Is_this_an_indoor_pool__c==null,false,true)}}">
+											<div class="radio-group">
+												<div class="requiredBlock"></div>
+												<label class="input-label">Is This an Indoor Pool?
+													<span class="required">*</span>
+												</label>
+												<apex:selectradio value="{!licenseTransation.Is_this_an_indoor_pool__c}">
+													<apex:selectoptions value="{!items}" html-data-parsley-required="true" />
+													<apex:actionsupport event="onchange" reRender="pool" />
+												</apex:selectradio>
+											</div>
+										</div>
+									</apex:outputPanel>
+									<apex:outputpanel id="pool">
+										<apex:outputPanel rendered="{!licenseTransation.Is_this_an_indoor_pool__c=='Yes'}">
+											<div flex="100">
+												&nbsp;
+											</div>
+											<div flex="100" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Pool_roof_inspection_date__c==null,false,true)}}">
+												<label class="input-label">Latest Pool Roof Inspection Date</label>
+												<apex:InputField styleClass="form-control" style="width:300px" value="{!licenseTransation.Pool_roof_inspection_date__c}"
+												 html-data-provide="datepicker" />
+											</div>
+										</apex:outputpanel>
+									</apex:outputpanel>
+								</apex:outputPanel>
+								<div flex="100">
+									&nbsp;
+								</div>
+								<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Offsite_outdoor_play_location1__c==null,false,true)}}">
+									<div class="radio-group">
+										<div class="requiredBlock"></div>
+										<label class="input-label">Are you Using an Offsite Outdoor Play Location?
+											<span class="required">*</span>
+										</label>
+										<apex:selectradio value="{!licenseTransation.Offsite_outdoor_play_location1__c}">
+											<apex:selectoptions value="{!items}" html-data-parsley-required="true" />
+											<apex:actionsupport event="onchange" reRender="offsite" />
+										</apex:selectradio>
+									</div>
+								</div>
+								<apex:outputpanel id="offsite">
+									<apex:outputpanel rendered="{!licenseTransation.Offsite_outdoor_play_location1__c=='Yes'}">
+										<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Commute_to_offsite_play_location__c==null,false,true)}}">
+											<label class="input-label">How Do You Go There?
+												<span class="required">*</span>
+											</label>
+											<apex:InputField styleClass="form-control" style="width:300px" value="{!licenseTransation.Commute_to_offsite_play_location__c}"
+											 html-data-parsley-required="true" />
+										</div>
+									</apex:outputpanel>
+								</apex:outputpanel>
+								<div flex="100">
+									&nbsp;
+								</div>
+								<div flex="100" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Transportation_provided1__c==null,false,true)}}">
+									<div class="radio-group">
+										<div class="requiredBlock"></div>
+										<label class="input-label">Do You Provide Transportation?
+											<span class="required">*</span>
+										</label>
+										<apex:selectradio value="{!licenseTransation.Transportation_provided1__c}">
+											<apex:selectoptions value="{!items}" html-data-parsley-required="true" />
+											<apex:actionsupport event="onchange" reRender="transPortation" />
+										</apex:selectradio>
+									</div>
+								</div>
+								<div flex="100">
+									&nbsp;
+								</div>
+								<apex:outputPanel html-flex="50" id="transPortation">
+									<apex:outputPanel rendered="{!licenseTransation.Transportation_provided1__c =='Yes'}">
+										<div ng-class="{'md-input-has-value' : {!IF(licenseTransation.Transportation_provided1__c==null,false,true)}}">
+											<div class="radio-group">
+												<div class="requiredBlock"></div>
+												<label class="input-label">Transportation :
+													<span class="required">*</span>
+												</label>
+												<apex:InputField value="{!licenseTransation.Transportation__c}" styleClass="form-control" />
+											</div>
+										</div>
+									</apex:outputPanel>
+								</apex:outputPanel>
+								<apex:outputPanel html-flex="100" rendered="{!LicenseRecordTypeName == 'GSA_License_Change'}">
+									<div flex="100">
+										&nbsp;
+									</div>
+									<div flex="100" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Are_you_adding_space__c==null,false,true)}}">
+										<div class="radio-group">
+											<div class="requiredBlock"></div>
+											<label class="input-label">Are you adding space?
+												<span class="required">*</span>
+											</label>
+											<apex:selectradio value="{!licenseTransation.Are_you_adding_space__c}">
+												<apex:selectoptions value="{!items}" html-data-parsley-required="true" />
+											</apex:selectradio>
+										</div>
+									</div>
+								</apex:outputPanel>
+								<div flex="100">
+									&nbsp;
+								</div>
+								<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Other_Approved_Additional_Space__c == null, false, true)}}">
+									<apex:outputPanel rendered="{!provider.RecordType.DeveloperName != 'Public_School'
+										&& provider.RecordType.DeveloperName != 'Private_School'
+										&& provider.RecordType.DeveloperName != 'Other_Eligible_Provider'
+										&& provider.RecordType.DeveloperName != 'Summer_Camp'
+										&& provider.RecordType.DeveloperName != 'Informal_Child_Care'}">
+										<label class="input-label">Are You Requesting The Approval of Any Other Additional Space?</label>
+									</apex:outputPanel>
+									<apex:outputPanel rendered="{!provider.RecordType.DeveloperName == 'Public_School'
+										|| provider.RecordType.DeveloperName == 'Private_School'
+										|| provider.RecordType.DeveloperName == 'Other_Eligible_Provider'
+										|| provider.RecordType.DeveloperName == 'Summer_Camp'
+										|| provider.RecordType.DeveloperName == 'Informal_Child_Care'}">
+										<label class="input-label">Do you use any other additional space?</label>
+									</apex:outputPanel>
+									<apex:InputField styleClass="form-control" style="width:300px" value="{!licenseTransation.Other_Approved_Additional_Space__c}"
+									/>
+								</div>
+							</div>
+						</apex:outputPanel>
+						<!-- Is Your Program in compliance with Americans with Disabilities Act (ADA) requirements? -->
+						<!--  <apex:outputPanel >
+            <div class="base-info" layout="column" layout-lg="row" layout-gt-lg="row" layout-wrap="true">       
+            <h3 class="md-title" flex="100">Is Your Program in compliance with Americans with Disabilities Act (ADA) requirements?</h3> 
+                <div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Indoor_ADA_Compliant__c==null,false,true)}}">
+                      <label class="input-label">Indoor<span class="required">*</span></label>
+                      <apex:InputField styleClass="form-control"  html-data-parsley-required="true" style="width:300px" value="{!licenseTransation.Indoor_ADA_Compliant__c}"/>    
+                </div>
+                <div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Outdoor_ADA_Compliant__c==null,false,true)}}">
+                      <label class="input-label">Outdoor / Playground<span class="required">*</span></label>
+                      <apex:InputField styleClass="form-control" html-data-parsley-required="true" style="width:300px" value="{!licenseTransation.Outdoor_ADA_Compliant__c}"/>    
+                </div>
+            </div>
+        </apex:outputPanel>  -->
+						<!-- Navigation Buttons -->
+						<md-divider layout-align="center center" style="margin-top:50px;"></md-divider>
+						<md-content class="navigation-buttons" layout="column" layout-lg="row" layout-align="space-between center" layout-gt-lg="row"
+						 layout-align-sm="center center" layout-align-md="center center">
+							<apex:commandLink styleClass="md-button md-raised md-button md-default-theme" value="Previous" action="{!SaveAndPreviousIndoorGSA}"
+							 html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" status="status"/>
+							<apex:commandLink styleClass="md-button md-raised md-button md-default-theme btn-pullLeft" value="Close" action="{!closeAndreturnToHome}"
+							 html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" status="status"/>
+							<apex:commandLink styleClass="md-button md-raised md-eec save-btn btn-pullRight" value="Save" onclick="if(!form.validate()){return false;}"
+							 action="{!SaveAndNextIndoorGSA}" html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" status="status">
+								<apex:param name="isSaveOnly" value="true" assignTo="{!isSaveOnly}" />
+							</apex:commandLink>
+							<apex:commandLink styleClass="md-button md-raised md-eec save-btn" onclick="if(!form.validate()){return false;}" action="{!SaveAndNextIndoorGSA}"
+							 html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" status="status">
+								<apex:outputText rendered="{!!isSubmitted}">Save and </apex:outputText> Next
+							</apex:commandLink>
+						</md-content>
+						<md-divider layout-align="center center"></md-divider>
+						<!--             <md-content class="navigation-buttons" layout="column" layout-lg="row" layout-align="space-between center" layout-gt-lg="row" layout-align-sm="center center" layout-align-md="center center">     -->
+						<!--                 <apex:commandLink status="status" styleClass="md-button md-raised"  immediate="true"  action="{!CancelTransaction}" value="Cancel {!formattedLicenseRecordTypeLabel} Transaction"  onclick="return confirm('Are you sure to cancel the transaction?');" html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true"/> -->
+						<!--                 <apex:commandLink status="status" styleClass="md-button md-raised save-btn" value="{!saveAndReturnLabel}" onclick="if(!form.validate()){return false;}" action="{!saveAndReturnIndoorGSA}" html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true"/> -->
+						<!--             </md-content>  -->
+					</apex:pageBlock>
+				</apex:outputPanel>
+				<apex:actionFunction action="{!SaveAndNextIndoorGSA}" name="SaveNext" status="status"/>
+				<apex:actionFunction action="{!SaveAndPreviousIndoorGSA}" name="SavePrevious" oncomplete="addMargin();" status="status">
+					<apex:param name="previousPage" assignTo="{!previousPageName}" value="" />
+				</apex:actionFunction>
+			</apex:form>
+			<eec-wizard btn-progress-color="#fff" class="col-lg-3" flex="30" passed-btn-bg-color="#4CAF50" btn-bg-color="#FAFAFA" active-btn-bg-color="#0288D1"
+			 hide="true" show-gt-md="true">
+				<c:EEC_Navigation current="Indoor / Outdoor Space Information" recordTypeDeveloperName="{!LicenseRecordTypeName}" highest="{!highestStepReached}"
+				 providerRecordType="{!licenseTransation.providerRecordTypeDeveloperName__c}"> 
+				</c:EEC_Navigation>
+			</eec-wizard>
+		</div>
+		<c:eec_site_footer id="siteFooter" />
+		<script>
+			var form = j$(".transaction-parsley-form").parsley({
+				errorsWrapper: '<div class="parsley-errors-list"></div>',
+				errorTemplate: '<p class="errorMsg"></p>'
+			});
+			jQuery(window).on('load', function () {
+				_.each(jQuery('[id*=lookup'), function (value, key) {
+					jQuery(value).off('click');
+					jQuery(value).attr('href', '');
+					jQuery(value).css('text-decoration', 'none');
+					jQuery(value).css('cursor', 'not-allowed');
+					jQuery(value).css('color', 'black');
+					jQuery(value).hover(function () {
+						jQuery(this).css('color', 'black');
+						jQuery(this).css('cursor', 'not-allowed');
+						jQuery(this).css('text-decoration', 'none');
+					});
+				});
+			});
+			j$(document).ready(function () {
+				if ('{!LicenseRecordTypeName}' == 'GSA_Renewal') {
+					/*j$('.numberOfToliet').attr('disabled','disabled');
+					j$('.numberOfSink').attr('disabled','disabled');
+					j$('.disableAfterSubmissiom').attr('disabled','disabled');  */
+					if ('{!LicenseRecordTypeName}' == 'GSA_Renewal') {
+						var indoorSquFootage = j$('.Indoor-Sq-Footage').val();
+						indoorSquFootage = indoorSquFootage.replace(',', '');
+						j$('.Indoor-Sq-Footage').val(indoorSquFootage);
+						var outdoorSquFootage = j$('.outdoor-Sq-Footage').val();
+						outdoorSquFootage = outdoorSquFootage.replace(',', '');
+						j$('.outdoor-Sq-Footage').val(outdoorSquFootage);
+					}
+				}
+				var isSubmitted = '{!isSubmitted}';
+				if (isSubmitted == 'true') {
+					j$("input[type=radio]").prop('disabled', true);
+					j$("input[type=text]").prop('disabled', true);
+					j$("textarea").prop('disabled', true);
+				}
+			});
+		</script>
+		<script>
+			function isNumber(evt) {
+				evt = (evt) ? evt : window.event;
+				var charCode = (evt.which) ? evt.which : evt.keyCode;
+				if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+					return false;
+				}
+				return true;
+			}
+			function addMargin() {
+				j$(".required-input").addClass("required-input-with-error");
+			}
+			app.controller('TransactionController', ['$scope', '$location', 'Util', function ($scope, $location, Util) {
+				// Instance of controller.
+				var tranCtrl = this;
+				// Controller level variables.
+				tranCtrl.data = {};
+				tranCtrl.data.addressCheckbox = "{!provider.Live_at_this_address__c}";
+				tranCtrl.wizardElements = Util.generateWizardElements("{!licenseRecordTypeName}", 'Transaction/Provider Info');
+				tranCtrl.selected = [];
+				//  Function to toggle the checkbox.
+				tranCtrl.toggle = function (item, list) {
+					var idx = list.indexOf(item);
+					if (idx > -1) list.splice(idx, 1);
+					else list.push(item);
+				};
+				// Function to check if checkbox is already checked.
+				tranCtrl.exists = function (item, list) {
+					return list.indexOf(item) > -1;
+				};
+				// Function to check for messages available due to errors.
+				tranCtrl.checkForMessages = function () {
+					// TODO: Switch this to use Angular and now jQuery.            
+					var ele = jQuery('[id*="showmsg"]');
+					if (ele.children().length > 0) {
+						return true;
+					}
+					return false;
+				};
+			}]);
+			// TODO: Attempt this in Angular over jQuery.     
+			// If a dateformat is clicked - generated by SForce - then attach input-has-value class.
+			jQuery('.dateFormat').on('click', function () { jQuery(this).parent().parent().parent().addClass('md-input-has-value'); });
+			function doNavigate(previousPage, nextPage) {
+				if (nextPage != '') {
+					if (!form.validate()) {
+						return false;
+					}
+					else {
+						SaveNext();
+					}
+				}
+				else if (previousPage != '') {
+					/*if(!form.validate()){
+					 return false;
+					}
+					else{*/
+					SavePrevious(previousPage);
+					//}
+				}
+			}
+		</script>
+	</body>
+</apex:page>

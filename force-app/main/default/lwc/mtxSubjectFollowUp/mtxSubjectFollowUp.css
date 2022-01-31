@@ -1,0 +1,11 @@
+.followBox {
+    background: white
+}
+.cardHeader{
+    background: #f3f2f2
+}
+.followUpCard{
+    border: 2px solid #f3f2f2;
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.1);
+    margin-bottom: 1.5rem;
+}

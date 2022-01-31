@@ -1,0 +1,58 @@
+<template>
+    <template if:true={subject.data}> 
+    <lightning-layout class="c-layoutcontainer">
+        <lightning-layout-item  size="1" padding="around-small">
+            <div class="header-column">
+                <p class="field-title" title="Disposition">Disposition</p>
+                <p><strong>{disposition}</strong></p>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item  size="1" padding="around-small">
+            <div class="header-column">
+                <p class="field-title" title="Gender">Gender</p>
+                <p><strong>{gender}</strong></p>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="2" padding="around-small">
+            <div class="header-column">  
+                <p class="field-title" title="Mobile Number">Mobile Number</p>              
+                <p><strong><lightning-formatted-phone value={mobilePhone}></lightning-formatted-phone></strong></p>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="2" padding="around-small">
+            <div class="header-column">
+                <p class="field-title" title="Email">Email</p>
+                <p><strong><lightning-formatted-email value={email}></lightning-formatted-email></strong></p>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="2" padding="around-small">
+            <div class="header-column">
+                <p class="field-title" title="County">County</p>
+                <p>
+                    <strong>{county}</strong>
+                </p>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="2" padding="around-small">
+            <div class="header-column">
+                <p class="field-title" title="Date Of Birth">Date Of Birth</p>
+                <p>
+                    <strong>
+                        <lightning-formatted-date-time year="numeric" month="numeric" day="numeric" value={dob}></lightning-formatted-date-time>
+                    </strong>
+                </p>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="2" padding="around-small">
+            <div class="header-column">
+                <p class="field-title" title="Monitoring End Date">Monitoring End Date</p>
+                <p>
+                    <strong>
+                        <lightning-formatted-date-time year="numeric" month="numeric" day="numeric" value={monitoringEndDate}></lightning-formatted-date-time>
+                    </strong>
+                </p>
+            </div>
+        </lightning-layout-item>
+    </lightning-layout>
+    </template>
+</template>

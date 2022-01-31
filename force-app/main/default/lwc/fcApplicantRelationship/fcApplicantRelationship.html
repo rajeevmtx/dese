@@ -1,0 +1,33 @@
+<template>
+    <div class="page-header">
+        <h1 class="page-title">Applicant Relationship</h1>
+    </div>
+    <div class="app-container slds-grid slds-gutters slds-wrap">
+    <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+        <c-fc-intake-form-help-text help-text={helpTextVerification}></c-fc-intake-form-help-text>
+    </div> 
+    <div class="slds-form slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+        <lightning-radio-group name="relationship" label="What is the relationship between the applicants?"
+            options={relationshipOptions} value={obj.relationship} required onchange={handleInputChange} type="radio">
+        </lightning-radio-group>
+
+        <template if:true={isPreviouslyApproved}>
+            <div class="boxpanel">
+                <template if:true={isRelationshipSpecified}>
+                    <lightning-input name="date" class="slds-m-left_small slds-p-around_small" type="date"
+                        label="Please provide the date" placeholder="" onchange={handleInputChange} required>
+                    </lightning-input>
+                    <lightning-input name="placePartnership" class="slds-m-left_small slds-p-around_small" type="text"
+                        label="Place of current marriage/ domestic partnership? (city and state)" placeholder=""
+                        onchange={handleInputChange} required></lightning-input>
+                </template>
+                <template if:true={isOtherRelationship}>
+                    <lightning-input name="otherRelationship" class="slds-m-left_small slds-p-around_small" type="text"
+                        label="If you selected 'Other' in the previous question above, please explain." placeholder=""
+                        onchange={handleInputChange} required></lightning-input>
+                </template>
+            </div>
+        </template>
+    </div>
+    </div>
+</template>

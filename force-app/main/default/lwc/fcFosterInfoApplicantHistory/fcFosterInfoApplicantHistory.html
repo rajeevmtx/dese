@@ -1,0 +1,101 @@
+<template>
+    <div class="slds-grid slds-wrap">
+        <div class="slds-col slds-size_1-of-1 page-header">
+            <h1 class="page-title">Applicant Foster/Adoption History</h1>
+        </div>
+
+        <div class="slds-col slds-size_1-of-1">
+            <c-fc-intake-form-help-text help-text={helpText}></c-fc-intake-form-help-text>
+        </div>
+
+        <div class="slds-col slds-size_1-of-1 slds-form">
+            <lightning-radio-group name="radioGroup"
+            label="Have you previously been or are you currently approved for adoption, an approved relative or nonrelative extended family member, or previously or currently licensed, certified, or approved to provide foster care?"
+            options={optionsforYesNo}
+            value={valueForApproved}
+            required
+            onchange={handleChangeForApproved}
+            type="radio"></lightning-radio-group>
+    
+            <template if:true={isPreviouslyApproved}>
+                <div class="boxpanel">
+                    <lightning-input  class="slds-m-left_small slds-p-around_small" type="text" label="Name of agency(s)" placeholder="" required></lightning-input> 
+                    <lightning-input class="slds-m-left_small slds-p-around_small" type="text" label="Type of license/certification/approval" placeholder="" required></lightning-input> 
+                    <lightning-radio-group class="slds-m-left_small slds-p-around_small" name="radioGroup"
+                    label="Are you aware of any pending complaints or administrative actions?"
+                    options={optionsforYesNo}
+                    value={valueForPendingComplaints}
+                    required
+                    onchange={handleChangeForPendingComplaints}
+                    type="radio"></lightning-radio-group>
+    
+                </div>
+            </template>
+    
+            <lightning-radio-group name="radioGroup"
+            label="Have you previously been or are you currently licensed to operate a child care center, family child care home, or residential care facility for the elderly or chronically ill?"
+            options={optionsforYesNo}
+            value={valueForLicensedtoOperate}
+            required
+            onchange={handleChangeForLicensedtoOperate}
+            type="radio"></lightning-radio-group>
+            <template if:true={isPreviouslyLicensedToOperate}>
+                <div class="boxpanel">
+                    <lightning-input class="slds-m-left_small slds-p-around_small" type="text" label="Type of license" placeholder="" required></lightning-input> 
+                </div>
+    
+            </template>
+    
+            
+            <lightning-radio-group name="radioGroup"
+            label="Have you previously been or are you currently employed by or volunteering at a community care facility, child care center, family child care home, or residential care facility for the elderly or chronically ill?"
+            options={optionsforYesNo}
+            value={valueForEmployed}
+            required
+            onchange={handleChangeForEmployed}
+            type="radio"></lightning-radio-group>
+    
+            <template if:true={isCurrentlyEmployedChildCare}>
+                <div class="boxpanel">
+                    <lightning-input class="slds-m-left_small slds-p-around_small" type="text" label="Name the facility(s)" placeholder="" required></lightning-input> 
+                </div>
+            </template>
+    
+            <lightning-radio-group name="radioGroup"
+            label="Have you had a previous license, certification, relative or nonrelative extended family member approval, Resource Family approval, or portability application denial?"
+            options={optionsforYesNo}
+            value={valueForPreviousDenial}
+            required
+            onchange={handleChangeForPreviousDenial}
+            type="radio"></lightning-radio-group>
+    
+            <template if:true={isPreviouslyDenied}>
+                <div class="boxpanel">
+                    <lightning-input class="slds-m-left_small slds-p-around_small" type="text" label="Name of agency(s)" placeholder="" required></lightning-input> 
+                </div>
+            </template>
+    
+            <lightning-radio-group name="radioGroup"
+            label="Have you had a license, certification, or approval suspended, revoked, or rescinded?"
+            options={optionsforYesNo}
+            value={valueForLicenseRevoked}
+            required
+            onchange={handleChangeForLicenseRevoked}
+            type="radio"></lightning-radio-group>
+    
+            <template if:true={isPreviouslyLicenseRevoked}>
+                <div class="boxpanel">
+                    <lightning-input class="slds-m-left_small slds-p-around_small" type="text" label="Name of agency(s)" placeholder="" required></lightning-input> 
+                </div>
+            </template>
+    
+            <lightning-radio-group name="radioGroup"
+            label="Have you been subject to an exclusion order?"
+            options={optionsforYesNo}
+            value={valueForExclusion}
+            required
+            onchange={handleChangeForExclusion}
+            type="radio"></lightning-radio-group>
+        </div>
+    </div>
+</template>

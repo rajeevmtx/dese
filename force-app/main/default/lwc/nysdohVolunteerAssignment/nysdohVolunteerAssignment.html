@@ -1,0 +1,90 @@
+<!--
+ - Created by arunm on 22-03-2020.
+ -->
+
+<!-- NYSDOH Volunteer Assignments -->
+<template>
+    <div class="backdrop" if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </div>
+    </div>
+    <c-nysdoh-sidebar selected-tab="Volunteer Assignments" show-footer>
+        <div slot="body">
+            <div class="tab slds-m-around_large shadow-card">
+                <div class="container padding-bottom-container">
+                    <div if:true={isHospital} class="slds-m-bottom_x-large doh-card-heading">
+                        <h1 class="section-title">Volunteer Assignments</h1>
+                    </div>
+                    <div if:true={isVolunteer} class="slds-m-bottom_x-large doh-card-heading">
+                        <h1 class="section-title">Assignments</h1>
+                    </div>
+                    <c-psr-help-text help-text={Portal_Work_Order_Help_Text}></c-psr-help-text>
+
+                    <div class="license-grid slds-m-bottom_x-large">
+                        <lightning-combobox if:true={statusOptions}
+                                name="statusFilter"
+                                label="Filter By Status"
+                                value={selectedStatus}
+                                placeholder="Filter By Status"
+                                options={statusOptions}
+                                onchange={handleStatusChange} >
+                        </lightning-combobox>
+                    </div>
+
+                    <div class="slds-grid slds-wrap woTable">
+                        <table style="margin-top: 0" class="slds-table">
+                            <tr class="table_header_brand">
+                                <td if:true={isHospital}><b>Volunteer Name</b></td>
+                                <td if:true={isVolunteer}><b>Volunteer Site</b></td>
+                                <td if:true={isVolunteer}><b>Address</b></td>
+                                <td><b>Start Date</b></td>
+                                <td><b>End Date</b></td>
+                                <td><b>Status</b></td>
+                                <td if:true={isVolunteer}><b>Shift Type</b></td>
+                                <td if:true={isVolunteer}><b>Actions</b></td>
+                            </tr>
+                            <template for:each={filteredVolunteerAssignments} for:item="item">
+                                <tr key={item.Id}>
+                                    <td if:true={isHospital}><a data-volunteer-id={item.volunteerId} onclick={navigateToVolunteerDetail}>{item.volunteerName}</a></td>
+                                    <td if:true={isVolunteer}>{item.hospitalName}</td>
+                                    <td if:true={isVolunteer}>{item.hospitalAddress}</td>
+                                    <td>{item.startDate}</td>
+                                    <td>{item.endDate}</td>
+                                    <td>{item.status}</td>
+                                    <td if:true={isVolunteer}>{item.shiftType}</td>
+                                    <td if:true={isVolunteer}>
+                                        <lightning-button disabled={item.disableConfirmation} variant="brand-outline" label="Respond" onclick={confirm}
+                                                          data-volunteer-assignment-id={item.Id}
+                                                          class="slds-m-left_x-small side_margin">
+                                        </lightning-button>
+                                    </td>
+                                </tr>
+                            </template>
+                        </table>
+
+                        <div class="slds-p-top_medium slds-align_absolute-center">
+                            <ul class="slds-button-group-row">
+                                <template if:true={hasPrevious}>
+                                    <li class="slds-button-group-item" >
+                                        <button class="slds-button nav-tem slds-button_neutral" onclick ={onPrev}> Previous</button>
+                                    </li>
+                                </template>
+                                <template for:each={pagesList} for:item= "pageNumber">
+                                    <li class="slds-button-group-item" key={pageNumber}>
+                                        <button data-id={pageNumber} class="slds-button nav-tem slds-button_neutral" onclick={onPageClick}>{pageNumber}</button>
+                                    </li>
+                                </template>
+                                <template if:true={hasNext}>
+                                    <li class="slds-button-group-item" ><button class="slds-button nav-tem slds-button_neutral" onclick={onNext}>next</button></li>
+                                </template>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </c-nysdoh-sidebar>
+
+    <c-nysdoh-volunteer-assignment-confirmation if:true={showConfirmationModal} onclose={closeModal} volunteer-assignment-id={volunteerAssignmentId}></c-nysdoh-volunteer-assignment-confirmation>
+</template>

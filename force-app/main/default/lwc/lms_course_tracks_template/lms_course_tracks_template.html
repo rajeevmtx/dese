@@ -1,0 +1,133 @@
+<template>
+    <div if:false={isempty}>
+        <div if:true={courseTracks}>
+            <div class="slds-grid Sidebar-Background">
+                <div class="slds-col slds-size_2-of-12">
+                    <template if:true={courseTracks.isEnrolled}>
+                        <template if:true={courseTracks.courseScheduleObject}>
+                            <template if:true={courseTracks.courseScheduleObject.courseUserEnrollment.completed}>
+                                <div class="side-panel-enrolled-completed">
+                                    <center><img src={enrolledIcon} class="icon-container slds-p-top_small" /></center>
+                                    <div class="left-container-note">Enrolled</div>
+                                    <div class="left-container-note-complete">Complete
+                                        {courseTracks.courseScheduleObject.courseUserEnrollment.totalModulesCompleted}/{courseTracks.courseScheduleObject.courseUserEnrollment.totalModules}
+                                    </div>
+                                </div>
+                            </template>
+                            <template if:false={courseTracks.courseScheduleObject.courseUserEnrollment.completed}>
+                                <div class="side-panel-enrolled">
+                                    <center><img src={enrolledIcon} class="icon-container slds-p-top_small" /></center>
+                                    <div class="left-container-note">Enrolled</div>
+                                    <div class="left-container-note-complete">Complete
+                                        {courseTracks.courseScheduleObject.courseUserEnrollment.totalModulesCompleted}/{courseTracks.courseScheduleObject.courseUserEnrollment.totalModules}
+                                    </div>
+                                </div>
+                            </template>
+                        </template>
+                    </template>
+
+                    <template if:false={courseTracks.isEnrolled}>
+                        <div class="side-panel-not-enrolled">
+                            <center><img src={enrolledIcon} class="icon-container slds-p-top_small" /></center>
+                            <div class="left-container-note">Not Enrolled</div>
+                        </div>
+                    </template>
+
+                </div>
+                <div class="slds-col slds-size_10-of-12">
+                    <div class="slds-grid card-header">
+                        <div class="slds-col slds-size_12-of-12">
+                            <div class="slds-grid">
+                                <div class="slds-col slds-size_8-of-12">
+                                    <template if:true={courseTracks.courseScheduleObject}>
+                                        <a class="course-open" onclick={navigateNext}
+                                            data-schedule={courseTracks.courseScheduleObject.id}
+                                            data-enroll={courseTracks.courseScheduleObject.courseUserEnrollment.id}
+                                            data-enrolled={courseTracks.isEnrolled}
+                                            data-summary={courseTracks.courseSummary}
+                                            data-name={courseTracks.courseName}
+                                            data-id={courseTracks.id}>{courseTracks.courseName}</a>
+                                        <div class="categories">
+                                            <template for:each={courseTracks.subCategory} for:item="cat">
+                                                <lightning-badge label={cat} key={cat}></lightning-badge>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="slds-col slds-size_4-of-12">
+                                    <template if:false={courseTracks.isEnrolled}>
+                                        <template if:false={courseTracks.lockButtons}>
+                                            <lightning-button variant="brand" label="Enroll" title="Brand action"
+                                                data-course-schedule-id={courseTracks.courseScheduleObject.id}
+                                                data-courseid={courseTracks.id} onclick={enrollUser}
+                                                class="slds-m-left_x-small enroll-button"></lightning-button>
+                                        </template></template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-grid card-header">
+                        <div class="slds-col slds-size_12-of-12">
+                            <p class="summary-text">
+                                <template if:true={courseTracks.showReadMore}>
+                                    <template if:true={hideSummary}>
+                                        <div>
+                                            <lightning-formatted-rich-text value={courseTracks.shortSummary}>
+                                            </lightning-formatted-rich-text>
+                                            <a class="more-less" onclick={showDetail}>
+                                                (Read More)
+                                            </a>
+                                        </div>
+                                    </template>
+
+                                    <template if:true={showSummary}>
+                                        <div>
+                                            <lightning-formatted-rich-text value={courseTracks.courseSummary}>
+                                            </lightning-formatted-rich-text>
+                                            <a class="more-less" onclick={hideDetail}>
+                                                (Show Less)
+                                            </a>
+                                        </div>
+                                    </template>
+                                </template>
+                                <template if:false={courseTracks.showReadMore}>
+                                    <div class="slds-grid">
+                                        <lightning-formatted-rich-text value={courseTracks.courseSummary}>
+                                        </lightning-formatted-rich-text>
+                                    </div>
+                                </template>
+
+                            </p>
+                        </div>
+                    </div>
+                    <hr class="line">
+                    
+
+                    <div class="slds-grid card-footer">
+                        <div class="slds-col slds-size_1.7-of-8">
+                            <div if:false={courseTracks.liked} class="like-content">
+                                <a onclick={increaseLike} data-courseid={courseTracks.id}><img class="like-button"
+                                        src={thumbup}></a> &nbsp;{courseTracks.totalLikes} Likes &nbsp;&nbsp;&nbsp;
+                            </div>
+                            <div if:true={courseTracks.liked} class="like-content">
+                                <a onclick={decreaseLike} data-courseid={courseTracks.id}><img class="like-button"
+                                        src={thumbblue}></a>&nbsp;{courseTracks.totalLikes} Likes &nbsp;&nbsp;&nbsp;
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_2-of-8">
+                            <lightning-icon icon-name="utility:date_time" size="xx-small"
+                                alternative-text="Utility image"></lightning-icon>
+                            &nbsp;Duration-{courseTracks.duration} Hours
+                        </div>
+                        <div class="slds-col slds-size_5-of-8">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<div if:true={isempty}>
+        <a ><img src={nocourses}></a>
+    </div>-->
+</template>

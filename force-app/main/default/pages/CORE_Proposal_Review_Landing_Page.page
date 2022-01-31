@@ -1,0 +1,54 @@
+<apex:page tabStyle="Proposal_Review__tab" controller="CORE_Proposal_Review_Landing_Controller" standardStylesheets="false" sidebar="false">
+    <apex:composition template="CORE_APPINTAKE_Proposal_Template_Page">
+        <apex:define name="body">
+            <div class="page">
+                <apex:form id="frm">
+                    <div class="application">
+                        <div class="content content-body">
+                            <apex:outputPanel id="errorPanel">
+                                <div class="alert alert-info">
+                                    {!$Label.Proposal_Landing_Page_Help_Text}
+                                </div>
+                            </apex:outputPanel>
+                            
+                            <div class="row">  
+                                <div class="form-group col-xs-12"> 
+                                    <table id="contactTable" class="table table-striped table-border" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Grant Opportunities Name</th>
+                                                <th>Round</th>
+                                                <th>Proposal Review</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <apex:repeat value="{!solicitationWrapperList}" var="solicitation">
+                                                <tr>
+                                                    <td> {!solicitation.solicitationName} </td>
+                                                    <td> {!solicitation.roundName} </td>
+                                                    <td> 
+                                                        <a href="{!$Page.CORE_Proposal_Review_Page}?solicitationID={!solicitation.solicitationId}&round={!solicitation.roundId}">
+                                                            [Open] 
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </apex:repeat>
+                                        </tbody>    
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </apex:form>            
+            </div>
+        </apex:define>
+    </apex:composition>
+    <Script>
+    
+    $(document).ready(function() {
+        	jQuery("html").attr("lang", "en");
+        });
+    
+    </Script>
+    
+</apex:page>

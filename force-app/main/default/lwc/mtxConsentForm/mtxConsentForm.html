@@ -1,0 +1,45 @@
+<template>
+    <template if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+    </template>
+    <div class="app-container slds-grid slds-gutters slds-wrap">
+        <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <c-psr-help-text help-text={travelerHelpText}></c-psr-help-text>
+        </div>
+        <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <div class="container">
+                <div class="d-flex">
+                    <h4>Consent</h4>
+                    <span> &nbsp; (Steps 7 of 7)</span>
+                </div>
+                <br />
+                <label class="slds-form-element__label slds-no-flex">Do you ensure to participate in an automated
+                    monitoring system through text to your cell phone so that we can check on you regularly to
+                    ensure your health and safety? (For 14 days from your last date in the affected
+                    country)?</label>
+                <lightning-radio-group required message-when-value-missing="Consent is required" class="customRadioCls " name="Consent" options={options} value={value}
+                    type="radio" onchange={handleRadioButtonOnChange}></lightning-radio-group>
+                <lightning-record-edit-form record-id={subjectId} density="comfy" object-api-name="Subject__c" onsuccess={handleFormSuccess}
+                    onsubmit={handleFormSubmit} onload={handleOnLoad} onerror={handleOnError}>
+                    <lightning-messages></lightning-messages>
+                    <lightning-input-field field-name="Consent__c" style="display: none" value={consentValue} data-id = "consent">
+                    </lightning-input-field>
+                    <div class="display-date">
+                        <label class="slds-form-element__label slds-no-flex">Last day to Follow up: </label>
+                        <span class="slds-form-element__label slds-no-flex"> {date}</span>
+                    </div>
+                    
+                    <div>
+                        <lightning-button variant="brand" style="float: right;"  class="slds-m-top_medium" type="submit"
+                        label="Submit">
+                        </lightning-button>
+                        <lightning-button style="float: right;" class="slds-m-right_small slds-m-top_medium" label="Back" onclick={goBack}>
+                        </lightning-button>
+                    </div>
+                    
+                </lightning-record-edit-form>
+            </div>
+        </div>
+    </div>
+
+</template>

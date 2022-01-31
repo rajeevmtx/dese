@@ -1,0 +1,2 @@
+<apex:page standardController="Account" extensions="GenerateAppointmentControllerr" action="{!savePDF}">
+</apex:page>

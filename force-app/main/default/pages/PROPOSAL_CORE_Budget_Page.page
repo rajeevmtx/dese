@@ -1,0 +1,590 @@
+<apex:page sidebar="false" tabStyle="Project__c" controller="PROPOSAL_CORE_Budget_Controller" standardStylesheets="false">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        #validationErrorMessage1 {
+            display: none;
+        }
+
+        #successMessage {
+            display: none;
+        }
+
+        .required {
+            font-weight: bold;
+            color: red;
+        }
+
+        .alert-container {
+            padding: 0px;
+        }
+
+        .popover {
+            width: 250px;
+        }
+
+        .mb0 {
+            margin-bottom: 0;
+        }
+
+        .justify-space-between {
+            justify-content: space-between;
+        }
+
+        .help-link {
+            font-size: 14px;
+            color: #1d49cc;
+            padding-top: 2%;
+            margin-left: 50px;
+        }
+
+        .slds-button_outline-brand {
+            border-color: #0d3cc8;
+            color: #0d3cc8;
+        }
+
+        .timeline {
+            border-left: 2px solid #dfe4f2;
+            border-bottom-right-radius: 4px;
+            border-top-right-radius: 4px;
+            margin-left: 12px;
+            letter-spacing: 0;
+            position: relative;
+            position: -webkit-sticky;
+            position: sticky;
+            top: 2rem;
+            line-height: 1.4em;
+            font-size: 14px;
+            padding: 0 25px;
+            list-style: none;
+            text-align: left;
+            counter-reset: li-counter;
+            margin: 3rem 2rem;
+        }
+
+        .timeline .event:after {
+            border: 2px solid #656566;
+            border: 5px solid #f7f7f7;
+            position: absolute;
+            display: block;
+            top: 0;
+            left: -43px;
+            background: #dfe4f2;
+            border-radius: 50%;
+            height: 21px;
+            width: 25px;
+            content: "";
+            top: 5px;
+            top: 10px;
+            text-align: center;
+            content: attr(steplabel);
+            counter-increment: li-counter;
+            color: black;
+            padding-top: 4px;
+        }
+
+        .timeline .event {
+            padding-bottom: 17.5px;
+            position: relative;
+            padding-top: 17.5px;
+            min-width: 200px;
+            cursor: pointer;
+        }
+
+        .timeline .event:after else {
+            border: 2px solid #0f43e0;
+        }
+
+        .timeline .event.completed {
+            color: #0070d2;
+        }
+
+        .timeline .event.completed:after {
+            background: #0070d2;
+            padding-top: 4px;
+            color: white;
+            content: '✓';
+            text-align: center;
+        }
+
+        .timeline .event.active {
+            color: #128ec3;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .timeline .event.active:after {
+            background-color: #479eeb;
+            color: white;
+        }
+
+        .timeline .event:first-of-type {
+            padding-top: 7.5px;
+        }
+
+        .timeline .event:first-of-type:after {
+            top: -2px;
+        }
+
+        .timeline .event:last-of-type {
+            padding-bottom: 0;
+            margin-bottom: 0;
+            border: none;
+        }
+
+        .timeline .event:last-of-type:after {
+            top: auto;
+            top: 10px;
+            bottom: 0;
+        }
+
+        footer {
+            background: #fff;
+            position: relative !important;
+        }
+
+        .card--new {
+            background: #fff;
+            padding: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24);
+            transition: all .3s cubic-bezier(.25, .8, .25, 1);
+            border: none;
+            border-radius: 0;
+            margin: 1rem 2rem;
+        }
+
+        .bodyDiv {
+            background: #F5F7FA !important;
+        }
+
+        .has-shadow {
+            width: 100%;
+            margin-bottom: 1rem;
+            padding: 2rem;
+            background-color: #fff;
+            box-shadow: 4px 1px 2px 1px rgba(0, 0, 0, .05);
+            text-align: left;
+        }
+        table, th, td {
+          border: 1px solid black;
+          padding: 6px;
+        }      
+        .headerRow{
+             background-color : #4d83c3;
+             color : white;
+        }       
+        .totalRow{
+            border : none;
+        }
+    </style>
+
+    <apex:composition template="CORE_APPINTAKE_Template_Page">
+        <apex:define name="body">
+            <div class="has-shadow slds-p-vertical_medium slds-m-bottom_medium heading_header_registration">
+                <c:CORE_StepNav_Component pgName="{!$CurrentPage.Name}" />
+            </div>
+            <div class="container row">
+                <div class="col-md-2">
+                    <ol class="timeline">
+                        <li class="event completed" value="0" steplabel="0">Instructions</li>
+                        <li class="event completed" value="1" steplabel="1">Proposer Contact Information</li>
+                        <li class="event completed" value="2" steplabel="2">Private School Information</li>
+                        <li class="event active" value="3" steplabel="3">Allocation and Flexing</li>
+                        <li class="event" value="4" steplabel="4">Proposal Documents</li>
+                        <li class="event" value="5" steplabel="5">Authorizd Signature and Certification</li>
+                        <li class="event" value="6" steplabel="6">Proposal Submission</li>
+                    </ol>
+                </div>
+                <div class="col-md-10 card--new">
+                    <div class="page">
+                        <!-- <div class="sub-heading">Application Number:&nbsp;<apex:outputfield value="{!project.Application_Number__c}" /></div> -->
+                        <!-- <c:CORE_StepNav_Component pgName="{!$CurrentPage.Name}"/> -->
+
+                        <apex:form id="frm">
+                            <div class="application">
+                                <div class="content content-body">
+                                    <apex:outputPanel id="errorPanel">
+                                        <div class="alert-container">
+                                            <div class="alert alert-info">
+                                                <apex:outputText value="{!$Label.Proposal_Budget_Page_Help_Text}" rendered="{!!projectRec.Program_Version__r.NY_Green_Bank_RFP__c}"
+                                                />
+                                            </div>
+                                            <apex:pageMessages id="pageErrors" />
+                                            <div class="alert alert-danger" id="validationErrorMessage1"></div>
+                                            <div class="alert alert-success" id="successMessage"></div>
+                                        </div>
+                                    </apex:outputPanel>
+                                    <div class="row">
+                                        &nbsp;
+                                    </div>
+
+                                    <apex:outputPanel rendered="{!!projectRec.Program_Version__r.NY_Green_Bank_RFP__c}">
+                                        <div class="row">
+                                            <div class="form-group col-xs-6">
+                                                <label for="{!$component.NYSERDACost}">Proposed Cost
+                                                    <span class="required">&nbsp;*</span>
+                                                </label>
+                                                <div class="flex-row lg flex-row mb0">
+                                                    <apex:inputField value="{!projectRec.Proposed_NYSERDA_Cost__c}" id="NYSERDACost" styleClass="form-control proposedCost" onKeyDown="isNumberOnly(event);"
+                                                        onblur="calculateTotalCost();" html-maxlength="18" />
+                                                    <span class="icon-help" style="margin-left:10px;font-size:16px;" data-toggle="popover" data-placement="right" data-trigger="hover"
+                                                        data-content="{!$Label.Proposal_Proposed_NYSERDA_Cost_Help_Text}"> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group col-xs-6">
+                                                <label for="{!$component.costShare}">Proposed Cost Share
+                                                    <apex:outputPanel rendered="{!projectRec.Program_Version__r.Proposed_Cost_Share_Required__c}">
+                                                        <span class="required">*</span>
+                                                    </apex:outputPanel>
+                                                </label>
+                                                <div class="flex-row lg flex-row mb0">
+                                                    <apex:inputField id="costShare" value="{!projectRec.Propsoed_Cost_Share__c}" styleClass="form-control costShare" onKeyDown="isNumberOnly(event);"
+                                                        onblur="calculateTotalCost();" html-maxlength="18" />
+                                                    <span class="icon-help" style="margin-left:10px;font-size:16px;" data-toggle="popover" data-placement="right" data-trigger="hover"
+                                                        data-content="{!$Label.Proposal_Proposed_Cost_Share_Help_Text}"> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group col-xs-6">
+                                                <label for="{!$component.totalCost}">Proposed Total Cost </label>
+                                                <div class="flex-row lg flex-row mb0">
+                                                    <apex:inputText id="totalCost" styleClass="form-control totalCost" disabled="disabled" onKeyDown="isNumberOnly(event);" maxlength="18"
+                                                    />
+                                                    <span class="icon-help" style="margin-left:10px;font-size:16px;" data-toggle="popover" data-placement="right" data-trigger="hover"
+                                                        data-content="{!$Label.Proposal_Proposed_Total_Cost_Help_Text}"> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </apex:outputPanel>
+
+                                    <apex:outputPanel rendered="{!projectRec.Program_Version__r.NY_Green_Bank_RFP__c}">
+                                        <div class="row">
+                                            <div class="form-group col-xs-6">
+                                                <label for="{!$component.proposedNYSERDACost}">Estimated Total Project Costs
+                                                    <span class="required">&nbsp;*</span>
+                                                </label>
+                                                <div class="flex-row lg flex-row mb0">
+                                                    <apex:inputField value="{!projectRec.Proposed_NYSERDA_Cost__c}" id="proposedNYSERDACost" styleClass="form-control proposedCost"
+                                                        onKeyDown="isNumberOnly(event);" html-maxlength="18" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </apex:outputPanel>
+                                    
+                                    <!--   ---------------------------  -->
+                                  <div class="bs-example">
+                                        <div class="panel-group" id="accordion">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" onclick = "toggle()">Open Worksheet</a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseOne" class="collapse">
+                                                    <div class="panel-body">
+                                                        <table style="width:100%">
+                                                          <tr class = "headerRow">
+                                                            <th>Title I, Part A, Improving Basic Programs (Fund Code 305)</th>
+                                                          </tr>
+                                                          <tr class = "">
+                                                            <td>Total Original Title I, Part A allocation</td>
+                                                            <td>$ <input id="theTextInput" type="text" name="theTextInput" /></td>
+                                                          </tr>
+                                                          <tr class = "">
+                                                            <td>Funds flexed from Title II, Part A </td>
+                                                            <td>$ <input id="theTextInput" type="text" name="theTextInput" /></td>
+                                                          </tr>
+                                                          <tr class = "">
+                                                            <td>Funds flexed from Title IV, Part A </td>
+                                                            <td>$ <input id="theTextInput" type="text" name="theTextInput" /></td>
+                                                          </tr>
+                                                          <tr class = "totalRow">
+                                                            <td>Post-flexing funds for use per Title I, Part A: </td>
+                                                            <td>$ <input id="theTextInput" type="text" name="theTextInput" /></td>
+                                                          </tr>
+                                                          <tr class = "totalRow">
+                                                            <td>Total</td>
+                                                            <td>$ <input id="theTextInput" type="text" name="theTextInput" /></td>
+                                                          </tr>
+                                                          
+                                                        </table>
+                                                        <br/>
+                                                        
+                                                        <table style="width:100%">
+                                                          <tr class = "headerRow">
+                                                            <th>Title II, Part A, Supporting Effective Instruction (Fund Code 140)</th>
+                                                          </tr>
+                                                          <tr class = "">
+                                                            <td>Total Original Title II, Part A allocation</td>
+                                                            <td>$ <input id="theTextInput" type="text" name="theTextInput" /></td>
+                                                          </tr>
+                                                          <tr class = "">
+                                                            <td>Title II, Part A funds flexed from Title I, Part A </td>
+                                                            <td>$ <input id="theTextInput" type="text" name="theTextInput" /></td>
+                                                          </tr>
+                                                          <tr class = "">
+                                                            <td>Title II, Part A funds flexed from Title III, Part A </td>
+                                                            <td>$ <input id="theTextInput" type="text" name="theTextInput" /></td>
+                                                          </tr>
+                                                          <tr class = "">
+                                                            <td>Title II, Part A funds flexed from Title IV, Part A </td>
+                                                            <td>$ <input id="theTextInput" type="text" name="theTextInput" /></td>
+                                                          </tr>
+                                                          <tr class = "">
+                                                            <td>Funds flexed from Title IV, Part A </td>
+                                                            <td>$ <input id="theTextInput" type="text" name="theTextInput" /></td>
+                                                          </tr>
+                                                          <tr class = "totalRow">
+                                                            <td>Post-flexing funds for use per Title II, Part A: </td>
+                                                            <td>$ <input id="theTextInput" type="text" name="theTextInput" /></td>
+                                                          </tr>
+                                                          <tr class = "totalRow">
+                                                            <td>Total</td>
+                                                            <td>$ <input id="theTextInput" type="text" name="theTextInput" /></td>
+                                                          </tr>
+                                                          
+                                                        </table>
+                                                        <br/>
+                                                        
+                                                        <table style="width:100%">
+                                                          <tr class = "headerRow">
+                                                            <th>Title III, Part A, Support for English Learners (Fund Code 180)</th>
+                                                          </tr>
+                                                          <tr class = "">
+                                                            <td>Total Original Title III, Part A allocation</td>
+                                                            <td>$ <input id="theTextInput" type="text" name="theTextInput" /></td>
+                                                          </tr>
+                                                          <tr class = "">
+                                                            <td>Funds flexed from Title II, Part A </td>
+                                                            <td>$ <input id="theTextInput" type="text" name="theTextInput" /></td>
+                                                          </tr>
+                                                          <tr class = "">
+                                                            <td>Funds flexed from Title IV, Part A </td>
+                                                            <td>$ <input id="theTextInput" type="text" name="theTextInput" /></td>
+                                                          </tr>
+                                                          <tr class = "totalRow">
+                                                            <td>Post-flexing funds for use per Title III, Part A: </td>
+                                                            <td>$ <input id="theTextInput" type="text" name="theTextInput" /></td>
+                                                          </tr>
+                                                          <tr class = "totalRow">
+                                                            <td>Total</td>
+                                                            <td>$ <input id="theTextInput" type="text" name="theTextInput" /></td>
+                                                          </tr>
+                                                        </table>
+                                                        
+                                                        <br/>
+                                                        
+                                                        <table style="width:100%">
+                                                          <tr class = "headerRow">
+                                                            <th>Title IV, Part A, Student Support and Academic Enrichment (Fund Code 309)</th>
+                                                          </tr>
+                                                          <tr class = "">
+                                                            <td>Total Original Title IV, Part A allocation</td>
+                                                            <td>$ <input id="theTextInput" type="text" name="theTextInput" /></td>
+                                                          </tr>
+                                                          <tr class = "">
+                                                            <td>Title IV, Part A funds flexed from Title I, Part A </td>
+                                                            <td>$ <input id="theTextInput" type="text" name="theTextInput" /></td>
+                                                          </tr>
+                                                          <tr class = "">
+                                                            <td>Title IV, Part A funds flexed from Title II, Part A </td>
+                                                            <td>$ <input id="theTextInput" type="text" name="theTextInput" /></td>
+                                                          </tr>
+                                                          <tr class = "">
+                                                            <td>Title IVA funds flexed from Title III, Part A </td>
+                                                            <td>$ <input id="theTextInput" type="text" name="theTextInput" /></td>
+                                                          </tr>
+                                                          <tr class = "">
+                                                            <td>Funds flexed from Title II, Part A </td>
+                                                            <td>$ <input id="theTextInput" type="text" name="theTextInput" /></td>
+                                                          </tr>
+                                                          <tr class = "totalRow">
+                                                            <td>Post-flexing funds for use per Title IV, Part A: </td>
+                                                            <td>$ <input id="theTextInput" type="text" name="theTextInput" /></td>
+                                                          </tr>
+                                                          <tr class = "totalRow">
+                                                            <td>Total</td>
+                                                            <td>$ <input id="theTextInput" type="text" name="theTextInput" /></td>
+                                                          </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>                                          
+                                        </div>
+                                    </div>
+                                    <!-- ------------------------------------- -->
+                                </div>
+                            </div>
+
+                            <apex:actionFunction name="saveBudgetInfo" action="{!saveBudgetInfo}" oncomplete="showSuccessMsg(); showMessage(); rerenderHover();"
+                                status="status" rerender="frm, scriptPanel">
+                                <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                                <apex:param value="" name="isNextClicked" assignTo="{!isNextClicked}" />
+                            </apex:actionFunction>
+
+                            <apex:actionFunction name="previous" action="{!previous}" rerender="application" immediate="true" status="status">
+                                <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                            </apex:actionFunction>
+
+                            <apex:actionFunction name="next" action="{!next}" rerender="application" status="status">
+                                <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                            </apex:actionFunction>
+
+                        </apex:form>
+                    </div>
+
+                    <footer>
+                        <div class="content flex controls sm">
+                            <div class="left">
+                                <a href="javascript:void(0)" onclick="previous('{!$CurrentPage.Name}')" class="btn-bs btn-lg btn-blank">Previous</a>
+                            </div>
+                            <div class="right">
+                                <apex:outputPanel rendered="{!((!isDueDatePassed && !isRollingSolicitationLockDown) || isExceptionalAccessProvided)}">
+                                    <a href="javascript:void(0);" onclick="StartSaveBudget('{!$CurrentPage.Name}', false)" class="btn-bs btn-lg btn-default">
+                                    Save </a>
+                                </apex:outputPanel>
+
+                                <a href="javascript:void(0)" onclick="StartSaveBudget('{!$CurrentPage.Name}', true)" class="btn-bs btn-lg btn-primary continueBtn">Continue</a>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </apex:define>
+    </apex:composition>
+
+    <c:PROPOSAL_CORE_Due_Date_Passed />
+
+    <apex:outputPanel id="scriptPanel">
+        <script>
+            $(document).ready(function () {
+                jQuery("html").attr("lang", "en");
+                $('.totalCost').attr("disabled", "disabled");
+                calculateTotalCost();
+
+            });
+
+            // Allowed only number in input field
+            function isNumberOnly(evt) {
+                var charCode = (evt.which) ? evt.which : evt.keyCode;
+                if (evt.shiftKey) {
+                    evt.preventDefault();
+                    return false;
+                }
+                if ((charCode > 47 && charCode < 58) || (charCode >= 96 && charCode <= 105) || charCode == 8 || charCode == 9 ||
+                    (charCode >= 37 && charCode <= 40) || charCode == 190 || charCode == 110) {
+                    return true;
+                } else {
+                    evt.preventDefault();
+                    return false;
+                }
+            }
+
+            function calculateTotalCost() {
+                var totalCost = 0;
+                if ($('.proposedCost').val() != undefined && $('.proposedCost').val() != '') {
+                    totalCost += formatStringIntoNumber($('.proposedCost').val());
+                }
+                if ($('.costShare').val() != undefined && $('.costShare').val() != '') {
+                    totalCost += formatStringIntoNumber($('.costShare').val());
+                }
+                $('.totalCost').val(formatNumber(totalCost));
+            }
+
+            function formatStringIntoNumber(number) {
+                if (number != null && number != undefined && number != '') {
+                    if (typeof (number) == 'string') {
+                        number = number.replace(new RegExp(',', 'g'), '');
+                        number = parseFloat(number);
+                    }
+                }
+                return number;
+            }
+
+            function formatNumber(number, decimalPoint) {
+                if (number != null && number != undefined && number != '') {
+                    if (typeof (number) == 'string') {
+                        number = formatStringIntoNumber(number);
+                    }
+                    if (typeof (number) == 'number') {
+                        if (decimalPoint == undefined) {
+                            number = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                        } else {
+                            if (decimalPoint == 0) {
+                                number = number.toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                number = number.substring(0, number.length - 2);
+                            }
+                        }
+                    }
+                }
+                return number;
+            }
+
+            function StartSaveBudget(currentPageName, isNextClicked) {
+                $('#validationErrorMessage1').hide();
+                $('#successMessage').hide();
+
+                if ('{!projectRec.Program_Version__r.NY_Green_Bank_RFP__c}' == 'true' && ($('.proposedCost').val() == undefined || $('.proposedCost').val() == '')) {
+                    $('#validationErrorMessage1').html('You must enter Estimated Total Project Costs.');
+                    $('#validationErrorMessage1').show();
+                    return false;
+                }
+
+                if ($('.proposedCost').val() == undefined || $('.proposedCost').val() == '') {
+                    $('#validationErrorMessage1').html('<strong>Error!</strong> Proposed Cost: You must enter a value.');
+                    $('#validationErrorMessage1').show();
+                    return false;
+                }
+
+                if ('{!projectRec.Program_Version__r.Proposed_Cost_Share_Required__c}' == 'true' && ($('.costShare').val() == undefined || $('.costShare').val() == '')) {
+                    $('#validationErrorMessage1').html('<strong>Error!</strong> Proposed Cost Share: You must enter a value.');
+                    $('#validationErrorMessage1').show();
+                    return false;
+                }
+
+                saveBudgetInfo(currentPageName, isNextClicked);
+            }
+
+            function showSuccessMsg() {
+                if ('{!isDueDatePassed}' == 'false' || '{!isExceptionalAccessProvided}' == 'true') {
+                    if ('{!projectRec.Program_Version__r.NY_Green_Bank_RFP__c}' == 'true') {
+                        $('#successMessage').html('<strong>Success!</strong> Estimated Total Project Costs Saved.');
+                    } else {
+                        $('#successMessage').html('<strong>Success!</strong> Budget Information Saved.');
+                    }
+
+                    $('#successMessage').show();
+                }
+            }
+
+            function showMessage() {
+                if ('{!isDueDatePassed}' == 'true' && '{!isExceptionalAccessProvided}' == 'false') {
+                    $('#dueDatePassedModal').modal('show');
+                }
+            }
+
+            function rerenderHover() {
+                $(".icon-help").popover();
+            }
+            
+            function toggle(){
+                var x = document.getElementById('collapseOne');
+
+                 if (x.style.display === 'none') {
+                    x.style.display = 'block';
+                        } else {
+                            x.style.display = 'none';
+                        }
+            
+            }
+    
+        </script>
+    </apex:outputPanel>
+    <c:Grants_Site_Footer />
+</apex:page>

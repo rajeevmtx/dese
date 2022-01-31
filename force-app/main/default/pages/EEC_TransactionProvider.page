@@ -1,0 +1,1640 @@
+<apex:page controller="EEC_TransactionWizardController" standardStylesheets="false" showheader="false" sidebar="false" action="{!SetAddressAndOtherFields}"
+    docType="html-5.0">
+    <title>EEC : Transaction - Transaction/Provider Information</title>
+    <c:EEC_Header id="pageHeader" />
+    <script>
+        j$(document).ready(function () {
+            j$('.phonenumber').inputmask({ "mask": "(999) 999-9999" }); //specifying options
+            j$('.Mailing_Zip').inputmask({
+                "mask": "99999"
+            });
+            if ('{!LicenseRecordTypeName}' == 'FCC_Assistant_New_License') {
+                updateLicenseRequestedPicklist();
+            }
+            j$("[id*=mailingState]").prop("disabled", true);
+            if ('{!LicenseRecordTypeName}' == 'Variance_On_Regulation_Request') {
+                j$('input').attr('readonly', 'true');
+                j$('select').attr('readonly', 'true');
+            }
+            j$(".navigation-buttons a").click(function () {
+            });
+            var isSubmitted = '{!isSubmitted}';
+            if (isSubmitted == 'true') {
+                j$('.saveButton').addClass('visibilityHidden');
+                j$("input[type=text]").prop('disabled', true);
+                j$("input[type=radio]").prop('disabled', true);
+                j$("select").prop('disabled', true);
+            }
+            updateDatalist();
+            renderUmbrellaPanel();
+            isNonEnglishLanguage();
+        });
+        function isNonEnglishLanguage() {
+            var language = j$('.language').val();
+            if (language == 'Other') {
+                j$('.nonEnglish').show();
+            } else {
+                j$('.nonEnglish').hide();
+            }
+        }
+        function renderUmbrellaPanel() {
+            var ownerShip = j$('.ownerShip').val();
+            if (ownerShip != null && ownerShip != '' && ownerShip != undefined) {
+                if (ownerShip == 'Non-Profit Corp.' || ownerShip == 'For Profit Corp.' || ownerShip == 'LLC') {
+                    j$('.ownerShipPanel').removeClass('hidePanel');
+                }
+            }
+        }
+        function updateLicenseRequestedPicklist() {
+            if ('{!LicenseRecordTypeName}' == 'FCC_Assistant_New_License') {
+                j$("[id*=requestedLicensePicklistHidden]").val(j$("[id*=requestedLicensePicklist] :selected").text());
+            }
+        }
+        function changeState(state) {
+            var regExp = /\(([^)]+)\)/;
+            var st = regExp.exec(j$("select option[value = '" + state.value + "']").text());
+            j$("[id*=mailingState]").val(st[1]);
+        }
+        function changeProviderState(state) {
+            var regExp = /\(([^)]+)\)/;
+            var st = regExp.exec(j$("select option[value = '" + state.value + "']").text());
+            j$("[id*=providerState]").val(st[1]);
+        }
+        function updateDatalist() {
+            j$("datalist > option").each(function () {
+                var origanalText = this.text;
+                this.value = origanalText.substring(0, origanalText.indexOf('-'));
+                this.text = origanalText.substring(origanalText.indexOf('-') + 1, origanalText.length);
+            });
+        }
+        function phoneMask(obj) {
+            if (!jQuery.isNumeric(obj.value)) {
+                obj.value = "";
+                return;
+            } else {
+                if (obj.value < 0) {
+                    obj.value = "";
+                    return;
+                }
+            }
+            var x = obj.value.replace(/\D/g, '').match(/(\d{3})(\d{3})(\d{4})/);
+            obj.value = '(' + x[1] + ') ' + x[2] + '-' + x[3];
+        }
+        function isNumber(evt) {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            return true;
+        }
+        function isNumberBlur(obj) {
+            if (!jQuery.isNumeric(obj.value)) {
+                obj.value = "";
+            } else {
+                if (obj.value < 0) {
+                    obj.value = "";
+                }
+            }
+        }
+        function onlyAlphabets(e, t) {
+            try {
+                if (window.event) {
+                    var charCode = window.event.keyCode;
+                } else if (e) {
+                    var charCode = e.which;
+                } else { return true; }
+                if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123))
+                    return true;
+                else
+                    return false;
+            } catch (err) {
+                alert(err.Description);
+            }
+        }
+        function onlyAlphabetsBlur(obj) {
+            var val = obj.value;
+            for (i = 0; i < val.length; i++) {
+                var code = val.charCodeAt(i);
+                if (code <= 64 || (code >= 91 && code <= 96) || code >= 123) {
+                    obj.value = "";
+                    return;
+                }
+            }
+        }
+    </script>
+    <style>
+        .bPageBlock .requiredInput .requiredBlock {
+            background-color: #c00;
+            position: absolute;
+            left: -4px;
+            width: 3px;
+            top: 1px;
+            bottom: 1px;
+            top: 20px;
+            display: none;
+        }
+        .nonEnglish {
+            display: none;
+        }
+        .parsley-errors-list {
+            width: 70%;
+        }
+        .parsley-error {
+            border: 2px solid #c00;
+        }
+        .my_error_container {
+            position: absolute;
+            bottom: 90px;
+            width: 50%;
+        }
+        .errorMsg {
+            color: #d74c3b;
+        }
+        #errorMsg {
+            display: none;
+        }
+        .message[class*='error'] {
+            background-color: #eee;
+            padding: 0 20px 10px;
+            margin-bottom: 25px;
+            border-radius: 3px;
+            -webkit-box-shadow: 0px 0px 5px 0px rgba(204, 0, 0, 0.4);
+            -moz-box-shadow: 0px 0px 5px 0px rgba(204, 0, 0, 0.4);
+            box-shadow: 0px 0px 5px 0px rgba(204, 0, 0, 0.4);
+        }
+        .message[class*='error'] .messageTable {
+            width: 100%;
+        }
+        .message[class*='error'] .messageText {
+            border-bottom: 1px solid grey;
+            height: 30px;
+        }
+        .transprovider-info-container {
+            margin-bottom: 120px;
+        }
+        md-input-container {
+            padding-top: 15px;
+        }
+        .md-title,
+        .md-toolbar-tools {
+            margin-bottom: 15px;
+        }
+        md-input-container .input-label-date-picklist {
+            top: -25px;
+        }
+        .base-info {
+            margin-top: 10px;
+        }
+        .input-label {
+            color: rgba(0, 0, 0, 0.54);
+        }
+        .base-info md-content {
+            margin-bottom: 20px;
+        }
+        .provider-checkbox {
+            margin-top: -25px;
+            margin-left: -5px;
+            overflow: visible;
+        }
+        .radio-group .parsley-errors-list {
+            margin-top: 25px;
+            margin-left: -50px;
+            position: absolute;
+            width: 50%;
+        }
+        .radio-group .parsley-error {
+            border: 0px;
+        }
+        .radio-group-unique .parsley-errors-list {
+            margin-top: 25px;
+            margin-left: -155px;
+            position: absolute;
+            width: 50%;
+        }
+        .radio-group-unique .parsley-error {
+            border: 0px;
+        }
+        .new-address-live-at-address {
+            margin-top: 29px;
+        }
+        md-input-container:not(.md-input-invalid).md-input-has-value label {
+            transform: translate3d(0, 6px, 0) scale(1);
+        }
+        /* @see Angular Material - Input */
+        .requiredInput,
+        md-input-container span {
+            -webkit-flex: 1 1 auto;
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+            -webkit-order: 2;
+            -ms-flex-order: 2;
+            order: 2;
+            display: block;
+            background: 0 0;
+            padding: 2px 2px 1px;
+            border-width: 0 0 1px;
+            line-height: 26px;
+            -ms-flex-preferred-size: 26px;
+            border-radius: 0;
+        }
+        .requiredInput2 {
+            margin-left: 0px;
+        }
+        .other-checkbox {
+            padding-top: 20px;
+        }
+        input[type="radio"],
+        input[type="checkbox"] {
+            margin: 4px 7px 0;
+        }
+        .radio-group label {
+            font-weight: normal;
+        }
+        .radio-group-unique label {
+            font-weight: normal;
+        }
+        .commandBtn {
+            -webkit-appearance: none;
+            border: none;
+            box-shadow: none;
+            background: none;
+            text-transform: uppercase;
+            font-weight: 500;
+            font-size: 14px;
+            font-style: inherit;
+            font-variant: inherit;
+            font-family: inherit;
+            outline: none;
+            letter-spacing: .01em;
+            margin: 3px 0px;
+            white-space: normal;
+        }
+        input[type="text"] {
+            width: 70%;
+            margin-bottom: 10px;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+        textarea.form-control {
+            width: 70%;
+            margin-bottom: 15px;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+        .navigation-buttons .md-button label {
+            white-space: normal;
+        }
+        .base-label {
+            color: rgba(0, 0, 0, 0.54);
+        }
+        .md-input-has-value {}
+        md-input-container input,
+        md-input-container .md-input {
+            max-width: 200px;
+        }
+        .readonly-input {
+            border-bottom: none;
+            cursor: not-allowed;
+        }
+        .read-only-input {
+            cursor: not-allowed;
+            background: rgba(0, 0, 0, 0.54);
+        }
+        /* TODO: Remove this and use md-select with new Validation. */
+        select {
+            background: none;
+            border: none;
+            border-bottom: 1px solid #ddd;
+        }
+        .errorMsg {
+            color: red;
+        }
+        .requiredInput1 {
+            margin-left: 0px;
+        }
+        .requiredInput {
+            margin-left: 0px !important;
+        }
+        .desc-panel {
+            margin-left: 0px !important;
+        }
+        .city-outputfield {
+            outline: none;
+            text-decoration: none;
+        }
+        .top-level-label {
+            font-weight: 600;
+            margin-right: 5px;
+            line-height: 20px;
+            color: rgba(0, 0, 0, 0.54);
+        }
+        @media only screen and (min-width: 0px) and (max-width: 959px) {
+            .navigation-buttons .md-button {
+                width: 100%;
+            }
+            .navigation-buttons md-content {
+                width: 100%;
+            }
+            md-input-container input {
+                max-width: none;
+            }
+        }
+        .base-info {
+            margin-bottom: 20px;
+        }
+        .transaction-info-row {
+            margin-left: 0px;
+        }
+        .reasonErrorMessage {
+            display: none;
+        }
+        .visible {
+            display: block;
+        }
+        .radioLeft {
+            text-align: left;
+            margin-right: 50px;
+        }
+        .ownerShip {
+            width: 30%;
+        }
+        .hidePanel {
+            display: none;
+        }
+        .dateFormat {
+            display: none;
+        }
+        .capacityClass {
+            margin-right: 25% !important;
+        }
+        .ProgramNameWidth {
+            width: 35% !important;
+        }
+        .cstmText {
+            width: 50%;
+        }
+        .btn-pullRight {
+            left: 121% !important;
+        }
+        .visibilityHidden {
+            visibility: hidden;
+        }
+        .inputlabel {
+            display: none;
+        }
+        .required {
+            color: #E42311 !important;
+        }
+        .independentChildCareType,
+        .childCareWillBeOccuring,
+        .rirhState,
+        .rirhCity,
+        .rirhStreetAddress1,
+        .rirhStreetAddress2,
+        .rirhZipCode {
+            width: 75% !important;
+        }
+        .childrensAddress {
+            display: none;
+        }
+        .row {
+            margin-bottom: 15px !important;
+        }
+        .table {
+            width: 88% !important;
+        }
+        .listChild {
+            width: 90% !important;
+        }
+    </style>
+    <body ng-app="eecApp">
+        <c:eec_nav_bar id="navBar" providerId="{!provider.Id}" accountName="{!provider.Name}" rendered="{!loggedUser.UserType == 'PowerPartner' || loggedUser.UserType == 'PowerCustomerSuccess' || loggedUser.UserType == 'CspLitePortal' || loggedUser.UserType == 'CustomerSuccess'}"/>
+        <div class="transprovider-info-container" layout-wrap="true" layout-lg="row" layout-gt-lg="row" layout="row" layout-padding="true"
+            layout-margin="true" ng-controller="TransactionController as ctrl">
+            <md-content style="margin-top: 20px;" ng-show="ctrl.checkForMessages()" layout="row" flex="100" layout-align="center center">
+                <md-whiteframe class="md-whiteframe-z2 ng-cloak" layout="column" layout-padding="true" flex="75">
+                    <!--<apex:pageMessages id="showmsg"></apex:pageMessages>-->
+                </md-whiteframe>
+            </md-content>
+            <apex:form id="ProviderTransactionForm" styleClass="transaction-parsley-form col-lg-8 col-md-8 col-sm-12 involvment-form">
+                <apex:outputPanel style="margin-top:60px;" layout="block" id="userDetail" styleClass="ng-cloak">
+                    <div class="top-header-section">
+                        <div class="header-name-section">
+                            <h2 class="h1Hidden"> Accessibility fix </h2>
+                            <h3 class="md-display-1 header-display-name">{!applicationDisplayName}
+                                <apex:outputText styleClass="visibilityHidden" value="Accessibility" />
+                            </h3>
+                            <h4 class="step-name">Transaction /
+                                <apex:outputText rendered="{!IsFccAssistant}"> Assistant</apex:outputText>
+                                <apex:outputText rendered="{!!IsFccAssistant && (LicenseRecordTypeName!='GSA_New_License'
+                                                           && LicenseRecordTypeName!='GSA_Renewal'  
+                                                           && LicenseRecordTypeName!='GSA_License_Change'  
+                                                           && LicenseRecordTypeName!='GSA_Move'  
+                                                           && LicenseRecordTypeName!='GSA_Temporary_Move'  
+                                                           && LicenseRecordTypeName!='GSA_Change_of_Admin_Authority'
+                                                           && LicenseRecordTypeName!='EEC_FCC_Modification'
+                                                           && LicenseRecordTypeName!='EEC_GSA_Modification'
+                                                           && LicenseRecordTypeName!='EEC_RP_Modification'
+                                                           && LicenseRecordTypeName!= 'Private_School_New_Funding_Application'
+                                                           && LicenseRecordTypeName!= 'Public_School_New_Funding_Application'
+                                                           && LicenseRecordTypeName != 'Other_Eligible_Providers_New_Funding_Application'
+                                                           && LicenseRecordTypeName!='Summer_Camp_New_Application'
+                                                           )}">
+                                    Provider
+                                </apex:outputText>
+                                <apex:outputText rendered="{!LicenseRecordTypeName == 'GSA_New_License' ||LicenseRecordTypeName == 'GSA_Renewal' || LicenseRecordTypeName == 'GSA_Move' || LicenseRecordTypeName == 'GSA_Temporary_Move' || LicenseRecordTypeName == 'GSA_Change_of_Admin_Authority' || LicenseRecordTypeName == 'GSA_License_Change' || LicenseRecordTypeName == 'Large_Group'}">
+                                    Program
+                                </apex:outputText>
+                                Information
+                            </h4>
+                            <h5 class="base-label trans-number">Application number: {!licenseTransation.Name}</h5>
+                        </div>
+                    </div>
+                    <md-divider layout-align="center center"></md-divider>
+                    <apex:pageBlock html-layout="column" html-layout-padding="true">
+                        <!-- Basic Information -->
+                        <div class="base-info" layout="column" layout-lg="row" layout-gt-lg="row" layout-wrap="true">
+                            <apex:outputPanel rendered="{!(LicenseRecordTypeName == 'FCC_Assistant_Renewal' || LicenseRecordTypeName == 'FCC_License_Upgrade' )
+                                                        || (LicenseRecordTypeName=='FCC_Renewal' || LicenseRecordTypeName=='FCC_License_Upgrade')
+                                                        || (LicenseRecordTypeName=='FCC_Renewal' || LicenseRecordTypeName=='FCC_License_Upgrade')}">
+                                <h3 class="md-title" flex="100">Transaction Information</h3>
+                            </apex:outputPanel>
+                            <apex:outputpanel layout="block" html-flex="100" rendered="{!LicenseRecordTypeName == 'FCC_Assistant_Renewal'}">
+                                <md-content layout="column">
+                                    <label for="providerCertifiedAs" class="base-label">Current Certificate Type</label>
+                                    <apex:outputText value="{!provider.Certified_As__c}" />
+                                    <input type="hidden" id="providerCertifiedAs" class="h1Hidden" />
+                                </md-content>
+                            </apex:outputpanel>
+                            <apex:outputPanel styleclass="capacityClass" layout="block" html-flex="100" rendered="{!LicenseRecordTypeName=='FCC_Renewal' || LicenseRecordTypeName=='FCC_License_Upgrade' || LicenseRecordTypeName=='EEC_FCC_Modification' }">
+                                <md-content layout="column">
+                                    <label for="{!$Component.providerCapacity}" class="base-label">Current License Capacity
+                                    </label>
+                                    <apex:inputText value="{!provider.Capacity__c}" style="width : 35%;" id="providerCapacity" styleClass="form-control" disabled="true"
+                                    />
+                                    <!-- <apex:outputText value="{!provider.Capacity__c}" id="providerCapacity" /> -->
+                                </md-content>
+                            </apex:outputPanel>
+                            <apex:outputPanel layout="block" styleClass="form" html-flex="50" rendered="{!LicenseRecordTypeName=='FCC_Renewal' || LicenseRecordTypeName=='FCC_License_Upgrade' || LicenseRecordTypeName=='EEC_FCC_Modification' }">
+                                <md-content layout="column" class="form-group" ng-class="{'md-input-has-value' : {!IF(cntct.FirstName==null,false,true)}}">
+                                    <label for="{!$Component.changecapacity}" class="base-label">If you would like to change capacity, select a different option below
+                                        <apex:outputText rendered="{!IF(LicenseRecordTypeName=='FCC_License_Upgrade', true,false)}">
+                                            <span class="required">*</span>
+                                        </apex:outputText>
+                                    </label>
+                                    <apex:InputField value="{!licenseTransation.License_Requested__c}" id="changecapacity" styleClass="form-control" style="width:70%;"
+                                        html-data-parsley-required="{!IF(LicenseRecordTypeName=='FCC_License_Upgrade', true,false)}"/>
+                                </md-content>
+                            </apex:outputPanel>
+                        </div>
+                        <!-- Program Information -->
+                        <apex:outputPanel >
+                            <div layout="column" layout-lg="row" layout-gt-lg="row" layout-wrap="true" style="margin-top: -35px;">
+                                <h3 class="md-title" flex="100">
+                                    <apex:outputText rendered="{!LicenseRecordTypeName =='GSA_New_License'
+                                                               || LicenseRecordTypeName =='GSA_Renewal'
+                                                               || LicenseRecordTypeName =='GSA_License_Change'
+                                                               || LicenseRecordTypeName =='GSA_Move'
+                                                               || LicenseRecordTypeName =='GSA_Temporary_Move'
+                                                               || LicenseRecordTypeName =='GSA_Change_of_Admin_Authority' 
+                                                               || LicenseRecordTypeName == 'Variance_On_Regulation_Request'}">
+                                        Current&nbsp;
+                                    </apex:outputText>
+                                    <apex:outputText rendered="{!!IsFccAssistant && LicenseRecordTypeName !='GSA_Change_of_Admin_Authority' && LicenseRecordTypeName !='Informal_Care_New_Application'}">
+                                        Program
+                                    </apex:outputText>
+                                    <apex:outputText rendered="{! LicenseRecordTypeName =='Informal_Care_New_Application'}">
+                                        Provider
+                                    </apex:outputText>
+                                    <apex:outputText rendered="{!LicenseRecordTypeName =='GSA_Change_of_Admin_Authority'}">
+                                        Licensee
+                                    </apex:outputText>
+                                    <apex:outputText rendered="{!IsFccAssistant }">Assistant</apex:outputText>
+                                    Information
+                                </h3>
+                                <div flex="50" class="form-group">
+                                    <label for="{!$Component.assistant}" class="input-label">
+                                        <apex:outputText rendered="{!LicenseRecordTypeName == 'Informal_Care_New_Application'}">Provider</apex:outputText>
+                                        <apex:outputText rendered="{!!IsFccAssistant && LicenseRecordTypeName != 'Informal_Care_New_Application'}">Program</apex:outputText>
+                                        <apex:outputText rendered="{!IsFccAssistant}">Assistant</apex:outputText>
+                                        Name </label>
+                                    <apex:inputText styleClass="form-control" value="{!provider.Name}" id="assistant" disabled="true" />
+                                </div>
+                                <apex:outputPanel styleClass="form-group" html-flex="50">
+                                    <div ng-class="{'md-input-has-value' : {!IF(provider.Provider_Address_1__c==null,false,true)}}">
+                                        <label for="{!$Component.ProviderAddress1}" class="input-label">Street Address 1
+                                            <span class="required">*</span>
+                                        </label>
+                                        <apex:inputtext styleclass="form-control ProviderAddress1" disabled="true" value="{!provider.Provider_Address_1__c}" id="ProviderAddress1"
+                                            html-read-only="true" />
+                                    </div>
+                                </apex:outputPanel>
+                                <apex:outputPanel styleClass="form-group" html-flex="50">
+                                    <div ng-class="{'md-input-has-value' : {!IF(provider.Provider_Address_2__c==null,false,true)}}">
+                                        <label for="{!$Component.ProviderAddress2}" class="input-label">Street Address 2 </label>
+                                        <apex:inputtext styleclass="form-control ProviderAddress2" disabled="true" value="{!provider.Provider_Address_2__c}" id="ProviderAddress2"
+                                            html-read-only="true" />
+                                    </div>
+                                </apex:outputPanel>
+                                <apex:outputpanel styleClass="form-group" html-flex="50">
+                                    <div ng-class="{'md-input-has-value' : {!IF(provider.Provider_City__c==null,false,true)}}" style="margin-bottom:10px;">
+                                        <label for="{!$Component.city1}" class="input-label" style="width:100%;">City/Town
+                                            <span class="required">*</span>
+                                        </label>
+                                        <apex:inputText html-readonly="true" styleclass="form-control city_town" id="city1" value="{!provider.Provider_City__r.Name}"
+                                            onkeypress="return onlyAlphabets(event,this);" onblur="return onlyAlphabetsBlur(this);"
+                                        />
+                                    </div>
+                                </apex:outputpanel>
+                                <apex:outputpanel styleClass="form-group" html-flex="50">
+                                    <div ng-class="{'md-input-has-value' : {!IF(provider.State__c==null,false,true)}}">
+                                        <label for="{!$Component.providerState}" class="input-label" style="width:100%;">State
+                                            <span class="required">*</span>
+                                        </label>
+                                        <apex:inputText html-readonly="true" id="providerState" styleclass="form-control state12" value="{!provider.State__c}" html-data-parsley-required="true"/>
+                                    </div>
+                                </apex:outputpanel>
+                                <apex:outputpanel styleClass="form-group" html-flex="50">
+                                    <div ng-class="{'md-input-has-value' : {!IF(provider.Provider_Zip_Code__c==null,false,true)}}">
+                                        <label for="{!$Component.providerZepCode}" class="input-label" style="width:100%;">Zip Code
+                                            <span class="required">*</span>
+                                        </label>
+                                        <apex:inputText style="width:70%" html-readonly="true" id="providerZepCode" styleclass="form-control zip12" value="{!provider.Provider_Zip_Code__c}"
+                                        />
+                                    </div>
+                                </apex:outputpanel>
+                                <div flex="100" class="form-group">
+                                    <apex:outputPanel rendered="{!LicenseRecordTypeName == 'Residential_New_License'
+                                                                || LicenseRecordTypeName == 'Residential_License_Renewal'
+                                                                || LicenseRecordTypeName == 'Residential_Change_in_License'
+                                                                || LicenseRecordTypeName == 'Placement_New_License'
+                                                                || LicenseRecordTypeName == 'Placement_Renewal'
+                                                                || LicenseRecordTypeName == 'Placement_Change_in_License'}">
+                                        <div flex="100" class="radio-group">
+                                            <apex:outputPanel rendered="{!providerRecordType=='Group Care'}">
+                                                <label for="contracted" class="input-label">Are you also applying for the ability to conduct temporary shelter programming?
+                                                    <span class="required">*</span>
+                                                </label>
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!providerRecordType=='Temporary Shelter'}">
+                                                <label for="contracted" class="input-label">Are you also applying for the ability to conduct Group Care programming?
+                                                    <span class="required">*</span>
+                                                </label>
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!or(providerRecordType == 'Group Care',providerRecordType=='Temporary Shelter')}">
+                                                <input type="text" id="contracted" class="h1Hidden" />
+                                                <fieldset>
+                                                    <legend class="h1Hidden">Accessibility Fix</legend>
+                                                    <apex:actionRegion >
+                                                        <div class="requiredInput">
+                                                            <div class="requiredBlock">{!providerRecordType}</div>
+                                                            <apex:selectRadio value="{!licenseTransation.Mixed_Type_Program__c}" style="margin-bottom: 10px;">
+                                                                <apex:selectoptions value="{!items}" html-data-parsley-required="true" />
+                                                                <apex:actionSupport event="onchange" action="{!setLicensedAgency}" reRender="prgDesc" status="status"/>
+                                                            </apex:selectRadio>
+                                                        </div>
+                                                    </apex:actionRegion>
+                                                </fieldset>
+                                            </apex:outputPanel>
+                                        </div>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!LicenseRecordTypeName == 'Residential_New_License'|| LicenseRecordTypeName == 'Residential_Move'|| LicenseRecordTypeName == 'Residential_License_Renewal'|| LicenseRecordTypeName == 'Residential_Change_in_License'}">
+                                        <apex:outputPanel rendered="{!LicenseRecordTypeName !='GSA_Renewal'&&LicenseRecordTypeName !='GSA_New_License'&& LicenseRecordTypeName !='GSA_Renewal'&& LicenseRecordTypeLabel !='GSA_License_Change'
+                                                                    &&LicenseRecordTypeName !='GSA_Move'&&LicenseRecordTypeName !='GSA_Temporary_Move'&&LicenseRecordTypeName !='GSA_Change_of_Admin_Authority'&&LicenseRecordTypeName !='Placement_New_License'&&LicenseRecordTypeName !='Placement_Move'&&LicenseRecordTypeName !='Placement_Renewal'&&LicenseRecordTypeName !='R_P_Change_of_Admin_Authority'}">
+                                            <div flex="100" class="radio-group">
+                                                <label for="Massachusetts" class="input-label">Is this program approved by another Massachusetts agency?
+                                                    <span class="required">*</span>
+                                                </label>
+                                                <input type="text" id="Massachusetts" class="h1Hidden" />
+                                                <fieldset>
+                                                    <legend class="h1Hidden">Accessibility Fix</legend>
+                                                    <apex:actionRegion >
+                                                        <div class="requiredInput">
+                                                            <div class="requiredBlock"></div>
+                                                            <apex:selectRadio value="{!licenseTransation.ProgramLicensedOrApproved__c}" style="margin-bottom: 10px;">
+                                                                <apex:selectoptions value="{!items}" html-data-parsley-required="true" />
+                                                                <apex:actionSupport event="onchange" action="{!setLicensedAgency}" reRender="pacDesc" status="status"/>
+                                                            </apex:selectRadio>
+                                                        </div>
+                                                    </apex:actionRegion>
+                                                </fieldset>
+                                            </div>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+                                    <apex:outputpanel id="pacDesc" styleClass="desc-panel">
+                                        <apex:outputPanel rendered="{!licenseTransation.ProgramLicensedOrApproved__c == 'Yes'}">
+                                            <label for="{!$Component.Bywhom}" class="input-label">By whom
+                                                <span class="required">*</span>
+                                            </label>
+                                            <apex:InputField styleClass="form-control" id="Bywhom" value="{!licenseTransation.By_whom__c}" style="width: 70%;" html-data-parsley-required="true"
+                                            />
+                                            <label for="{!$Component.Expiration}" class="input-label">Date of Expiration
+                                                <span class="required">*</span>
+                                            </label>
+                                            <apex:InputField styleClass="form-control" id="Expiration" value="{!licenseTransation.Date_of_Expiration__c}" html-data-parsley-required="true"
+                                                html-data-provide="datepicker" />
+                                        </apex:outputPanel>
+                                    </apex:outputpanel>
+                                </div>
+                                <div flex="100" class="form-group">
+                                    <apex:outputPanel rendered="{!LicenseRecordTypeName == 'Residential_New_License'|| LicenseRecordTypeName == 'Residential_License_Renewal'|| LicenseRecordTypeName == 'Residential_Change_in_License'
+                                                                || LicenseRecordTypeName == 'Placement_New_License'|| LicenseRecordTypeName == 'Placement_Move'|| LicenseRecordTypeName == 'Placement_Renewal'|| LicenseRecordTypeName == 'Placement_Change_in_License'}">
+                                        <apex:outputPanel rendered="{!LicenseRecordTypeName !='GSA_Renewal'&&LicenseRecordTypeName !='GSA_New_License'&& LicenseRecordTypeName !='GSA_Renewal'&& LicenseRecordTypeLabel !='GSA_License_Change'
+                                                                    &&LicenseRecordTypeName !='GSA_Move'&&LicenseRecordTypeName !='GSA_Temporary_Move'&&LicenseRecordTypeName !='GSA_Change_of_Admin_Authority'&&LicenseRecordTypeName !='R_P_Change_of_Admin_Authority'}">
+                                            <div flex="100" class="radio-group">
+                                                <label for="contracted" class="input-label">Is your program contracted?
+                                                    <span class="required">*</span>
+                                                </label>
+                                                <input type="text" id="contracted" class="h1Hidden" />
+                                                <fieldset>
+                                                    <legend class="h1Hidden">Accessibility Fix</legend>
+                                                    <apex:actionRegion >
+                                                        <div class="requiredInput">
+                                                            <div class="requiredBlock"></div>
+                                                            <apex:selectRadio value="{!licenseTransation.ProgramContracted__c}" style="margin-bottom: 10px;">
+                                                                <apex:selectoptions value="{!items}" html-data-parsley-required="true" />
+                                                                <apex:actionSupport event="onchange" action="{!setLicensedAgency}" reRender="prgDesc" status="status"/>
+                                                            </apex:selectRadio>
+                                                        </div>
+                                                    </apex:actionRegion>
+                                                </fieldset>
+                                            </div>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+                                    <apex:outputpanel id="prgDesc" styleClass="desc-panel">
+                                        <apex:outputPanel rendered="{!licenseTransation.ProgramContracted__c == 'Yes'}">
+                                            <label for="{!$Component.contractadministrator}" class="input-label">Name of contract administrator
+                                                <span class="required">*</span>
+                                            </label>
+                                            <apex:InputField styleClass="form-control" id="contractadministrator" value="{!licenseTransation.Name_of_contract_administrator__c}"
+                                                html-data-parsley-required="true" />
+                                            <label for="{!$Component.fundingsource}" class="input-label">Address of contract administrator for funding source
+                                                <span class="required">*</span>
+                                            </label>
+                                            <apex:InputField styleClass="form-control" id="fundingsource" value="{!licenseTransation.Address_of_admin_for_funding_source__c}"
+                                                html-data-parsley-required="true" />
+                                        </apex:outputPanel>
+                                    </apex:outputpanel>
+                                </div>
+                                <div flex="100">
+                                    <apex:outputPanel rendered="{!LicenseRecordTypeName =='Informal_Care_New_Application'}" id="transactionChild">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6 col-lg-6">
+                                                <label for="{!$Component.independentChildCareType}" class="input-label">
+                                                    Will you be providing care to relatives or non-relatives?
+                                                    <span class="required">*</span>
+                                                </label>
+                                                <apex:InputField styleClass="form-control independentChildCareType" id="independentChildCareType" value="{!licenseTransation.Independent_Child_Care_Type__c}"
+                                                    html-data-parsley-required="true" />
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-6">
+                                                <label for="{!$Component.childCareWillBeOccuring}" class="input-label">
+                                                    Where will child care be occurring?
+                                                    <span class="required">*</span> 
+                                                </label>
+                                                <apex:InputField styleClass="form-control childCareWillBeOccuring" id="childCareWillBeOccuring" 
+                                                    html-data-parsley-required="true">
+                                                    <apex:actionSupport event="onchange" reRender="childCareOccurancePanel" status="status"/>
+                                                </apex:InputField>
+                                            </div>
+                                        </div>
+                                        <apex:outputPanel id="childCareOccurancePanel">
+                                            <apex:outputPanel >
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12">
+                                                        <h4 class="input-label"> What is the home of the children where you will be providing care? </h4>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-6 col-lg-6">
+                                                        <label for="{!$Component.rirhStreetAddress1}" class="input-label">
+                                                            Street Address 1
+                                                            <span class="required">*</span>
+                                                        </label>
+                                                        <apex:InputField html-data-parsley-required="true" styleClass="form-control rirhStreetAddress1"  id="rirhStreetAddress1" />
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-6 col-lg-6">
+                                                        <label for="{!$Component.rirhStreetAddress2}" class="input-label">
+                                                            Street Address 2 </label>
+                                                        <apex:InputField styleClass="form-control rirhStreetAddress2" id="rirhStreetAddress2"  />
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-6 col-lg-6">
+                                                        <label for="{!$Component.rirhCity}" class="input-label">
+                                                            City
+                                                            <span class="required">*</span>
+                                                        </label>
+                                                        <apex:InputField html-data-parsley-required="true" styleClass="form-control rirhCity" id="rirhCity"  />
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-6 col-lg-6">
+                                                        <label for="{!$Component.rirhState}" class="input-label">
+                                                            State
+                                                            <span class="required">*</span>
+                                                        </label>
+                                                        <apex:InputField html-data-parsley-required="true" styleClass="form-control rirhState" id="rirhState"  />
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-6 col-lg-6">
+                                                        <label for="{!$Component.rirhZipCode}" class="input-label">
+                                                            Zip Code
+                                                            <span class="required">*</span>
+                                                        </label>
+                                                        <apex:InputField html-data-parsley-required="true" styleClass="form-control rirhZipCode" id="rirhZipCode" />
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-6 col-lg-6">
+                                                    </div>
+                                                </div>
+                                            </apex:outputPanel>
+                                        </apex:outputPanel>
+                                        <apex:variable var="rowNum" value="{!0}" />
+                                        <table class="table table-responsive">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        First Name
+                                                    </th>
+                                                    <th>
+                                                        Last Name
+                                                    </th>
+                                                    <th>
+                                                        DOB
+                                                    </th>
+                                                    <th>
+                                                        Relationship with provider
+                                                    </th>
+                                                    <th>
+                                                        Delete
+                                                    </th>
+                                                </tr>
+                                            </thead>
+      
+                                        </table>
+                                       
+                                    </apex:outputPanel> 
+                                </div>
+                                <apex:outputPanel layout="block" rendered="{!LicenseRecordTypeName=='Change_of_Address'
+                                                  || LicenseRecordTypeName=='FCC_Assistant_Change_of_Address'
+                                                  || LicenseRecordTypeName == 'Placement_Move'
+                                                  || LicenseRecordTypeName == 'Residential_Move'
+                                                  || LicenseRecordTypeName=='GSA_Move'
+                                                  || LicenseRecordTypeName=='GSA_Temporary_Move'
+                                                  || LicenseRecordTypeName=='Public_School_New_Funding_Application'
+                                                  || LicenseRecordTypeName =='Other_Eligible_Providers_New_Funding_Application'
+                                                  || LicenseRecordTypeName =='Private_School_New_Funding_Application'}">
+                                    <div layout="column" layout-lg="row" layout-gt-lg="row" layout-wrap="true">
+                                        <h3 class="md-title" flex="100">New Address</h3>
+                                        <div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.New_Street_Address_1__c==null,false,true)}}">
+                                            <label for="{!$Component.StreetAddress1}" class="input-label">New Street Address 1
+                                                <span class="required">*</span>
+                                            </label>
+                                            <apex:InputField styleClass="form-control New_Street_Address" id="StreetAddress1" value="{!licenseTransation.New_Street_Address_1__c}"
+                                                html-data-parsley-required="true" />
+                                        </div>
+                                        <div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.New_Street_Address_2__c==null,false,true)}}">
+                                            <label for="{!$Component.StreetAddress2}" class="input-label">New Street Address 2
+                                            </label>
+                                            <apex:InputField styleClass="form-control New_Street_Address2" id="StreetAddress2" value="{!licenseTransation.New_Street_Address_2__c}"
+                                            />
+                                        </div>
+                                        <!--<md-input-container flex="50">-->
+                                        <!-- TODO: Correct his to use Material Design inputs. Currently broken due to being a lookup field and not a picklist.-->
+                                        <md-content flex="50">
+                                            <apex:outputtext styleclass="input-label">New City/Town
+                                                <span class="required">*</span>
+                                            </apex:outputtext>
+                                            <!-- Accessibility Fix -->
+                                            <apex:selectList styleClass="form-control" rendered="{!LicenseRecordTypeName =='FCC_Assistant_License_Upgrade' || LicenseRecordTypeName == 'FCC_Assistant_New_License' ||  LicenseRecordTypeName == 'FCC_Assistant_Change_of_Address'}"
+                                                style="width:70%;height: 34px;" id="changeofAddressLookupPicklist" value="{!licenseTransation.New_City__c}"
+                                                size="1" html-data-parsley-required="true">
+                                                <apex:selectOptions value="{!allCityList.0}" />
+                                                <apex:selectOptions value="{!allCityList.1}" />
+                                                <apex:selectOptions value="{!allCityList.2}" />
+                                            </apex:selectList>
+                                            <label for="{!$Component.addressLookupPicklist}" class="inputlabel ">New City/Town
+                                                <span class="required">*</span>
+                                            </label>
+                                            <!-- Accessibility Fix -->
+                                            <apex:selectList styleClass="form-control new_city_town" rendered="{!LicenseRecordTypeName != 'FCC_Assistant_License_Upgrade' && LicenseRecordTypeName != 'FCC_Assistant_New_License' && LicenseRecordTypeName != 'FCC_Assistant_Change_of_Address'}"
+                                                style="width:70%;height: 34px;" id="addressLookupPicklist" value="{!licenseTransation.New_City__c}"
+                                                size="1" html-data-parsley-required="true">
+                                                <apex:selectOptions value="{!maCityList.0}" />
+                                                <apex:selectOptions value="{!maCityList.1}" />
+                                                <apex:selectOptions value="{!maCityList.2}" />
+                                            </apex:selectList>
+                                        </md-content>
+                                        <!--</md-input-container>-->
+                                        <div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.New_Zip_Code__c==null,false,true)}}">
+                                            <label for="{!$Component.NewZipCode}" class="input-label">New Zip Code
+                                                <span class="required">*</span>
+                                            </label>
+                                            <apex:inputText styleClass="form-control new_zip_code" id="NewZipCode" onkeypress="return isNumber(event)" onblur="return isNumberBlur(this)"
+                                                value="{!licenseTransation.New_Zip_Code__c}" html-data-parsley-required="true"
+                                                html-data-parsley-pattern="{!$Label.Zipcode_Validation}" html-data-parsley-pattern-message="{!$Label.Zipcode_Validation_Error}"
+                                            />
+                                        </div>
+                                        <div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.New_State__c==null,false,true) && LicenseRecordTypeName=='Residential_Move'||LicenseRecordTypeName=='Placement_Move'}}">
+                                            <label for="{!$Component.NewState}" class="input-label">New State
+                                                <span class="required">*</span>
+                                            </label>
+                                            <apex:inputField style="width: 70%;" styleClass="form-control new_state" id="NewState" value="{!licenseTransation.New_State__c}"
+                                                html-data-parsley-required="true" />
+                                        </div>
+                                        <apex:outputPanel rendered="{!LicenseRecordTypeName!='Public_School_New_Funding_Application'
+                                                                && LicenseRecordTypeName !='Other_Eligible_Providers_New_Funding_Application'
+                                                                && LicenseRecordTypeName !='Private_School_New_Funding_Application'}">
+                                        <div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Moving_Date__c==null,false,true)}}">
+                                            <label for="{!$Component.movingDate}" class="input-label">Expected moving Date
+                                                <span class="required">*</span>
+                                            </label>
+                                            <apex:inputField styleClass="form-control" id="movingDate" value="{!licenseTransation.Moving_Date__c}" html-data-parsley-required="true"
+                                                html-data-provide="datepicker" />
+                                        </div>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel html-flex="50" rendered="{!LicenseRecordTypeName!='GSA_Temporary_Move' 
+                                                                                    && LicenseRecordTypeName!='Public_School_New_Funding_Application'
+                                                                                    && LicenseRecordTypeName !='Other_Eligible_Providers_New_Funding_Application'
+                                                                                    && LicenseRecordTypeName !='Private_School_New_Funding_Application'}">
+                                            <div ng-class="{'md-input-has-value' : {!IF(licenseTransation.Date_Care_Resumes__c==null,false,true)}}">
+                                                <label for="{!$Component.Resumes}" class="input-label">Date Care Resumes </label>
+                                                <apex:inputField styleClass="form-control" style="width:70%" id="Resumes" value="{!licenseTransation.Date_Care_Resumes__c}"
+                                                    html-data-provide="datepicker" />
+                                            </div>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel html-flex="50" rendered="{!LicenseRecordTypeName!='Public_School_New_Funding_Application'
+                                                                                    && LicenseRecordTypeName !='Other_Eligible_Providers_New_Funding_Application'
+                                                                                    && LicenseRecordTypeName !='Private_School_New_Funding_Application'}">
+                                        <div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.New_Address_Phone_Number__c==null,false,true)}}">
+                                            <label for="{!$Component.NewAddressPhone}" class="input-label">New Address Phone Number
+                                                <apex:outputPanel rendered="{!LicenseRecordTypeName !='GSA_Move' && LicenseRecordTypeName !='GSA_Temporary_Move'}">
+                                                    <span class="required">*</span>
+                                                </apex:outputPanel>
+                                            </label>
+                                            <apex:inputText styleClass="form-control phonenumber" style="width:70%" id="NewAddressPhone" value="{!licenseTransation.New_Address_Phone_Number__c}"
+                                                html-data-parsley-required="{!IF(OR(LicenseRecordTypeName =='GSA_Move', LicenseRecordTypeName =='GSA_Temporary_Move'),false,true)}"
+                                                html-data-parsley-pattern="{!$Label.Phone_Number_Validation}" html-data-parsley-pattern-message="{!$Label.Phone_Number_Validation_Error}"
+                                                onblur="formatPhone(this);" />
+                                        </div>
+                                        </apex:outputPanel>
+                                        <!--            <apex:outputPanel rendered="{!isFccAssistant && provider.Is_FCC__c}"> -->
+                                        <!--                   <div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.New_Phone_Number_Unlisted__c==null,false,true)}}"> -->
+                                        <!--                     <label class="input-label-date-picklist input-label">Is this telephone number unlisted?<span class="required">*</span></label>   -->
+                                        <!--                     <apex:inputField styleClass="form-control" style="width:70%" value="{!licenseTransation.New_Phone_Number_Unlisted__c}" html-data-parsley-required="true"/> -->
+                                        <!--                   </div> -->
+                                        <!--               </apex:outputPanel>    -->
+                                        <div flex="50" style="display:{!if(LicenseRecordTypeName =='GSA_Temporary_Move', 'block', 'none')}" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Purpose_Reason_for_the_move__c==null,false,true)}}">
+                                            <label for="{!$Component.temporarymove}" class="input-label">Purpose/Reason for the temporary move
+                                                <span class="required">*</span>
+                                            </label>
+                                            <apex:inputField styleClass="form-control" style="width:70%" id="temporarymove" value="{!licenseTransation.Purpose_Reason_for_the_move__c}"
+                                                html-data-parsley-required="{!if(LicenseRecordTypeName =='GSA_Temporary_Move', true, false)}"
+                                            />
+                                        </div>
+                                        <div flex="50" style="display:{!if(LicenseRecordTypeName =='GSA_Temporary_Move', 'block', 'none')}" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Projected_Date_of_Return__c==null,false,true)}}">
+                                            <label for="{!$Component.PermanentAddress}" class="input-label">Projected Date of Return to Permanent Address
+                                                <span class="required">*</span>
+                                            </label>
+                                            <apex:inputField styleClass="form-control" style="width:70%" id="PermanentAddress" value="{!licenseTransation.Projected_Date_of_Return__c}"
+                                                html-data-parsley-required="{!if(LicenseRecordTypeName =='GSA_Temporary_Move', true, false)}"
+                                                html-data-provide="datepicker" />
+                                        </div>
+                                    </div>
+                                </apex:outputPanel>
+                                <br/>
+                                <apex:outputpanel html-flex="100" layout="block" rendered="{!LicenseRecordTypeName == 'FCC_New_License'
+                                                                        || LicenseRecordTypeName == 'FCC_Renewal'
+                                                                        || LicenseRecordTypeName == 'Change_of_Address'
+                                                                        || LicenseRecordTypeName == 'GSA_New_License'
+                                                                        || LicenseRecordTypeName == 'GSA_Renewal'
+                                                                        || LicenseRecordTypeName == 'GSA_Move'
+                                                                        || LicenseRecordTypeName == 'GSA_Temporary_Move'
+                                                                        || LicenseRecordTypeName == 'FCC_Assistant_New_License'
+                                                                        || LicenseRecordTypeName == 'FCC_Assistant_Renewal'
+                                                                        || LicenseRecordTypeName == 'FCC_Assistant_Change_of_Address'
+                                                                        || LicenseRecordTypeName == 'Placement_New_License'
+                                                                        || LicenseRecordTypeName == 'Placement_Move'
+                                                                        || LicenseRecordTypeName == 'Placement_Renewal'
+                                                                        || LicenseRecordTypeName == 'Residential_Move'
+                                                                        || LicenseRecordTypeName =='Residential_New_License'
+                                                                        || LicenseRecordTypeName =='Residential_License_Renewal'
+                                                                        || LicenseRecordTypeName =='Public_School_New_Funding_Application'
+                                                                        || LicenseRecordTypeName =='Other_Eligible_Providers_New_Funding_Application'
+                                                                        || LicenseRecordTypeName =='Private_School_New_Funding_Application'
+                                                                        || LicenseRecordTypeName =='Summer_Camp_New_Application'
+                                                                        || LicenseRecordTypeName =='Informal_Care_New_Application'}">
+                                    <div layout="column" layout-lg="row" layout-gt-lg="row" layout-wrap="true">
+                                        <apex:outputPanel rendered="{!(LicenseRecordTypeName == 'FCC_New_License'
+                                                                    || LicenseRecordTypeName == 'FCC_Renewal'
+                                                                    || LicenseRecordTypeName == 'FCC_Assistant_New_License'
+                                                                    || LicenseRecordTypeName == 'FCC_Assistant_Renewal'
+                                                                    || LicenseRecordTypeName == 'FCC_Assistant_Change_of_Address')
+                                                                    && (LicenseRecordTypeName != 'Change_of_Address')}">
+                                            <label class="input-label">Do you live at this address?</label>
+                                            <apex:inputCheckbox styleClass="same_as_billing  " value="{!licenseTransation.Do_you_live_at_this_address__c}" />
+                                        </apex:outputPanel>
+                                        <apex:outputPanel rendered="{!LicenseRecordTypeName == 'Change_of_Address'}">
+                                            <label class="input-label">Do you live at new address?</label>
+                                            <apex:inputCheckbox styleClass="same_as_newaddress checkboxTrue" value="{!licenseTransation.Do_you_live_at_this_address__c}"
+                                            />
+                                        </apex:outputPanel>
+                                        <h3 class="md-title" flex="100">Mailing Address</h3>
+                                        <div flex="50">
+                                            <label class="input-label">Mailing Street
+                                            </label>
+                                            <apex:inputText styleClass="  form-control Mailing_Street input_field" id="Mailing_Street" value="{!licenseTransation.Mailing_Street__c}"
+                                            />
+                                        </div>
+                                        <div flex="50">
+                                            <label class="input-label">Mailing State
+                                            </label>
+                                            <apex:inputText styleClass=" form-control Mailing_State input_field" id="Mailing_State" value="{!licenseTransation.Mailing_State__c}"
+                                            />
+                                        </div>
+                                        <div flex="50">
+                                            <label class="input-label">Mailing City
+                                            </label>
+                                            <apex:inputText styleClass=" form-control Mailing_City input_field" id="Mailing_City" value="{!licenseTransation.Mailing_City__c}"
+                                            />
+                                        </div>
+                                        <div flex="50">
+                                            <label class="input-label">Mailing Zip
+                                            </label>
+                                            <apex:inputField styleClass=" form-control input_field" id="Mailing_Zip" html-maxlenght="10" value="{!licenseTransation.Mailing_Zip__c}"
+                                            />
+                                        </div>
+                                    </div>
+                                </apex:outputpanel>
+                                <div flex="100" class="form-group">
+                                    <apex:outputPanel rendered="{!LicenseRecordTypeName == 'GSA_New_License'
+                                                            || LicenseRecordTypeName == 'Residential_New_License'
+                                                            || LicenseRecordTypeName == 'Placement_New_License'
+                                                            || LicenseRecordTypeName == 'Public_School_New_Funding_Application'
+                                                            || LicenseRecordTypeName == 'Other_Eligible_Providers_New_Funding_Application'
+                                                            || LicenseRecordTypeName == 'Private_School_New_Funding_Application'
+                                                            || LicenseRecordTypeName =='Summer_Camp_New_Application'}">
+                                        <apex:outputPanel rendered="{!  LicenseRecordTypeName != 'Public_School_New_Funding_Application'
+                                                                        && LicenseRecordTypeName != 'Private_School_New_Funding_Application'
+                                                                        && LicenseRecordTypeName != 'Other_Eligible_Providers_New_Funding_Application'
+                                                                        && LicenseRecordTypeName != 'Summer_Camp_New_Application'}">
+                                            <div flex="100" class="">
+                                                <label for="{!$Component.OwnershipType}" class="input-label">Ownership Type
+                                                    <span class="required">*</span>
+                                                </label>
+                                                <div class="requiredInput">
+                                                    <div class="requiredBlock"></div>
+                                                    <apex:InputField styleClass="form-control ownerShip" id="OwnershipType" value="{!licenseTransation.Ownership_Type__c}" html-data-parsley-required="true">
+                                                        <apex:actionSupport event="onchange" action="{!rerenderPanel}" rerender="ownerShipPanel" status="status">
+                                                            <apex:param assignTo="{!selectedOwnerShip}" value="{!licenseTransation.Ownership_Type__c}" name="selectedOwnerShip" />
+                                                        </apex:actionSupport>
+                                                    </apex:InputField>
+                                                </div>
+                                            </div>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel id="ownerShipPanel" styleclass="ownerShipPanel">
+                                            <apex:outputPanel >
+                                                <div layout="column" layout-lg="row" layout-gt-lg="row" layout-wrap="true" style="overflow: visible;">
+                                                    <h3 class="md-title" flex="100">New Umbrella</h3>
+                                                    <div flex="50">
+                                                        <label for="{!$Component.Newumbrella}" class="input-label">New Umbrella Name </label>
+                                                        <apex:inputText styleClass="form-control" id="Newumbrella" value="{!licenseTransation.New_Umbrella_Name__c}" disabled="{!IF(licenseTransation.provider__r.Umbrella_Members__r.Name != null,true,false)}"/>
+                                                    </div>
+                                                    <div flex="50">
+                                                        <label for="{!$Component.BusinessName}" class="input-label">New Umbrella Business Name </label>
+                                                        <apex:inputText styleClass="form-control" id="BusinessName" value="{!licenseTransation.New_Umbrella_Business_Name__c}" disabled="{!IF(licenseTransation.provider__r.Umbrella_Members__r.Business_Name__c != null,true,false)}"
+                                                        />
+                                                    </div>
+                                                    <div flex="50">
+                                                        <label for="{!$Component.Address1}" class="input-label">Street Address 1
+                                                            <span class="required">*</span>
+                                                        </label>
+                                                        <apex:inputText styleClass="form-control" id="Address1" value="{!licenseTransation.NewUmbrella_Street_Address_1__c}" 
+                                                            disabled="{!IF(licenseTransation.provider__r.Umbrella_Members__r.Provider_Address_1__c != null,true,false)}"
+                                                        />
+                                                    </div>
+                                                    <div flex="50">
+                                                        <label for="{!$Component.Address2}" class="input-label">Street Address 2</label>
+                                                        <apex:inputText styleClass="form-control" id="Address2" value="{!licenseTransation.NewUmbrella_Street_Address_2__c}" disabled="{!IF(licenseTransation.provider__r.Umbrella_Members__r.Provider_Address_2__c != null,true,false)}"
+                                                        />
+                                                    </div>
+                                                    <div flex="50">
+                                                        <label for="{!$Component.City}" class="input-label">City
+                                                            <span class="required">*</span>
+                                                        </label>
+                                                        <apex:inputText styleClass="form-control" id="City" value="{!licenseTransation.NewUmbrella_City__c}" html-data-parsley-required="true"
+                                                            disabled="{!IF(licenseTransation.provider__r.Umbrella_Members__r.Provider_City__c != null,true,false)}"
+                                                        />
+                                                    </div>
+                                                    <div flex="50">
+                                                        <label for="{!$Component.State}" class="input-label">State
+                                                            <span class="required">*</span>
+                                                        </label>
+                                                        <apex:inputText styleClass="form-control" id="State" value="{!licenseTransation.NewUmbrella_State__c}" html-data-parsley-required="true"
+                                                            disabled="{!IF(licenseTransation.provider__r.Umbrella_Members__r.State__c != null,true,false)}"
+                                                        />
+                                                    </div>
+                                                    <div flex="50">
+                                                        <label for="{!$Component.Phone}" class="input-label">Phone
+                                                            <span class="required">*</span>
+                                                        </label>
+                                                        <apex:inputText styleClass="form-control phonenumber" id="Phone" value="{!licenseTransation.NewUmbrella_Phone__c}" html-data-parsley-required="true"
+                                                            html-data-parsley-pattern="{!$Label.Phone_Number_Validation}" html-data-parsley-pattern-message="{!$Label.Phone_Number_Validation_Error}"
+                                                            onblur="formatPhone(this);" disabled="{!IF(licenseTransation.provider__r.Umbrella_Members__r.Phone != null,true,false)}"/>
+                                                    </div>
+                                                    <div flex="50">
+                                                        <label for="{!$Component.ZipCode}" class="input-label">Zip Code
+                                                            <span class="required">*</span>
+                                                        </label>
+                                                        <apex:inputText styleClass="form-control" id="ZipCode" value="{!licenseTransation.NewUmbrella_Zip_Code__c}" html-data-parsley-required="true"
+                                                            onblur="isNumberOnly(this);" onkeypress="isNumberOnly(this);" html-data-parsley-pattern="{!$Label.Zipcode_Validation}"
+                                                            html-data-parsley-pattern-message="{!$Label.Zipcode_Validation_Error}" disabled="{!IF(licenseTransation.provider__r.Umbrella_Members__r.Provider_Zip_Code__c != null,true,false)}"/>
+                                                    </div>
+                                                    <div flex="50">
+                                                        <label for="{!$Component.Fax}" class="input-label">Fax </label>
+                                                        <apex:inputText styleClass="form-control" id="Fax" value="{!licenseTransation.NewUmbrella_Fax__c}" disabled="{!IF(licenseTransation.provider__r.Umbrella_Members__r.Fax != null,true,false)}"/>
+                                                    </div>
+                                                    <div flex="50">
+                                                        <label for="{!$Component.AlternatePhone}" class="input-label">Alternate Phone </label>
+                                                        <apex:inputText styleClass="form-control" id="AlternatePhone" value="{!licenseTransation.NewUmbrella_Alternate_Phone__c}"
+                                                            html-data-parsley-pattern="{!$Label.Phone_Number_Validation}" html-data-parsley-pattern-message="{!$Label.Phone_Number_Validation_Error}"
+                                                            onblur="formatPhone(this);" disabled="{!IF(licenseTransation.provider__r.Umbrella_Members__r.Alternate_Phone__c != null,true,false)}"/>
+                                                    </div>
+                                                    <div flex="50">
+                                                        <label for="{!$Component.Incorporation}" class="input-label">Place of Incorporation</label>
+                                                        <apex:inputText styleClass="form-control" id="Incorporation" value="{!licenseTransation.NewUmbrella_Place_of_Incorporation__c}"
+                                                            disabled="{!IF(licenseTransation.provider__r.Umbrella_Members__r.Place_of_Incorporation__c != null,true,false)}"
+                                                        />
+                                                    </div>
+                                                    <div flex="50">
+                                                        <label for="{!$Component.Email}" class="input-label">Email
+                                                            <span class="required" style="{!IF(isInternalUser, 'display:none;','display:inline;')}">*</span>
+                                                        </label>
+                                                        <apex:inputText styleClass="form-control" id="Email" value="{!licenseTransation.NewUmbrella_Email__c}" html-data-parsley-required="{!!isInternalUser}"
+                                                            html-data-parsley-type="email" html-data-parsley-type-message="{!$Label.Email_Validation_Error}"
+                                                            disabled="{!IF(licenseTransation.provider__r.Umbrella_Members__r.Provider_Email__c != null,true,false)}"
+                                                        />
+                                                    </div>
+                                                    <div flex="50">
+                                                        <label for="{!$Component.Incorporation1}" class="input-label">Date of Incorporation </label>
+                                                        <apex:inputField styleClass="form-control" id="Incorporation1" value="{!licenseTransation.NewUmbrella_Date_of_Incorporation__c}"
+                                                            html-data-provide="datepicker" />
+                                                    </div>
+                                                    <!--  <div flex="50" > -->
+                                                    <!--     <label for="{!$Component.Director}" class="input-label">Licensee Title<span class="required">*</span></label> -->
+                                                    <!--     <apex:inputField styleClass="form-control"  id="Director" value="{!licenseTransation.NewUmbrella_Director_Title__c}" html-data-parsley-required="true" /> -->
+                                                    <!--  </div> -->
+                                                    <div flex="50">
+                                                        <apex:outputPanel layout="block" rendered="{!LicenseRecordTypeName == 'Private_School_New_Funding_Application'
+                                                                                            || LicenseRecordTypeName == 'Public_School_New_Funding_Application'
+                                                                                            || LicenseRecordTypeName == 'Other_Eligible_Providers_New_Funding_Application'}">
+                                                            <label class="input-label">Umbrella Contact First Name</label>
+                                                            <apex:inputText styleClass="form-control" value="{!licenseTransation.NewUmbrella_Director_First_Name__c}"
+                                                                disabled="{!IF(licenseTransation.NewUmbrella_Director_First_Name__c != null,true,false)}"/>  
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" rendered="{!LicenseRecordTypeName != 'Private_School_New_Funding_Application'
+                                                                                            && LicenseRecordTypeName != 'Public_School_New_Funding_Application'
+                                                                                            && LicenseRecordTypeName != 'Other_Eligible_Providers_New_Funding_Application'}">
+                                                            <label class="input-label">Licensee First Name
+                                                                <span class="required">*</span>
+                                                            </label>
+                                                            <apex:inputText styleClass="form-control" value="{!licenseTransation.NewUmbrella_Director_First_Name__c}"
+                                                                html-data-parsley-required="true" disabled="{!IF(licenseTransation.NewUmbrella_Director_First_Name__c != null,true,false)}"/>                                
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                    <div flex="50">
+                                                        <apex:outputPanel layout="block" rendered="{!LicenseRecordTypeName == 'Private_School_New_Funding_Application'
+                                                                                            || LicenseRecordTypeName == 'Public_School_New_Funding_Application'
+                                                                                            || LicenseRecordTypeName == 'Other_Eligible_Providers_New_Funding_Application'}">
+                                                            <label class="input-label">Umbrella Contact Last Name</label>
+                                                            <apex:inputText styleClass="form-control" value="{!licenseTransation.NewUmbrella_Director_Last_Name__c}"
+                                                                disabled="{!IF(licenseTransation.NewUmbrella_Director_Last_Name__c != null,true,false)}"/>  
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" rendered="{!LicenseRecordTypeName != 'Private_School_New_Funding_Application'
+                                                                                            && LicenseRecordTypeName != 'Public_School_New_Funding_Application'
+                                                                                            && LicenseRecordTypeName != 'Other_Eligible_Providers_New_Funding_Application'}">
+                                                            <label class="input-label">Licensee Last Name
+                                                                <span class="required">*</span>
+                                                            </label>
+                                                            <apex:inputText styleClass="form-control" value="{!licenseTransation.NewUmbrella_Director_Last_Name__c}"
+                                                                html-data-parsley-required="true" disabled="{!IF(licenseTransation.NewUmbrella_Director_Last_Name__c != null,true,false)}"/>                                
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                    <div flex="50">
+                                                        <apex:outputPanel layout="block" rendered="{!LicenseRecordTypeName == 'Private_School_New_Funding_Application'
+                                                                                            || LicenseRecordTypeName == 'Public_School_New_Funding_Application'
+                                                                                            || LicenseRecordTypeName == 'Other_Eligible_Providers_New_Funding_Application'}">
+                                                            <label class="input-label">Umbrella Contact Email</label>
+                                                            <apex:inputText styleClass="form-control" value="{!licenseTransation.NewUmbrella_Director_Email__c}"
+                                                                html-data-parsley-type="email" html-data-parsley-type-message="{!$Label.Email_Validation_Error}"
+                                                                disabled="{!IF(licenseTransation.NewUmbrella_Director_Email__c != null,true,false)}"/>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" rendered="{!LicenseRecordTypeName != 'Private_School_New_Funding_Application'
+                                                                                            && LicenseRecordTypeName != 'Public_School_New_Funding_Application'
+                                                                                            && LicenseRecordTypeName != 'Other_Eligible_Providers_New_Funding_Application'}">
+                                                            <label class="input-label">Licensee Email
+                                                                <span class="required">*</span>
+                                                            </label>
+                                                            <apex:inputText styleClass="form-control" value="{!licenseTransation.NewUmbrella_Director_Email__c}" html-data-parsley-required="true"
+                                                                html-data-parsley-type="email" html-data-parsley-type-message="{!$Label.Email_Validation_Error}"
+                                                                disabled="{!IF(licenseTransation.NewUmbrella_Director_Email__c != null,true,false)}"/>                                
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                    <div flex="50">
+                                                        <apex:outputPanel layout="block" rendered="{!LicenseRecordTypeName == 'Private_School_New_Funding_Application'
+                                                                                            || LicenseRecordTypeName == 'Public_School_New_Funding_Application'
+                                                                                            || LicenseRecordTypeName == 'Other_Eligible_Providers_New_Funding_Application'}">
+                                                            <label class="input-label">Umbrella Contact Phone</label>
+                                                            <apex:inputtext styleClass="form-control" value="{!licenseTransation.NewUmbrella_Director_Phone__c}"
+                                                                html-data-parsley-pattern="{!$Label.Phone_Number_Validation}" html-data-parsley-pattern-message="{!$Label.Phone_Number_Validation_Error}"
+                                                                onblur="formatPhone(this);" disabled="{!IF(licenseTransation.NewUmbrella_Director_Phone__c != null,true,false)}"
+                                                            /> 
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel layout="block" rendered="{!LicenseRecordTypeName != 'Private_School_New_Funding_Application'
+                                                                                            && LicenseRecordTypeName != 'Public_School_New_Funding_Application'
+                                                                                            && LicenseRecordTypeName != 'Other_Eligible_Providers_New_Funding_Application'}">
+                                                            <label class="input-label">Licensee Phone
+                                                                <span class="required">*</span>
+                                                            </label>
+                                                            <apex:inputtext styleClass="form-control" value="{!licenseTransation.NewUmbrella_Director_Phone__c}" html-data-parsley-required="true"
+                                                                html-data-parsley-pattern="{!$Label.Phone_Number_Validation}" html-data-parsley-pattern-message="{!$Label.Phone_Number_Validation_Error}"
+                                                                onblur="formatPhone(this);" disabled="{!IF(licenseTransation.NewUmbrella_Director_Phone__c != null,true,false)}"
+                                                            />                                
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                </div>
+                                            </apex:outputPanel>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputpanel rendered="{!LicenseRecordTypeName=='Placement_Move'
+                                                || LicenseRecordTypeName=='Placement_Renewal'
+                                                ||LicenseRecordTypeName=='Placement_Change_in_License'}">
+                            <apex:outputPanel rendered="{!providerRecordType=='Foster Care Agency'}">
+                                <div flex="50" class="form-group">
+                                    <label for="{!$Component.FosterHomes}" class="input-label">Number of Open Foster Homes
+                                        <span class="required">*</span>
+                                    </label>
+                                    <apex:inputField styleClass="form-control" html-data-parsley-required="true" html-data-parsley-type="number" html-data-parsley-min="0"
+                                        id="FosterHomes" value="{!licenseTransation.Number_of_Open_Foster_Homes__c}" />
+                                </div>
+                                <div flex="50" class="form-group">
+                                    <label for="{!$Component.Care}" class="input-label">Number of Children Currently Placed in Care
+                                        <span class="required">*</span>
+                                    </label>
+                                    <apex:inputField styleClass="form-control" html-data-parsley-required="true" html-data-parsley-type="number" html-data-parsley-min="0"
+                                        id="Care" value="{!licenseTransation.Number_of_children_placed_in_care__c}" />
+                                </div>
+                            </apex:outputpanel>
+                        </apex:outputPanel>
+                        <!-- Licensee Information -->
+                        <apex:outputPanel layout="block" rendered="{!LicenseRecordTypeName == 'Background_Record_Check'
+                                                                    || LicenseRecordTypeName == 'FCC_New_License'
+                                                                    || LicenseRecordTypeName == 'FCC_Assistant_New_License'}">
+                            <div layout="column" layout-lg="row" layout-gt-lg="row" layout-wrap="true" style="margin-top: -35px;">
+                                <br/>
+                                <h3 class="md-title" flex="100">
+                                    <apex:outputText rendered="{!IsFccAssistant && LicenseRecordTypeName !='Background_Record_Check'}">
+                                        Assistant
+                                    </apex:outputText>
+                                    <apex:outputText rendered="{!!IsFccAssistant}">Provider</apex:outputText>
+                                    Information
+                                </h3>
+                                <apex:outputPanel styleClass="form-group" html-flex="50" rendered="{!LicenseRecordTypeName =='FCC_New_License' || LicenseRecordTypeName =='FCC_Assistant_New_License'}">
+                                    <div ng-class="{'md-input-has-value' : {!IF(transactionContact.First_Name__c==null,false,true)}}">
+                                        <label for="{!$Component.firstName}" class="input-label">First Name
+                                            <span class="required">*</span>
+                                        </label>
+                                        <apex:inputText disabled="{!if(isFccAssistant || LicenseRecordTypeName =='FCC_Renewal' , true, false)}" styleClass="form-control"
+                                            value="{!transactionContact.First_Name__c}" id="firstName" html-data-parsley-required="{!if(isFccAssistant, false, true)}"
+                                        />
+                                    </div>
+                                </apex:outputPanel>
+                                <apex:outputPanel styleClass="form-group" html-flex="50" rendered="{!LicenseRecordTypeName =='FCC_New_License' || LicenseRecordTypeName =='FCC_Assistant_New_License'}">
+                                    <div ng-class="{'md-input-has-value' : {!IF(transactionContact.Last_Name__c==null,false,true)}}">
+                                        <label for="{!$Component.lastName}" class="input-label">Last Name
+                                            <span class="required">*</span>
+                                        </label>
+                                        <apex:inputText disabled="{!if(isFccAssistant || LicenseRecordTypeName =='FCC_Renewal', true, false)}" styleClass="form-control"
+                                            value="{!transactionContact.Last_Name__c}" id="lastName" html-data-parsley-required="{!if(isFccAssistant, false, true)}"
+                                        />
+                                    </div>
+                                </apex:outputPanel>
+                                <apex:outputPanel html-flex="50" layout="block" rendered="{!LicenseRecordTypeName=='FCC_New_License' || LicenseRecordTypeName=='FCC_Assistant_New_License'}">
+                                    <div flex="50" style="margin-top: -10px;" class="form-group" ng-class="{'md-input-has-value' : {!IF(transactionContact.Date_of_Birth__c==null,false,true)}}">
+                                        <label for="{!$Component.DateofBirth}" class="input-label">Date of Birth
+                                            <span class="required">*</span>
+                                        </label>
+                                        <apex:inputField styleclass="form-control" id="DateofBirth" value="{!transactionContact.Date_of_Birth__c}" html-data-parsley-required="true"
+                                            html-data-provide="datepicker" html-data-date-end-date="0d" />
+                                    </div>
+                                </apex:outputPanel>
+                            </div>
+                        </apex:outputPanel>
+                        <!-- Contact Information -->
+                        <apex:outputPanel rendered="{!LicenseRecordTypeName !='Variance_On_Regulation_Request' && LicenseRecordTypeName !='Background_Record_Check'}">
+                            <div layout="column" layout-lg="row" layout-gt-lg="row" layout-wrap="true" style="overflow: visible;">
+                                <h3 class="md-title" flex="100">Contact Information</h3>
+                                <apex:outputText rendered="{!(LicenseRecordTypeName =='Variance_On_Regulation_Request'
+                                                        && providerRecordType !='Family Child Care'
+                                                        && providerRecordType !='Foster Care Agency'
+                                                        && providerRecordType !='Group Care'
+                                                        && providerRecordType !='Temporary Shelter')
+                                                        || LicenseRecordTypeName == 'GSA_Renewal'
+                                                        || LicenseRecordTypeName == 'GSA_License_Change'}">
+                                    <div flex="50">
+                                        <label for="{!$Component.PersontoContact}" class="input-label">Name of the Person to Contact
+                                            <span class="required">*</span>
+                                        </label>
+                                        <apex:inputText styleClass="form-control" id="PersontoContact" value="{!Provider.Name_of_the_Person_to_Contact__c}" html-data-parsley-required="true"
+                                        />
+                                    </div>
+                                </apex:outputText>
+                                <div flex="50" ng-class="{'md-input-has-value' : {!IF(Provider.Provider_Email__c == null,false,true)}}">
+                                    <label for="{!$Component.EmailAddress}" class="input-label">Email Address
+                                        <span class="required" style="display:inline;">*</span>
+                                    </label>
+                                    <apex:inputText styleClass="form-control" id="EmailAddress" value="{!licenseTransation.Provider_Email__c}" html-data-parsley-type="email"
+                                        html-data-parsley-required="true" html-data-parsley-type-message="{!$Label.Email_Validation_Error}"
+                                    />
+                                </div>
+                                <apex:outputtext rendered="{!LicenseRecordTypeName!='GSA_New_License'}">
+                                    
+                                    <br/>
+                                </apex:outputtext>
+                                <apex:outputtext rendered="{!LicenseRecordTypeName=='GSA_New_License'}">
+                                   
+                                    <br/>
+                                </apex:outputtext>
+                                <apex:outputtext rendered="{!LicenseRecordTypeName != 'FCC_New_License'
+                                                        && LicenseRecordTypeName != 'FCC_Renewal'
+                                                        && LicenseRecordTypeName != 'Variance_On_Regulation_Request'
+                                                        && LicenseRecordTypeName != 'FCC_Assistant_New_License'
+                                                        && LicenseRecordTypeName != 'GSA_Renewal'
+                                                        && LicenseRecordTypeName != 'FCC_Assistant_Renewal'
+                                                        && LicenseRecordTypeName != 'FCC_Assistant_License_Upgrade'
+                                                        && LicenseRecordTypeName != 'FCC_License_Upgrade'
+                                                        && LicenseRecordTypeName != 'Change_of_Address'
+                                                        && LicenseRecordTypeName != 'FCC_Assistant_Change_of_Address'
+                                                        && LicenseRecordTypeName != 'FCC_Change_Room_Floor_Level'
+                                                        && LicenseRecordTypeName != 'GSA_License_Change'
+                                                        && LicenseRecordTypeName != 'Placement_Change_in_License'
+                                                        && LicenseRecordTypeName != 'Residential_Change_in_License'}">
+                                    <div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Provider_Fax_Number__c==null,false,true)}}">
+                                        <label for="{!$Component.ProviderFax}" class="input-label">Fax Number</label>
+                                        <apex:inputText styleClass="form-control phonenumber" value="{!licenseTransation.Provider_Fax_Number__c}" html-data-parsley-pattern="{!$Label.Phone_Number_Validation}"
+                                            id="ProviderFax" html-data-parsley-pattern-message="{!$Label.Phone_Number_Validation_Error}"
+                                            onblur="formatPhone(this);" />
+                                    </div>
+                                </apex:outputtext>
+                                <apex:outputtext rendered="{!LicenseRecordTypeName!='Residential_Move'&&LicenseRecordTypeName!='Residential_License_Renewal'
+                                                       &&LicenseRecordTypeName!='Residential_Change_in_License'&&LicenseRecordTypeName!='Placement_New_License'&&LicenseRecordTypeName!='Placement_Move'
+                                                       &&LicenseRecordTypeName!='Placement_Renewal'&&LicenseRecordTypeName!='Placement_Change_in_License'&&LicenseRecordTypeName!='R_P_Change_of_Admin_Authority'}">
+                                    <div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Provider_Alternate_Phone__c==null,false,true)}}">
+                                        <label for="{!$Component.ProviderAlternate}" class="input-label">Alternate Phone Number
+                                        </label>
+                                        <apex:inputText styleClass="form-control phonenumber" value="{!licenseTransation.Provider_Alternate_Phone__c}" html-data-parsley-pattern="{!$Label.Phone_Number_Validation}"
+                                            id="ProviderAlternate" html-data-parsley-pattern-message="{!$Label.Phone_Number_Validation_Error}"
+                                            onblur="formatPhone(this);" />
+                                    </div>
+                                    <br/>
+                                </apex:outputtext>
+                                <apex:outputpanel html-flex="50" layout="block" rendered="{!LicenseRecordTypeName=='FCC_New_License' || LicenseRecordTypeName == 'FCC_Assistant_New_License'}">
+                                    <apex:outputPanel rendered="{!LicenseRecordTypeName!='Residential_New_License'&&LicenseRecordTypeName!='Residential_Move'&&LicenseRecordTypeName!='Residential_License_Renewal'
+                                                            &&LicenseRecordTypeName!='Residential_Change_in_License'&&LicenseRecordTypeName!='Placement_New_License'&&LicenseRecordTypeName!='Placement_Move'
+                                                            &&LicenseRecordTypeName!='Placement_Renewal'&&LicenseRecordTypeName!='Placement_Change_in_License'&&LicenseRecordTypeName!='R_P_Change_of_Admin_Authority'
+                                                            &&LicenseRecordTypeName!= 'FCC_New_License' && LicenseRecordTypeName != 'Variance_On_Regulation_Request' && LicenseRecordTypeName != 'FCC_Assistant_New_License' 
+                                                            &&LicenseRecordTypeName!= 'GSA_Renewal' && LicenseRecordTypeName != 'FCC_Assistant_Renewal' && LicenseRecordTypeName != 'FCC_Assistant_License_Upgrade' && LicenseRecordTypeName != 'FCC_License_Upgrade'
+                                                            &&LicenseRecordTypeName!='Change_of_Address' && LicenseRecordTypeName != 'FCC_Assistant_Change_of_Address'  &&LicenseRecordTypeName!='FCC_Change_Room_Floor_Level'&&LicenseRecordTypeName!='GSA_License_Change'&&LicenseRecordTypeName!='Placement_Change_in_License' 
+                                                            &&LicenseRecordTypeName!='Residential_Change_in_License'}">
+                                        
+                                    </apex:outputPanel>
+                                </apex:outputpanel>
+                                <apex:outputpanel html-flex="50" layout="block" rendered="{!LicenseRecordTypeName!='GSA_New_License'&&LicenseRecordTypeName!='GSA_Renewal'
+                                                                                       &&LicenseRecordTypeName!='GSA_License_Change'&&LicenseRecordTypeName!='GSA_Move'&&LicenseRecordTypeName!='GSA_Temporary_Move'&&LicenseRecordTypeName!='GSA_Change_of_Admin_Authority'
+                                                                                       &&LicenseRecordTypeName!='Residential_New_License'&&LicenseRecordTypeName!='Residential_Move'&&LicenseRecordTypeName!='Residential_License_Renewal'
+                                                                                       &&LicenseRecordTypeName!='Residential_Change_in_License'&&LicenseRecordTypeName!='Placement_New_License'&&LicenseRecordTypeName!='Placement_Move'
+                                                                                       &&LicenseRecordTypeName!='Placement_Renewal'&&LicenseRecordTypeName!='Placement_Change_in_License'&&LicenseRecordTypeName!='R_P_Change_of_Admin_Authority'
+                                                                                       && LicenseRecordTypeName!= 'FCC_New_License' && LicenseRecordTypeName != 'FCC_Renewal' && LicenseRecordTypeName != 'Variance_On_Regulation_Request' && LicenseRecordTypeName != 'FCC_Assistant_New_License' 
+                                                                                       && LicenseRecordTypeName!= 'GSA_Renewal' && LicenseRecordTypeName != 'FCC_Assistant_Renewal' && LicenseRecordTypeName != 'FCC_Assistant_License_Upgrade' && LicenseRecordTypeName != 'FCC_License_Upgrade'
+                                                                                       &&LicenseRecordTypeName!='Change_of_Address' && LicenseRecordTypeName != 'FCC_Assistant_Change_of_Address'  &&LicenseRecordTypeName!='FCC_Change_Room_Floor_Level'&&LicenseRecordTypeName!='GSA_License_Change'&&LicenseRecordTypeName!='Placement_Change_in_License' 
+                                                                                       &&LicenseRecordTypeName!='Residential_Change_in_License'}">
+                                    <div flex="50" ng-class="{'md-input-has-value' : {!IF(cntct.MobilePhone==null,false,true)}}">
+                                        <label for="{!$Component.ProviderMobilePhone}" class="input-label">Mobile Phone Number 
+                                        </label>
+                                        <apex:inputText styleClass="form-control phonenumber" value="{!cntct.MobilePhone}" html-data-parsley-pattern="{!$Label.Phone_Number_Validation}"
+                                            id="ProviderMobilePhone" html-data-parsley-pattern-message="{!$Label.Phone_Number_Validation_Error}"
+                                            onblur="formatPhone(this);" />
+                                    </div>
+                                </apex:outputPanel>
+                                <apex:InputHidden value="{!cntct.Email}" />
+                            </div>
+                        </apex:outputPanel>
+                        <!-- Other Information -->
+                        <apex:outputPanel layout="block" rendered="{!LicenseRecordTypeName!='GSA_New_License'
+                                                                && LicenseRecordTypeName!='GSA_Renewal'
+                                                                && LicenseRecordTypeName!='GSA_License_Change'
+                                                                && LicenseRecordTypeName!='GSA_Move'
+                                                                && LicenseRecordTypeName!='GSA_Temporary_Move'
+                                                                && LicenseRecordTypeName!='GSA_Change_of_Admin_Authority'
+                                                                && LicenseRecordTypeName!='Residential_New_License'
+                                                                && LicenseRecordTypeName!='Residential_Move'
+                                                                && LicenseRecordTypeName!='Residential_License_Renewal'
+                                                                && LicenseRecordTypeName!='Residential_Change_in_License'
+                                                                && LicenseRecordTypeName!='Placement_New_License'
+                                                                && LicenseRecordTypeName!='Placement_Move'
+                                                                && LicenseRecordTypeName!='Placement_Renewal'
+                                                                && LicenseRecordTypeName!='Placement_Change_in_License'
+                                                                && LicenseRecordTypeName!='R_P_Change_of_Admin_Authority'
+                                                                && LicenseRecordTypeName !='Variance_On_Regulation_Request'
+                                                                && LicenseRecordTypeName != 'Change_of_Address'
+                                                                && LicenseRecordTypeName != 'FCC_Assistant_Change_of_Address'
+                                                                && LicenseRecordTypeName != 'EEC_FCC_Modification'
+                                                                && LicenseRecordTypeName != 'EEC_GSA_Modification'
+                                                                && LicenseRecordTypeName != 'EEC_RP_Modification'
+                                                                && LicenseRecordTypeName != 'Background_Record_Check'}">
+                            <div layout="column" layout-lg="row" layout-gt-lg="row" layout-wrap="true">
+                                <h3 class="md-title" flex="100">Other Information</h3>
+                                <!--    <apex:outputPanel styleClass="radio-group" style="margin-bottom: 15px;padding-right: 15%;" html-flex="50"  layout="block" rendered="{!LicenseRecordTypeName=='FCC_Renewal' || LicenseRecordTypeName=='FCC_New_License' || LicenseRecordTypeName=='FCC_License_Upgrade'}">
+                                   <p class="input-label">Do you wish to be listed on the EEC Website for referrals? <span class="required">*</span></p>
+                                   <apex:selectRadio value="{!provider.Accept_Referral__c}">
+                                       <apex:selectOptions value="{!items}" html-data-parsley-required="true"/>
+                                   </apex:selectRadio>
+                               </apex:outputPanel>
+                               <div flex="50" ng-class="{'md-input-has-value' : {!IF(provider.Language__c==null,false,true)}}">
+                                   <p class="input-label">Language <span class="required">*</span></p>
+                                   <apex:inputField styleClass="form-control" value="{!provider.Language__c}" html-data-parsley-required="true" style="width:70%;"/>
+                               </div>  -->
+                                <div flex="50" style="margin-bottom: 15px;" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Preferred_Language__c==null,false,true)}}">
+                                    <!--                                     <p class="input-label"></p> -->
+                                    <label for="{!$Component.Preferred}" class="input-label">Preferred Communication Language
+                                        <span class="required">*</span>
+                                    </label>
+                                    <apex:inputField styleClass="form-control language" id="Preferred" value="{!licenseTransation.Preferred_Language__c}" html-data-parsley-required="true"
+                                        style="width:70%;" onchange="isNonEnglishLanguage();" />
+                                </div>
+                                <apex:outputpanel html-flex="50" layout="block" styleClass="nonEnglish">
+                                    <div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Preferred_Language__c=='Other',false,true)}}">
+                                        <!--                                         <p class="input-label">Other Non-English languages </p> -->
+                                        <label for="{!$Component.Englishlanguages}" class="input-label">Other Non-English languages
+                                            <span class="required">*</span>
+                                        </label>
+                                        <apex:inputfield styleclass="form-control" id="Englishlanguages" value="{!licenseTransation.Other_Non_English_Language__c}"
+                                        />
+                                    </div>
+                                </apex:outputpanel>
+                                <apex:outputpanel html-flex="50" layout="block" rendered="{!LicenseRecordTypeName=='FCC_Renewal' 
+                                                                                            || LicenseRecordTypeName=='FCC_New_License' 
+                                                                                            || LicenseRecordTypeName=='FCC_License_Upgrade' 
+                                                                                            || LicenseRecordTypeName=='FCC_Assistant_Renewal' 
+                                                                                            || LicenseRecordTypeName=='FCC_Assistant_New_License' 
+                                                                                            || (isFccAssistant && LicenseRecordTypeName != 'Change_of_Address' && LicenseRecordTypeName != 'FCC_Assistant_Change_of_Address')}">
+                                    <div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Prof_Qualification_Reg_Number__c==null,false,true)}}">
+                                        <!--                                         <p class="input-label">Professional Qualification Registry Number <span class="required">*</span></p> -->
+                                        <label for="{!$Component.Professional}" class="input-label">Professional Qualification Registry Number
+                                            <span class="required">*</span>
+                                        </label>
+                                        <apex:inputfield styleclass="form-control" id="Professional" value="{!licenseTransation.Prof_Qualification_Reg_Number__c}"
+                                            html-data-parsley-required="true" />
+                                    </div>
+                                </apex:outputpanel>
+                                <apex:outputPanel styleClass="radio-group" html-flex="50" layout="block">
+                                    <p class="input-label">Can you communicate in English? </p>
+                                    <fieldset>
+                                        <legend class="h1Hidden">Accessibility Fix</legend>
+                                        <apex:selectRadio value="{!licenseTransation.Can_Communicate_in_English__c}">
+                                            <apex:selectOptions value="{!items}" />
+                                        </apex:selectRadio>
+                                    </fieldset>
+                                </apex:outputPanel>
+                                <apex:outputpanel html-flex="50" layout="block" rendered="{!LicenseRecordTypeName=='FCC_Renewal' 
+                                                                                            || LicenseRecordTypeName=='FCC_New_License' 
+                                                                                            || LicenseRecordTypeName=='FCC_License_Upgrade' 
+                                                                                            || LicenseRecordTypeName=='FCC_Assistant_New_License'
+                                                                                            || LicenseRecordTypeName=='FCC_Assistant_Renewal' 
+                                                                                            || (isFccAssistant 
+                                                                                            && LicenseRecordTypeName != 'FCC_Assistant_Change_of_Address')}">
+                                    <div flex="50">
+                                        <!--                                         <p class="input-label">Professional Qualification Expiration Date <span class="required">*</span></p> -->
+                                        <label for="{!$Component.ProfessionalExpirationDate}" class="input-label">Professional Qualification Expiration Date
+                                            <span class="required">*</span>
+                                        </label>
+                                        <apex:inputfield styleclass="form-control" id="ProfessionalExpirationDate" value="{!licenseTransation.PQ_Expiration_Date__c}"
+                                            html-data-parsley-required="true" html-data-provide="datepicker" />
+                                    </div>
+                                </apex:outputpanel>
+                                <!--                                 <apex:outputpanel html-flex="50" layout="block" rendered="{!LicenseRecordTypeName=='FCC_Renewal' || LicenseRecordTypeName=='FCC_New_License'}" style="margin-bottom: 15px;"> -->
+                                <!--                                     <div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Race__c==null,false,true)}}"> -->
+                                <!--                                         <label for="{!$Component.Ethnicity}" class="input-label">Ethnicity<span class="required">*</span></label> -->
+                                <!--                                         <apex:inputfield styleclass="form-control" id="Ethnicity" value="{!licenseTransation.Race__c}" style="width: 70%;"/> -->
+                                <!--                                     </div> -->
+                                <!--                                 </apex:outputpanel>   -->
+                                <apex:outputPanel html-flex="50" layout="block" rendered="{!LicenseRecordTypeName=='FCC_New_License' && provider.PPM_Meeting_Attended_Date__c == null}">
+                                    <div flex="50" ng-class="{'md-input-has-value' : {!IF(provider.PPM_Meeting_Attended_Date__c==null,false,true)}}">
+                                        <!--<p class="input-label" style="width: 100%;">Date Attended Potential Provider Meeting <span class="required">*</span></p>-->
+                                        <label for="{!$Component.DateAttended}" style="width: 100%;" class="input-label">Date Attended Potential Provider Meeting
+                                            <span class="required">*</span>
+                                        </label>
+                                        <apex:inputField styleClass="form-control" id="DateAttended" value="{!licenseTransation.PPM_Attended_Date__c}" html-data-parsley-required="true"
+                                            html-data-provide="datepicker" html-data-date-end-date="0d" />
+                                    </div>
+                                </apex:outputPanel>
+                                <apex:outputPanel html-flex="50" layout="block" rendered="{!LicenseRecordTypeName=='FCC_New_License' && provider.PPM_Meeting_Attended_Date__c != null}">
+                                    <div flex="50" ng-class="{'md-input-has-value' : {!IF(provider.PPM_Meeting_Attended_Date__c!=null,false,true)}}">
+                                        <!--<p class="input-label" style="width: 100%;">Date Attended Potential Provider Meeting <span class="required">*</span></p>-->
+                                        <label for="{!$Component.DateAttended1}" style="width: 100%;" class="input-label">Date Attended Potential Provider Meeting
+                                            <span class="required">*</span>
+                                        </label>
+                                        <apex:outputField styleClass="form-control" id="DateAttended1" value="{!provider.PPM_Meeting_Attended_Date__c}" html-data-parsley-required="true"
+                                            html-data-provide="datepicker" html-data-date-end-date="0d" />
+                                    </div>
+                                </apex:outputPanel>
+                                <!--  <apex:outputPanel html-flex="50" layout="block" rendered="{!LicenseRecordTypeName=='FCC_New_License' && provider.PPM_Meeting_Attended_Date__c != null}">
+                                <div flex="50" ng-class="{'md-input-has-value' : {!IF(provider.PPM_Meeting_Attended_Date__c==null,false,true)}}">
+                                    <p class="input-label" style="width: 100%;">Date Attended Potential Provider Meeting</p>
+                                    <apex:outputField styleClass="form-control" value="{!provider.PPM_Meeting_Attended_Date__c}"/>
+                                </div>
+                            </apex:outputPanel> -->
+                                <apex:outputpanel html-flex="50" layout="block" rendered="{! isFccAssistant && LicenseRecordTypeName != 'FCC_Assistant_Change_of_Address'}">
+                                    <div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.FCC_Educator_Assistant_is_working_with__c==null,false,true)}}">
+                                        <!--                                         <p class="input-label">Name of Family Child Care Educator you are working with?</p> -->
+                                        <label for="{!$Component.Educator}" class="input-label">Name of Family Child Care Educator you are working with?</label>
+                                        <apex:inputText value="{!licenseTransation.FCC_Educator_Assistant_is_working_with__c}" id="Educator" styleclass="form-control"
+                                            list="{!getFCCEducatorList}" />
+                                    </div>
+                                </apex:outputpanel>
+                                <apex:outputpanel html-flex="50" layout="block" rendered="{! isFccAssistant && LicenseRecordTypeName != 'FCC_Assistant_Change_of_Address'}">
+                                    <div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.License_Type__c==null,false,true)}}">
+                                        <label class="input-label" for="{!$Component.requestedLicensePicklist}">I am applying to be approved or certified as a:
+                                            <apex:outputpanel rendered="{! LicenseRecordTypeName != 'FCC_Assistant_New_License' }" styleclass="required">*
+                                            </apex:outputpanel>
+                                        </label>
+                                        <apex:selectlist html-name="requestedLicensePicklist" value="{!licenseTransation.License_Requested__c}" styleclass="form-control"
+                                            style="width:70%;height: 34px;" id="requestedLicensePicklist" size="1" onchange="updateLicenseRequestedPicklist();">
+                                            <apex:selectoptions value="{!requestedLicenseOptions}" html-data-parsley-required="{! LicenseRecordTypeName != 'FCC_Assistant_New_License' }"
+                                            />
+                                        </apex:selectlist>
+                                        <apex:inputHidden rendered="{!LicenseRecordTypeName == 'FCC_Assistant_New_License'}" id="requestedLicensePicklistHidden"
+                                            html-name="requestedLicensePicklist" value="{!licenseTransation.License_Requested__c}"
+                                        />
+                                    </div>
+                                </apex:outputpanel>
+                            </div>
+                        </apex:outputPanel>
+                        <!--                         <apex:outputpanel rendered="{! isFccAssistant }"> -->
+                        <!--                             <div layout="column" layout-lg="row" layout-gt-lg="row" layout-wrap="true"> -->
+                        <!--                                 <h3 class="md-title" flex="100">Transaction Special Requests / Comments</h3> -->
+                        <!--                                 <apex:outputpanel html-flex="100" layout="block"> -->
+                        <!--                                     <div flex="100" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Transaction_Special_Requests_Comments__c==null,false,true)}}"> -->
+                        <!--                                         <p class="input-label">Transaction Special Requests / Comments</p> -->
+                        <!--                                         <apex:inputfield styleclass="form-control" value="{!licenseTransation.Transaction_Special_Requests_Comments__c}" /> -->
+                        <!--                                     </div> -->
+                        <!--                                 </apex:outputpanel>   -->
+                        <!--                             </div> -->
+                        <!--                         </apex:outputpanel> -->
+                        <br/>
+                        <md-divider layout-align="center center"></md-divider>
+                        <!-- Navigation Buttons -->
+                        <md-content class="navigation-buttons" layout="column" layout-lg="row" layout-align="space-between center" layout-gt-lg="row"
+                            layout-align-sm="center center" layout-align-md="center center">
+                            <apex:commandLink styleClass="md-button md-raised md-button md-default-theme" value="Previous" action="{!SaveAndPreviousTransactionProvider}"
+                                html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" status="status"/>
+                            <apex:commandLink styleClass="md-button md-raised md-button md-default-theme btn-pullLeft" value="Close" onclick="closeandreturn();return false;"
+                                html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" status="status"/>
+                            <apex:outputPanel >
+                                <apex:commandLink styleClass="md-button md-raised md-eec save-btn btn-pullRight saveButton" value="Save" onclick="if(!form.validate()){return false;}"
+                                    action="{!saveAndNextTransactionProvider}" html-layout-padding="true" html-flex-order-sm="1"
+                                    html-flex-order-md="1" html-md-button="true" status="status">
+                                    <apex:param name="isSaveOnly" value="true" assignTo="{!isSaveOnly}" />
+                                </apex:commandLink>
+                            </apex:outputPanel>
+                            <apex:commandLink styleClass="md-button md-raised md-eec save-btn" onclick="if(!form.validate()){return false;}" action="{!saveAndNextTransactionProvider}"
+                                html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" status="status">
+                                <apex:outputText rendered="{!!isSubmitted}">Save and</apex:outputText>
+                                Next
+                            </apex:commandLink>
+                        </md-content>
+                        <md-divider layout-align="center center"></md-divider>
+                        <!--             <md-content class="navigation-buttons" layout="column" layout-lg="row" layout-align="space-between center" layout-gt-lg="row" layout-align-sm="center center" layout-align-md="center center">     -->
+                        <!--                 <apex:commandLink styleClass="md-button md-raised" action="{!CancelTransaction}" value="Cancel {!formattedLicenseRecordTypeLabel} Transaction" immediate="true"  onclick="return confirm('Are you sure to cancel the transaction?');" html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true"/> -->
+                        <!--                 <apex:commandLink styleClass="md-button md-raised save-btn" value="{!saveAndReturnLabel}" onclick="if(!form.validate()){return false;}" action="{!SaveAndReturnTransactionProvider}" html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true"/> -->
+                        <!--             </md-content>  -->
+                        <apex:actionFunction action="{!saveAndNextTransactionProvider}" name="SaveNext"  status="status"/>
+                        <apex:actionFunction action="{!closeAndreturnToHome}" name="closeandreturn"  status="status"/>
+                        <apex:actionFunction action="{!SaveAndPreviousTransactionProvider}" name="SavePrevious" oncomplete="addMargin();" status="status">
+                            <apex:param name="previousPage" assignTo="{!previousPageName}" value="" />
+                        </apex:actionFunction>
+                    </apex:pageBlock>
+                </apex:outputPanel>
+            </apex:form>
+            <eec-wizard btn-progress-color="#fff" class="col-lg-3" flex="30" passed-btn-bg-color="#4CAF50" btn-bg-color="#FAFAFA" active-btn-bg-color="#0288D1"
+                hide="true" show-gt-md="true">
+                <c:EEC_Navigation current="Transaction / Program Information" highest="{!highestStepReached}" recordTypeDeveloperName="{!LicenseRecordTypeName}"
+                    providerRecordType="{!licenseTransation.providerRecordTypeDeveloperName__c}" IsAssistantUpgradeToCertified="{!IsAssistantUpgradeToCertified}">
+                </c:EEC_Navigation>
+            </eec-wizard>
+        </div>
+        <c:eec_site_footer />  
+        <script>
+            jQuery(window).on('load', function () {
+                _.each(jQuery('[id*=lookup'), function (value, key) {
+                    jQuery(value).off('click');
+                    jQuery(value).attr('href', '');
+                    jQuery(value).css('text-decoration', 'none');
+                    jQuery(value).css('cursor', 'not-allowed');
+                    jQuery(value).css('color', 'black');
+                    jQuery(value).hover(function () {
+                        jQuery(this).css('color', 'black');
+                        jQuery(this).css('cursor', 'not-allowed');
+                        jQuery(this).css('text-decoration', 'none');
+                    });
+                });
+            });
+        </script>
+        <script>
+            function addMargin() {
+                j$(".required-input").addClass("required-input-with-error");
+            }
+            function validateReasonLeaving() {
+                var reasonLeavingRow = j$(".val-row");
+                var flag = 0;
+                reasonLeavingRow.each(function (i) {
+                    var endDate = j$(this).find(".end-date");
+                    var reasonLeaving = j$(this).find(".reason-leaving");
+                    if (endDate.val().length != 0 && reasonLeaving.val().length == 0) {
+                        j$(this).find(".reasonErrorMessage").addClass("visible");
+                        flag = 1;
+                    }
+                    if (reasonLeaving.val().length > 0 && j$(this).find(".reasonErrorMessage").hasClass(".visible")) {
+                        j$(this).find(".reasonErrorMessage").removeClass("visible");
+                    }
+                });
+                if (flag == 1) { return false; }
+                return true;
+            }
+            var form = j$(".involvment-form").parsley({
+                errorsWrapper: '<div class="parsley-errors-list"></div>',
+                errorTemplate: '<p class="errorMsg"></p>'
+            });
+            app.controller('TransactionController', ['$scope', '$location', 'Util', function ($scope, $location, Util) {
+                // Instance of controller.
+                var tranCtrl = this;
+                // Controller level variables.
+                tranCtrl.data = {};
+                tranCtrl.data.addressCheckbox = "{!provider.Live_at_this_address__c}";
+                tranCtrl.wizardElements = Util.generateWizardElements("{!licenseRecordTypeName}", 'Transaction/Provider Info');
+                tranCtrl.selected = [];
+                //  Function to toggle the checkbox.
+                tranCtrl.toggle = function (item, list) {
+                    var idx = list.indexOf(item);
+                    if (idx > -1) list.splice(idx, 1);
+                    else list.push(item);
+                };
+                // Function to check if checkbox is already checked.
+                tranCtrl.exists = function (item, list) {
+                    return list.indexOf(item) > -1;
+                };
+                // Function to check for messages available due to errors.
+                tranCtrl.checkForMessages = function () {
+                    // TODO: Switch this to use Angular and now jQuery.            
+                    var ele = jQuery('[id*="showmsg"]');
+                    if (ele.children().length > 0) {
+                        return true;
+                    }
+                    return false;
+                };
+            }]);
+            // TODO: Attempt this in Angular over jQuery.     
+            // If a dateformat is clicked - generated by SForce - then attach input-has-value class.
+            jQuery('.dateFormat').on('click', function () { jQuery(this).parent().parent().parent().addClass('md-input-has-value'); });
+            function doNavigate(previousPage, nextPage) {
+                if (nextPage != '') {
+                    if (!form.validate()) {
+                        return false;
+                    }
+                    else {
+                        SaveNext();
+                    }
+                }
+                else if (previousPage != '') {
+                    SavePrevious(previousPage);
+                }
+            }
+            function isNumberOnly(evt) {
+                var charCode = (evt.which) ? evt.which : evt.keyCode;
+                if (evt.shiftKey) {
+                    evt.preventDefault();
+                    return false;
+                }
+                if ((charCode > 47 && charCode < 58) || (charCode >= 96 && charCode <= 105) || charCode == 8 || charCode == 9 || (charCode >= 37 && charCode <= 40)) {
+                    return true;
+                } else {
+                    evt.preventDefault();
+                    return false;
+                }
+            }
+        </script>
+    </body>
+</apex:page>

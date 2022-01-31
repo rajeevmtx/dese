@@ -1,0 +1,327 @@
+div,
+form,
+input,
+select,
+p {
+    padding: 0;
+    margin: 0;
+    outline: none;
+}
+
+.list-item {
+    font-weight: normal !important;
+    margin: 0px !important;
+    padding: 0px !important;
+}
+
+.mb {
+    margin-bottom: 16px;
+}
+
+.mb-sm {
+    margin-bottom: 8px;
+}
+
+.mb-xs {
+    margin-bottom: 4px;
+}
+
+h2 {
+    font-weight: 400;
+}
+
+.testbox {
+    display: block;
+    justify-content: center;
+    height: inherit;
+}
+
+.item i {
+    right: 2%;
+    top: 30px;
+    z-index: 1;
+}
+
+.name-item {
+    font-weight: normal !important;
+    margin-bottom: 5px;
+}
+
+@media (min-width: 568px) {
+    .name-item,
+    .city-item {
+        display: flex;
+        justify-content: space-between;
+        font-weight: normal !important;
+    }
+    .name-item input,
+    .city-item input {
+        width: calc(50% - 20px);
+    }
+    .city-item select {
+        width: calc(50% - 8px);
+    }
+}
+
+.column {
+    float: left;
+    width: 50%;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+
+/* Create two equal columns that sits next to each other */
+
+.column {
+    flex: 50%;
+    padding: 10px;
+    height: 300px;
+    /* Should be removed. Only for demonstration */
+}
+
+.section {
+    padding: 0 8px 8px;
+    page-break-inside: avoid;
+}
+
+.section h2 {
+    color: black;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 4px;
+    background: #ddd;
+    display: block;
+    text-transform: uppercase;
+}
+
+.sub-section {
+    padding-left: 1rem;
+}
+
+table {
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+table th {
+    font-weight: bold;
+    color: #333;
+    line-height: 1.3;
+}
+
+table td {
+    font-weight: normal;
+    line-height: 1.3;
+    vertical-align: top;
+    word-break: break-word;
+}
+
+.one-forth {
+    width: 25%;
+}
+
+hr {
+    border-color: #ddd;
+    border-top: 0;
+}
+
+.txt-bold {
+    font-weight: bold;
+}
+
+.txt-small {
+    font-size: 12px
+}
+
+.csv ul {
+    padding-left: 0;
+    margin-left: 16px;
+    margin-top: 4px;
+}
+
+.check-item {
+    padding-left: 28px;
+    position: relative;
+}
+
+.check-item .value {
+    position: absolute;
+    display: block;
+    left: 0;
+}
+
+
+/* New Theme and Style for Application Page */
+
+.cards-container {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin: auto;
+}
+
+[class$='feature-card'] {
+    position: relative;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 32px;
+    border-top: solid 5px black;
+    box-shadow: 2px 5px 20px rgb(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+}
+
+[class$='feature-card'] h2,
+[class$='feature-card'] p {
+    margin: 0;
+}
+
+[class$='feature-card'] img {
+    position: absolute;
+    bottom: 32px;
+    right: 32px;
+}
+
+[class$='feature-card'][class*='blue'] {
+    border-color: #115ab1;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    margin-bottom: 1rem !important;
+}
+
+.spaced-row {
+    padding: 1rem 0rem !important;
+    border-bottom: 1px solid #F0f0f0
+}
+
+.spaced-row:last-child {
+    border-bottom: none;
+}
+
+.page-heading {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+.slds-spinner_container {
+    position: fixed !important;
+}
+
+.strikeoutCSS{
+    text-decoration: line-through
+}
+
+.appReviewCss{
+    padding: 1rem 0rem 0rem 2rem;
+}
+
+.appReviewPageCSS{
+    display: flex;
+}
+.appReviewPageCSS .appReviewFirstDiv{
+    float: left;
+    width: 85%;
+}
+.appReviewPageCSS .appReviewSecondDiv{
+    padding-top: 1rem;
+}
+/**
+ * Created by AshishP on 22-01-2020.
+ */
+
+ .iconHeightWidth > svg {
+    width: 20px !important;
+    height: 20px !important;
+}
+.iconHeightWidth {
+    cursor: pointer;
+}
+
+/* Table for all pages*/
+table {
+    background: #fff;
+  }
+  
+  table, thead, tbody, tfoot, tr, td, th {
+    text-align: left;
+    margin: auto;
+    border: 1px solid #f3f3f3;
+    padding: .2rem;
+  }
+  
+  .tr {
+    display: table-row;
+  }
+  
+  .thead {
+    display: table-header-group;
+  }
+  
+  .tbody {
+    display: table-row-group;
+  }
+  
+  .tfoot {
+    display: table-footer-group;
+  }
+  
+  .col {
+    display: table-column;
+  }
+  
+  .colgroup {
+    display: table-column-group;
+  }
+  
+  .td, .th {
+    display: table-cell;
+    width: 50%;
+  }
+  
+  .caption {
+    display: table-caption;
+  }
+  
+  .table,
+  .thead,
+  .tbody,
+  .tfoot,
+  .tr,
+  .td,
+  .th {
+    text-align: left;
+    margin: auto;
+    padding: .5rem;
+  }
+  
+  .table {
+    background: #fff;
+    margin: auto;
+    border: none;
+    padding: 0;
+    margin-bottom: 5rem;
+  }
+  
+  .th {
+    font-weight: 700;
+    border: 1px solid #dedede;
+  }
+  
+  
+  .td {
+    font-weight: 300;
+    border: 1px solid #dedede;
+    border-top: none;
+  }
+  .td:nth-child(odd) {
+    border-right: none;
+  }
+th{
+    background-color: #115BB1 !important;
+    color: white !important;
+    margin-top: 1rem !important;
+    padding: .2rem  !important;
+}

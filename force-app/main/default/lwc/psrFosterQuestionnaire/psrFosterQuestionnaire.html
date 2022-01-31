@@ -1,0 +1,121 @@
+<template>
+    <div class="slds-card has-header slds-p-around_medium card-div slds-p-left_large">
+        <!-- <div style="padding-left:5rem;"> -->
+        <div class="page-header">
+            <h2 class="page-title">Questionnaire</h2>
+        </div>
+        <div class="slds-m-top_x-small">Check all choices that
+            apply.</div>
+        <div class="slds-m-top_x-small">
+            <div class="slds-grid slds-wrap">
+
+                <div class="slds-col slds-size_4-of-12">
+                    <lightning-input type="checkbox" label="Mother and Father" name="motherfather"
+                        onchange={handleChange} value={dataObj.motherfather}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_4-of-12">
+                    <lightning-input type="checkbox" label="Mother" name="mother" onchange={handleChange}
+                        value={dataObj.mother}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_4-of-12">
+                    <lightning-input type="checkbox" label="Father" name="father" onchange={handleChange}
+                        value={dataObj.father}>
+                    </lightning-input>
+                </div>
+
+
+                <div class="slds-col slds-size_4-of-12">
+                    <lightning-input type="checkbox" label="Mother and Stepparent" name="motherstepparent"
+                        onchange={handleChange} value={dataObj.motherstepparent}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_4-of-12">
+                    <lightning-input type="checkbox" label="Father and Stepparent" name="fatherstepparent"
+                        onchange={handleChange} value={dataObj.fatherstepparent}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_4-of-12">
+                    <lightning-input type="checkbox" label="Stepmother" name="stepmother" onchange={handleChange}
+                        value={dataObj.stepmother}>
+                    </lightning-input>
+                </div>
+
+
+                <div class="slds-col slds-size_4-of-12">
+                    <lightning-input type="checkbox" label="Stepfather" name="stepfather" onchange={handleChange}
+                        value={dataObj.stepfather}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_4-of-12">
+                    <lightning-input type="checkbox" label="Maternal Grandparent(s)" name="maternalgrandparent"
+                        onchange={handleChange} value={dataObj.maternalgrandparent}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_4-of-12">
+                    <lightning-input type="checkbox" label="Paternal Grandparent(s)" name="paternalgrandparent"
+                        onchange={handleChange} value={dataObj.paternalgrandparent}>
+                    </lightning-input>
+                </div>
+
+
+                <div class="slds-col slds-size_4-of-12">
+                    <lightning-input type="checkbox" label="Aunt and/or Uncle" name="auntuncle" onchange={handleChange}
+                        value={dataObj.auntuncle}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_4-of-12">
+                    <lightning-input type="checkbox" label="Mother and Mother" name="mothermother"
+                        onchange={handleChange} value={dataObj.mothermother}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_4-of-12">
+                    <lightning-input type="checkbox" label="Father and Father" name="fatherfather"
+                        onchange={handleChange} value={dataObj.fatherfather}>
+                    </lightning-input>
+                </div>
+
+
+                <div class="slds-col slds-size_4-of-12">
+                    <lightning-input type="checkbox" label="Older Sibling(s)" name="oldersibling"
+                        onchange={handleChange} value={dataObj.oldersibling}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_4-of-12">
+                    <lightning-input type="checkbox" label="Adoptive Parent(s)" name="adoptiveparent"
+                        onchange={handleChange} value={dataObj.adoptiveparent}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_4-of-12">
+                    <lightning-input type="checkbox" label="Foster Parent(s)" name="fosterparent"
+                        onchange={handleChange} value={dataObj.fosterparent}>
+                    </lightning-input>
+                </div>
+
+
+                <div class="slds-col slds-size_4-of-12">
+                    <lightning-input type="checkbox" label="Institutional Caretaker(s)" name="institutionalcaretaker"
+                        onchange={handleChange} value={dataObj.institutionalcaretaker}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_4-of-12">
+                    <lightning-input type="checkbox" label="Legal Guardian(s)" name="legalgardian"
+                        onchange={handleChange} value={dataObj.legalgardian}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_4-of-12">
+                    <lightning-input type="checkbox" label="Other" name="other" onchange={handleChange}
+                        value={dataObj.other}>
+                    </lightning-input>
+                </div>
+
+
+            </div>
+            <lightning-input type="text" label="Other's Please Specify" name="otherText" required={otherTextRequired}
+                value={dataObj.otherText} if:true={otherTextRequired} max-length=255></lightning-input>
+        </div>
+
+        <!-- </div> -->
+    </div>
+</template>

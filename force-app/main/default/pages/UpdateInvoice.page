@@ -1,0 +1,6 @@
+<apex:page standardController="Project_Invoice__c" extensions="UpdateInvoiceController" action="{!updateInvo}">
+<script>
+    alert('Payment Processed!!');
+    window.history.back();
+</script>
+</apex:page>

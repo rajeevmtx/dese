@@ -1,0 +1,1098 @@
+<apex:page controller="EEC_DesignationOfAdministrativeCtrl" standardStylesheets="false" showheader="false" sidebar="false">
+    <head>
+        <title>EEC : Transaction - DESIGNATION OF ADMINISTRATIVE RESPONSIBILITY</title>
+        <c:EEC_Header id="pageHeader" />
+        <script>
+            j$(document).ready(function () {
+                var isSubmitted = '{!isSubmitted}';
+                if (isSubmitted == 'true') {
+                    j$('.saveButton').addClass('visibilityHidden');
+                    j$('select').prop('disabled', true);
+                    j$('textarea').prop('disabled', true);
+                    j$("input[type=checkbox]").prop('disabled', true);
+                }
+            });
+            function changeState(state) {
+                var regExp = /\(([^)]+)\)/;
+                var st = regExp.exec(j$("select option[value = '" + state.value + "']").text());
+                j$("[id*=mailingState]").val(st[1]);
+            }
+            function changeProviderState(state) {
+                var regExp = /\(([^)]+)\)/;
+                var st = regExp.exec(j$("select option[value = '" + state.value + "']").text());
+                j$("[id*=providerState]").val(st[1]);
+            }
+        </script>
+        <style>
+            .bPageBlock .requiredInput .requiredBlock {
+                background-color: #c00;
+                position: absolute;
+                left: -4px;
+                width: 3px;
+                top: 1px;
+                bottom: 1px;
+                top: 20px;
+                display: none;
+            }
+            .parsley-errors-list {
+                width: 50%;
+            }
+            .parsley-error {
+                border: 2px solid #c00;
+            }
+            .my_error_container {
+                position: absolute;
+                bottom: 90px;
+                width: 50%;
+            }
+            .errorMsg {
+                color: #d74c3b;
+            }
+            .message[class*='error'] {
+                background-color: #eee;
+                padding: 0 20px 10px;
+                margin-bottom: 25px;
+                border-radius: 3px;
+                -webkit-box-shadow: 0px 0px 5px 0px rgba(204, 0, 0, 0.4);
+                -moz-box-shadow: 0px 0px 5px 0px rgba(204, 0, 0, 0.4);
+                box-shadow: 0px 0px 5px 0px rgba(204, 0, 0, 0.4);
+            }
+            .message[class*='error'] .messageTable {
+                width: 100%;
+            }
+            .message[class*='error'] .messageText {
+                border-bottom: 1px solid grey;
+                height: 30px;
+            }
+            .transdesignation-info-container {
+                margin-bottom: 120px;
+            }
+            md-input-container {
+                padding-top: 15px;
+            }
+            .md-title,
+            .md-toolbar-tools {
+                margin-bottom: 15px;
+            }
+            md-input-container .input-label {
+                /*top: -50px;*/
+            }
+            md-input-container .input-label-date-picklist {
+                top: -25px;
+            }
+            .base-info {
+                margin-top: 10px;
+            }
+            .input-label {
+                color: rgba(0, 0, 0, 0.54);
+            }
+            .input-labeloutput {
+                color: rgba(0, 0, 0, 0.54);
+            }
+            .base-info md-content {
+                margin-bottom: 20px;
+            }
+            .provider-checkbox {
+                margin-top: -25px;
+                margin-left: -5px;
+                overflow: visible;
+            }
+            .radio-group .parsley-errors-list {
+                margin-top: 20px;
+                margin-left: -50px;
+                position: absolute;
+                width: 50%;
+            }
+            .radio-group .parsley-error {
+                border: 0px;
+            }
+            .new-address-live-at-address {
+                margin-top: 29px;
+            }
+            md-input-container:not(.md-input-invalid).md-input-has-value label {
+                transform: translate3d(0, 6px, 0) scale(1);
+            }
+            /* @see Angular Material - Input */
+            .requiredInput,
+            md-input-container span {
+                -webkit-flex: 1 1 auto;
+                -ms-flex: 1 1 auto;
+                flex: 1 1 auto;
+                -webkit-order: 2;
+                -ms-flex-order: 2;
+                order: 2;
+                display: block;
+                background: 0 0;
+                padding: 2px 2px 1px;
+                border-width: 0 0 1px;
+                line-height: 26px;
+                -ms-flex-preferred-size: 26px;
+                border-radius: 0;
+            }
+            .other-checkbox {
+                padding-top: 20px;
+            }
+            input[type="radio"],
+            input[type="checkbox"] {
+                margin: 4px 7px 0;
+            }
+            .radio-group label {
+                font-weight: normal;
+            }
+            .commandBtn {
+                -webkit-appearance: none;
+                border: none;
+                box-shadow: none;
+                background: none;
+                text-transform: uppercase;
+                font-weight: 500;
+                font-size: 14px;
+                font-style: inherit;
+                font-variant: inherit;
+                font-family: inherit;
+                outline: none;
+                letter-spacing: .01em;
+                margin: 3px 0px;
+                white-space: normal;
+            }
+            input[type="text"] {
+                width: 55%;
+                margin-bottom: 10px;
+                border-bottom-left-radius: 4px;
+                border-bottom-right-radius: 4px;
+            }
+            textarea.form-control {
+                width: 70%;
+                border-bottom-left-radius: 4px;
+                border-bottom-right-radius: 4px;
+                margin: 5px 0px;
+                float: right;
+            }
+            .navigation-buttons .md-button label {
+                white-space: normal;
+            }
+            .base-label {
+                color: rgba(0, 0, 0, 0.54);
+            }
+            .md-input-has-value {}
+            md-input-container input,
+            md-input-container .md-input {
+                max-width: 200px;
+            }
+            .readonly-input {
+                border-bottom: none;
+                cursor: not-allowed;
+            }
+            .read-only-input {
+                cursor: not-allowed;
+                background: rgba(0, 0, 0, 0.54);
+            }
+            /* TODO: Remove this and use md-select with new Validation. */
+            select {
+                background: none;
+                border: none;
+                border-bottom: 1px solid #ddd;
+            }
+            .errorMsg {
+                color: red;
+            }
+            .city-outputfield {
+                outline: none;
+                text-decoration: none;
+            }
+            @media only screen and (min-width: 0px) and (max-width: 959px) {
+                .navigation-buttons .md-button {
+                    width: 100%;
+                }
+                .navigation-buttons md-content {
+                    width: 100%;
+                }
+                md-input-container input {
+                    max-width: none;
+                }
+            }
+            .base-info {
+                margin-bottom: 20px;
+            }
+            .add-member-div {
+                margin: 15px 0;
+            }
+            .flex-row {
+                display: flex;
+            }
+            .modal-label {
+                margin: 5px 15px 2px 30px;
+            }
+            #errorMsg {
+                display: none;
+            }
+            #errorMsgHeader {
+                display: none;
+            }
+            .p0 {
+                padding: 0px;
+            }
+            .mt15 {
+                margin-top: 15px;
+            }
+            .mt18 {
+                margin-top: 18px !important;
+            }
+            #contactPopup .modal-content {
+                width: 150%;
+                left: -25%;
+            }
+            .btn-pullLeft {
+                right: 15% !important;
+            }
+            .textARea {
+                width: 200px !important;
+            }
+            .textARea1 {
+                width: 200px !important;
+            }
+            .textARea2 {
+                width: 200px !important;
+            }
+            .textARea3 {
+                width: 200px !important;
+            }
+            .selectList {
+                width: 55%;
+            }
+            .selectList1 {
+                width: 55%;
+            }
+            .selectList2 {
+                width: 55%;
+            }
+            .checkBox {
+                margin: 2px 10px !important;
+                width: 7%;
+                float: left;
+                height: 17px;
+            }
+            .checkBox1 {
+                margin: 2px 10px !important;
+                width: 7%;
+                float: left !important;
+                height: 17px;
+            }
+            .checkBox2 {
+                margin: 2px 10px !important;
+                width: 7%;
+                float: left !important;
+                height: 17px;
+            }
+            .checkBox3 {
+                margin: 2px 10px !important;
+                width: 7%;
+                float: left !important;
+                height: 17px;
+            }
+            .schoolAge {
+                float: left;
+            }
+            .table>thead:first-child>tr:first-child>th {
+                width: 50%;
+            }
+            .kindergarten {
+                float: left;
+            }
+            .earlyChildHood {
+                float: left;
+            }
+            .infant {
+                float: left;
+            }
+            .notApplicableHelpText {
+                margin-top: -4px;
+                margin-left: 53%;
+            }
+            .notApplicableHelpText1 {
+                margin-top: -4px;
+                margin-left: 53%;
+            }
+            .notApplicableHelpText2 {
+                margin-top: -4px;
+                margin-left: 53%;
+            }
+            .notApplicableHelpText3 {
+                margin-top: -4px;
+                margin-left: 53%;
+            }
+            .visibilityHidden {
+                visibility: hidden;
+            }
+            .parsley-errors-list {
+                width: 0%;
+            }
+        </style>
+    </head>
+    <body ng-app="eecApp">
+        <c:eec_nav_bar id="navBar" providerId="{!accountId}" accountName="{!accountName}" rendered="{!loggedUser.UserType == 'PowerPartner' || loggedUser.UserType == 'PowerCustomerSuccess' || loggedUser.UserType == 'CspLitePortal' || loggedUser.UserType == 'CustomerSuccess'}"
+        />
+        <div class="transdesignation-info-container" layout-wrap="true" layout-lg="row" layout-gt-lg="row" layout="row" layout-padding="true"
+            layout-margin="true" ng-controller="TransactionController as ctrl">
+            <md-content style="margin-top: 20px;" ng-show="ctrl.checkForMessages()" layout="row" flex="100" layout-align="center center">
+                <md-whiteframe class="md-whiteframe-z2 ng-cloak" layout="column" layout-padding="true" flex="75">
+                    <apex:pageMessages id="showmsg"></apex:pageMessages>
+                </md-whiteframe>
+            </md-content>
+            <apex:form id="TransactionDesignationForm" styleClass="transaction-parsley-form col-lg-8 col-md-8 col-sm-12">
+                <apex:outputPanel style="padding:50px 50px 50px 50px" id="userDetail" styleClass="ng-cloak">
+                    <div class="top-header-section">
+                        <div class="header-name-section">
+                            <h2 class="visibilityHidden"> Accessibility fix </h2>
+                            <h3 class="md-display-1 header-display-name">{!applicationDisplayName}</h3>
+                            <h4 class="step-name">Designation of Administrative Responsibility</h4>
+                            <h5 class="base-label trans-number">Application number: {!licenseTransation.Name}</h5>
+                        </div>
+                    </div>
+                    <md-divider layout-align="center center"></md-divider>
+                    <div class="alert alert-danger" id="errorMsgHeader"></div>
+                    <div>
+                        <h4>Business Management/Record Keeping Information</h4>
+                        <table id="contactDetailTable" class="table table-striped table-condensed table-responsive contactDetailTable" cellspacing="0"
+                            width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Ownership Area</th>
+                                    <th>Responsible Person</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <label for="{!$component.Account}">Account/books</label>
+                                    </td>
+                                    <td>
+                                        <apex:inputField styleClass="form-control Account  " id="Account" value="{!licenseTransation.Accounts_Responsible__c}" />
+                                    </td>
+                                    <tr>
+                                        <td>
+                                            <label for="{!$Component.Records}">Records</label>
+                                        </td>
+                                        <td>
+                                            <apex:inputField styleClass="form-control Records" id="Records" value="{!licenseTransation.Records_Responsible__c}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="{!$Component.PersonnelRecords}">Personnel Records</label>
+                                        </td>
+                                        <td>
+                                            <apex:inputField styleClass="form-control PersonnelRecords" id="PersonnelRecords" value="{!licenseTransation.Personnel_Records_Responsible__c}"
+                                            />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="{!$Component.ChildrenRecords}">Children's Records</label>
+                                        </td>
+                                        <td>
+                                            <apex:inputField styleClass="form-control ChildrenRecords" id="ChildrenRecords" value="{!licenseTransation.Children_Records_Responsible__c}"
+                                            />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="{!$Component.FinancialDocumentation}">Financial Documentation</label>
+                                        </td>
+                                        <td>
+                                            <apex:inputField styleClass="form-control FinancialDocumentation" id="FinancialDocumentation" value="{!licenseTransation.Financial_Documentation_Responsible__c}"
+                                            />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="{!$Component.StaffSchedules}">Staff Schedules</label>
+                                        </td>
+                                        <td>
+                                            <apex:inputField styleClass="form-control StaffSchedules" id="StaffSchedules" value="{!licenseTransation.Staff_Schedule_Responsible__c}"
+                                            />
+                                        </td>
+                                    </tr>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <h4>Development and Maintenance of Programs</h4>
+                        <table id="contactDetailTable" class="table table-striped table-condensed table-responsive contactDetailTable" cellspacing="0"
+                            width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Ownership Area</th>
+                                    <th>Responsible Person</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <label for="{!$component.childhoodeducation}">Early childhood education program</label>
+                                    </td>
+                                    <td>
+                                        <apex:outputpanel >
+                                            <div class="flex-row">
+                                                <apex:inputField id="childhoodeducation" styleClass="form-control selectList" value="{!licenseTransation.Early_Childhood_Education_Program_Resp__c}"
+                                                />
+                                                <label for="{!$component.childhoodeducation121}" class="hide"> 'childhoodeducation' </label>
+                                                <apex:inputCheckbox onclick="oneCheckbox(this);" id="childhoodeducation121" styleClass="checkBox" value="{!licenseTransation.Early_childhood_education_program_N_A__c}"
+                                                /> Not Applicable
+                                            </div>
+                                        </apex:outputpanel>
+                                        <apex:outputpanel >
+                                            <label for="{!$component.Pleasejustify14}" class="notApplicableHelpText" style="{!IF(licenseTransation.Early_childhood_education_program_N_A__c,'','display:none;')}">Please justify</label>
+                                            <apex:inputTextArea styleClass="form-control textARea" id="Pleasejustify14" value="{!licenseTransation.Early_childhood_edu_program_N_A_Notes__c}"
+                                                style="{!IF(licenseTransation.Early_childhood_education_program_N_A__c,'','display:none;')}"
+                                            />
+                                        </apex:outputpanel>
+                                    </td>
+                                    <tr>
+                                        <td>
+                                            <label for="{!$Component.Kindergarten}">Kindergarten</label>
+                                        </td>
+                                        <td>
+                                            <apex:outputpanel >
+                                                <div class="flex-row">
+                                                    <apex:inputField styleClass="form-control selectList1" id="Kindergarten" value="{!licenseTransation.Kindergarten_Responsible__c}"
+                                                    />
+                                                    <label for="{!$component.Kindergarten212}" class="hide"> 'Kindergarten' </label>
+                                                    <apex:inputCheckbox onclick="oneCheckbox1(this);" id="Kindergarten212" styleClass="
+                                                    checkBox1" value="{!licenseTransation.Kindergarten_Not_Applicable__c}"
+                                                    /> Not Applicable
+                                                </div>
+                                            </apex:outputpanel>
+                                            <apex:outputpanel >
+                                                <label for="{!$component.Pleasejustify13}" class="notApplicableHelpText1" style="{!IF(licenseTransation.Kindergarten_Not_Applicable__c,'','display:none;')}">Please justify</label>
+                                                <apex:inputTextArea styleClass="form-control textARea1" id="Pleasejustify13" value="{!licenseTransation.Kindergarten_Not_Applicable_Notes__c}"
+                                                    style="{!IF(licenseTransation.Kindergarten_Not_Applicable__c,'','display:none;')}"
+                                                />
+                                            </apex:outputpanel>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="{!$Component.SchoolAge}">School Age</label>
+                                        </td>
+                                        <td>
+                                            <apex:outputpanel >
+                                                <div class="flex-row">
+                                                    <apex:inputField id="SchoolAge" styleClass="form-control selectList2" value="{!licenseTransation.School_age_Responsible__c}"
+                                                    />
+                                                    <label for="{!$component.SchoolAge212}" class="hide"> 'SchoolAge' </label>
+                                                    <apex:inputCheckbox onclick="oneCheckbox2(this);" id="SchoolAge212" styleClass="checkBox2" value="{!licenseTransation.School_Age_Not_Applicable__c}"
+                                                    /> Not Applicable
+                                                </div>
+                                            </apex:outputpanel>
+                                            <apex:outputpanel >
+                                                <label for="{!$component.Pleasejustify12}" class="notApplicableHelpText2" style="{!IF(licenseTransation.School_Age_Not_Applicable__c,'','display:none;')}">Please justify</label>
+                                                <apex:inputTextArea styleClass="form-control textARea2" id="Pleasejustify12" value="{!licenseTransation.School_Age_Not_Applicable_Notes__c}"
+                                                    style="{!IF(licenseTransation.School_Age_Not_Applicable__c,'','display:none;')}"
+                                                />
+                                            </apex:outputpanel>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="{!$Component.Serviceschildh}">Services for children with disabilities </label>
+                                        </td>
+                                        <td>
+                                            <apex:inputField styleClass="form-control Serviceschildh" id="Serviceschildh" value="{!licenseTransation.Services_4_Disable_children_Responsible__c}"
+                                            />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="{!$Component.DailyActivities}">Daily Activities</label>
+                                        </td>
+                                        <td>
+                                            <apex:inputField styleClass="form-control DailyActivities" id="DailyActivities" value="{!licenseTransation.Daily_activities_Responsible__c}"
+                                            />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="{!$Component.Equipment}">Equipment</label>
+                                        </td>
+                                        <td>
+                                            <apex:inputField styleClass="form-control Equipment" id="Equipment" value="{!licenseTransation.Equipment_Responsible__c}"
+                                            />
+                                        </td>
+                                    </tr>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <h4>Other Responsibilities</h4>
+                        <table id="contactDetailTable" class="table table-striped table-condensed table-responsive contactDetailTable" cellspacing="0"
+                            width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Ownership Area</th>
+                                    <th>Responsible Person</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <label for="{!$component.StaffDevelopment}">Staff Development</label>
+                                    </td>
+                                    <td>
+                                        <apex:inputField styleClass="form-control StaffDevelopment" id="StaffDevelopment" value="{!licenseTransation.Staff_Development_Responsible__c}"
+                                        />
+                                    </td>
+                                    <tr>
+                                        <td>
+                                            <label for="{!$Component.StaffTraining}">Staff Training</label>
+                                        </td>
+                                        <td>
+                                            <apex:inputField styleClass="form-control StaffTraining" id="StaffTraining" value="{!licenseTransation.Staff_Training_Responsible__c}"
+                                            />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="{!$Component.StaffOrientation}">Staff Orientation</label>
+                                        </td>
+                                        <td>
+                                            <apex:inputField styleClass="form-control StaffOrientation " id="StaffOrientation" value="{!licenseTransation.Staff_Orientation_Responsible__c}"
+                                            />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="{!$Component.StaffSupervision}">Staff Supervision</label>
+                                        </td>
+                                        <td>
+                                            <apex:inputField styleClass="form-control StaffSupervision" id="StaffSupervision" value="{!licenseTransation.Staff_Supervision_Responsible__c}"
+                                            />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="{!$Component.ParentInvolvement}">Parent Involvement</label>
+                                        </td>
+                                        <td>
+                                            <apex:inputField styleClass="form-control ParentInvolvement" id="ParentInvolvement" value="{!licenseTransation.Parent_Involvement_Responsible__c}"
+                                            />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="{!$Component.SocialServices}">Social Services</label>
+                                        </td>
+                                        <td>
+                                            <apex:inputField styleClass="form-control SocialServices" id="SocialServices" value="{!licenseTransation.Social_Services_Responsible__c}"
+                                            />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="{!$Component.ToddlerProgram}">Infant/Toddler Program</label>
+                                        </td>
+                                        <td>
+                                            <apex:outputpanel >
+                                                <div class="flex-row">
+                                                    <apex:inputField styleClass="form-control selectList3 " id="ToddlerProgram" value="{!licenseTransation.Infant_Toddler_Program_Responsible__c}"
+                                                    />
+                                                    <label for="{!$component.Toddler}" class="hide"> 'Toddler' </label>
+                                                    <apex:inputCheckbox onclick="oneCheckbox3(this);" id="Toddler" styleClass="checkBox3" value="{!licenseTransation.Infant_Toddler_Not_Applicable__c}"
+                                                    /> Not Applicable
+                                                </div>
+                                            </apex:outputpanel>
+                                            <apex:outputpanel >
+                                                <label for="{!$component.Pleasejustify}" class="notApplicableHelpText3" style="{!IF(licenseTransation.Infant_Toddler_Not_Applicable__c,'','display:none;')}">Please justify</label>
+                                                <apex:inputTextArea id="Pleasejustify" styleClass="form-control textARea3" value="{!licenseTransation.Infant_Toddler_Not_Applicable_Notes__c}"
+                                                    style="{!IF(licenseTransation.Infant_Toddler_Not_Applicable__c,'','display:none;')}"
+                                                />
+                                            </apex:outputpanel>
+                                        </td>
+                                    </tr>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </apex:outputPanel>
+                <!-- Navigation Buttons -->
+                <md-divider layout-align="center center"></md-divider>
+                <md-content class="navigation-buttons" layout="column" layout-lg="row" layout-align="space-between center" layout-gt-lg="row"
+                    layout-align-sm="center center" layout-align-md="center center">
+                    <apex:commandLink styleClass="md-button md-raised md-button md-default-theme" value="Previous" action="{!SaveAndPreviousDesign}"
+                        html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" status="status"/>
+                    <apex:commandLink styleClass="md-button md-raised md-button md-default-theme btn-pullLeft" value="Close" action="{!closeAndreturnToHome}"
+                        html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true"  status="status"/>
+                    <apex:commandLink styleClass="md-button md-raised md-eec save-btn btn-pullRight saveButton" value="Save" onclick="if(!validateRecord()){return false;}"
+                        action="{!SaveOnly}" html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" status="status">
+                    </apex:commandLink>
+                    <apex:commandLink styleClass="md-button md-raised md-eec save-btn" onclick="if(!validateRecord()){return false;}" action="{!SaveAndNextDesign}"
+                        html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" status="status">
+                        <apex:outputText rendered="{!!isSubmitted}">Save and </apex:outputText> Next
+                    </apex:commandLink>
+                </md-content>
+                <md-divider layout-align="center center"></md-divider>
+                <!-- <apex:actionFunction action="{!SaveAndNextDesign}" name="SaveNext"/>-->
+                <apex:actionFunction action="{!SaveAndPreviousDesign}" name="SavePrevious" oncomplete="addMargin();">
+                    <apex:param name="previousPage" assignTo="{!previousPageName}" value="" />
+                </apex:actionFunction>
+            </apex:form>
+            <eec-wizard btn-progress-color="#fff" class="col-lg-3" flex="30" passed-btn-bg-color="#4CAF50" btn-bg-color="#FAFAFA" active-btn-bg-color="#0288D1"
+                hide="true" show-gt-md="true">
+                <c:EEC_Navigation current="Designation of Administrative Responsibility" recordTypeDeveloperName="{!LicenseRecordTypeName}"
+                    highest="{!licenseTransation.Highest_Reached_Step__c}" providerRecordType="{!licenseTransation.providerRecordTypeDeveloperName__c}">
+                </c:EEC_Navigation>
+            </eec-wizard>
+        </div>
+        <c:eec_site_footer id="siteFooter" />
+        <script>
+            function checkApplicable() {
+                for (var i = 0; i < j$('.selectList').length; i++) {
+                    if (j$('.selectList').eq(i).val() != "" || j$('.selectList').eq(i).val() != undefined) {
+                        if (j$('.selectList').eq(i).hasClass('schoolAge')) {
+                            if ($j('.schoolAge').val() != '') {
+                                j$('.textARea').val('');
+                                j$('.textARea').hide();
+                                j$('.notApplicableHelpText').hide();
+                                j$('.checkBox').prop("checked", false)
+                            }
+                        }
+                        if (j$('.selectList').eq(i).hasClass('kindergarten')) {
+                            if ($j('.kindergarten').val() != '') {
+                                j$('.textARea1').val('');
+                                j$('.textARea1').hide();
+                                j$('.notApplicableHelpText1').hide();
+                                j$('.checkBox1').prop("checked", false)
+                            }
+                        }
+                        if (j$('.selectList').eq(i).hasClass('earlyChildHood')) {
+                            if ($j('.earlyChildHood').val() != '') {
+                                j$('.textARea2').val('');
+                                j$('.textARea2').hide();
+                                j$('.notApplicableHelpText2').hide();
+                                j$('.checkBox2').prop("checked", false)
+                            }
+                        }
+                        if (j$('.selectList').eq(i).hasClass('infant')) {
+                            if ($j('.infant').val() != '') {
+                                j$('.textARea3').val('');
+                                j$('.textARea3').hide();
+                                j$('.notApplicableHelpText3').hide();
+                                j$('.checkBox3').prop("checked", false)
+                            }
+                        }
+                    }
+                }
+            }
+            function oneCheckbox(obj) {
+                if (obj.checked) {
+                    j$('.textARea').show();
+                    j$('.notApplicableHelpText').show();
+                    for (var i = 0; i < j$('.selectList').length; i++) {
+                        if (j$('.selectList').eq(i).val() != "" || j$('.selectList').eq(i).val() != undefined) {
+                            if (j$('.selectList').eq(i).hasClass('schoolAge')) {
+                                $j('.schoolAge').val('');
+                            }
+                        }
+                    }
+                } else {
+                    j$('.textARea').val('');
+                    j$('.textARea').hide();
+                    j$('.notApplicableHelpText').hide();
+                }
+            }
+            function oneCheckbox1(obj) {
+                if (obj.checked) {
+                    j$('.textARea1').show();
+                    j$('.notApplicableHelpText1').show();
+                    for (var i = 0; i < j$('.selectList').length; i++) {
+                        if (j$('.selectList').eq(i).val() != "" || j$('.selectList').eq(i).val() != undefined) {
+                            if (j$('.selectList').eq(i).hasClass('kindergarten')) {
+                                $j('.kindergarten').val('');
+                            }
+                        }
+                    }
+                } else {
+                    j$('.textARea1').val('');
+                    j$('.textARea1').hide();
+                    j$('.notApplicableHelpText1').hide();
+                }
+            }
+            function oneCheckbox2(obj) {
+                if (obj.checked) {
+                    j$('.textARea2').show();
+                    j$('.notApplicableHelpText2').show();
+                    for (var i = 0; i < j$('.selectList').length; i++) {
+                        if (j$('.selectList').eq(i).val() != "" || j$('.selectList').eq(i).val() != undefined) {
+                            if (j$('.selectList').eq(i).hasClass('earlyChildHood')) {
+                                $j('.earlyChildHood').val('');
+                            }
+                        }
+                    }
+                } else {
+                    j$('.textARea2').val('');
+                    j$('.textARea2').hide();
+                    j$('.notApplicableHelpText2').hide();
+                }
+            }
+            function oneCheckbox3(obj) {
+                if (obj.checked) {
+                    j$('.textARea3').show();
+                    j$('.notApplicableHelpText3').show();
+                    for (var i = 0; i < j$('.selectList').length; i++) {
+                        if (j$('.selectList').eq(i).val() != "" || j$('.selectList').eq(i).val() != undefined) {
+                            if (j$('.selectList').eq(i).hasClass('infant')) {
+                                $j('.infant').val('');
+                            }
+                        }
+                    }
+                } else {
+                    j$('.textARea3').val('');
+                    j$('.textARea3').hide();
+                    j$('.notApplicableHelpText3').hide();
+                }
+            }
+            var currentTransContactId;
+            function confirmDelete(contactId) {
+                j$('#confirmationPopUp').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                j$('#confirmMessage').html('Are you sure you want to delete the member?');
+                currentTransContactId = contactId;
+            }
+            function scrollToTop(eleToScroll) {
+                if (eleToScroll == undefined) {
+                    eleToScroll = 'html, body';
+                }
+                j$(eleToScroll).animate({
+                    scrollTop: 0
+                }, "slow");
+            }
+            function checkForNext() {
+                /*
+                j$('.selectList').each(function( index ) {
+                    if(j$(this).val() == " " || j$(this).val()== undefined){
+                        j$('#errorMsgHeader').html('Please provide details for missing information.');
+                        j$('#errorMsgHeader').show();
+                        scrollToTop();
+                        return false;
+                    }
+                });
+             */
+                for (var i = 0; i < j$('.selectList').length; i++) {
+                    if (j$('.selectList').eq(i).val() == "" || j$('.selectList').eq(i).val() == undefined) {
+                        if (j$('.selectList').eq(i).hasClass('schoolAge')) {
+                            if (j$('.checkBox2').prop("checked") && j$('.textARea2').val() == '') {
+                                j$('#errorMsgHeader').html('Please provide not applicable reason.');
+                                j$('#errorMsgHeader').show();
+                                scrollToTop();
+                                return false;
+                            } else if (!j$('.checkBox2').prop("checked")) {
+                                j$('#errorMsgHeader').html('Please provide not applicable reason.');
+                                j$('#errorMsgHeader').show();
+                                scrollToTop();
+                                return false;
+                            }
+                        } else if (j$('.selectList').eq(i).hasClass('kindergarten')) {
+                            if (j$('.checkBox1').prop("checked") && j$('.textARea1').val() == '') {
+                                j$('#errorMsgHeader').html('Please provide not applicable reason.');
+                                j$('#errorMsgHeader').show();
+                                scrollToTop();
+                                return false;
+                            } else if (!j$('.checkBox1').prop("checked")) {
+                                j$('#errorMsgHeader').html('Please provide not applicable reason.');
+                                j$('#errorMsgHeader').show();
+                                scrollToTop();
+                                return false;
+                            }
+                        } else if (j$('.selectList').eq(i).hasClass('earlyChildHood')) {
+                            if (j$('.checkBox').prop("checked") && j$('.textARea').val() == '') {
+                                j$('#errorMsgHeader').html('Please provide not applicable reason.');
+                                j$('#errorMsgHeader').show();
+                                scrollToTop();
+                                return false;
+                            } else if (!j$('.checkBox').prop("checked")) {
+                                j$('#errorMsgHeader').html('Please provide not applicable reason.');
+                                j$('#errorMsgHeader').show();
+                                scrollToTop();
+                                return false;
+                            }
+                        } else if (j$('.selectList').eq(i).hasClass('infant')) {
+                            if (j$('.checkBox3').prop("checked") && j$('.textARea3').val() == '') {
+                                j$('#errorMsgHeader').html('Please provide not applicable reason.');
+                                j$('#errorMsgHeader').show();
+                                scrollToTop();
+                                return false;
+                            } else if (!j$('.checkBox3').prop("checked")) {
+                                j$('#errorMsgHeader').html('Please provide not applicable reason.');
+                                j$('#errorMsgHeader').show();
+                                scrollToTop();
+                                return false;
+                            }
+                        } else {
+                            j$('#errorMsgHeader').html('Please provide details for each ownership area.');
+                            j$('#errorMsgHeader').show();
+                            scrollToTop();
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+            function validateRecord() {
+                //alert('insidevalidation');
+                var StaffDevelopment = j$('.StaffDevelopment').val();
+                if (StaffDevelopment == null || StaffDevelopment == '') {
+                    j$('#errorMsgHeader').html('Please provide details for each ownership area.');
+                    j$('#errorMsgHeader').show();
+                    scrollToTop();
+                    return false;
+                }
+                var StaffTraining = j$('.StaffTraining').val();
+                if (StaffTraining == null || StaffTraining == '') {
+                    j$('#errorMsgHeader').html('Please provide details for each ownership area.');
+                    j$('#errorMsgHeader').show();
+                    scrollToTop();
+                    return false;
+                }
+                var StaffOrientation = j$('.StaffOrientation').val();
+                if (StaffOrientation == null || StaffOrientation == '') {
+                    j$('#errorMsgHeader').html('Please provide details for each ownership area.');
+                    j$('#errorMsgHeader').show();
+                    scrollToTop();
+                    return false;
+                }
+                var StaffSupervision = j$('.StaffSupervision').val();
+                if (StaffSupervision == null || StaffSupervision == '') {
+                    j$('#errorMsgHeader').html('Please provide details for each ownership area.');
+                    j$('#errorMsgHeader').show();
+                    scrollToTop();
+                    return false;
+                }
+                var ParentInvolvement = j$('.ParentInvolvement').val();
+                if (ParentInvolvement == null || ParentInvolvement == '') {
+                    j$('#errorMsgHeader').html('Please provide details for each ownership area.');
+                    j$('#errorMsgHeader').show();
+                    scrollToTop();
+                    return false;
+                }
+                var SocialServices = j$('.SocialServices').val();
+                if (SocialServices == null || SocialServices == '') {
+                    j$('#errorMsgHeader').html('Please provide details for each ownership area.');
+                    j$('#errorMsgHeader').show();
+                    scrollToTop();
+                    return false;
+                }
+                var Serviceschildh = j$('.Serviceschildh').val();
+                if (Serviceschildh == null || Serviceschildh == '') {
+                    j$('#errorMsgHeader').html('Please provide details for each ownership area.');
+                    j$('#errorMsgHeader').show();
+                    scrollToTop();
+                    return false;
+                }
+                var DailyActivities = j$('.DailyActivities').val();
+                if (DailyActivities == null || DailyActivities == '') {
+                    j$('#errorMsgHeader').html('Please provide details for each ownership area.');
+                    j$('#errorMsgHeader').show();
+                    scrollToTop();
+                    return false;
+                }
+                var Equipment = j$('.Equipment').val();
+                if (Equipment == null || Equipment == '') {
+                    j$('#errorMsgHeader').html('Please provide details for each ownership area.');
+                    j$('#errorMsgHeader').show();
+                    scrollToTop();
+                    return false;
+                }
+                var Account = j$('.Account').val();
+                if (Account == null || Account == '') {
+                    j$('#errorMsgHeader').html('Please provide details for each ownership area.');
+                    j$('#errorMsgHeader').show();
+                    scrollToTop();
+                    return false;
+                }
+                var Records = j$('.Records').val();
+                if (Records == null || Records == '') {
+                    j$('#errorMsgHeader').html('Please provide details for each ownership area.');
+                    j$('#errorMsgHeader').show();
+                    scrollToTop();
+                    return false;
+                }
+                var PersonnelRecords = j$('.PersonnelRecords').val();
+                if (PersonnelRecords == null || PersonnelRecords == '') {
+                    j$('#errorMsgHeader').html('Please provide details for each ownership area.');
+                    j$('#errorMsgHeader').show();
+                    scrollToTop();
+                    return false;
+                }
+                var ChildrenRecords = j$('.ChildrenRecords').val();
+                if (ChildrenRecords == null || ChildrenRecords == '') {
+                    j$('#errorMsgHeader').html('Please provide details for each ownership area.');
+                    j$('#errorMsgHeader').show();
+                    scrollToTop();
+                    return false;
+                }
+                var FinancialDocumentation = j$('.FinancialDocumentation').val();
+                if (FinancialDocumentation == null || FinancialDocumentation == '') {
+                    j$('#errorMsgHeader').html('Please provide details for each ownership area.');
+                    j$('#errorMsgHeader').show();
+                    scrollToTop();
+                    return false;
+                }
+                var StaffSchedules = j$('.StaffSchedules').val();
+                if (StaffSchedules == null || StaffSchedules == '') {
+                    j$('#errorMsgHeader').html('Please provide details for each ownership area.');
+                    j$('#errorMsgHeader').show();
+                    scrollToTop();
+                    return false;
+                }
+                var selectListVal = j$('.selectList').val();
+                if (j$('.checkBox').prop("checked") != true) {
+                    if (selectListVal == null || selectListVal == '') {
+                        j$('#errorMsgHeader').html('Please provide details for each ownership area.');
+                        j$('#errorMsgHeader').show();
+                        scrollToTop();
+                        return false;
+                    }
+                }
+                var test = j$('.textARea').val();
+                if (j$('.checkBox').prop("checked")) {
+                    if (test == null || test == '') {
+                        j$('#errorMsgHeader').html('Please provide not applicable reason.');
+                        j$('#errorMsgHeader').show();
+                        scrollToTop();
+                        return false;
+                    }
+                }
+                //checkBox1
+                var select = j$('.selectList1').val();
+                if (j$('.checkBox1').prop("checked") != true) {
+                    if (select == null || select == '') {
+                        j$('#errorMsgHeader').html('Please provide details for each ownership area.');
+                        j$('#errorMsgHeader').show();
+                        scrollToTop();
+                        return false;
+                    }
+                }
+                if (j$('.checkBox1').prop("checked")) {
+                    var test = j$('.textARea1').val();
+                    if (test == null || test == '') {
+                        j$('#errorMsgHeader').html('Please provide not applicable reason.');
+                        j$('#errorMsgHeader').show();
+                        scrollToTop();
+                        return false;
+                    }
+                }
+                var selectedlist = j$('.selectList2').val();
+                if (j$('.checkBox2').prop("checked") != true) {
+                    if (selectedlist == null || selectedlist == '') {
+                        j$('#errorMsgHeader').html('Please provide details for each ownership area.');
+                        j$('#errorMsgHeader').show();
+                        scrollToTop();
+                        return false;
+                    }
+                }
+                if (j$('.checkBox2').prop("checked")) {
+                    var test = j$('.textARea2').val();
+                    if (test == null || test == '') {
+                        alert('21')
+                        j$('#errorMsgHeader').html('Please provide not applicable reason.');
+                        j$('#errorMsgHeader').show();
+                        scrollToTop();
+                        return false;
+                    }
+                }
+                var Slist = j$('.selectList3').val();
+                if (j$('.checkBox3').prop("checked") != true) {
+                    if (Slist == null || Slist == '') {
+                        j$('#errorMsgHeader').html('Please provide details for each ownership area.');
+                        j$('#errorMsgHeader').show();
+                        scrollToTop();
+                        return false;
+                    }
+                }
+                if (j$('.checkBox3').prop("checked")) {
+                    var test = j$('.textARea3').val();
+                    if (test == null || test == '') {
+                        j$('#errorMsgHeader').html('Please provide not applicable reason.');
+                        j$('#errorMsgHeader').show();
+                        scrollToTop();
+                        return false;
+                    }
+                }
+                return true;
+            }
+            function addMargin() {
+                j$(".required-input").addClass("required-input-with-error");
+            }
+            var form = j$(".transaction-parsley-form").parsley({
+                errorsWrapper: '<div class="parsley-errors-list"></div>',
+                errorTemplate: '<p class="errorMsg"></p>'
+            });
+            jQuery(window).on('load', function () {
+                _.each(jQuery('[id*=lookup'), function (value, key) {
+                    jQuery(value).off('click');
+                    jQuery(value).attr('href', '');
+                    jQuery(value).css('text-decoration', 'none');
+                    jQuery(value).css('cursor', 'not-allowed');
+                    jQuery(value).css('color', 'black');
+                    jQuery(value).hover(function () {
+                        jQuery(this).css('color', 'black');
+                        jQuery(this).css('cursor', 'not-allowed');
+                        jQuery(this).css('text-decoration', 'none');
+                    });
+                });
+            });
+        </script>
+        <script>
+            app.controller('TransactionController', ['$scope', '$location', 'Util', function ($scope, $location, Util) {
+                // Instance of controller.
+                var tranCtrl = this;
+                // Controller level variables.
+                tranCtrl.data = {};
+                tranCtrl.wizardElements = Util.generateWizardElements("{!licenseRecordTypeName}", 'Transaction/Provider Info');
+                tranCtrl.selected = [];
+                //  Function to toggle the checkbox.
+                tranCtrl.toggle = function (item, list) {
+                    var idx = list.indexOf(item);
+                    if (idx > -1) list.splice(idx, 1);
+                    else list.push(item);
+                };
+                // Function to check if checkbox is already checked.
+                tranCtrl.exists = function (item, list) {
+                    return list.indexOf(item) > -1;
+                };
+                // Function to check for messages available due to errors.
+                tranCtrl.checkForMessages = function () {
+                    // TODO: Switch this to use Angular and now jQuery.            
+                    var ele = jQuery('[id*="showmsg"]');
+                    if (ele.children().length > 0) {
+                        return true;
+                    }
+                    return false;
+                };
+            }]);
+            // TODO: Attempt this in Angular over jQuery.     
+            // If a dateformat is clicked - generated by SForce - then attach input-has-value class.
+            jQuery('.dateFormat').on('click', function () { jQuery(this).parent().parent().parent().addClass('md-input-has-value'); });
+            function doNavigate(previousPage, nextPage) {
+                if (nextPage != '') {
+                    if (!form.validate()) {
+                        return false;
+                    } else {
+                        SaveNext();
+                    }
+                }
+                else if (previousPage != '') {
+                    /* if(!form.validate()){
+                      return false;
+                     } else{*/
+                    SavePrevious(previousPage);
+                    //}
+                }
+            }
+        </script>
+    </body>
+</apex:page>

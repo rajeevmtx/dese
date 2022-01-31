@@ -1,0 +1,99 @@
+<template>
+    <!-- <div class="page-header">
+        <h1 class="page-title">Contact Information</h1>
+    </div> -->
+
+    <div class="slds-form">
+        <!-- <div class="slds-form__row">
+            <div class="slds-form__item">
+                <lightning-input type="text" autocomplete="none" label="Social Security Number" pattern="^[0-9]*$" message-when-pattern-mismatch={ssnError} minlength =9 maxlength=9  onblur={handleInput} name="ssn" style="width: 100%;">
+                </lightning-input>
+            </div>
+
+            <div class="slds-form__item">
+                <lightning-input type="text" autocomplete="none" label="First Name" pattern="^[a-zA-Z ]*$" message-when-pattern-mismatch={alphaNumericError}  onblur={handleInput} name="firstName"
+                    style="width: 100%;" maxlength=40 ></lightning-input>
+            </div>
+        </div> -->
+
+        <div class="slds-form__row">
+            <div class="slds-form__item">
+                <lightning-input type="text" autocomplete="none" label="First Name"
+                    message-when-pattern-mismatch={alphaNumericError} onblur={handleInput} name="firstName"
+                    style="width: 100%;" maxlength=40></lightning-input>
+            </div>
+
+            <div class="slds-form__item">
+                <lightning-input type="text" autocomplete="none" label="Last Name" required
+                    message-when-pattern-mismatch={alphaNumericError} onblur={handleInput} name="lastName"
+                    style="width: 100%;" maxlength=80></lightning-input>
+            </div>
+        </div>
+        <div class="slds-form__row">
+            <div class="slds-form__item item">
+                <lightning-input type="date" name="dob" label="Birth Date" formatter="mm/dd/yyyy" id="dateOfBirth"
+                    style="width: 100%;" message-when-bad-input={validErrorMessage} onchange={handleInput}>
+                </lightning-input>
+                <template if:true={dobError}>
+                    <p style="color: rgb(194, 57, 52);">{dobErrorMsg}</p>
+                </template>
+            </div>
+            <div class="slds-form__item">
+                <lightning-combobox name="gender" label="Gender" placeholder="Select gender" options={genderOptions}
+                    onchange={handleInput} style="width: 100%;"></lightning-combobox>
+            </div>
+
+        </div>
+
+        <div class="slds-form__row">
+            <div class="slds-form__item">
+                <lightning-input type="tel" autocomplete="none" label="Phone"
+                    pattern="^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$"
+                    message-when-pattern-mismatch={telephoneError} onkeyup={handleInput} onblur={handleInput}
+                    name="telephoneNumber" style="width: 100%;" maxlength=14></lightning-input>
+            </div>
+            <div class="slds-form__item">
+                <lightning-input type="text" autocomplete="none" class={streetErrorClass} label="Mailing Street"
+                    onblur={handleInput} name="mailingAddress" style="width: 100%;" maxlength=255></lightning-input>
+            </div>
+        </div>
+
+        <div class="slds-form__row">
+            <div class="slds-form__item">
+                <lightning-input type="text" autocomplete="none" class={cityErrorClass} label="City"
+                    pattern="^[a-zA-Z ]*$" message-when-pattern-mismatch={alphaNumericError} onblur={handleInput}
+                    name="city" style="width: 100%;" maxlength=40></lightning-input>
+            </div>
+            <div class="slds-form__item">
+                <lightning-combobox name="state" value={stateValue} label="State" placeholder="Select State"
+                    options={stateOptions} onchange={handleInput} style="width: 100%;"></lightning-combobox>
+            </div>
+        </div>
+
+        <div class="slds-form__row">
+            <div class="slds-form__item">
+                <lightning-input type="text" autocomplete="none" label="Zip" pattern="^[0-9]+$"
+                    message-when-pattern-mismatch={zipError} minlength=5 maxlength=5 onblur={handleInput} name="zip"
+                    style="width: 100%;">
+                </lightning-input>
+            </div>
+            <div class="slds-form__item"></div>
+        </div>
+
+        <div class="slds-form__row">
+            <div class="slds-form__item">
+                <lightning-checkbox-group name="Vulnerabilities" label="Vulnerabilities"
+                    options={vulnerabilitiesOptions} value={vulnerabilitiesOptionsSelected} onchange={handleInput}>
+                </lightning-checkbox-group>
+            </div>
+        </div>
+
+        <!-- <div class="slds-form__row">
+            <div class="slds-form__item">
+                <lightning-input title ={emailError} type="email"  autocomplete="none" label="Email" pattern="^([a-zA-Z0-9_\-\.\+]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$" message-when-pattern-mismatch={emailError}  onblur={handleInput} name="email"
+                    style="width: 100%;"></lightning-input>
+            </div>
+            <div class="slds-form__item"></div>
+        </div> -->
+    </div>
+</template>

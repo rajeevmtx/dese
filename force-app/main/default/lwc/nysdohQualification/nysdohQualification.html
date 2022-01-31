@@ -1,0 +1,86 @@
+<template>
+    <!-- Spinner -->
+    <template if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+    </template>
+
+    <div class="app-container slds-grid slds-gutters slds-wrap">
+        <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <c-nysdoh-help-text help-text={showQualification}></c-nysdoh-help-text>
+        </div>
+
+        <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <div class="container">
+                <!-- <div class="d-flex">
+                    <h4>Volunteer Registration Form</h4>
+                    <span> (Steps 3 of 4)</span>
+                </div> -->
+                <br/>
+                <lightning-record-edit-form object-api-name="Volunteer__c" onsubmit={handlesubmit}>
+                    <lightning-messages></lightning-messages>
+                    <div class="slds-grid slds-gutters slds-wrap">
+                        <div class="slds-hide">
+                            <lightning-input-field field-name="First_Name__c" value={volunteer.First_Name__c} ></lightning-input-field>
+                            <lightning-input-field field-name="Last_Name__c" value={volunteer.Last_Name__c} ></lightning-input-field>
+                            <lightning-input-field field-name="Phone__c" value={volunteer.Phone__c} ></lightning-input-field>                            
+                            <lightning-input-field field-name="Email__c" value={volunteer.Email__c} ></lightning-input-field>
+                            <lightning-input-field field-name="Age__c" value={volunteer.Age__c} ></lightning-input-field>
+                            <lightning-input-field field-name="Street_Address_Line_1__c" value={volunteer.Street_Address_Line_1__c} ></lightning-input-field>
+                            <lightning-input-field field-name="Street_Address_Line_2__c" value={volunteer.Street_Address_Line_2__c}></lightning-input-field>
+                            <lightning-input-field field-name="City__c" value={volunteer.City__c} ></lightning-input-field>
+                            <lightning-input-field field-name="State__c" value={volunteer.State__c} ></lightning-input-field>
+                            <lightning-input-field field-name="Zip_Code__c" value={volunteer.Zip_Code__c} ></lightning-input-field>
+                            <lightning-input-field field-name="County_pick__c" value={volunteer.County_pick__c} ></lightning-input-field>
+                        </div>
+                        <!-- 1st row -->
+                        <div class="slds-size_1-of-1 slds-grid slds-gutters slds-wrap d-flex slds-p-top_medium slds-p-bottom_medium underline-section">
+                            <lightning-input class="slds-size_1-of-2" type="radio" label="Health Care" name="input1" checked={healthCare} onchange={handleCHKBK1Change}></lightning-input>
+                            <lightning-input class="slds-size_1-of-2" type="radio" label="Other Supportive Services" name="input1" checked={other} onchange={handleCHKBK2Change}></lightning-input>
+                        </div>
+                        <br/>
+                        <br/>
+                        <template if:true={healthCare} >
+
+                            <div class="slds-col slds-size_1-of-1 slds-p-top_medium">
+                                <lightning-input-field field-name="Current_Status_In_The_Field__c" value={volunteer.Current_Status_In_The_Field__c} required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input-field field-name="I_Practiced_Most_Recently_As__c" value={volunteer.I_Practiced_Most_Recently_As__c} ></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-p-bottom_medium underline-section">
+                                <lightning-input-field field-name="Last_Practice_Date__c" value={volunteer.Last_Practice_Date__c} ></lightning-input-field>
+                            </div> 
+                            <br/>
+                            <div class="d-flex slds-p-top_medium">
+                                <h4>Current and past licensure</h4>
+                            </div>
+                            <br/>
+                            <div class="slds-col slds-size_1-of-1 slds-p-top_medium">
+                                <lightning-input-field field-name="State__c" value={volunteer.State__c} ></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input-field field-name="Speciality__c" value={volunteer.Speciality__c} ></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input-field field-name="Licenses_Certifications__c" value={volunteer.Licenses_Certifications__c} ></lightning-input-field>
+                            </div>
+                        </template>
+                        <template if:true={other} >
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input-field field-name="Other_Services__c" value={volunteer.Other_Services__c} required={other}></lightning-input-field>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="slds-float_right slds-m-top_small slds-m-bottom_small">
+                        <lightning-button class="slds-m-right_medium"
+                        onclick={goBack} label="Back">
+                        </lightning-button>
+                        <lightning-button variant="brand" 
+                        type="submit" label="Submit">
+                        </lightning-button>
+                    </div>
+                </lightning-record-edit-form>
+            </div>
+        </div>
+    </div>
+</template>

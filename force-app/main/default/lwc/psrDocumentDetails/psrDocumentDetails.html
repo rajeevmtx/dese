@@ -1,0 +1,56 @@
+<template>
+        <!-- Spinner -->
+
+    <div class="backdrop" if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </div>
+    </div>
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="DOCUMENT NAME">DOCUMENT NAME</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="UPLOAD DOC">UPLOAD DOC</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="STATUS">STATUS</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="ADD/UPDATE DOCUMENT">ADD/UPDATE DOCUMENT</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={uploadedFiles} for:item="files" for:index="index">
+                        
+                        <tr key={files.documentId} class="slds-hint-parent">
+                            <th data-label="DOCUMENT NAME" scope="row">
+                                <div class="slds-truncate" title="DOCUMENT NAME">
+                                    {files.DocumentName} Juhi Goel<template if:true={files.isRequired}><b  class="slds-text-color_destructive">*</b></template>
+                                </div>
+                            </th>
+                            <th data-label="UPLOAD DOC" scope="row">
+                                <template for:each={files.uploadDoc} for:item="contentdoc" for:index="index">
+                                    <a key={contentdoc.contId} data-record={contentdoc.contId}  onclick={handleFileOpen}>
+                                        <p>{contentdoc.contDocumentName}</p></a>
+                                </template>
+                            </th>
+                            <th data-label="STATUS" scope="row">
+                                <div class="slds-truncate" title="STATUS">
+                                    {files.Status}
+                                </div>
+                            </th>
+                            <th data-label="UPLOAD FILES" scope="row">
+                                <lightning-file-upload class="slds-m-bottom_small slds-float_left" label="" disabled={isReadyOnly} name="fileUploader" data-record={files.Id} record-id={files.Id}
+                                    onuploadfinished={handleUploadFinished} multiple>
+                                 </lightning-file-upload>
+                            </th>
+
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+</template>

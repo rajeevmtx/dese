@@ -1,0 +1,62 @@
+<template>
+    <div class="backdrop" if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner> 
+        </div>
+    </div>
+
+    <c-psr-sidebar selected-tab="Request Permit Type" show-footer>
+        <div slot="body">
+            <div class="tab slds-m-around_large">
+                <div class="has-shadow slds-p-vertical_medium slds-m-bottom_x-large bg-white"
+                    style="margin-bottom: 0px;">
+                    <div class="container d-flex justify-space-between">
+                        <div class="d-flex justify-space-between">
+                            <h4 class="header-pane-title">Grants</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <c-psr-help-text help-text={Portal_Helpdesk_Help_Text}></c-psr-help-text> -->
+
+                <!-- <div class="container license-grid">
+                    <lightning-button variant="Neutral" label="New" onclick={openModal}>
+                    </lightning-button>
+                </div> -->
+
+                <div class="slds-grid slds-wrap bottom_spacing_div">
+                    <table style="margin-top: 20px;" class="slds-table">
+                        <tr class="table_header_brand">
+                            <td><b>Proposal Name</b></td>
+                            <td><b>Status</b></td>                            
+                            <td><b>Submitted Date</b></td>                            
+                            <td><b>Created By</b></td>
+                            <td><b>Actions</b></td>
+                        </tr>
+                        <template for:each={grants} for:item="item">
+                            <tr key={item.Id}>
+                                <td>{item.Name}</td>
+                                <td>{item.Status__c}</td>
+                                <td> <lightning-formatted-date-time value={item.Submitted_Date__c} time-zone="UTC"> 
+                                </lightning-formatted-date-time></td>
+                                <td>
+                                   {item.CreatedBy.Name}
+                                </td>
+                               
+                                <td>
+                                    <!-- <lightning-button disabled={item.isClosed} data-status={item.Status} variant="brand-outline" label="Close Case" onclick={closeCase} data-caseid={item.Id} class="slds-m-left_x-small button_spacing" ></lightning-button> -->
+                                    <lightning-button variant="brand" label="Task and Deliverables" onclick={openChatter} data-caseid={item.Id} class="slds-m-left_x-small blue-btn"></lightning-button>
+                                </td>                                 
+                            </tr>
+                        </template>
+</table>
+</div>
+</div>
+</div>
+</c-psr-sidebar>
+
+<!-- <c-psr-new-case if:true={isNewCase} onclose={closeModal}>
+</c-psr-new-case> -->
+<c-psr-task-deliverable-window if:true={isChatterModalOpen} onclose={closeModal} heading-label="Task and Deliverables"></c-psr-task-deliverable-window>
+
+</template>

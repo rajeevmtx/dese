@@ -1,0 +1,77 @@
+<template>
+  <div class="app-container slds-grid slds-gutters slds-wrap">
+    <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+      <c-psr-help-text help-text={addressHelpText}></c-psr-help-text>
+    </div>
+  </div>
+  <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+    <div class="add-button">
+      <lightning-button variant="brand" label="Add Address" onclick={handleAddAddress}></lightning-button>
+    </div>
+
+    <!-- Add Address Modal here -->
+    <template if:true={showAddAddressModal}>
+      <c-mtx-add-address-modal subject-id={subjectId} record-id={addressInformationId} onmodalclose={handleModalClose}
+        address-data={Address}></c-mtx-add-address-modal>
+    </template>
+
+    <!-- Address Cards here -->
+    <div class="card-container slds-m-bottom_small">
+      <template if:true={Address}>
+        <template for:each={Address.data} for:item="acc">
+          <div key={acc.Id}>
+            <div class="address-card">
+              <lightning-icon class="slds-float_right slds-p-around_small" size=small icon-name="utility:edit"
+                alternative-text="Edit!" title="Edit" id={acc.Id} onclick={handleEditAddress}></lightning-icon>
+              <h2 class="slds-m-left_x-small address-heading">{acc.RecordType.Name}</h2>
+
+              <div class="slds-grid slds-m-left_x-small slds-m-top_medium">
+                <div class="slds-col slds-size_3-of-12">
+                  <span class="slds-text-body_medium address-col">Address </span>
+                </div>
+                <div class="slds-col slds-size_3-of-12">
+                  <span class="slds-text-body_small address-col">City </span>
+                </div>
+                <div class="slds-col slds-size_3-of-12">
+                  <span class="slds-text-body_small address-col">State</span>
+                </div>
+                <div class="slds-col slds-size_3-of-12">
+                  <span class="slds-text-body_small address-col">Country</span>
+                </div>
+
+              </div>
+              <div class="slds-grid slds-m-left_x-small slds-m-top_medium" style="margin-right: 2rem;">
+                <div class="slds-col slds-size_3-of-12">
+                  <span class="slds-text-body_medium address-col slds-text-align_left">{acc.Address_Line_1__c} </span>
+                </div>
+                <div class="slds-size_3-of-12">
+                  <span class="slds-text-body_small address-col slds-text-align_left">{acc.City__c} </span>
+                </div>
+                <div class="slds-size_3-of-12">
+                  <span class="slds-text-body_small address-col slds-text-align_left">{acc.State__c}</span>
+                </div>
+                <div class="slds-size_3-of-12">
+                  <span class="slds-text-body_small address-col slds-text-align_left">{acc.Country__c}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+      </template>
+
+      <template if:true={showEmptyMessage}>
+        <div class="address-card">
+          <div class="slds-text-heading_medium slds-text-align_center slds-p-top_xx-large">
+            {addressMessage}
+          </div>
+        </div>
+      </template>
+    </div>
+    <!-- Nav Buttons here -->
+    <div class="buttons-container">
+      <lightning-button class="slds-m-right_medium" label="Back" onclick={goPrev}></lightning-button>
+      <lightning-button variant="brand" label="Next" class="" onclick={goNext}></lightning-button>
+
+    </div>
+  </div>
+</template>

@@ -1,0 +1,170 @@
+<template>
+    <div class="container_spacing">
+        <div class="slds-grid slds-gutters mobile-block">
+            <div class="slds-col slds-size_2-of-12 mobile-full-width sidenav-margin">
+                <div class="sideBarSection">
+                    <lightning-vertical-navigation>
+                        <lightning-vertical-navigation-section>
+                            <button class="padding_space_button" onclick={navigateToPage}
+                                data-navigatepage="contractor-information" data-modal="registerEntity"
+                                style="margin-top: 3rem;">
+                                <div class="slds-grid slds-gutters pointer-event-none">
+                                    <div class="slds-col slds-size_1-of-12">
+                                        <lightning-icon icon-name="utility:identity" size="xx-small"></lightning-icon>
+                                    </div>
+                                    <div class="slds-col slds-size_11-of-12">
+                                        Program Information
+                                    </div>
+
+                                </div>
+                            </button>
+                            <button class="padding_space_button" onclick={navigateToPage}
+                                data-navigatepage="psrlicenseselection">
+                                <div class="slds-grid slds-gutters pointer-event-none">
+                                    <div class="slds-col slds-size_1-of-12">
+                                        <lightning-icon icon-name="utility:reassign" size="xx-small"></lightning-icon>
+                                    </div>
+                                    <div class="slds-col slds-size_11-of-12">
+                                        Self-Assessment Application
+                                    </div>
+                                </div>
+                            </button>
+                            <!-- <button class="padding_space_button" onclick={navigateToPage} data-modal="updateContact"
+                                data-navigatepage="requestpermittype">
+                                <div class="slds-grid slds-gutters pointer-event-none">
+                                    <div class="slds-col slds-size_1-of-12">
+                                        <lightning-icon icon-name="utility:user" size="xx-small"></lightning-icon>
+                                    </div>
+                                    <div class="slds-col slds-size_11-of-12">
+                                        Request Permit Type
+                                    </div>
+                                </div>
+                            </button> -->
+                            <button class="padding_space_button" data-modal="updateContact" data-navigatepage="psrgrant"
+                                onclick={navigateToPage}>
+                                <div class="slds-grid slds-gutters pointer-event-none">
+                                    <div class="slds-col slds-size_1-of-12">
+                                        <lightning-icon icon-name="utility:event" size="xx-small"></lightning-icon>
+                                    </div>
+                                    <div class="slds-col slds-size_11-of-12">
+                                        Grant
+                                    </div>
+                                </div>
+                            </button>
+                            <button class="padding_space_button" data-modal="updateContact"
+                                data-navigatepage="psrcalendar" onclick={navigateToPage}>
+                                <div class="slds-grid slds-gutters pointer-event-none">
+                                    <div class="slds-col slds-size_1-of-12">
+                                        <lightning-icon icon-name="utility:event" size="xx-small"></lightning-icon>
+                                    </div>
+                                    <div class="slds-col slds-size_11-of-12">
+                                        Visit Calendar
+                                    </div>
+                                </div>
+                            </button>
+                            <!--<button class="padding_space_button" data-modal="updateEntityName">
+                                <div class="slds-grid slds-gutters pointer-event-none">
+                                    <div class="slds-col slds-size_1-of-12">
+                                        <lightning-icon icon-name="utility:task" size="xx-small"></lightning-icon>
+                                    </div>
+                                    <div class="slds-col slds-size_11-of-12">
+                                        Document Library
+                                    </div>
+                                </div>
+                            </button>-->
+
+                            <button class="padding_space_button" data-modal="boundaryActions" onclick={navigateToPage}
+                                data-navigatepage="psrnoncompliance">
+                                <div class="slds-grid slds-gutters pointer-event-none">
+                                    <div class="slds-col slds-size_1-of-12">
+                                        <lightning-icon icon-name="utility:ribbon" size="xx-small">
+                                        </lightning-icon>
+                                    </div>
+                                    <div class="slds-col slds-size_11-of-12">
+                                        Fill Non-Corrective Action Items
+                                    </div>
+                                </div>
+                            </button>
+                            <button class="padding_space_button" onclick={navigateToPage}
+                                data-navigatepage="document-library">
+                                <div class="slds-grid slds-gutters pointer-event-none">
+                                    <div class="slds-col slds-size_1-of-12">
+                                        <lightning-icon icon-name="utility:work_order_type" size="xx-small">
+                                        </lightning-icon>
+                                    </div>
+                                    <div class="slds-col slds-size_11-of-12">
+                                        Document Library
+                                    </div>
+                                </div>
+                            </button>
+                            <button class="padding_space_button" onclick={navigateToPage}
+                                data-navigatepage="submit-new-incident">
+                                <div class="slds-grid slds-gutters pointer-event-none">
+                                    <div class="slds-col slds-size_1-of-12">
+                                        <lightning-icon icon-name="utility:new" size="xx-small"></lightning-icon>
+                                    </div>
+                                    <div class="slds-col slds-size_11-of-12">
+                                        Submit New Incident
+                                    </div>
+                                </div>
+                            </button>
+                            <button class="padding_space_button" onclick={navigateToPage}
+                                data-navigatepage="submit-restraint-report">
+                                <div class="slds-grid slds-gutters pointer-event-none">
+                                    <div class="slds-col slds-size_1-of-12">
+                                        <lightning-icon icon-name="utility:description" size="xx-small">
+                                        </lightning-icon>
+                                    </div>
+                                    <div class="slds-col slds-size_11-of-12">
+                                        Submit New Quarterly Restraint Report
+                                    </div>
+                                </div>
+                            </button>
+                            <button class="padding_space_button" onclick={navigateToPage}
+                                data-navigatepage="submit-required-notification">
+                                <div class="slds-grid slds-gutters pointer-event-none">
+                                    <div class="slds-col slds-size_1-of-12">
+                                        <lightning-icon icon-name="utility:notification" size="xx-small">
+                                        </lightning-icon>
+                                    </div>
+                                    <div class="slds-col slds-size_11-of-12">
+                                        Submit Required Notification
+                                    </div>
+                                </div>
+                            </button>
+                            <button class="padding_space_button" onclick={navigateToPage}
+                                data-navigatepage="psrtechnicalsupportpage">
+                                <div class="slds-grid slds-gutters pointer-event-none">
+                                    <div class="slds-col slds-size_1-of-12">
+                                        <lightning-icon icon-name="utility:send" size="xx-small">
+                                        </lightning-icon>
+                                    </div>
+                                    <div class="slds-col slds-size_11-of-12">
+                                        Technical Helpdesk
+                                    </div>
+                                </div>
+                            </button>
+                            <!--<button class="padding_space_button">
+                                <div class="slds-grid slds-gutters pointer-event-none">
+                                    <div class="slds-col slds-size_1-of-12">
+                                        <lightning-icon icon-name="utility:search" size="xx-small"></lightning-icon>
+                                    </div>
+                                    <div class="slds-col slds-size_11-of-12">
+                                        Parent Portal Self Service
+                                    </div>
+                                </div>
+                            </button>-->
+                        </lightning-vertical-navigation-section>
+                    </lightning-vertical-navigation>
+                </div>
+            </div>
+            <div class="slds-col slds-size_10-of-12 side_space mobile-full-width monitoring-body-section">
+                <slot name="body"></slot>
+            </div>
+        </div>
+    </div>
+
+    <div class="slds-m-top_large text-right newfooter" if:true={showFooter}>
+        <p>{footerText}</p>
+    </div>
+</template>

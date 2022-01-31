@@ -1,0 +1,179 @@
+<template>
+    <!-- Spinner -->
+    <div class="backdrop" if:true={showSpinner}>
+       <div class="spinner">
+           <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+       </div>
+   </div>
+   <!-- Body -->
+   <template if:true={documentsPresent}>
+        <template if:true={tableData}>
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col slds-size_5-of-12 icon-section">
+                    <lightning-icon variant="warning" size="small" icon-name="utility:info"></lightning-icon>
+                    <span class="icon-description">Help Text</span>
+                </div>
+                <div class="slds-col slds-size_1-of-12">
+                </div>
+                <div class="slds-col slds-size_6-of-12">
+                <div class="slds-m-top_large slds-text-align_right">
+                    <div if:false={editMode}>
+                        <lightning-button variant="brand" label="Edit" title="Primary action" onclick={handleEdit} class="slds-m-left_x-small primaryAction"></lightning-button>
+                        <lightning-button variant="brand" label="Send Rejected Documents to Provider" title="Primary action" onclick={sendRejectedDocsToProvider} class="slds-m-left_x-small"></lightning-button>
+                    </div>
+                    <div if:true={editMode}>
+                        <lightning-button variant="brand" label="Save" title="Primary action" onclick={handleSave} class="slds-m-left_x-small primaryAction"></lightning-button>
+                        <lightning-button variant="neutral" label="Cancel" title="Primary action" onclick={handleCancel} class="slds-m-left_x-small primaryAction"></lightning-button>
+                        <lightning-button variant="brand" label="Send Rejected Documents to Provider" title="Primary action" onclick={sendRejectedDocsToProvider} class="slds-m-left_x-small"></lightning-button>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered table">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="docTypeName" scope="col">
+                            <div class="slds-truncate" title="Document Type">DOCUMENT TYPE</div>
+                        </th>
+                        <th class="generalHeader" scope="col">
+                            <div class="slds-cell-wrap" title="Program Type">PROGRAM TYPE</div>
+                        </th>
+                        <th class="generalHeader" scope="col">
+                            <div class="slds-truncate" title="Responsible Party">RESPONSIBLE PARTY</div>
+                        </th>
+                        <th class="generalHeader" scope="col">
+                            <div class="slds-truncate" title="Document">DOCUMENT</div>
+                        </th>
+                        <th class="generalHeader" scope="col">
+                            <div class="slds-cell-wrap" title="Uploaded Date">UPLOADED DATE</div>
+                        </th>    
+                        <th class="generalHeader" scope="col">
+                            <div class="slds-truncate" title="Expires">EXPIRATION DATE</div>
+                        </th>
+                        <th class="statusColumn" scope="col">
+                            <div class="slds-truncate" title="Status">STATUS</div>
+                        </th>
+                        <th class="generalHeader" scope="col">
+                            <div class="slds-truncate" title="Not Applicable">NOT APPLICABLE</div>
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={tableData} for:item="doc">
+                        <tr key={doc.documentId}>
+                            <th scope="col">                                                   
+                                <template if:true={doc.helpText}>
+                                    <template if:true={doc.documentTypeName}>
+                                        <span class="slds-cell-wrap documentName">{doc.documentTypeName}</span>
+                                    </template>
+                                    <template if:false={doc.documentTypeName}>
+                                        <span class="slds-cell-wrap documentName">{doc.documentName}</span>
+                                    </template>  
+                                        <lightning-helptext class="helpText" content={doc.helpText}></lightning-helptext>           
+                                </template>
+                                <template if:false={doc.helpText}>
+                                    <template if:true={doc.documentTypeName}>
+                                       <span class="slds-cell-wrap documentName">{doc.documentTypeName}</span>
+                                    </template>
+                                    <template if:false={doc.documentTypeName}>
+                                       <span class="slds-cell-wrap documentName">{doc.documentName}</span>
+                                    </template>  
+                                </template>
+                            </th>
+                            <th scope="col">
+                                <div>{doc.programType}</div>
+                            </th>
+                            <th scope="col">
+                                {doc.responsibleParty}
+                            </th>
+                            <th scope="col">
+                                <div>
+                                    <template if:true={doc.documentTypeName}>
+                                        <a data-id={doc.documentId} data-name={doc.documentTypeName} onclick={openViewModal}>View</a>
+                                    </template>
+                                    <template if:false={doc.documentTypeName}>
+                                        <a data-id={doc.documentId} data-name={doc.documentName} onclick={openViewModal}>View</a>
+                                    </template>
+                                    
+                                    <template if:false={doc.isLegacyDocumentType}>
+                                        <span class="view-upload-seperator">|</span>
+                                        <span id={doc.documentId} title="Attach Document(s)" class="view-button" onclick={openUploadDocumentPage}>Upload</span>
+                                    </template>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div>{doc.uploadedDate}</div>                                                
+                            </th>    
+                            <th scope="col">
+                                <template if:true={doc.expirationDate}>
+                                    <div>{doc.expirationDate}</div>
+                                </template>
+                                <template if:false={doc.expirationDate}>
+                                    <div>-</div>
+                                </template>
+                            </th>
+                            <th scope="col">
+                                <template if:true={doc.isUnsubmitted}>
+                                    {doc.status}
+                                </template>
+                                <template if:false={doc.isUnsubmitted}>
+                                    <div if:false={editMode} class="slds-truncate">
+                                        <template if:true={doc.isLegacyReviewed}>
+                                            <lightning-icon class="statusIcon" icon-name="utility:success" alternative-text="Success!" variant="success"
+                                            title="success variant small" size="small"></lightning-icon>                                                    
+                                            <span class="statusText">{doc.status}</span>
+                                        </template>
+                                        <template if:true={doc.isReturnedForRevision}>
+                                            <lightning-icon class="statusIcon" icon-name="utility:error" alternative-text="Error!" variant="error" title="error variant" size="small"></lightning-icon>
+                                            <span class="statusText">{doc.status}</span>
+                                        </template>
+                                        <template if:true={doc.isOtherStatus}>
+                                            {doc.status}
+                                        </template>    
+                                    </div>
+                                    <div class="comboBox" if:true={editMode}>
+                                        <lightning-combobox
+                                            name="status"
+                                            label=""
+                                            data-id={doc.documentId}
+                                            id={doc.category}
+                                            value={doc.status}
+                                            placeholder=""
+                                            options={statusValue}
+                                            onchange={handleInput} >
+                                        </lightning-combobox>
+                                    </div>
+                                </template>                                                 
+                            </th>
+                            <th scope="col">
+                                <template if:true={doc.documentTypeNotApplicable}>
+                                    <div if:false={editMode}>
+                                        <lightning-input type="checkbox" label="" name="docApplicable" checked={doc.documentNotApplicable} disabled></lightning-input>
+                                    </div>
+                                    <div if:true={editMode}>
+                                        <div if:false={doc.isUmbrella}>
+                                            <lightning-input type="checkbox" label="" data-id={doc.documentId} name="docApplicableEditMode" onchange={handleInput} checked={doc.documentNotApplicable}></lightning-input>
+                                        </div>
+                                        <div if:true={doc.isUmbrella}>
+                                            <lightning-input type="checkbox" label="" name="docApplicable" checked={doc.documentNotApplicable} disabled></lightning-input>
+                                        </div>
+                                    </div>
+                                    <!-- <div if:true={editMode}>
+                                        <lightning-input type="checkbox" label="" data-id={doc.documentId} name="docApplicableEditMode" onchange={handleInput} checked={doc.documentNotApplicable}></lightning-input>
+                                    </div> -->
+                                </template>
+                            </th>                            
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            <template if:true={viewModalOpen}>
+                <c-eec-view-documents doc-name={documentTypeName} doc-id={documentId} acc-id={accId}></c-eec-view-documents>
+            </template>
+        </template>
+    </template>
+    <template if:false={documentsPresent}>
+        <div class="slds-text-align_center">There are no documents for Review.</div>
+    </template>
+</template>

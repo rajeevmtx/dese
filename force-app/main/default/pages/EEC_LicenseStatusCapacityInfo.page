@@ -1,0 +1,477 @@
+<apex:page controller="EEC_TransactionWizardController" doctype="html-5.0" showheader="false" sidebar="false" standardstylesheets="false">
+    <title>EEC</title>
+    <c:EEC_Header id="pageHeader" />
+    <script>
+        j$(document).ready(function () {
+            var isSubmitted = '{!isSubmitted}';
+            if (isSubmitted == 'true') {
+                j$('.saveButton').addClass('visibilityHidden');
+                j$("textarea").prop('disabled', true);
+                j$("input[type=radio]").prop('disabled', true);
+            }
+        });
+    </script>
+    <style>
+        .visibilityHidden {
+            visibility: hidden;
+        }
+        .md-button.md-raised.md-eec,
+        .md-button.md-raised.md-eec {
+            color: rgb(250, 250, 250);
+            background-color: #853F3F;
+        }
+        .md-button.md-raised.md-eec:hover,
+        .md-button.md-raised.md-eec:hover {
+            color: rgb(250, 250, 250);
+            background-color: #703E3E;
+        }
+        .md-button.md-raised,
+        .md-button.md-raised {
+            background-color: #f7f7f7;
+        }
+        .md-button span {
+            padding: 6px;
+        }
+        .top-level-label {
+            font-weight: 600;
+            margin-right: 3px;
+            line-height: 20px;
+            color: rgba(0, 0, 0, 0.54);
+        }
+        .parsley-errors-list {
+            margin-top: 18px;
+            margin-left: -50px;
+            position: absolute;
+            width: 50%;
+            font-weight: bold;
+        }
+        .desc .parsley-errors-list {
+            margin-top: -20px;
+            margin-left: 0px;
+            position: relative;
+            width: 100%;
+        }
+        .desc .parsley-error {
+            border: 2px solid #c00;
+        }
+        .person .parsley-errors-list {
+            margin-top: 0px;
+            margin-left: 0px;
+            position: relative;
+            width: 100%;
+        }
+        table {
+            border-collapse: separate;
+            border-spacing: 2px;
+        }
+        .assistant-label {
+            font-size: 12px;
+        }
+        input[type="radio"],
+        input[type="checkbox"] {
+            margin: 4px 7px 0;
+        }
+        .command-button-container {
+            position: relative;
+            top: -2px;
+        }
+        .transaction-info-row {
+            margin-left: 0px;
+        }
+        .eec-subhead {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-left: 0px;
+        }
+        .navigation-buttons {
+            overflow: visible;
+        }
+        .row {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+        .assistantErrorMessage {
+            display: none;
+            font-weight: bold;
+        }
+        .visible {
+            display: block;
+        }
+        .col-md-6 {
+            padding-left: 0px;
+        }
+        textarea {
+            margin-bottom: 20px;
+        }
+        label {
+            margin-bottom: 2px;
+            margin-left: 0px;
+            font-weight: normal;
+        }
+        .requiredInput {}
+        .desc-panel {
+            margin-left: 15px;
+            width: 80%;
+        }
+        .background-info-container {
+            margin-bottom: 160px;
+        }
+        .commandBtn {
+            margin: -1px 0px -2px;
+        }
+        .errorMsg {
+            color: rgb(244, 67, 54);
+            font-size: 12px;
+            line-height: 24px;
+            font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif;
+        }
+        @media only screen and (min-width: 0px) and (max-width: 959px) {
+            .household-form-container {
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .navigation-buttons .md-button {
+                width: 98%;
+            }
+            .navigation-buttons md-content {
+                width: 100%;
+            }
+            .add-button-container {
+                padding-right: 0;
+                width: 100%;
+            }
+        }
+        .visibilityHidden {
+            display: none;
+        }
+        .required {
+            color: #E42311;
+        }
+        .h1Hidden {
+            display: none;
+        }
+    </style>
+    <body ng-app="eecApp">
+        <c:eec_nav_bar id="navBar" rendered="{!loggedUser.UserType == 'PowerPartner' || loggedUser.UserType == 'PowerCustomerSuccess' || loggedUser.UserType == 'CspLitePortal' || loggedUser.UserType == 'CustomerSuccess'}"/>
+        <div class="background-info-container" layout-wrap="true" layout-lg="row" layout-gt-lg="row" layout="column" layout-padding="true"
+         layout-margin="true" ng-controller="TransactionController as ctrl">
+            <md-content style="margin-top: 20px;" ng-show="ctrl.checkForMessages()" layout="row" flex="100" layout-align="center center">
+                <md-whiteframe class="md-whiteframe-z2 ng-cloak" layout="column" layout-padding="true" flex="75">
+                    <apex:pagemessages id="showmsg"></apex:pagemessages>
+                </md-whiteframe>
+            </md-content>
+            <div class="background-form-container col-lg-8 col-md-8 col-sm-12" layout="column" layout-padding="true" style="margin-bottom:100px;margin-top: 30px;">
+                <apex:form id="LicenseStatusForm" styleclass="lStatus-form">
+                    <!--<h3 class="md-display-1">Capacity / Assistant Information</h3>-->
+                    <div class="top-header-section">
+                        <div class="header-name-section">
+                            <h2 class="h1Hidden">Accessibility Fix</h2>
+                            <!-- Accessibility Fix -->
+                            <h3 class="md-display-1 header-display-name">{!applicationDisplayName}
+                                <apex:outputText styleClass="visibilityHidden" value="applicationDisplayName" />
+                            </h3>
+                            <h4 class="step-name">
+                                <!-- <apex:outputpanel rendered="{!LicenseRecordTypeName=='Informal_Care_New_Application'}">
+                                    Information About Location of Care
+                                </apex:outputpanel> -->
+                                <apex:outputpanel rendered="{!LicenseRecordTypeName !='Informal_Care_New_Application'}">
+                                    Licensing Status And Capacity
+                                </apex:outputpanel>
+                            </h4>
+                            <h5 class="base-label trans-number">Application number: {!licenseTransation.Name}</h5>
+                        </div>
+                    </div>
+                    <md-divider layout-align="center center"></md-divider>
+                    <div id="TAPageBlock" class="form-block">
+                        <!--             <div class="transaction-info"> -->
+                        <!--               <h3 class="eec-subhead">Transaction Information</h3> -->
+                        <!--               <md-content class="transaction-info-row" layout="row"> -->
+                        <!--                 <p class="md-subhead top-level-label">Transaction Type: </p> -->
+                        <!--                 <apex:outputtext value="{!LicenseRecordTypeLabel}" /> -->
+                        <!--               </md-content> -->
+                        <!--               <md-content class="transaction-info-row" layout="row"> -->
+                        <!--                 <p class="md-subhead top-level-label">Transaction Number: </p> -->
+                        <!--                 <apex:outputtext value="{!licenseTransation.Name}" /> -->
+                        <!--               </md-content> -->
+                        <!--             </div> -->
+                        <h3 class="eec-subhead" flex="95" layout-margin="true">
+                            <!-- <apex:outputpanel rendered="{!LicenseRecordTypeName=='Informal_Care_New_Application'}">
+                                Information About Location of Care
+                            </apex:outputpanel> -->
+                            <apex:outputpanel rendered="{!LicenseRecordTypeName !='Informal_Care_New_Application'}">
+                                Licensing Status And Capacity
+                            </apex:outputpanel>
+                        </h3>
+                        <apex:outputpanel rendered="{!LicenseRecordTypeName=='FCC_New_License' || LicenseRecordTypeName=='Informal_Care_New_Application'}">
+                            <apex:outputtext styleclass="top-level-label required" value="Are you currently caring for children who are not related to you?"/>
+                            <span class="required">*</span>
+                            <apex:outputpanel >
+                                <div class="requiredInput">
+                                    <div class="requiredBlock"></div>
+                                    <fieldset>
+                                        <legend class="h1Hidden"> Accessbility fix</legend>
+                                        <apex:selectradio value="{!licenseTransation.Caring_For_Children_Not_Related__c}" required="false">
+                                            <apex:actionsupport event="onchange" action="{!showLSDesc}" rerender="nameAndAges" status="status" />
+                                            <apex:selectoptions value="{!items}" html-data-parsley-required="true" />
+                                        </apex:selectradio>
+                                    </fieldset>
+                                </div>
+                                <apex:outputpanel id="nameAndAges" styleclass="desc">
+                                    &nbsp;
+                                    <apex:outputpanel rendered="{!licenseTransation.Caring_For_Children_Not_Related__c == 'Yes'}">
+                                        <apex:outputlabel for="{!$Component.providing}" styleclass="top-level-label required" id="Namesandages" value="Please list the full names and ages of the children (First, Last, DOB)"
+                                         style="font-weight: bold !important;" />
+                                        <span class="required">*</span>
+                                        <apex:inputfield styleclass="form-control" required="false" id="providing" value="{!licenseTransation.Full_Names_And_Ages_of_The_Children__c}"
+                                         html-data-parsley-required="true" />
+                                    </apex:outputpanel>
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                            <!--  <apex:InputField value="{!licenseTransation.Caring_For_Children_Not_Related__c}" />-->
+                        </apex:outputpanel>
+                        <apex:outputpanel rendered="{!LicenseRecordTypeName!='FCC_New_License'}">
+                        </apex:outputpanel>
+                        <apex:outputpanel >
+                            <apex:outputpanel rendered="{!LicenseRecordTypeName=='Informal_Care_New_Application'}">
+                                <apex:outputtext styleclass="top-level-label required" value="Will you be providing evening, overnight or weekend care? "/>
+                            </apex:outputpanel>
+                            <apex:outputpanel rendered="{!LicenseRecordTypeName!='Informal_Care_New_Application'}">
+                                <apex:outputtext styleclass="top-level-label required" value="Will you be providing evening, overnight or weekend care? (Please note that Reg. #7.09(7) states that no educator may regularly care for child care children more than 12 hours in any 24 hour period.)"/>
+                            </apex:outputpanel>
+                            <span class="required">*</span>
+                            <apex:actionregion >
+                                <div class="requiredInput">
+                                    <div class="requiredBlock"></div>
+                                    <fieldset>
+                                        <legend class="h1Hidden"> Accessbility fix</legend>
+                                        <apex:selectradio value="{!licenseTransation.Evening_Overnight_Weekend_Care__c}" required="false">
+                                            <apex:actionsupport event="onchange" status="status" action="{!showLSDesc}" rerender="eowDesc"/>
+                                            <apex:selectoptions value="{!items}" html-data-parsley-required="true" />
+                                        </apex:selectradio>
+                                    </fieldset>
+                                </div>
+                            </apex:actionregion>
+                        </apex:outputpanel>
+                        <apex:outputpanel id="eowDesc" styleclass="desc">
+                            &nbsp;
+                            <apex:outputpanel rendered="{!licenseTransation.Evening_Overnight_Weekend_Care__c == 'Yes'}">
+                                <apex:outputlabel for="{!$Component.childrenhome}" styleclass="top-level-label required" value="Please describe" style="font-weight: bold !important;"
+                                />
+                                <span class="required">*</span>
+                                <apex:inputfield styleclass="form-control" required="false" id="childrenhome" value="{!licenseTransation.Evening_Overnight_Weekend_Care_Desc__c}"
+                                 html-data-parsley-required="true" />
+                                <!--                   <input type="text" class="form-control" html-data-parsley-required="true" value="{!JSENCODE(licenseTransation.Evening_Overnight_Weekend_Care_Desc__c)}"/> -->
+                            </apex:outputpanel>
+                        </apex:outputpanel>
+                        <apex:outputpanel >
+                            <apex:outputtext styleclass="top-level-label required" value="Are any of your children home schooled?" />
+                            <span class="required">*</span>
+                            <apex:actionregion >
+                                <div class="requiredInput">
+                                    <div class="requiredBlock"></div>
+                                    <fieldset>
+                                        <legend class="h1Hidden"> Accessibility Fix</legend>
+                                        <apex:selectradio value="{!licenseTransation.Children_Home_Schooled__c}" required="false" html-data-mincheck="1">
+                                            <apex:actionsupport event="onchange" status="status" action="{!showLSDesc}" rerender="chmDesc"/>
+                                            <apex:selectoptions value="{!items}" html-data-parsley-required="true" />
+                                        </apex:selectradio>
+                                    </fieldset>
+                                </div>
+                            </apex:actionregion>
+                        </apex:outputpanel>
+                        <apex:outputpanel id="chmDesc" styleclass="desc">
+                            &nbsp;
+                            <apex:outputpanel rendered="{!licenseTransation.Children_Home_Schooled__c == 'Yes'}">
+                                <apex:outputlabel for="{!$Component.fostercareprovider21}" styleclass="top-level-label required" value="Please describe"
+                                 style="font-weight: bold !important;" />
+                                <span class="required">*</span>
+                                <apex:inputfield styleclass="form-control" required="false" id="fostercareprovider21" value="{!licenseTransation.Children_Home_Schooled_Description__c}"
+                                 html-data-parsley-required="true" />
+                            </apex:outputpanel>
+                        </apex:outputpanel>
+                        <apex:outputpanel >
+                            <apex:outputtext styleclass="top-level-label required" value="Are you an approved foster care provider?" />
+                            <span class="required">*</span>
+                            <apex:actionregion >
+                                <div class="requiredInput">
+                                    <div class="requiredBlock"></div>
+                                    <fieldset>
+                                        <legend class="h1Hidden"> Accessibility Fix</legend>
+                                        <apex:selectradio value="{!licenseTransation.Approved_Foster_Care_Provider__c}" required="false">
+                                            <apex:actionsupport status="status" event="onchange" action="{!showLSDesc}" rerender="afcDesc"/>
+                                            <apex:selectoptions value="{!items}" html-data-parsley-required="true" />
+                                        </apex:selectradio>
+                                    </fieldset>
+                                </div>
+                            </apex:actionregion>
+                        </apex:outputpanel>
+                        <apex:outputpanel id="afcDesc" styleclass="desc">
+                            &nbsp;
+                            <apex:outputpanel rendered="{!licenseTransation.Approved_Foster_Care_Provider__c == 'Yes'}">
+                                <apex:outputlabel for="{!$Component.fostercareprovider}" styleclass="top-level-label required" value="Please describe" style="font-weight: bold !important;"/>
+                                <span class="required">*</span>
+                                <apex:inputfield styleclass="form-control" required="false" id="fostercareprovider" value="{!licenseTransation.Approved_Foster_Care_Provider_Descrip__c}"
+                                 html-data-parsley-required="true" />
+                            </apex:outputpanel>
+                        </apex:outputpanel>
+                        <apex:outputpanel >
+                            <apex:outputtext styleclass="top-level-label required" value="Are you in the process of becoming a foster care provider?"
+                            />
+                            <span class="required">*</span>
+                            <apex:actionregion >
+                                <div class="requiredInput">
+                                    <div class="requiredBlock"></div>
+                                    <fieldset>
+                                        <legend class="h1Hidden"> Accessbility fix</legend>
+                                        <apex:selectradio value="{!licenseTransation.Becoming_Foster_Care_Provider__c}" required="false">
+                                            <apex:actionsupport status="status" event="onchange" action="{!showLSDesc}" rerender="bfcDesc"/>
+                                            <apex:selectoptions value="{!items}" html-data-parsley-required="true" />
+                                        </apex:selectradio>
+                                    </fieldset>
+                                </div>
+                            </apex:actionregion>
+                        </apex:outputpanel>
+                        <apex:outputpanel id="bfcDesc" styleclass="desc">
+                            &nbsp;
+                            <apex:outputpanel rendered="{!licenseTransation.Becoming_Foster_Care_Provider__c == 'Yes'}">
+                                <apex:outputlabel for="{!$Component.householdmembe}" styleclass="top-level-label required" value="Please describe" style="font-weight: bold !important;"/>
+                                <span class="required">*</span>
+                                <apex:inputfield styleclass="form-control" required="false" id="householdmembe" value="{!licenseTransation.Becoming_Foster_Care_Provider_Descrip__c}"
+                                 html-data-parsley-required="true" />
+                            </apex:outputpanel>
+                        </apex:outputpanel>
+                        <apex:outputpanel rendered="{!LicenseRecordTypeName != 'Informal_Care_New_Application'}">
+                            <apex:outputtext styleclass="top-level-label required" value="Is there a business operated by you or a household member out of your home?"
+                            />
+                            <span class="required">*</span>
+                            <apex:actionregion >
+                                <div class="requiredInput">
+                                    <div class="requiredBlock"></div>
+                                    <fieldset>
+                                        <legend class="h1Hidden"> Accessbility fix</legend>
+                                        <apex:selectradio required="false" value="{!licenseTransation.Business_Operated_Out_of_Own_Home__c}">
+                                            <apex:actionsupport event="onchange" status="status" action="{!showLSDesc}" rerender="booDesc"/>
+                                            <apex:selectoptions value="{!items}" html-data-parsley-required="true" />
+                                        </apex:selectradio>
+                                    </fieldset>
+                                </div>
+                            </apex:actionregion>
+                            <apex:outputpanel id="booDesc" styleclass="desc">
+                                &nbsp;
+                                <apex:outputpanel rendered="{!licenseTransation.Business_Operated_Out_of_Own_Home__c == 'Yes'}">
+                                    <apex:outputlabel for="{!$Component.Pleasedescribe}" styleclass="top-level-label required" value="Please describe" style="font-weight: bold !important;"
+                                    />
+                                    <span class="required">*</span>
+                                    <apex:inputfield styleclass="form-control" required="false" id="Pleasedescribe" value="{!licenseTransation.Bus_Operated_Out_of_Own_Home_Descrip__c}"
+                                     html-data-parsley-required="true" />
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                        </apex:outputpanel>
+                        
+                       
+                        <md-divider layout-align="center center"></md-divider>
+                        <div class="row">
+                            <md-content class="navigation-buttons" layout="column" layout-lg="row" layout-align="space-between center" layout-gt-lg="row"
+                             layout-align-sm="center center" layout-align-md="center center">
+                                <apex:commandlink styleclass="md-button md-raised md-button md-default-theme" value="Previous" action="{!LicensingStatusCapacityInfoSave}"
+                                 html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" status="status">
+                                    <apex:param name="saveType" value="2" />
+                                </apex:commandlink>
+                                <apex:commandLink styleClass="md-button md-raised md-button md-default-theme btn-pullLeft" value="Close" action="{!closeAndreturnToHome}"
+                                 html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" status="status"/>
+                                <apex:commandlink styleclass="md-button md-raised md-eec save-btn btn-pullRight saveButton" onclick="if(!validateAssistant()){return false;}"
+                                 value="Save" action="{!LicensingStatusCapacityInfoSave}" html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1"
+                                 html-md-button="true" status="status">
+                                    <apex:param name="saveType" value="5" />
+                                </apex:commandlink>
+                                <apex:commandlink styleclass="md-button md-raised md-eec save-btn" onclick="if(!validateAssistant()){return false;}" action="{!LicensingStatusCapacityInfoSave}"
+                                 html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" status="status">
+                                    <apex:outputText rendered="{!licenseTransation.Status__c =='Unsubmitted'}">Save and
+                                    </apex:outputText> Next
+                                    <apex:param name="saveType" value="1" />
+                                </apex:commandlink>
+                            </md-content>
+                            <!--               <md-content class="navigation-buttons" layout="column" layout-lg="row" layout-align="space-between center" layout-gt-lg="row" layout-align-sm="center center" layout-align-md="center center"> -->
+                            <!--                 <apex:commandlink status="status" styleclass="md-button md-raised" action="{!CancelTransaction}" immediate="true" value="Cancel {!formattedLicenseRecordTypeLabel} Transaction" onclick="return confirm('Are you sure to cancel the transaction?');" html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" /> -->
+                            <!--                 <apex:commandlink status="status" styleclass="md-button md-raised" onclick="if(!validateAssistant()){return false;}" value="Save and Return to Provider" action="{!LicensingStatusCapacityInfoSave}"  html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true"> -->
+                            <!--                   <apex:param name="saveType" value="3" /> -->
+                            <!--                 </apex:commandlink> -->
+                            <!--               </md-content> -->
+                        </div>
+                        <md-divider layout-align="center center"></md-divider>
+                    </div>
+                    <apex:actionFunction action="{!LicensingStatusCapacityInfoSave}" name="SaveNext" reRender="none" status="status">
+                        <apex:param name="saveType" value="1" />
+                    </apex:actionFunction>
+                    <apex:actionFunction action="{!LicensingStatusCapacityInfoSave}" name="SavePrevious" reRender="none" oncomplete="addMargin();" status="status">
+                        <apex:param name="previousPage" assignTo="{!previousPageName}" value="" />
+                        <apex:param name="saveType" value="2" />
+                    </apex:actionFunction>
+                </apex:form>
+            </div>
+            <eec-wizard btn-progress-color="#fff" class="wizard col-md-3" flex="30" passed-btn-bg-color="#4CAF50" btn-bg-color="#FAFAFA"
+             active-btn-bg-color="#0288D1" hide="true" show-gt-md="true">
+                <c:EEC_Navigation current="License Status and Capacity" recordTypeDeveloperName="{!LicenseRecordTypeName}" highest="{!highestStepReached}"
+                 providerRecordType="{!licenseTransation.providerRecordTypeDeveloperName__c}">
+                </c:EEC_Navigation>
+            </eec-wizard>
+        </div>
+        <c:eec_site_footer id="siteFooter" />
+        <script>
+            function addMargin() {
+                j$(".required-input").addClass("required-input-with-error");
+            }
+            var form = j$(".lStatus-form").parsley({
+                errorsWrapper: '<div class="parsley-errors-list"></div>',
+                errorTemplate: '<p class="errorMsg"></p>'
+            });
+            function validateAssistant(formVal) {
+                var selected = j$('[id*=assistantHiddenGroup]').val();
+                if (selected == 'Yes') {
+                    var aVar = jQuery('[id*=personsRepeater]');
+                    if (aVar.length == 0 || !form.validate()) {
+                        j$('.assistantErrorMessage').addClass("visible");
+                        return false;
+                    }
+                } else {
+                    return form.validate();
+                }
+                return true;
+            }
+            app.controller('TransactionController', ['$scope', '$location', 'Util', function ($scope, $location, Util) {
+                // Instance of controller.
+                var tranCtrl = this;
+                // Controller level variables.
+                tranCtrl.funcId = null;
+                tranCtrl.wizardElements = Util.generateWizardElements("{!licenseRecordTypeName}",
+                    'Licensing/Capacity Info');
+                tranCtrl.selected = [];
+                // Function to check for messages available due to errors.
+                tranCtrl.checkForMessages = function () {
+                    // TODO: Switch this to use Angular and now jQuery.
+                    var ele = jQuery('[id*="showmsg"]');
+                    if (ele.children().length > 0) {
+                        return true;
+                    }
+                    return false;
+                };
+            }]);
+            function doNavigate(previousPage, nextPage) {
+                if (nextPage != '') {
+                    if (!validateAssistant()) {
+                        return false;
+                    } else {
+                        SaveNext();
+                    }
+                } else if (previousPage != '') {
+                    /*if(!validateAssistant()){
+                     return false;
+                    }
+                    else{*/
+                    SavePrevious(previousPage);
+                    //}
+                }
+            }
+        </script>
+    </body>
+</apex:page>

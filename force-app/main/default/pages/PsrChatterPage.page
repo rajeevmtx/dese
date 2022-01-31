@@ -1,0 +1,30 @@
+<apex:page showHeader="false" controller="psrChatterHandler" lightningStylesheets="true">
+
+    <head>
+        <style>
+            .display-all-none{
+                display: none !important;
+            }
+            .zen-select{
+                display: none !important;
+            }    
+        </style>
+    </head>
+    <body>
+    	<chatter:feed entityId="{!recordid}"/>
+        <script>
+            window.onload=function()  {
+                displayNone();
+            }
+            function displayNone(){
+                var fileelement = document.getElementsByClassName('publisherattachContentPost')[0];
+                fileelement.classList.add('display-all-none');
+                var thankselement = document.getElementsByClassName('publisherattachRypplePost')[0];
+                thankselement.classList.add('display-all-none');
+            }
+        </script>
+    
+    </body>
+
+
+</apex:page>

@@ -1,0 +1,367 @@
+<template>
+  <section
+    role="dialog"
+    tabindex="-1"
+    aria-modal="true"
+    class="slds-modal slds-fade-in-open"
+  >
+    <div class="slds-modal__container">
+      <header class="slds-modal__header">
+        <button
+          class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+          title="Close"
+          onclick={handleCloseModal}
+        >
+          <lightning-icon
+            icon-name="utility:close"
+            variant="inverse"
+            alternative-text="Close"
+            size="medium"
+          >
+          </lightning-icon>
+          <span class="slds-assistive-text">Close</span>
+        </button>
+        <h2 class="slds-text-heading_small">Inspection Details</h2>
+      </header>
+      <div class="slds-modal__content">
+        <div class="slds-p-around_x-small">
+          <table
+            aria-multiselectable="true"
+            class="slds-table scroller_table slds-no-cell-focus slds-table_bordered slds-table_edit slds-table_resizable-cols"
+            role="grid"
+            style="width: 100%;"
+          >
+            <thead>
+              <tr>
+                <td>
+                  <b>Legend </b>
+                  <br />
+                  <lightning-icon
+                    icon-name="utility:check"
+                    size="xx-small"
+                    variant="success"
+                  ></lightning-icon>
+                  : All Inspection items were compliant during the visit.<br />
+                  <lightning-icon
+                    icon-name="utility:warning"
+                    size="xx-small"
+                    variant="warning"
+                  ></lightning-icon>
+                  : One or more Inspection items were non-complaint during the
+                  visit.
+                </td>
+              </tr>
+              <tr class="slds-line-height_reset">
+                <template for:each={columnConfiguration} for:item="column">
+                  <th
+                    key={column.fieldApiName}
+                    scope="col"
+                    class="slds-is-resizable"
+                  >
+                    <div
+                      class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate column-padding"
+                    >
+                      <div
+                        class="slds-truncate slds-text-body_medium slds-p-around_xx-small slds-p-left_x-large"
+                        title={column.heading}
+                      >
+                        {column.heading}
+                      </div>
+                    </div>
+                  </th>
+                </template>
+              </tr>
+            </thead>
+            <tbody class="scroller_table">
+              <template for:each={inspectionList} for:item="inspec">
+                <tr key={inspec.inspectionId}>
+                  <td
+                    class="slds-truncate slds-cell-wrap slds-cell-buffer_right"
+                  >
+                    <template if:false={inspec.showChilds}>
+                      <lightning-icon
+                        class="slds-m-right_medium"
+                        data-pid={inspec.inspectionId}
+                        size="x-small"
+                        icon-name="utility:add"
+                        alternative-text="Expand"
+                        onclick={handleExpand}
+                      ></lightning-icon>
+                    </template>
+                    <template if:true={inspec.showChilds}>
+                      <lightning-icon
+                        class="slds-m-right_medium"
+                        data-pid={inspec.inspectionId}
+                        size="x-small"
+                        icon-name="utility:dash"
+                        alternative-text="Expand"
+                        onclick={handleCollapse}
+                      ></lightning-icon>
+                    </template>
+                    {inspec.inspectionName}
+                  </td>
+                  <td>
+                    {inspec.applicationNumber}
+                  </td>
+                  <td>
+                    <lightning-formatted-date-time
+                      value={inspec.startDate}
+                    ></lightning-formatted-date-time>
+                  </td>
+                  <td>
+                    <lightning-formatted-date-time
+                      value={inspec.endDate}
+                    ></lightning-formatted-date-time>
+                  </td>
+                  <td>
+                    {inspec.inspectorName}
+                  </td>
+                </tr>
+                <template if:true={inspec.showChilds}>
+                  <tr class="slds-hint-parent" key={inspec.inspectionId}>
+                    <td colspan="10">
+                      <div class="panel">
+                        <table
+                          aria-multiselectable="true"
+                          class="slds-table slds-no-cell-focus slds-table_bordered slds-table_edit slds-table_resizable-cols "
+                          role="grid"
+                          style="width: 100%;"
+                        >
+                          <thead>
+                            <tr class="slds-line-height_reset">
+                              <template
+                                for:each={childColumnConfiguration}
+                                for:item="column"
+                              >
+                                <th
+                                  key={column.fieldApiName}
+                                  scope="col"
+                                  class="slds-is-resizable"
+                                >
+                                  <div
+                                    class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate column-padding"
+                                  >
+                                    <div
+                                      class="slds-truncate slds-text-body_medium slds-p-around_xx-small slds-p-left_x-large"
+                                      title={column.heading}
+                                    >
+                                      {column.heading}
+                                    </div>
+                                  </div>
+                                </th>
+                              </template>
+                            </tr>
+                          </thead>
+                          <tbody class="scroller_table">
+                            <tr key={inspec.inspectionId}>
+                              <template
+                                if:true={inspec.showNoInspectionItemError}
+                              >
+                                <td colspan="3">
+                                  <lightning-card
+                                    title="There are no Inspection Items"
+                                  >
+                                  </lightning-card>
+                                </td>
+                              </template>
+                            </tr>
+                            <template
+                              for:each={inspec.inspectionItemsList}
+                              for:item="mapKey"
+                            >
+                              <tr key={mapKey.category}>
+                                <td
+                                  class="slds-truncate slds-cell-wrap slds-cell-buffer_right"
+                                >
+                                  <template if:false={mapKey.showItems}>
+                                    <lightning-icon
+                                      class="slds-m-right_medium"
+                                      data-pid={mapKey.category}
+                                      size="x-small"
+                                      icon-name="utility:add"
+                                      alternative-text="Expand"
+                                      onclick={handleExpandCategory}
+                                    >
+                                    </lightning-icon>
+                                  </template>
+                                  <template if:true={mapKey.showItems}>
+                                    <lightning-icon
+                                      class="slds-m-right_medium"
+                                      data-pid={mapKey.category}
+                                      size="x-small"
+                                      icon-name="utility:dash"
+                                      alternative-text="Expand"
+                                      onclick={handleCollapseCategory}
+                                    >
+                                    </lightning-icon>
+                                  </template>
+
+                                  {mapKey.category}
+                                </td>
+                                <td
+                                  class="slds-truncate slds-cell-wrap slds-cell-buffer_right"
+                                >
+                                  {mapKey.inspectionItemVariance}
+                                </td>
+                                <td
+                                  class="slds-truncate slds-cell-wrap slds-cell-buffer_right"
+                                >
+                                  <template if:true={mapKey.hasNonCompliant}>
+                                    <lightning-icon
+                                      class="slds-m-right_medium"
+                                      size="xx-small"
+                                      icon-name="utility:warning"
+                                      alternative-text="Expand"
+                                      variant="warning"
+                                    >
+                                    </lightning-icon>
+                                  </template>
+                                  <template if:false={mapKey.hasNonCompliant}>
+                                    <lightning-icon
+                                      class="slds-m-right_medium"
+                                      size="xx-small"
+                                      icon-name="utility:check"
+                                      alternative-text="Expand"
+                                      variant="success"
+                                    >
+                                    </lightning-icon>
+                                  </template>
+                                </td>
+                              </tr>
+                              <template if:false={mapKey.showMessage}>
+                                <tr key={mapKey.category}>
+                                  <template if:true={mapKey.showItems}>
+                                    <td colspan="3">
+                                      <table
+                                        style="width: 100%;"
+                                        class="scroller_table"
+                                      >
+                                        <template
+                                          for:each={mapKey.inspectionItems}
+                                          for:item="inspecItem"
+                                        >
+                                          <thead key={mapKey.category}></thead>
+                                          <tbody key={mapKey.category}>
+                                            <template
+                                              if:true={inspecItem.isCompliant}
+                                            >
+                                              <tr
+                                                class="gray_bg"
+                                                key={inspecItem.category}
+                                              >
+                                                <th>Program Area Reviewed</th>
+                                                <th>Category</th>
+                                                <th>Result</th>
+                                              </tr>
+                                              <tr
+                                                class="compliant"
+                                                key={mapKey.category}
+                                              >
+                                                <td>
+                                                  {inspecItem.Inspection_Item_Name__c}
+                                                </td>
+                                                <td>
+                                                  {inspecItem.category__c}
+                                                </td>
+                                                <td>
+                                                  {inspecItem.Result__c}
+                                                </td>
+                                              </tr>
+                                            </template>
+                                            <template
+                                              if:true={inspecItem.isNonCompliant}
+                                            >
+                                              <tr
+                                                class="gray_bg"
+                                                key={inspecItem.category}
+                                              >
+                                                <th>Program Area Reviewed</th>
+                                                <th>Category</th>
+                                                <th>Result</th>
+                                              </tr>
+                                              <tr
+                                                class="compliant"
+                                                key={mapKey.category}
+                                              >
+                                                <td>
+                                                  {inspecItem.Inspection_Item_Name__c}
+                                                </td>
+                                                <td>
+                                                  {inspecItem.category__c}
+                                                </td>
+                                                <td>
+                                                  {inspecItem.Result__c}
+                                                </td>
+                                              </tr>
+                                              <tr
+                                                class="non-compliant_sub"
+                                                key={mapKey.category}
+                                              >
+                                                <td colspan="10">
+                                                  <div class="panel">
+                                                    <table class="sub_myTable">
+                                                      <thead>
+                                                        <tr>
+                                                          <th>
+                                                            Statement of
+                                                            Non-Compliance
+                                                          </th>
+                                                          <th>
+                                                            Corrective Action
+                                                            Plan
+                                                          </th>
+                                                        </tr>
+                                                      </thead>
+                                                      <tr>
+                                                        <td>
+                                                          {inspecItem.Corrective_Action_Feedback__c}
+                                                        </td>
+                                                        <td>
+                                                          {inspecItem.Observations__c}
+                                                        </td>
+                                                      </tr>
+                                                    </table>
+                                                  </div>
+                                                </td>
+                                              </tr>
+                                            </template>
+                                          </tbody>
+                                        </template>
+                                      </table>
+                                    </td>
+                                  </template>
+                                </tr>
+                              </template>
+                              <tr key={mapKey.category}>
+                                <td colspan="3">
+                                  <template if:true={mapKey.showMessage}>
+                                    <lightning-card
+                                      title="There are no Compliant or Non-Compliant Inspection Items"
+                                    >
+                                    </lightning-card>
+                                  </template>
+                                </td>
+                              </tr>
+                            </template>
+                          </tbody>
+                        </table>
+                      </div>
+                    </td>
+                  </tr>
+                </template>
+              </template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <footer class="slds-modal__footer">
+        <lightning-button
+          class="slds-m-top_small"
+          label="Close"
+          onclick={handleCloseModal}
+        ></lightning-button>
+      </footer>
+    </div>
+  </section>
+  <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

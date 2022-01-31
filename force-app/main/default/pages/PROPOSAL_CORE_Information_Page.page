@@ -1,0 +1,1382 @@
+<apex:page sidebar="false" controller="PROPOSAL_CORE_Information_Controller" standardStylesheets="false">
+    <style>
+        #validationErrorMessage1 {
+            display: none;
+        }
+
+        #successMessage {
+            display: none;
+        }
+
+        .checklistReason {
+            display: none;
+        }
+
+        .required {
+            font-weight: bold;
+            color: red;
+        }
+
+        .alert-container {
+            padding: 0px;
+        }
+
+        .date-input {
+            float: left;
+        }
+
+        .dateOnlyInput input {
+            width: 16em;
+        }
+
+        .subheading {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .popover {
+            width: 250px;
+        }
+
+        .category {
+            height: 35px !important;
+        }
+
+        select.multiPickList {
+            width: 305px !important;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.428571429;
+            color: #555;
+            background-color: #fff;
+            border-radius: 0px;
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+            transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+        }
+
+        .radio-help-text {
+            margin-top: 3px;
+            display: block;
+        }
+
+        .labelClass {
+            font-weight: normal;
+            font-size: 16px;
+            color: #333;
+        }
+
+        legend {
+            border-bottom: 0px;
+            margin-bottom: 5px;
+        }
+
+        .mr {
+            margin-right: 20px;
+        }
+
+        .justify-space-between {
+            justify-content: space-between;
+        }
+
+        .help-link {
+            font-size: 14px;
+            color: #1d49cc;
+            padding-top: 2%;
+            margin-left: 50px;
+        }
+
+        .slds-button_outline-brand {
+            border-color: #0d3cc8;
+            color: #0d3cc8;
+        }
+
+        .timeline {
+            border-left: 2px solid #dfe4f2;
+            border-bottom-right-radius: 4px;
+            border-top-right-radius: 4px;
+            margin-left: 12px;
+            letter-spacing: 0;
+            position: relative;
+            position: -webkit-sticky;
+            position: sticky;
+            top: 2rem;
+            line-height: 1.4em;
+            font-size: 14px;
+            padding: 0 25px;
+            list-style: none;
+            text-align: left;
+            counter-reset: li-counter;
+            margin: 3rem 2rem;
+        }
+
+        .timeline .event:after {
+            border: 2px solid #656566;
+            border: 5px solid #f7f7f7;
+            position: absolute;
+            display: block;
+            top: 0;
+            left: -43px;
+            background: #dfe4f2;
+            border-radius: 50%;
+            height: 21px;
+            width: 25px;
+            content: "";
+            top: 5px;
+            top: 10px;
+            text-align: center;
+            content: attr(steplabel);
+            counter-increment: li-counter;
+            color: black;
+            padding-top: 4px;
+        }
+
+        .timeline .event {
+            padding-bottom: 17.5px;
+            position: relative;
+            padding-top: 17.5px;
+            min-width: 200px;
+            cursor: pointer;
+        }
+
+        .timeline .event:after else {
+            border: 2px solid #0f43e0;
+        }
+
+        .timeline .event.completed {
+            color: #0070d2;
+        }
+
+        .timeline .event.completed:after {
+            background: #0070d2;
+            padding-top: 4px;
+            color: white;
+            content: '✓';
+            text-align: center;
+        }
+
+        .timeline .event.active {
+            color: #128ec3;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .timeline .event.active:after {
+            background-color: #479eeb;
+            color: white;
+        }
+
+        .timeline .event:first-of-type {
+            padding-top: 7.5px;
+        }
+
+        .timeline .event:first-of-type:after {
+            top: -2px;
+        }
+
+        .timeline .event:last-of-type {
+            padding-bottom: 0;
+            margin-bottom: 0;
+            border: none;
+        }
+
+        .timeline .event:last-of-type:after {
+            top: auto;
+            top: 10px;
+            bottom: 0;
+        }
+
+        footer {
+            background: #fff;
+            position: relative !important;
+        }
+
+        .card--new {
+            background: #fff;
+            padding: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24);
+            transition: all .3s cubic-bezier(.25, .8, .25, 1);
+            border: none;
+            border-radius: 0;
+            margin: 1rem 2rem;
+        }
+
+        .bodyDiv {
+            background: #F5F7FA !important;
+        }
+
+        .has-shadow {
+            width: 100%;
+            margin-bottom: 1rem;
+            padding: 2rem;
+            background-color: #fff;
+            box-shadow: 4px 1px 2px 1px rgba(0, 0, 0, .05);
+            text-align: left;
+        }
+        table, th, td {
+          border: 1px solid black;
+          padding: 6px;
+          table-layout: fixed;
+        } 
+        th { 
+            word-wrap: break-word;
+            font-size: 16px;
+            font-family: "Proxima Nova", sans-serif;
+        }
+        td { 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+            word-wrap: break-word;
+            font-size: 15px;
+            font-family: "Proxima Nova", sans-serif;
+        }
+        .headerRow{
+             background-color : #4d83c3;
+             color : white;
+        } 
+        .textBox{
+            width : 90px;
+            }
+         .slds-button_brand{
+            color: #333;
+            background-color:  blue;
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"> </link>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+    <apex:composition template="CORE_APPINTAKE_Template_Page">
+        <apex:define name="body">
+            <div class="has-shadow slds-p-vertical_medium slds-m-bottom_medium heading_header_registration">
+                <c:CORE_StepNav_Component pgName="{!$CurrentPage.Name}" />
+            </div>
+            <div class="container row">
+                <div class="col-md-2">
+                    <ol class="timeline">
+                        <li class="event active" value="0" steplabel="0">Instructions</li>
+                        <li class="event completed" value="1" steplabel="1">Proposer Contact Information</li>
+                        <li class="event active" value="2" steplabel="2">Private School Information</li>
+                        <li class="event" value="3" steplabel="3">Allocation and Flexing</li>
+                        <li class="event" value="4" steplabel="4">Proposal Documents</li>
+                        <li class="event" value="5" steplabel="5">Authorizd Signature and Certification</li>
+                        <li class="event" value="6" steplabel="6">Proposal Submission</li>
+                    </ol>
+                </div>
+                <div class="col-md-10 card--new">
+                    <div class="page">
+                        <!-- <div class="sub-heading">Application Number:&nbsp;<apex:outputfield value="{!project.Application_Number__c}" /></div> -->
+                        <apex:form id="frm">
+                            <div class="application">
+                                <div class="content content-body">
+                                    <apex:outputPanel id="errorPanel">
+                                        <div class="alert-container">
+                                            <div class="alert alert-info">
+                                                <apex:outputPanel rendered="{!!project.Program_Version__r.NY_Green_Bank_RFP__c}" layout="none">
+                                                    <span class="required">* &nbsp;</span>indicates required field
+                                                    <br/>
+                                                </apex:outputPanel>
+                                                <apex:outputText value="{!$Label.Proposal_Information_Page_Help_Text}" rendered="{!!project.Program_Version__r.NY_Green_Bank_RFP__c}"
+                                                />
+                                                <br/>
+                                            </div>
+                                            <apex:pageMessages id="pageErrors" />
+                                            <div class="alert alert-danger" id="validationErrorMessage1"></div>
+                                            <div class="alert alert-success" id="successMessage"></div>
+                                        </div>
+                                    </apex:outputPanel>
+                                    <div class="row">
+                                        &nbsp;
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group col-xs-6 subheading">
+                                            <span>Proposed Information</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group col-xs-3">
+                                            <span>{!If(project.Concept_Paper__c, 'Concept Paper', 'Proposal')} Title
+                                                <span class="required">&nbsp;*</span>
+                                            </span>
+                                        </div>
+                                        <div class="form-group col-xs-4">
+                                            <div class="field">
+                                                <apex:inputField styleClass="form-control projectTitle" value="{!project.Name}" html-maxlength="32768" html-aria-label="{!If(project.Concept_Paper__c, 'Concept Paper', 'Proposal')} Title"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <apex:outputPanel rendered="{!!project.Program_Version__r.NY_Green_Bank_RFP__c}">
+                                        <div class="row">
+                                            <div class="form-group col-xs-3">
+                                                <span>Proposed {!If(project.Concept_Paper__c, 'Concept Paper', 'Proposal')} Category
+                                                    <span
+                                                        class="required">&nbsp;*</span>
+                                                </span>
+                                            </div>
+                                            <div class="form-group col-xs-4">
+                                                <div class="field">
+                                                    <div style="display:none;">
+                                                        <label for="{!$Component.category}">Blank</label>
+                                                    </div>
+                                                    <apex:selectList id="category" value="{!project.Proposed_Proposal_Category__c}" styleClass="form-control category" size="1">
+                                                        <apex:selectOptions value="{!categoryOptionList}" />
+                                                    </apex:selectList>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group col-xs-3">
+                                                <span>Proposer Company Information
+                                                    <span class="required">&nbsp;*</span>
+                                                </span>
+                                            </div>
+                                            <div class="form-group col-xs-4">
+                                                <div class="field">
+                                                    <div style="display:none;">
+                                                        <label for="{!$Component.companyInfo}">Blank</label>
+                                                    </div>
+                                                    <apex:inputTextArea value="{!project.Company_Information__c}" id="companyInfo" styleClass="form-control companyInfo" html-maxlength="32000"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-0">
+                                                <span class="icon-help" data-toggle="popover" data-placement="right" data-trigger="hover" data-content="{!$ObjectType.Project__c.fields.Company_Information__c.InlineHelpText}">
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </apex:outputPanel>
+
+                                    <div class="row">
+                                        <div class="form-group col-xs-3">
+                                            <span>{!If(project.Concept_Paper__c, 'Concept Paper', 'Proposal')} Description
+                                                <span
+                                                    class="required">&nbsp;*</span>
+                                            </span>
+                                        </div>
+                                        <div class="form-group col-xs-4">
+                                            <div class="field">
+                                                <apex:inputTextArea styleClass="form-control projectDesc" value="{!project.Description__c}" html-maxlength="32768" html-aria-label="{!If(project.Concept_Paper__c, 'Concept Paper', 'Proposal')} Description"
+                                                />
+                                                <div class="hiddenDivForProjectDescHTML" style="display: none;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-0">
+                                            <span class="icon-help" data-toggle="popover" data-placement="right" data-trigger="hover" data-content="{!$Label.Proposal_Proposal_Description_Help_Text}">
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <apex:outputPanel rendered="{!!project.Concept_Paper__c && project.Program_Version__r.NY_Green_Bank_RFP__c}">
+                                        <apex:outputPanel layout="block" styleclass="row" rendered="{!project.Program_Version__r.End_User_Types__c}">
+                                            <div class="form-group col-xs-3">
+                                                <span>End-User Type
+                                                    <span class="required">&nbsp;*</span>
+                                                </span>
+                                            </div>
+                                            <div class="form-group col-xs-7">
+                                                <div class="field">
+                                                    <div style="display:none;">
+                                                        <label for="{!$Component.endUserType}">End User Type</label>
+                                                    </div>
+                                                    <!-- Accessibility Issues -->
+                                                    <apex:inputField styleClass="multiPickList endUserType" html-aria-label="endUserType" id="endUserType" value="{!project.End_User_Type__c}"
+                                                    />
+                                                </div>
+                                                <!-- /.field -->
+                                            </div>
+                                            <div class="col-xs-0">
+                                                <span class="icon-help" data-toggle="popover" data-placement="left" data-trigger="hover" data-content="{!$Label.Proposal_End_User_Field_Help_Text}">
+                                                </span>
+                                            </div>
+                                        </apex:outputPanel>
+
+                                        <apex:outputPanel layout="block" styleclass="row" rendered="{!project.Program_Version__r.Regions__c}">
+                                            <div class="form-group col-xs-3">
+                                                <span>Regions
+                                                    <span class="required">&nbsp;*</span>
+                                                </span>
+                                            </div>
+                                            <div class="form-group col-xs-7">
+                                                <div class="field">
+                                                    <div style="display:none;">
+                                                        <label for="{!$Component.regions}">Regions</label>
+                                                    </div>
+                                                    <!-- Accessibility Issues -->
+                                                    <apex:inputField styleClass="multiPickList regions" id="regions" value="{!project.Regions__c}" />
+                                                </div>
+                                                <!-- /.field -->
+                                            </div>
+                                            <div class="col-xs-0">
+                                                <span class="icon-help" data-toggle="popover" data-placement="left" data-trigger="hover" data-content="{!$Label.Proposal_Regions_Field_Help_Text}">
+                                                </span>
+                                            </div>
+                                        </apex:outputPanel>
+
+                                        <!--                <apex:outputPanel layout="block" styleclass="row" rendered="{!project.Program_Version__r.Energy_System_Classification__c}">
+                                    <div class="form-group col-xs-3">
+                                        <span>Energy System Classification<span class="required">&nbsp;*</span></span>
+                                    </div>
+                                    <div class="form-group col-xs-7">
+                                        <div class="field">
+                                            <div style="display:none;"><label for="{!$Component.energySystemClassification}">Energy System Classification</label></div> 
+                                            <apex:inputField styleClass="multiPickList enegrySysAlssification" id="energySystemClassification" value="{!project.Energy_System_Classification__c}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-0">
+                                        <span class="icon-help" data-toggle="popover" data-placement="left" data-trigger="hover"
+                                                                data-content="{!$Label.Proposal_Energy_System_Classification_Field_Help_Text}"> </span>
+                                    </div>
+                                </apex:outputPanel>
+
+                                <apex:outputPanel layout="block" styleclass="row" rendered="{!project.Program_Version__r.Primary_Supporting_Technologies__c}">
+                                    <div class="form-group col-xs-3">
+                                        <span>Primary Supporting Technology<span class="required">&nbsp;*</span></span>
+                                    </div>
+                                    <div class="form-group col-xs-7">
+                                        <div class="field">
+                                            <div style="display:none;"><label for="{!$Component.primarySupportingTechnology}">Primary Supporting Technology</label></div> 
+                                            <apex:inputField styleClass="multiPickList primarySupportingTech" id="primarySupportingTechnology" value="{!project.Primary_Supporting_Technology__c}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-0">
+                                        <span class="icon-help" data-toggle="popover" data-placement="left" data-trigger="hover"
+                                                                data-content="{!$Label.Proposal_Primary_Supporting_Technology_Field_Help_Text}"> </span>
+                                    </div>
+                                </apex:outputPanel>
+
+                                <apex:outputPanel layout="block" styleclass="row" rendered="{!project.Program_Version__r.Size_of_Project_s__c}">
+                                    <div class="form-group col-xs-3">
+                                        <span>Total System Size (kW)<span class="required">&nbsp;*</span></span>
+                                    </div>
+                                    <div class="form-group col-xs-4">
+                                        <div class="field">
+                                            <apex:inputField styleClass="form-control totalSystemSize" value="{!project.Total_System_Size__c}" onKeyDown="isNumberOnly(event);" html-maxlength="15"/>
+                                        </div>
+                                    </div>
+                                </apex:outputPanel> 
+
+                                <apex:outputPanel layout="block" styleclass="row" rendered="{!project.Program_Version__r.Panel_Manufacturer__c}">
+                                    <div class="form-group col-xs-3">
+                                        <span>Panel Manufacturer<span class="required">&nbsp;*</span></span>
+                                    </div>
+                                    <div class="form-group col-xs-4">
+                                        <div class="field">
+                                            <apex:inputField styleClass="form-control panelManufacturer" value="{!project.Panel_Manufacturer__c}"/>
+                                        </div>
+                                    </div>
+                                </apex:outputPanel>
+
+                                <apex:outputPanel layout="block" styleclass="row" rendered="{!project.Program_Version__r.Inverter_Manufacturer__c}">
+                                    <div class="form-group col-xs-3">
+                                        <span>Inverter Manufacturer<span class="required">&nbsp;*</span></span>
+                                    </div>
+                                    <div class="form-group col-xs-4">
+                                        <div class="field">
+                                            <apex:inputField styleClass="form-control inverterManufacturer" value="{!project.Inverter_Manufacturer__c}"/>
+                                        </div>
+                                    </div>
+                                </apex:outputPanel> -->
+
+                                    </apex:outputPanel>
+
+                                    <div class="row">
+                                        &nbsp;
+                                    </div>
+
+                                    <apex:outputPanel rendered="{!!project.Concept_Paper__c}">
+                                        <div class="row">
+                                            <div class="form-group col-xs-6 subheading">
+                                                <span>Checklist Questions</span>
+                                            </div>
+                                        </div>
+
+                                        <apex:variable value="{!1}" var="rowNum" />
+                                        <apex:repeat value="{!checklistQuestionList}" var="checklistQuestion">
+                                            <div class="row">
+                                                <fieldset>
+                                                    <legend class="form-group col-xs-7 labelClass">
+                                                        <span> {!checklistQuestion.Display_Label__c}
+                                                            <span class="required">&nbsp;*</span>
+                                                        </span>
+                                                    </legend>
+
+                                                    <apex:outputPanel rendered="{!OR(checklistQuestion.Question_Type__c == 'Yes/No', checklistQuestion.Question_Type__c == '', checklistQuestion.Question_Type__c == null)}">
+                                                        <div class="form-group col-xs-1">
+                                                            <div class="ns-touch inline">
+                                                                <label for="radio1{!rowNum}">
+                                                                    <input type="radio" id="radio1{!rowNum}" name="exp{!rowNum}" class="exp{!rowNum}" value="true" onclick="showTextBox('{!rowNum}', 'Yes')"
+                                                                    />
+                                                                    <i class="icm"></i>
+                                                                    <span>Yes</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group col-xs-1">
+                                                            <div class="ns-touch inline">
+                                                                <label for="radio2{!rowNum}">
+                                                                    <input type="radio" id="radio2{!rowNum}" name="exp{!rowNum}" class="exp{!rowNum}" value="false" onclick="showTextBox('{!rowNum}', 'No')"
+                                                                    />
+                                                                    <i class="icm"></i>
+                                                                    <span>No</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <apex:outputPanel rendered="{!checklistQuestion.Help_Text__c != null}" styleClass="radio-help-text">
+                                                            <div class="col-xs-0">
+                                                                <span class="icon-help" data-toggle="popover" data-placement="left" data-trigger="hover" data-content="{!checklistQuestion.Help_Text__c}">
+                                                                </span>
+                                                            </div>
+                                                        </apex:outputPanel>
+
+                                                        <div class="checklistReason reason{!rowNum}">
+                                                            <div class="form-group col-xs-7">
+                                                            </div>
+                                                            <div class="form-group col-xs-4">
+                                                                <div style="display:none;">
+                                                                    <label for="{!$Component.Description2}">Description2</label>
+                                                                </div>
+                                                                <!-- Accessibility Issues -->
+                                                                <apex:inputTextArea styleClass="form-control explBox{!rowNum}" id="Description2" value="{!checklistQuestion.Description__c}"
+                                                                    html-maxlength="32768" />
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputPanel>
+
+                                                    <apex:outputPanel rendered="{!checklistQuestion.Question_Type__c == 'Input Text'}">
+                                                        <div class="form-group col-xs-4">
+                                                            <div style="display:none;">
+                                                                <label for="{!$Component.Description3}">Description3</label>
+                                                            </div>
+                                                            <!-- Accessibility Issues -->
+                                                            <apex:inputText styleClass="form-control checklistInput{!rowNum}" id="Description3" value="{!checklistQuestion.Description__c}"
+                                                                maxlength="255" />
+                                                        </div>
+                                                        <apex:outputPanel rendered="{!checklistQuestion.Help_Text__c != null}" styleClass="radio-help-text">
+                                                            <div class="col-xs-0">
+                                                                <span class="icon-help" data-toggle="popover" data-placement="left" data-trigger="hover" data-content="{!checklistQuestion.Help_Text__c}">
+                                                                </span>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                    </apex:outputPanel>
+
+                                                    <apex:outputPanel rendered="{!checklistQuestion.Question_Type__c == 'Date'}">
+                                                        <div class="form-group col-xs-4">
+                                                            <div style="display:none;">
+                                                                <label for="{!$Component.datePick1}">Date1</label>
+                                                            </div>
+                                                            <!-- Accessibility Issues -->
+                                                            <apex:inputField styleClass="form-control checklistDate{!rowNum} datepicker date-input" id="datePick1" value="{!checklistQuestion.Date_Value__c}"
+                                                            />
+                                                        </div>
+                                                        <apex:outputPanel rendered="{!checklistQuestion.Help_Text__c != null}" styleClass="radio-help-text">
+                                                            <div class="col-xs-0">
+                                                                <span class="icon-help" data-toggle="popover" data-placement="left" data-trigger="hover" data-content="{!checklistQuestion.Help_Text__c}">
+                                                                </span>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                    </apex:outputPanel>
+                                                </fieldset>
+                                            </div>
+                                            <apex:variable var="rowNum" value="{!rowNum + 1}" />
+                                        </apex:repeat>
+
+                                        <div class="row">
+                                            &nbsp;
+                                        </div>
+
+                                        <apex:outputPanel rendered="{!project.Program_Version__r.NY_Green_Bank_RFP__c}" layout="none">
+                                            <apex:outputPanel rendered="{!contentQuestionList.size > 0}">
+                                                <div class="row">
+                                                    <div class="form-group col-xs-6 subheading">
+                                                        <span>Proposal Contents</span>
+                                                    </div>
+                                                </div>
+                                            </apex:outputPanel>
+                                            <apex:variable value="{!1}" var="rowNum" />
+
+                                            <apex:repeat value="{!contentQuestionList}" var="contentQuestion">
+                                                <fieldset>
+                                                    <div class="row contentQuestionNumber{!rowNum}">
+                                                        <legend class="form-group col-xs-7 labelClass">
+                                                            <span> {!contentQuestion.Display_Label__c}
+                                                                <span class="required">&nbsp;*</span>
+                                                            </span>
+                                                        </legend>
+
+                                                        <apex:outputPanel rendered="{!contentQuestion.Question_Type__c == 'Yes/No'}">
+                                                            <div class="form-group col-xs-1">
+                                                                <div class="ns-touch inline">
+                                                                    <label for="radio3{!rowNum}">
+                                                                        <input type="radio" id="radio5{!rowNum}" name="content{!rowNum}" class="content{!rowNum}" value="true" onclick="showContentTextBox('{!rowNum}', 'Yes')"
+                                                                        />
+                                                                        <i class="icm"></i>
+                                                                        <span>Yes</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group col-xs-1">
+                                                                <div class="ns-touch inline">
+                                                                    <label for="radio4{!rowNum}">
+                                                                        <input type="radio" id="radio6{!rowNum}" name="content{!rowNum}" class="content{!rowNum}" value="false" onclick="showContentTextBox('{!rowNum}', 'No')"
+                                                                        />
+                                                                        <i class="icm"></i>
+                                                                        <span>No</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <apex:outputPanel rendered="{!contentQuestion.Help_Text__c != null}" styleClass="radio-help-text">
+                                                                <div class="col-xs-0">
+                                                                    <span class="icon-help" data-toggle="popover" data-placement="left" data-trigger="hover" data-content="{!contentQuestion.Help_Text__c}">
+                                                                    </span>
+                                                                </div>
+                                                            </apex:outputPanel>
+
+                                                            <div class="checklistReason contentReason{!rowNum}">
+                                                                <div class="form-group col-xs-7">
+                                                                </div>
+                                                                <div class="form-group col-xs-4">
+                                                                    <div style="display:none;">
+                                                                        <label for="{!$Component.description4}">Description4</label>
+                                                                    </div>
+                                                                    <!-- Accessibility Issues -->
+                                                                    <apex:inputTextArea styleClass="form-control contentBox{!rowNum}" id="description4" value="{!contentQuestion.Description__c}"
+                                                                        html-maxlength="32768" />
+                                                                </div>
+                                                            </div>
+                                                        </apex:outputPanel>
+
+                                                        <apex:outputPanel rendered="{!contentQuestion.Question_Type__c == 'Input Text'}">
+                                                            <div class="form-group col-xs-4">
+                                                                <div style="display:none;">
+                                                                    <label for="{!$Component.description5}">Description5</label>
+                                                                </div>
+                                                                <!-- Accessibility Issues -->
+                                                                <apex:inputText styleClass="form-control contentInput{!rowNum}" id="description5" value="{!contentQuestion.Description__c}"
+                                                                    maxlength="255" />
+                                                            </div>
+                                                            <apex:outputPanel rendered="{!contentQuestion.Help_Text__c != null}" styleClass="radio-help-text">
+                                                                <div class="col-xs-0">
+                                                                    <span class="icon-help" data-toggle="popover" data-placement="left" data-trigger="hover" data-content="{!contentQuestion.Help_Text__c}">
+                                                                    </span>
+                                                                </div>
+                                                            </apex:outputPanel>
+                                                        </apex:outputPanel>
+
+                                                        <apex:outputPanel rendered="{!contentQuestion.Question_Type__c == 'Date'}">
+                                                            <div class="form-group col-xs-4">
+                                                                <div style="display:none;">
+                                                                    <label for="{!$Component.datePick2}">Date2</label>
+                                                                </div>
+                                                                <!-- Accessibility Issues -->
+                                                                <apex:inputField styleClass="form-control contentDate{!rowNum} datepicker date-input" id="datePick2" value="{!contentQuestion.Date_Value__c}"
+                                                                />
+                                                            </div>
+                                                            <apex:outputPanel rendered="{!contentQuestion.Help_Text__c != null}" styleClass="radio-help-text">
+                                                                <div class="col-xs-0">
+                                                                    <span class="icon-help" data-toggle="popover" data-placement="left" data-trigger="hover" data-content="{!contentQuestion.Help_Text__c}">
+                                                                    </span>
+                                                                </div>
+                                                            </apex:outputPanel>
+                                                        </apex:outputPanel>
+
+                                                    </div>
+                                                </fieldset>
+                                                <apex:variable var="rowNum" value="{!rowNum + 1}" />
+                                            </apex:repeat>
+                                        </apex:outputPanel>
+
+
+                                        <apex:outputPanel rendered="{!disclosureQuestionList.size > 0}">
+                                            <div class="row">
+                                                <div class="form-group col-xs-6 subheading">
+                                                    <span>Non-Profit Private Participation Worksheet</span>
+                                                </div>
+                                            </div>
+                                        </apex:outputPanel>
+
+                                        <!--<apex:variable value="{!1}" var="rowNum" />
+                                        <apex:repeat value="{!disclosureQuestionList}" var="disclosureQuestion">
+                                            <fieldset>
+                                                <div class="row disclosureQuestionNumber{!rowNum}">
+                                                    <legend class="form-group col-xs-7 labelClass">
+                                                        <span> {!disclosureQuestion.Display_Label__c}
+                                                            <span class="required">&nbsp;*</span>
+                                                        </span>
+                                                    </legend>
+
+                                                    <apex:outputPanel rendered="{!disclosureQuestion.Question_Type__c == 'Yes/No'}">
+                                                        <div class="form-group col-xs-1">
+                                                            <div class="ns-touch inline">
+                                                                <label for="radio3{!rowNum}">
+                                                                    <input type="radio" id="radio3{!rowNum}" name="disclosure{!rowNum}" class="disclosure{!rowNum}" value="true" onclick="showDisclosureTextBox('{!rowNum}', 'Yes')"
+                                                                    />
+                                                                    <i class="icm"></i>
+                                                                    <span>Yes</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group col-xs-1">
+                                                            <div class="ns-touch inline">
+                                                                <label for="radio4{!rowNum}">
+                                                                    <input type="radio" id="radio4{!rowNum}" name="disclosure{!rowNum}" class="disclosure{!rowNum}" value="false" onclick="showDisclosureTextBox('{!rowNum}', 'No')"
+                                                                    />
+                                                                    <i class="icm"></i>
+                                                                    <span>No</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <apex:outputPanel rendered="{!disclosureQuestion.Help_Text__c != null}" styleClass="radio-help-text">
+                                                            <div class="col-xs-0">
+                                                                <span class="icon-help" data-toggle="popover" data-placement="left" data-trigger="hover" data-content="{!disclosureQuestion.Help_Text__c}">
+                                                                </span>
+                                                            </div>
+                                                        </apex:outputPanel>
+
+                                                        <div class="checklistReason disclosureReason{!rowNum}">
+                                                            <div class="form-group col-xs-7">
+                                                            </div>
+                                                            <div class="form-group col-xs-4">
+                                                                <div style="display:none;">
+                                                                    <label for="{!$Component.Description}">Description</label>
+                                                                </div> -->
+                                                               
+                                                              <!--  <apex:inputTextArea styleClass="form-control disclosureBox{!rowNum}" id="Description" value="{!disclosureQuestion.Description__c}"
+                                                                    html-maxlength="32768" />
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputPanel>
+
+                                                    <apex:outputPanel rendered="{!disclosureQuestion.Question_Type__c == 'Input Text'}">
+                                                        <div class="form-group col-xs-4">
+                                                            <div style="display:none;">
+                                                                <label for="{!$Component.Description1}">Description1</label>
+                                                            </div>
+                                                             Accessibility Issues
+                                                            <apex:inputText styleClass="form-control disclosure{!rowNum}" id="Description1" value="{!disclosureQuestion.Description__c}"
+                                                                maxlength="255" />
+                                                        </div>
+                                                        <apex:outputPanel rendered="{!disclosureQuestion.Help_Text__c != null}" styleClass="radio-help-text">
+                                                            <div class="col-xs-0">
+                                                                <span class="icon-help" data-toggle="popover" data-placement="left" data-trigger="hover" data-content="{!disclosureQuestion.Help_Text__c}">
+                                                                </span>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                    </apex:outputPanel>
+
+                                                    <apex:outputPanel rendered="{!disclosureQuestion.Question_Type__c == 'Date'}">
+                                                        <div class="form-group col-xs-4">
+                                                            <div style="display:none;">
+                                                                <label for="{!$Component.datePick}">Date</label>
+                                                            </div>
+                                                            Accessibility Issues 
+                                                            <apex:inputField styleClass="form-control disclosure{!rowNum} datepicker date-input" id="datePick" value="{!disclosureQuestion.Date_Value__c}"
+                                                            />
+                                                        </div>
+                                                        <apex:outputPanel rendered="{!disclosureQuestion.Help_Text__c != null}" styleClass="radio-help-text">
+                                                            <div class="col-xs-0">
+                                                                <span class="icon-help" data-toggle="popover" data-placement="left" data-trigger="hover" data-content="{!disclosureQuestion.Help_Text__c}">
+                                                                </span>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                    </apex:outputPanel>
+
+                                                </div>
+                                            </fieldset>
+                                            <apex:variable var="rowNum" value="{!rowNum + 1}" />
+                                        </apex:repeat> -->
+                                        <div class="panel-body">
+                                        <table style="width:100%">
+                                          <tr class = "headerRow" >
+                                            <th colspan = "8" >Title I, Part A: Private Schools Serving Eligible Children Residing in District</th>
+                                          </tr>
+                                           <tr>
+                                            <td style = "word-wrap: break-word; ">List private schools located within or outside district boundaries that have enrolled students who reside in a Title I-served school attendance area</td>
+                                            <td style = "word-wrap: break-word; ">Will this Private School Participate in Title I? [Yes or No]</td>
+                                            <td style = "word-wrap: break-word; ">Grades Served</td>
+                                            <td>Number of children who reside in Title I-served attendance area</td>
+                                            <td>Number of children (from column B) who are low-income using methodology described below</td>
+                                            <td>Estimated number of children (from Column B) who will participate in the Title I Program</td>
+                                            <td>Amount Per Low Income Student based on Title I Allocation</td>
+                                            <td>Allocation Per School for Services.</td>
+                                          </tr>
+                                         <tr>
+                                            <td><input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td><apex:selectList size="1">
+                                              <apex:selectOptions value="{!dynamiclist}"></apex:selectOptions>
+                                          </apex:selectList></td>
+                                            <td><input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td><input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td><input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td><input  class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td><input  class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td>$<input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>                                           
+                                          </tr>
+                                         <tr>
+                                            <td><input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td><apex:selectList size="1">
+                                              <apex:selectOptions value="{!dynamiclist}"></apex:selectOptions>
+                                          </apex:selectList></td>
+                                            <td><input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td><input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td><input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td><input  class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td><input  class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td>$<input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>                                           
+                                          </tr>
+                                          <tr>
+                                            <td><input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td><apex:selectList size="1">
+                                              <apex:selectOptions value="{!dynamiclist}"></apex:selectOptions>
+                                          </apex:selectList></td>
+                                            <td><input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td><input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td><input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td><input  class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td><input  class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td>$<input class = "textBox"  id="theTextInput" type="text" name="theTextInput" /></td>                                           
+                                          </tr>
+                                          <tr>
+                                            <td><input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td><apex:selectList size="1">
+                                              <apex:selectOptions value="{!dynamiclist}"></apex:selectOptions>
+                                          </apex:selectList></td>
+                                            <td><input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td><input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td><input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td><input  class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td><input  class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td>$<input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>                                           
+                                          </tr><tr>
+                                            <td><input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td><apex:selectList size="1">
+                                              <apex:selectOptions value="{!dynamiclist}"></apex:selectOptions>
+                                          </apex:selectList></td>
+                                            <td><input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td><input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td><input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td><input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td><input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td>$<input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>                                           
+                                          </tr>
+                                          <tr>
+                                            <td><button  class="slds-button slds-button_brand"  style = "width : 100px; background-color: #4d83c3" id="upload-button" >Add a Row</button></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td><input class = "textBox" id="theTextInput" type="text" name="theTextInput" /></td>
+                                            <td>$0</td>                                         
+                                          </tr>
+                                        </table>
+                                        </div>
+                                    </apex:outputPanel>
+                                </div>
+                            </div>
+                            
+
+                            <apex:actionFunction name="saveProposalInfo" action="{!saveProposalInfo}" rerender="scriptPanel, frm" oncomplete="showSuccessMsg(); showMessage(); rerenderHover(); scrollToTop(); syncHTMLCharFixWithDesc();"
+                                status="status">
+                                <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                                <apex:param value="" name="isNextClicked" assignTo="{!isNextClicked}" />
+                                <apex:param value="" name="checklistResponseList" assignTo="{!checklistResponseList}" />
+                                <apex:param value="" name="disclosureResponseList" assignTo="{!disclosureResponseList}" />
+                                <apex:param value="" name="contentResponseList" assignTo="{!contentResponseList}" />
+
+                            </apex:actionFunction>
+
+                            <apex:actionFunction name="previous" action="{!previous}" rerender="application" immediate="true" status="status">
+                                <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                            </apex:actionFunction>
+
+                            <apex:actionFunction name="next" action="{!next}" rerender="application" status="status">
+                                <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                            </apex:actionFunction>
+
+                        </apex:form>
+                    </div>
+
+                    <footer>
+                        <div class="content flex controls sm">
+                            <div class="left">
+                                <a href="javascript:void(0)" onclick="previous('{!$CurrentPage.Name}')" class="btn-bs btn-lg btn-blank">Previous</a>
+                            </div>
+                            <div class="right">
+                                <apex:outputPanel rendered="{!((!isDueDatePassed && !isRollingSolicitationLockDown) || isExceptionalAccessProvided)}">
+                                    <a href="javascript:void(0);" onclick="StartSavingOfProposalInformation('{!$CurrentPage.Name}', false)" class="btn-bs btn-lg btn-default"
+                                        status="status"> Save </a>
+                                </apex:outputPanel>
+                                <a href="javascript:void(0)" onclick="StartSavingOfProposalInformation('{!$CurrentPage.Name}', true)" class="btn-bs btn-lg btn-primary continueBtn"
+                                    status="status">Continue</a>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </apex:define>
+    </apex:composition>
+
+    <c:PROPOSAL_CORE_Due_Date_Passed />
+
+    <apex:outputPanel id="scriptPanel">
+        <script>
+
+            var checklistSequenceToResponseMap = JSON.parse('{!checklistSequenceToResponseMapJSON}');
+            var disclosureSequenceToResponseMap = JSON.parse('{!disclosureSequenceToResponseMapJSON}');
+            var contentSequenceToResponseMap = JSON.parse('{!contentSequenceToResponseMapJSON}');
+            var checklistResponseMap = JSON.parse('{!checklistResponseList}');
+            var disclosureResponseMap = JSON.parse('{!disclosureResponseList}');
+            var contentResponseMap = JSON.parse('{!contentResponseList}');
+            console.log(disclosureSequenceToResponseMap);
+
+            var totalChecklistSequence = 0;
+            for (var key in checklistSequenceToResponseMap) {
+                totalChecklistSequence++;
+            }
+
+            var totalDisclosureSequence = 0;
+            for (var key in disclosureSequenceToResponseMap) {
+                totalDisclosureSequence++;
+            }
+
+            var totalContentSequence = 0;
+            for (var key in contentSequenceToResponseMap) {
+                totalContentSequence++;
+            }
+
+            function syncHTMLCharFixWithDesc() {
+                try {
+                    $('.hiddenDivForProjectDescHTML').html($('.projectDesc').val());
+                    $('.projectDesc').val($('.hiddenDivForProjectDescHTML').text());
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+
+            $(document).ready(function () {
+                jQuery("html").attr("lang", "en");
+                setRadioOptions();
+                $('.datepicker').datepicker();
+
+                syncHTMLCharFixWithDesc();
+            });
+
+
+
+            function setRadioOptions() {
+                for (var i = 1; i <= totalChecklistSequence; i++) {
+                    if (checklistResponseMap.hasOwnProperty(i) && checklistResponseMap[i] != null) {
+                        if (checklistResponseMap[i] == 'Yes') {
+                            $('#radio1' + i).prop("checked", true);
+                        } else if (checklistResponseMap[i] == 'No') {
+                            $('#radio2' + i).prop("checked", true);
+                        }
+                        showTextBox(i, checklistResponseMap[i]);
+                    }
+                }
+
+                for (var i = 1; i <= totalDisclosureSequence; i++) {
+                    if (disclosureResponseMap.hasOwnProperty(i)) {
+                        if (disclosureResponseMap[i] == 'Yes') {
+                            $('#radio3' + i).prop("checked", true);
+                        } else if (disclosureResponseMap[i] == 'No') {
+                            $('#radio4' + i).prop("checked", true);
+                        }
+                        showDisclosureTextBox(i, disclosureResponseMap[i]);
+                    }
+                }
+
+                for (var i = 1; i <= totalContentSequence; i++) {
+                    if (contentResponseMap.hasOwnProperty(i)) {
+                        if (contentResponseMap[i] == 'Yes') {
+                            $('#radio5' + i).prop("checked", true);
+                        } else if (contentResponseMap[i] == 'No') {
+                            $('#radio6' + i).prop("checked", true);
+                        }
+                        showContentTextBox(i, contentResponseMap[i]);
+                    }
+                }
+            }
+
+            function showTextBox(sequenceNumber, responseSelected) {
+                if (checklistSequenceToResponseMap.hasOwnProperty(sequenceNumber) && checklistSequenceToResponseMap[sequenceNumber] == responseSelected) {
+                    $('.reason' + sequenceNumber).show();
+                } else {
+                    $('.reason' + sequenceNumber).hide();
+                }
+            }
+
+            function showContentTextBox(sequenceNumber, responseSelected) {
+                if (contentSequenceToResponseMap.hasOwnProperty(sequenceNumber) && contentSequenceToResponseMap[sequenceNumber] == responseSelected) {
+                    $('.contentReason' + sequenceNumber).show();
+                } else {
+                    $('.contentReason' + sequenceNumber).hide();
+                }
+            }
+
+            function showDisclosureTextBox(sequenceNumber, responseSelected) {
+                if (disclosureSequenceToResponseMap.hasOwnProperty(sequenceNumber) && disclosureSequenceToResponseMap[sequenceNumber] == responseSelected) {
+                    $('.disclosureReason' + sequenceNumber).show();
+                } else {
+                    $('.disclosureReason' + sequenceNumber).hide();
+                }
+
+                if (sequenceNumber == '1') {
+                    if (responseSelected == 'Yes') {
+                        $('.disclosureQuestionNumber2').show();
+                        $('.disclosureQuestionNumber3').show();
+                        $('.disclosureQuestionNumber4').show();
+                        $('.disclosureQuestionNumber5').show();
+                    } else {
+                        $('#radio32').prop("checked", false);
+                        $('#radio42').prop("checked", false);
+                        $('.disclosureQuestionNumber2').hide();
+                        $('#radio33').prop("checked", false);
+                        $('#radio43').prop("checked", false);
+                        $('.disclosureQuestionNumber3').hide();
+
+                        $('.disclosure4').val(null);
+                        $('.disclosureQuestionNumber4').hide();
+                        $('.disclosure5').val(null);
+                        $('.disclosureQuestionNumber5').hide();
+                    }
+                }
+
+
+                if (sequenceNumber == '1' || sequenceNumber == '6') {
+                    var question1Res = getResponseFromCheckbox('.disclosure1');
+                    var question4Res = getResponseFromCheckbox('.disclosure6');
+                    if (question1Res == 'No' && question4Res == 'Yes') {
+                        $('.disclosureQuestionNumber7').show();
+                        $('.disclosureQuestionNumber8').show();
+                    } else {
+                        $('.disclosure7').val(null);
+                        $('.disclosureQuestionNumber7').hide();
+
+                        $('.disclosure8').val(null);
+                        $('.disclosureQuestionNumber8').hide();
+                    }
+                }
+            }
+
+
+            function StartSavingOfProposalInformation(currentPageName, isNextClicked) {
+                $('#successMessage').hide();
+                if (isNextClicked && !validationCheck()) {
+                    scrollToTop();
+                    return;
+                }
+
+                var checklistResponseList = createChecklistQuestionResponseList();
+                var disclosureResponseList = createDisclosureQuestionResponseList();
+                var contentResponseList = createContentQuestionResponseList();
+                console.log(disclosureResponseList);
+
+                checklistResponseList = JSON.stringify(checklistResponseList);
+                disclosureResponseList = JSON.stringify(disclosureResponseList);
+                contentResponseList = JSON.stringify(contentResponseList);
+
+                saveProposalInfo(currentPageName, isNextClicked, checklistResponseList, disclosureResponseList, contentResponseList);
+            }
+
+            function scrollToTop() {
+                $("html, body").animate({
+                    scrollTop: 0
+                }, "slow");
+            }
+
+            function getResponseFromCheckbox(ele) {
+                var exp;
+                var response;
+                if ($(ele).val()) {
+                    exp = $(ele + ':checked').val();
+                    if (exp == 'true') {
+                        response = 'Yes';
+                    } else if (exp == 'false') {
+                        response = 'No';
+                    }
+                }
+                return response;
+            }
+
+            function createChecklistQuestionResponseList() {
+                var responseList = {};
+                for (var i = 1; i <= totalChecklistSequence; i++) {
+                    responseList[i] = getResponseFromCheckbox('.exp' + i);
+                }
+                return responseList;
+            }
+
+            function createDisclosureQuestionResponseList() {
+                var responseList = {};
+                for (var i = 1; i <= totalChecklistSequence; i++) {
+                    responseList[i] = getResponseFromCheckbox('.disclosure' + i);
+                }
+                return responseList;
+            }
+
+            function createContentQuestionResponseList() {
+                var responseList = {};
+                for (var i = 1; i <= totalChecklistSequence; i++) {
+                    responseList[i] = getResponseFromCheckbox('.content' + i);
+                }
+                return responseList;
+            }
+
+            var ONE_TO_TWENTY = [
+                "one", "two", "three", "four", "five",
+                "six", "seven", "eight", "nine", "ten",
+                "eleven", "twelve", "thirteen", "fourteen", "fifteen",
+                "sixteen", "seventeen", "eighteen", "nineteen", "twenty"
+            ];
+
+            function convertNumberIntoWord(number) {
+                var numberInWord = number;
+                var number = parseInt(number);
+                if (ONE_TO_TWENTY.length > number) {
+                    numberInWord = ONE_TO_TWENTY[number - 1];
+                }
+                return numberInWord;
+            }
+
+            function validationCheck() {
+                $('#validationErrorMessage1').hide();
+                if ($('.projectTitle').val() == undefined || $('.projectTitle').val() == '') {
+                    if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'false') {
+                        $('#validationErrorMessage1').html('<strong>Error! </strong>You must enter Project Title.');
+                    } else {
+                        $('#validationErrorMessage1').html('Enter a Proposal Title.');
+                    }
+                    $('#validationErrorMessage1').show();
+                    return false;
+                } else if ($('.projectTitle').val().toLowerCase().trim() == 'tbd') {
+                    if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'false') {
+                        $('#validationErrorMessage1').html('<strong>Error! </strong>Please input a valid Project Title.');
+                    } else {
+                        $('#validationErrorMessage1').html('Enter a valid Proposal Title.');
+                    }
+
+                    $('#validationErrorMessage1').show();
+                    return false;
+                }
+
+                if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'false' && $('.category').val() == undefined || $('.category').val() == '') {
+                    $('#validationErrorMessage1').html('<strong>Error! </strong>You must enter Proposed Proposal Category.');
+                    $('#validationErrorMessage1').show();
+                    return false;
+                }
+                if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'false' && $('.companyInfo').val() == undefined || $('.companyInfo').val() == '') {
+                    $('#validationErrorMessage1').html('<strong>Error! </strong>You must enter your Company Information.');
+                    $('#validationErrorMessage1').show();
+                    return false;
+                }
+                if ($('.projectDesc').val() == undefined || $('.projectDesc').val() == '') {
+                    if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'false') {
+                        $('#validationErrorMessage1').html('<strong>Error! </strong>You must enter Description.');
+                    } else {
+                        $('#validationErrorMessage1').html('Enter a Proposal Description.');
+                    }
+                    $('#validationErrorMessage1').show();
+                    return false;
+                }
+                if ('{!project.Program_Version__r.End_User_Types__c}' == 'true' && ($('.endUserType').val() == undefined || $('.endUserType').val() == '')) {
+                    $('#validationErrorMessage1').html('Select at least one End-User type for this proposal.');
+                    $('#validationErrorMessage1').show();
+                    return false;
+                }
+                if ('{!project.Program_Version__r.Regions__c}' == 'true' && ($('.regions').val() == undefined || $('.regions').val() == '')) {
+                    $('#validationErrorMessage1').html('Select at least one region for this proposal. For a map of New York State\'s regions, click on the link to NY Green Bank\'s RFP resources at the top of this page.');
+                    $('#validationErrorMessage1').show();
+                    return false;
+                }
+                if ('{!project.Program_Version__r.Energy_System_Classification__c}' == 'true' && ($('.enegrySysAlssification').val() == undefined || $('.enegrySysAlssification').val() == '')) {
+                    $('#validationErrorMessage1').html('Select at least one Energy System Classification for this proposal.');
+                    $('#validationErrorMessage1').show();
+                    return false;
+                }
+                if ('{!project.Program_Version__r.Primary_Supporting_Technologies__c}' == 'true' && ($('.primarySupportingTech').val() == undefined || $('.primarySupportingTech').val() == '')) {
+                    $('#validationErrorMessage1').html('Select at least one Primary Supporting Technology for this proposal.');
+                    $('#validationErrorMessage1').show();
+                    return false;
+                }
+                if ('{!project.Program_Version__r.Size_of_Project_s__c}' == 'true' && ($('.totalSystemSize').val() == undefined || $('.totalSystemSize').val() == '')) {
+                    $('#validationErrorMessage1').html('Enter a Total System Size (kW).');
+                    $('#validationErrorMessage1').show();
+                    return false;
+                }
+                if ('{!project.Program_Version__r.Panel_Manufacturer__c}' == 'true' && ($('.panelManufacturer').val() == undefined || $('.panelManufacturer').val() == '')) {
+                    $('#validationErrorMessage1').html('Enter a Panel Manufacturer.');
+                    $('#validationErrorMessage1').show();
+                    return false;
+                }
+                if ('{!project.Program_Version__r.Inverter_Manufacturer__c}' == 'true' && ($('.inverterManufacturer').val() == undefined || $('.inverterManufacturer').val() == '')) {
+                    $('#validationErrorMessage1').html('Enter a Inverter Manufacturer.');
+                    $('#validationErrorMessage1').show();
+                    return false;
+                }
+
+
+                if ('{!project.Concept_Paper__c}' != 'true') {
+                    for (var i = 1; i <= totalChecklistSequence; i++) {
+                        if ($('.exp' + i).length > 0 && $('.exp' + i + ':checked').length == 0) {
+                            if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'true') {
+                                $('#validationErrorMessage1').html('Answer all Checklist Questions.');
+                            } else {
+                                $('#validationErrorMessage1').html('<strong>Error! </strong>You must answer all checklist questions. If yes, you must identify and label on each applicable page "proprietary." Refer to the Proprietary Information section in the solicitation document.');
+                            }
+                            $('#validationErrorMessage1').show();
+                            return false;
+                        }
+
+                        if ($('.explBox' + i).is(':visible') && ($('.explBox' + i).val() == undefined || $('.explBox' + i).val().trim() == '')) {
+                            if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'true') {
+                                $('#validationErrorMessage1').html('You must provide an explanation for Checklist Question number ' + convertNumberIntoWord(i) + '.');
+                            } else {
+                                $('#validationErrorMessage1').html('<strong>Error! </strong>You must give Explanation of number - ' + i + ' checklist question.');
+                            }
+                            $('#validationErrorMessage1').show();
+                            return false;
+                        }
+
+                        if ($('.checklistInput' + i).is(':visible') && ($('.checklistInput' + i).val() == undefined || $('.checklistInput' + i).val().trim() == '')) {
+                            if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'true') {
+                                $('#validationErrorMessage1').html('Answer all Checklist Questions.');
+                            } else {
+                                $('#validationErrorMessage1').html('<strong>Error! </strong>You must answer all checklist questions. If yes, you must identify and label on each applicable page "proprietary." Refer to the Proprietary Information section in the solicitation document.');
+                            }
+                            $('#validationErrorMessage1').show();
+                            return false;
+                        }
+
+                        if ($('.checklistDate' + i).is(':visible') && ($('.checklistDate' + i).val() == undefined || $('.checklistDate' + i).val().trim() == '')) {
+                            if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'true') {
+                                $('#validationErrorMessage1').html('Answer all Checklist Questions.');
+                            } else {
+                                $('#validationErrorMessage1').html('<strong>Error! </strong>You must answer all checklist questions. If yes, you must identify and label on each applicable page "proprietary." Refer to the Proprietary Information section in the solicitation document.');
+                            }
+                            $('#validationErrorMessage1').show();
+                            return false;
+                        }
+                    }
+
+                    for (var i = 1; i <= totalDisclosureSequence; i++) {
+                        console.log($('.disclosure' + i).is(':visible') + '  ' + i);
+                        if ($('.disclosure' + i).is(':visible') && disclosureSequenceToResponseMap.hasOwnProperty(i) && (disclosureSequenceToResponseMap[i] == 'Yes' || disclosureSequenceToResponseMap[i] == 'No')) {
+                            if ($('.disclosure' + i + ':checked').length == 0) {
+                                $('#validationErrorMessage1').html('<strong>Error! </strong>You must answer all disclosure related questions.');
+                                $('#validationErrorMessage1').show();
+                                return false;
+                            }
+                        } else if ($('.disclosure' + i).is(':visible') && disclosureSequenceToResponseMap.hasOwnProperty(i)) {
+                            if ($('.disclosure' + i).val() == undefined || $('.disclosure' + i).val().trim() == '') {
+                                $('#validationErrorMessage1').html('<strong>Error! </strong>You must answer all disclosure related questions.');
+                                $('#validationErrorMessage1').show();
+                                return false;
+                            }
+                        }
+
+                        if ($('.disclosureBox' + i).is(':visible') && ($('.disclosureBox' + i).val() == undefined || $('.disclosureBox' + i).val().trim() == '')) {
+                            $('#validationErrorMessage1').html('<strong>Error! </strong>You must give Explanation of number - ' + i + ' disclosure question.');
+                            $('#validationErrorMessage1').show();
+                            return false;
+                        }
+                    }
+
+
+                    for (var i = 1; i <= totalContentSequence; i++) {
+                        if ($('.content' + i).length > 0 && $('.content' + i + ':checked').length == 0) {
+                            if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'true') {
+                                $('#validationErrorMessage1').html('Answer all Proposal Contents questions.');
+                            } else {
+                                $('#validationErrorMessage1').html('<strong>Error! </strong>You must answer all content related questions. If yes, you must identify and label on each applicable page "proprietary." Refer to the Proprietary Information section in the solicitation document.');
+                            }
+                            $('#validationErrorMessage1').show();
+                            return false;
+                        }
+
+                        if ($('.contentBox' + i).is(':visible') && ($('.contentBox' + i).val() == undefined || $('.contentBox' + i).val().trim() == '')) {
+                            if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'true') {
+                                $('#validationErrorMessage1').html('You must provide an explanation for Content Question number ' + convertNumberIntoWord(i));
+                            } else {
+                                $('#validationErrorMessage1').html('<strong>Error! </strong>You must give Explanation of number - ' + i + ' content question.');
+                            }
+                            $('#validationErrorMessage1').show();
+                            return false;
+                        }
+
+                        if ($('.contentInput' + i).is(':visible') && ($('.contentInput' + i).val() == undefined || $('.contentInput' + i).val().trim() == '')) {
+                            if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'true') {
+                                $('#validationErrorMessage1').html('Answer all Proposal Contents questions.');
+                            } else {
+                                $('#validationErrorMessage1').html('<strong>Error! </strong>You must answer all content related questions. If yes, you must identify and label on each applicable page "proprietary." Refer to the Proprietary Information section in the solicitation document.');
+                            }
+                            $('#validationErrorMessage1').show();
+                            return false;
+                        }
+
+                        if ($('.contentDate' + i).is(':visible') && ($('.contentDate' + i).val() == undefined || $('.contentDate' + i).val().trim() == '')) {
+                            if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'true') {
+                                $('#validationErrorMessage1').html('Answer all Proposal Contents questions.');
+                            } else {
+                                $('#validationErrorMessage1').html('<strong>Error! </strong>You must answer all content related questions. If yes, you must identify and label on each applicable page "proprietary." Refer to the Proprietary Information section in the solicitation document.');
+                            }
+                            $('#validationErrorMessage1').show();
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+
+            function showMessage() {
+                if ('{!isDueDatePassed}' == 'true' && '{!isExceptionalAccessProvided}' == 'false') {
+                    $('#dueDatePassedModal').modal('show');
+                }
+                setRadioOptions();
+                $('.datepicker').datepicker();
+            }
+
+            function showSuccessMsg() {
+                if ('{!isDueDatePassed}' == 'false' || '{!isExceptionalAccessProvided}' == 'true') {
+                    if ('{!project.Concept_Paper__c}' == 'true') {
+                        $('#successMessage').html('<strong>Success!</strong> Concept Paper Information Saved.');
+                    } else {
+                        $('#successMessage').html('<strong>Success!</strong> Proposal Information Saved.');
+                    }
+                    $('#successMessage').show();
+                }
+            }
+
+            function rerenderHover() {
+                $(".icon-help").popover();
+            }
+
+            // Allowed only number in input field
+            function isNumberOnly(evt) {
+                var charCode = (evt.which) ? evt.which : evt.keyCode;
+                if (evt.shiftKey) {
+                    evt.preventDefault();
+                    return false;
+                }
+                if ((charCode > 47 && charCode < 58) || (charCode >= 96 && charCode <= 105) || charCode == 8 || charCode == 9 ||
+                    (charCode >= 37 && charCode <= 40) || charCode == 190 || charCode == 110) {
+                    return true;
+                } else {
+                    evt.preventDefault();
+                    return false;
+                }
+            }
+
+        </script>
+    </apex:outputPanel>
+    <c:Grants_Site_Footer />
+</apex:page>

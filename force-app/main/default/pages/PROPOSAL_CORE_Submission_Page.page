@@ -1,0 +1,314 @@
+<apex:page sidebar="false" controller="PROPOSAL_CORE_Submission_Controller" standardStylesheets="false">
+
+    <style>
+        .alert-container {
+            padding: 0px;
+        }
+
+        #validationErrorMessage1 {
+            display: none;
+        }
+
+        .justify-space-between {
+            justify-content: space-between;
+        }
+
+        .help-link {
+            font-size: 14px;
+            color: #1d49cc;
+            padding-top: 2%;
+            margin-left: 50px;
+        }
+
+        .slds-button_outline-brand {
+            border-color: #0d3cc8;
+            color: #0d3cc8;
+        }
+
+        .timeline {
+            border-left: 2px solid #dfe4f2;
+            border-bottom-right-radius: 4px;
+            border-top-right-radius: 4px;
+            margin-left: 12px;
+            letter-spacing: 0;
+            position: relative;
+            position: -webkit-sticky;
+            position: sticky;
+            top: 2rem;
+            line-height: 1.4em;
+            font-size: 14px;
+            padding: 0 25px;
+            list-style: none;
+            text-align: left;
+            counter-reset: li-counter;
+            margin: 3rem 2rem;
+        }
+
+        .timeline .event:after {
+            border: 2px solid #656566;
+            border: 5px solid #f7f7f7;
+            position: absolute;
+            display: block;
+            top: 0;
+            left: -43px;
+            background: #dfe4f2;
+            border-radius: 50%;
+            height: 21px;
+            width: 25px;
+            content: "";
+            top: 5px;
+            top: 10px;
+            text-align: center;
+            content: attr(steplabel);
+            counter-increment: li-counter;
+            color: black;
+            padding-top: 4px;
+        }
+
+        .timeline .event {
+            padding-bottom: 17.5px;
+            position: relative;
+            padding-top: 17.5px;
+            min-width: 200px;
+            cursor: pointer;
+        }
+
+        .timeline .event:after else {
+            border: 2px solid #0f43e0;
+        }
+
+        .timeline .event.completed {
+            color: #0070d2;
+        }
+
+        .timeline .event.completed:after {
+            background: #0070d2;
+            padding-top: 4px;
+            color: white;
+            content: '✓';
+            text-align: center;
+        }
+
+        .timeline .event.active {
+            color: #128ec3;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .timeline .event.active:after {
+            background-color: #479eeb;
+            color: white;
+        }
+
+        .timeline .event:first-of-type {
+            padding-top: 7.5px;
+        }
+
+        .timeline .event:first-of-type:after {
+            top: -2px;
+        }
+
+        .timeline .event:last-of-type {
+            padding-bottom: 0;
+            margin-bottom: 0;
+            border: none;
+        }
+
+        .timeline .event:last-of-type:after {
+            top: auto;
+            top: 10px;
+            bottom: 0;
+        }
+
+        footer {
+            background: #fff;
+            position: relative !important;
+        }
+
+        .card--new {
+            background: #fff;
+            padding: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24);
+            transition: all .3s cubic-bezier(.25, .8, .25, 1);
+            border: none;
+            border-radius: 0;
+            margin: 1rem 2rem;
+        }
+
+        .bodyDiv {
+            background: #F5F7FA !important;
+        }
+
+        .has-shadow {
+            width: 100%;
+            margin-bottom: 1rem;
+            padding: 2rem;
+            background-color: #fff;
+            box-shadow: 4px 1px 2px 1px rgba(0, 0, 0, .05);
+            text-align: left;
+        }
+    </style>
+
+    <apex:composition template="CORE_APPINTAKE_Template_Page">
+        <apex:define name="body">
+            <div class="has-shadow slds-p-vertical_medium slds-m-bottom_medium heading_header_registration">
+                <c:CORE_StepNav_Component pgName="{!$CurrentPage.Name}" />
+            </div>
+            <div class="container row">
+                <div class="col-md-2">
+                    <ol class="timeline">
+                        <li class="event completed" value="0" steplabel="0">Instructions</li>
+                        <li class="event completed" value="1" steplabel="1">Proposer Contact Information</li>
+                        <li class="event completed" value="2" steplabel="2">Private School Information</li>
+                        <li class="event completed" value="3" steplabel="3">Allocation and Flexing</li>
+                        <li class="event completed" value="4" steplabel="4">Proposal Documents</li>
+                        <li class="event completed" value="5" steplabel="5">Authorizd Signature and Certification</li>
+                        <li class="event active" value="6" steplabel="6">Proposal Submission</li>
+                    </ol>
+                </div>
+                <div class="col-md-10 card--new">
+                    <div class="page">
+                        <!-- <div class="sub-heading">Application Number:&nbsp;<apex:outputfield value="{!project.Application_Number__c}" /></div> -->
+                        <!-- <c:CORE_StepNav_Component pgName="{!$CurrentPage.Name}"/> -->
+                        <apex:form id="frm">
+                            <div class="application">
+                                <div class="content content-body">
+                                    <apex:outputPanel id="errorPanel">
+                                        <div class="alert-container">
+                                            <apex:outputPanel rendered="{!project.Status__c == 'Unsubmitted'}">
+                                                <div class="alert alert-info">
+                                                    <apex:outputPanel rendered="{!!project.Program_Version__r.NY_Green_Bank_RFP__c}">
+                                                        <apex:outputPanel rendered="{!project.Proposal__c}">
+                                                            {!$Label.Proposal_Proposal_Submit_Page_Help_Text}
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!project.Concept_Paper__c}">
+                                                            {!$Label.Proposal_Concept_Paper_Submit_Page_Help_Text}
+                                                        </apex:outputPanel>
+                                                    </apex:outputPanel>
+                                                    <!--   <apex:outputPanel rendered="{!project.Program_Version__r.NY_Green_Bank_RFP__c}">
+                                                {!$Label.Proposal_NYGB_Proposal_Submit_Page_Help_Text}
+                                          </apex:outputPanel> -->
+                                                </div>
+                                            </apex:outputPanel>
+                                            <apex:pageMessages id="pageErrors" />
+                                            <apex:outputPanel rendered="{!isSubmitButtonClicked}">
+                                                <div class="alert alert-success" id="successMessage">
+                                                    <apex:outputPanel rendered="{!!project.Program_Version__r.NY_Green_Bank_RFP__c}" layout="none">
+                                                        <strong>Success!</strong> {!If(Project.Concept_Paper__c, 'Concept paper',
+                                                        'Proposal')} has been submitted.
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!project.Program_Version__r.NY_Green_Bank_RFP__c}" layout="none">
+                                                        Proposal has been submitted. To see our other investment opportunities, please visit our website:
+                                                        <a
+                                                            href="https://greenbank.ny.gov/Working-with-Us/Propose-an-Investment"
+                                                            target="_new">https://greenbank.ny.gov/Working-with-Us/Propose-an-Investment</a>
+                                                    </apex:outputPanel>
+                                                </div>
+                                            </apex:outputPanel>
+                                            <div class="alert alert-danger" id="validationErrorMessage1"> </div>
+                                        </div>
+                                    </apex:outputPanel>
+                                    <div class="row">
+                                        &nbsp;
+                                    </div>
+                                    <apex:outputPanel rendered="{!!project.Program_Version__r.NY_Green_Bank_RFP__c}">
+                                        You are about to submit your {!If(Project.Concept_Paper__c, 'concept paper', 'proposal')} to the {!project.Program_Version__r.Name}.
+                                        {!If(Project.Concept_Paper__c, 'Concept papers', 'Proposals')} will only be received
+                                        up to
+                                        <b>{!deadLineDate}</b> at
+                                        <b>{!deadLineTime}</b>. No {!If(Project.Concept_Paper__c, 'Concept papers', 'Proposals')}
+                                        will be allowed to be submitted after this date and time.
+                                    </apex:outputPanel>
+                                    <apex:outputPanel styleclass="alert-container" layout="block" rendered="{!project.Program_Version__r.NY_Green_Bank_RFP__c}">
+                                        <!--  <div class="alert alert-info">
+                              <apex:outputText value="{!$Label.Proposal_NYGB_Support_Help_Text}" escape="false"/>
+                          </div> -->
+                                    </apex:outputPanel>
+                                </div>
+                            </div>
+
+                            <apex:actionFunction name="previous" action="{!previous}" rerender="frm" immediate="true" status="status">
+                                <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                            </apex:actionFunction>
+                            <apex:actionFunction name="submit" action="{!submit}" rerender="frm, scriptPanel, buttonPanel" oncomplete="showMessages()"
+                                status="status">
+                                <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                            </apex:actionFunction>
+                        </apex:form>
+                    </div>
+
+                    <footer>
+                        <div class="content flex controls sm">
+                            <a href="javascript:void(0)" onclick="previous('{!$CurrentPage.Name}')" class="btn-bs btn-lg btn-blank">Previous</a>
+                            <apex:outputPanel id="buttonPanel">
+                                <apex:outputPanel rendered="{!!isSubmitButtonClicked}">
+                                    <button onclick="submit('{!$CurrentPage.Name}')" class="btn-bs btn-lg btn-primary continueBtn">Submit</button>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!isSubmitButtonClicked}">
+                                    <button disabled="disabled" class="btn-bs btn-lg btn-primary continueBtn">Submit</button>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </apex:define>
+    </apex:composition>
+
+    <c:PROPOSAL_CORE_Due_Date_Passed />
+    <apex:outputPanel id="scriptPanel">
+        <script>
+            $(document).ready(function () {
+                jQuery("html").attr("lang", "en");
+
+            });
+
+            function showMessages() {
+                $('#validationErrorMessage1').hide();
+                $('#successMessage').hide();
+                if ('{!isDueDatePassed}' == 'false' || '{!isExceptionalAccessProvided}' == 'true') {
+                    if ('{!isSubmittedAgain}' == 'false') {
+                        if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'true') {
+                            $('#successMessage').html('Proposal has been submitted. To see our other investment opportunities, please visit our website: <a href="https://greenbank.ny.gov/Working-with-Us/Propose-an-Investment" target="_new">https://greenbank.ny.gov/Working-with-Us/Propose-an-Investment</a>');
+                        } else if ('{!project.Concept_Paper__c}' == 'true') {
+                            $('#successMessage').html('<strong>Success!</strong> Concept paper has been submitted.');
+                        } else {
+                            $('#successMessage').html('<strong>Success!</strong> Proposal has been submitted.');
+                        }
+                    } else {
+                        if ('{!project.Concept_Paper__c}' == 'true') {
+                            $('#successMessage').html('<strong>Success!</strong> The changes you have made to your concept paper have been received by NYSERDA.');
+                        } else {
+                            $('#successMessage').html('<strong>Success!</strong> The changes you have made to your proposal have been received by NYSERDA.');
+                        }
+                    }
+                    $('#successMessage').show();
+                    
+
+                } else {
+                    if ('{!isSubmittedAgain}' == 'false') {
+                        if ('{!project.Concept_Paper__c}' == 'true') {
+                            $('#validationErrorMessage1').html('<strong>Error!</strong> The deadline has passed and we are no longer accepting concept papers for this solicitation.');
+                        } else {
+                            $('#validationErrorMessage1').html('<strong>Error!</strong> The deadline has passed and we are no longer accepting proposals for this solicitation.');
+                        }
+                    } else {
+                        if ('{!project.Concept_Paper__c}' == 'true') {
+                            $('#validationErrorMessage1').html('<strong>Error!</strong> The deadline for submissions has passed. Your changes have not been received by NYSERDA.');
+                        } else {
+                            $('#validationErrorMessage1').html('<strong>Error!</strong> The deadline for submissions has passed. Your changes have not been received by NYSERDA.');
+                        }
+                    }
+                    $('#validationErrorMessage1').show();
+                }
+
+                /*if('{!isDueDatePassed}' == 'true' && '{!isExceptionalAccessProvided}' == 'false') {
+                    $('#dueDatePassedModal').modal('show');
+                }*/
+                window.location.replace("https://desedemo-demo-lp.cs196.force.com/psr/s/");
+
+            }
+        </script>
+    </apex:outputPanel>
+    <c:Grants_Site_Footer />
+</apex:page>

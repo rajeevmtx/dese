@@ -1,0 +1,44 @@
+<!--
+ - Created by arunm on 22-03-2020.
+ -->
+
+<!-- NYSDOH Demand -->
+<template>
+    <div if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </div>
+    </div>
+    <section if:false={showSpinner} role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+             aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                {headingLabel} Bid
+            </header>
+            <div class="slds-modal__content " id="modal-content-id-1">
+                <div slot="body">
+                    <div class="padding-horizontal slds-m-around_small">
+                        <c-psr-help-text help-text={Portal_Add_New_Work_Order_Help_Text} ></c-psr-help-text>
+                    </div>
+                    <lightning-record-edit-form object-api-name={objectApiName} style="width: 100%;" onsubmit={handleFormSubmit} onsuccess={handleSuccess}>
+                        <div>
+                            <div class="slds-card__header slds-grid slds-wrap slds-gutters_direct-x-small">
+                                <div class="slds-form-element slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-large-size_12-of-12">
+                                    <lightning-input-field field-name="Amount__c" class="padding-horizontal">
+                                    </lightning-input-field>
+                                </div>
+                            </div>
+                            <footer class="slds-modal__footer">
+                                <lightning-button class="slds-m-top_small" label="Cancel" onclick={closeModal}></lightning-button>
+                                <lightning-button class="slds-m-top_small slds-p-left_small" variant="brand"
+                                                  type="submit" label="Submit Bid"></lightning-button>
+                            </footer>
+                        </div>
+                    </lightning-record-edit-form>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

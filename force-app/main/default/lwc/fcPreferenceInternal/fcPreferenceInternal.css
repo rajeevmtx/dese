@@ -1,0 +1,124 @@
+body {
+    background: #dfe9ff;
+    font-family: Lato, sans-serif;
+  }
+  
+  .container{
+    margin: 0 auto;
+      padding-left: 2rem;
+      padding-right: 2rem;
+      max-width: 1330px;
+  }
+  .nh_header-section--white{
+    
+    padding: 2rem;
+    background: #fff;
+    margin: -2rem;
+    margin-bottom: 0rem;
+    width: -webkit-fill-available;
+  }
+  .nh_header-section{
+    padding: 2rem;
+    background: #f7f9fd;
+  }
+  .nh_page-header{
+    color: rgb(51, 51, 51);
+    font-size: 38px;
+    font-weight: lighter;
+    height: 48px;
+    letter-spacing: -0.48px;
+  }
+  .nh_page-subheading{
+    color: rgb(51, 51, 51);
+    font-size: 20px;
+    font-weight: normal;
+    line-height: 23px;
+  }
+  .top_margin{
+    margin-top: 1rem !important;
+  }
+  .top_margin--large{
+    margin-top: 2rem !important;
+  }
+  
+  
+  .section-parts{
+    padding: 0 .5rem;
+    border-right: 1px solid #ddd;
+    min-height: 100px;
+    display: grid;
+    align-items: center;
+  }
+  .section-parts:last-child{
+    border-right: 0px;
+  }
+  
+  .user--image{
+    border-radius: 12px;
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+  }
+  .user--content{
+    padding: 0 0 0 1rem;
+  }
+  
+  .user--name{
+    color: rgb(14, 97, 185);
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: .5rem;
+  }
+  .user--address{
+    color: rgb(51, 51, 51);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 19px;
+  }
+  
+  .user-distance{
+    color: rgb(51, 51, 51);
+    font-style: italic;
+    font-weight: normal;
+    line-height: 21px;
+  }
+  .nh_grid-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    font-size: 16px;
+    font-weight: 600;
+    align-items: center;
+    min-height: 100px;
+  }
+  .nh_grid-container--two{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    font-size: 16px;
+    font-weight: 600;
+    align-items: center;
+    min-height: 100px;
+  }
+  .nh_grid-item {
+    padding: 1rem;
+  }
+  span.item-value {
+    display: block;
+    font-size: 14px;
+    font-weight: 400;
+    margin-top: .2rem;
+  }
+  .nh_custom-btn{
+    margin: .2rem 0rem;
+    justify-content: center;
+    min-width: 120px;
+    font-size: 16px;
+    font-weight: 400;
+  }
+  .nh_card{
+    padding: 1rem;
+    box-shadow: 0 0.5px 1.2px rgba(0, 0, 0, 0.011), 0 1.1px 2.8px rgba(0, 0, 0, 0.016), 0 2.1px 5.3px rgba(0, 0, 0, 0.02), 0 3.8px 9.4px rgba(0, 0, 0, 0.024), 0 7.1px 17.5px rgba(0, 0, 0, 0.029), 0 17px 42px rgba(0, 0, 0, 0.04);
+    margin-bottom: 1rem;
+  }
+.slds-modal__container{
+    max-width: 50%;
+}

@@ -1,0 +1,18 @@
+<template>
+    <div class=" instructions-section slds-box slds-m-bottom_medium">
+        <h3 class="instructions slds-m-bottom_medium">Instructions</h3>
+        <div class="instructions__data">Indicate for Title II, Part A and Title IV, Part A whether you would like
+            to flex funds from these programs to another Title program by placing an amount to be flexed in the
+            yellow boxes. Note that flexing is not required. Also, flexing from either Title I, Part A and Title
+            III, Part A into another program is <span if:true={readMore}>
+                Indicate for Title
+                II, Part A and Title IV, Part A whether you would like
+                to flex funds from these programs to another Title program by placing an amount to be flexed in the
+                yellow boxes. Note that flexing is not required.Title program by placing an amount to be flexed in the
+                yellow boxes. Note that flexing is not required.
+            </span>
+            <lightning-button variant="brand" label={clickedButtonLabel} title="READ MORE" onclick={handleClick}
+                class="readmore"></lightning-button>
+        </div>
+    </div>
+</template>

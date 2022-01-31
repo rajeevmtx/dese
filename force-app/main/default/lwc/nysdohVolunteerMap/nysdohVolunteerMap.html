@@ -1,0 +1,67 @@
+<!--
+ - Created by arunm on 22-03-2020.
+ -->
+
+<!-- NYSDOH Volunteer Map -->
+<template>
+    <div class="has-shadow" style="margin-bottom:0">
+        <div class="container">
+            <lightning-layout if:true={isLoaded} multiple-rows>
+                <lightning-layout-item size="4">
+                    <h1 class="app-title">Volunteer Locations</h1>
+                </lightning-layout-item>
+                <lightning-layout-item size="2">
+                    <lightning-combobox
+                            name="county"
+                            label="Select County"
+                            value={selectedCounty}
+                            placeholder="Select County"
+                            options={countyOptions}
+                            onchange={handleCountyChange} >
+                    </lightning-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item size="2" padding="horizontal-small">
+                    <lightning-combobox
+                            name="fieldOfService"
+                            label="Field of Service"
+                            value={selectedFieldService}
+                            placeholder="Field of Service"
+                            options={fieldServiceOptions}
+                            onchange={handleFieldServiceChange} >
+                    </lightning-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item size="2" padding="horizontal-small">
+                    <lightning-combobox
+                            name="status"
+                            label="Status in Medical Field"
+                            value={selectedStatus}
+                            placeholder="Status in Medical Field"
+                            options={statusOptions}
+                            onchange={handleStatusChange} >
+                    </lightning-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item size="2" padding="horizontal-small">
+                    <lightning-combobox
+                            name="speciality"
+                            label="Speciality"
+                            value={selectedSpeciality}
+                            placeholder="Speciality"
+                            options={specialityOptions}
+                            onchange={handleSpecialityChange} >
+                    </lightning-combobox>
+                </lightning-layout-item>
+        
+            </lightning-layout>
+        </div>
+    </div>
+    <div class="map">
+        <lightning-map
+            map-markers={filteredMarkers}
+            center={center}
+            zoom-level={zoomLevel}
+            list-view={listView}
+            markers-title={markersTitle}
+            show-footer={showFooter}>
+        </lightning-map>
+    </div>
+</template>

@@ -1,0 +1,89 @@
+<template>
+    <!-- <div class="page-header">
+        <h1 class="page-title">Incident Information</h1>
+    </div> -->
+
+    <div class="slds-form">
+        <div class="slds-form__row">
+            <div class="slds-form__item">
+                <lightning-combobox name="IncidentType" label="Incident Type" placeholder="Select"
+                    options={incidentTypeOptions} onchange={handleInput} style="width: 100%;">
+                </lightning-combobox>
+            </div>
+
+            <div class="slds-form__item">
+                <lightning-combobox name="Facility" label="  Select the institution reporting (if applicable):"
+                    placeholder="Select" options={institutionReportingFacilityOptions} onchange={handleInput}
+                    style="width: 100%;" required>
+                </lightning-combobox>
+            </div>
+        </div>
+
+        <div class="slds-form__row">
+            <div class="slds-form__item">
+                <lightning-input type="datetime" autocomplete="none" label="Date and Time of this Incident"
+                    onblur={handleInput} name="DateTimeIncident" style="width: 100%;" class="fullWidthDateTime">
+                </lightning-input>
+            </div>
+        </div>
+
+        <div class="slds-form__row">
+            <div class="slds-form__item">
+                <lightning-input type="text" autocomplete="none" label="Street" onblur={handleInput} name="Street"
+                    style="width: 100%;"></lightning-input>
+            </div>
+
+            <div class="slds-form__item">
+                <lightning-input type="text" autocomplete="none" label="City" onblur={handleInput} name="City"
+                    style="width: 100%;"></lightning-input>
+            </div>
+        </div>
+
+        <div class="slds-form__row">
+            <div class="slds-form__item">
+                <lightning-combobox name="County" label="County" placeholder="Select County" options={countyOptions}
+                    onchange={handleInput} style="width: 100%;" required></lightning-combobox>
+            </div>
+            <div class="slds-form__item">
+                <lightning-input type="text" autocomplete="none" label="Zip Code" onblur={handleInput} name="ZipCode"
+                    style="width: 100%;"></lightning-input>
+            </div>
+        </div>
+
+        <div class="slds-form__row">
+            <div class="slds-form__item">
+                <lightning-combobox name="IncidentOccurredAt" label="Incident Occurred At" placeholder="Select"
+                    options={incidentOccurredAtOptions} onchange={handleInput} style="width: 100%;" required>
+                </lightning-combobox>
+            </div>
+            <div class="slds-form__item">
+                <lightning-input type="text" autocomplete="none" label="Incident Other" onblur={handleInput}
+                    name="IncidentOther" style="width: 100%;">
+                </lightning-input>
+            </div>
+        </div>
+
+        <div class="slds-form__row">
+            <div class="slds-form__item">
+                <lightning-checkbox-group name="AbuseResultedIn" label="Abuse Resulted In"
+                    options={abuseResultedInOptions} onchange={handleInput} value={abuseResultedInSelected}>
+                </lightning-checkbox-group>
+            </div>
+        </div>
+
+        <!-- <div class="slds-form__row">
+            <div class="slds-form__item">
+                <lightning-checkbox-group name="AbusePerpetratedOthers" label="Abuse Perpetrated by Others"
+                    options={abusePerpetratedOthersOptions} value={abusePerpetratedOthersOptionsSelected}
+                    onchange={handleInput}></lightning-checkbox-group>
+            </div>
+        </div> -->
+
+        <div class="slds-form__row">
+            <div class="slds-form__item">
+                <lightning-checkbox-group name="PhysicalAbuse" label="Physical Abuse" options={physicalAbuseOptions}
+                    value={physicalAbuseOptionsSelected} onchange={handleInput}></lightning-checkbox-group>
+            </div>
+        </div>
+    </div>
+</template>

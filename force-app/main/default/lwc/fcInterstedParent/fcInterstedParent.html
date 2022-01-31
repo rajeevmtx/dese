@@ -1,0 +1,571 @@
+<template>
+    <template for:each={results} for:index="index" for:item="result">
+        <div class="nh_card" key={result.Id}>
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size_12-of-12">
+                    <div class="search-card">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_3-of-12 section-parts">
+                                <div class="slds-grid slds-wrap">
+                                    <img class="slds-col slds-size_4-of-12 user--image" src={result.imageURL} />
+                                    <div class="slds-col slds-size_8-of-12 user--content">
+                                        <div class="user--name">{result.Name}</div>
+                                        <div class="user--address">{result.address}</div>
+                                        <div class="user-distance">{result.userDistance} mi</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size_6-of-12 section-parts">
+                                <div class="nh_grid-container">
+                                    <div class="nh_grid-item">
+                                        Marrital status
+                                        <span class="item-value">{result.Marital_Status__c}</span>
+                                    </div>
+                                    <div class="nh_grid-item">
+                                        Employment
+                                        <span class="item-value">{result.Employment_Status__c}</span>
+                                    </div>
+                                    <div class="nh_grid-item">
+                                        Homeowner
+                                        <span class="item-value">{result.Homeowner_Status__c}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size_3-of-12 section-parts">
+                                <div class="nh_grid-container--two set-percent-style">
+                                    <div class="nh_grid-item">
+                                        Match Percentage
+                                        <span class="item-value">{result.MatchPercentage}%</span>
+                                    </div>
+                                    <div class="nh_grid-item set-grid">
+                                        <button class="slds-button slds-button_brand nh_custom-btn set-button-style"
+                                            data-record-id={index} onclick={showDetails}>Details</button>
+                                        <button class="slds-button slds-button_neutral nh_custom-btn set-button-style"
+                                            data-placement={index} onclick={showPlacements}>Potential Placement</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+    <div class="slds-p-around_medium" if:true={isOpenModal}>
+        <template if:true={isOpenModal}>
+            <div style="">
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                    aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_x-small">
+                    <div class="slds-modal__container">
+                        <header class="slds-modal__header">
+                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                title="Close" onclick={handleCloseModal}>
+                                <lightning-icon icon-name="utility:close" variant="inverse" alternative-text="Close"
+                                    size="medium">
+                                </lightning-icon>
+                                <span class="slds-assistive-text">Close</span>
+                            </button>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+                                Foster Parent Complaince
+                            </h2>
+                        </header>
+                        <div class="slds-modal__content" id="modal-content-id-1">
+                            <div class="padding-horizontal slds-m-around_small">
+                                <c-psr-help-text help-text={Portal_Add_New_Contact_Help_Text}></c-psr-help-text>
+                            </div>
+
+                            <div class="app-container slds-grid slds-gutters slds-wrap slds-p-bottom_xx-large">
+                                <!-- <div class="slds-form slds-col slds-size_1-of-1">
+                                    <div class="top_margin--large">
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_12-of-12">
+                                                <div class="search-card">
+                                                    <div class="slds-grid slds-wrap">
+                                                        <div class="slds-col slds-size_1-of-1 section-parts">
+                                                            <div class="slds-grid slds-wrap">
+                                                                <div class="slds-col slds-size_1-of-1 user--content">
+                                                                    <div class="user--name">{fosterParentDetails.Name}
+                                                                    </div>
+                                                                    <div class="user--address">
+                                                                        {fosterParentDetails.address}</div>
+                                                                    <div class="user-distance">12 mi</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <div class="slds-form slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+                                    <div class="nh_grid-item">
+                                        <div class="slds-grid slds-gutter slds-wrap">
+                                            <!-- <div
+                                                            class="slds-col slds-size_1-of-1 slds-p-top_small model-item-list">
+                                                            <span class="item-value item-value-right">Marrital
+                                                                status&nbsp;:</span>
+                                                            <span
+                                                                class="item-value item-value-left">{fosterParentDetails.Marital_Status__c}</span>
+                                                        </div>
+                                                        <div
+                                                            class="slds-col slds-size_1-of-1 slds-p-top_small model-item-list">
+                                                            <span
+                                                                class="item-value item-value-right">Employment&nbsp;:</span>
+                                                            <span
+                                                                class="item-value item-value-left">{fosterParentDetails.Employment_Status__c}</span>
+                                                        </div>
+                                                        <div
+                                                            class="slds-col slds-size_1-of-1 slds-p-top_small model-item-list">
+                                                            <span
+                                                                class="item-value item-value-right">Homeowner&nbsp;:</span>
+                                                            <span
+                                                                class="item-value item-value-left">{fosterParentDetails.Homeowner_Status__c}</span>
+                                                        </div>
+                                                        <div
+                                                            class="slds-col slds-size_1-of-1 slds-p-top_small model-item-list">
+                                                            <span class="item-value item-value-right">License
+                                                                Status&nbsp;:</span>
+                                                            <span class="item-value item-value-left">Licensed</span>
+                                                        </div> -->
+                                            <!-- <div class="slds-col slds-size_1-of-1 model-item-list">
+                                                <div class="slds-form-element set-child-grid">
+                                                    <label class="slds-form-element__label"
+                                                        for="checkbox-unique-id-79">Foster Parent Liability
+                                                        Insurance:</label>
+                                                    <div class="slds-form-element__control slds-p-top_xxx-small">
+                                                        <span class="slds-checkbox slds-checkbox_standalone ">
+                                                            
+                                                            <template if:true={fosterParentDetails.homeInspection}>
+                                                                <lightning-icon icon-name="action:approval" size="small"
+                                                                    alternative-text="Approved" title="Approved">
+                                                                </lightning-icon>
+                                                            </template>
+                                                            <template if:false={fosterParentDetails.homeInspection}>
+                                                                <lightning-icon icon-name="action:close" size="small"
+                                                                    alternative-text="Approved" title="Approved">
+                                                                </lightning-icon>
+                                                            </template>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 model-item-list">
+                                                <div class="slds-form-element set-child-grid">
+                                                    <label class="slds-form-element__label"
+                                                        for="checkbox-unique-id-7">21-hour course entitled
+                                                        FACES:</label>
+                                                    <div class="slds-form-element__control slds-p-top_xxx-small">
+                                                        <span class="slds-checkbox slds-checkbox_standalone">
+                                                            
+                                                            <template if:true={fosterParentDetails.backgroundCheck}>
+                                                                <lightning-icon icon-name="action:approval" size="small"
+                                                                    alternative-text="Approved" title="Approved">
+                                                                </lightning-icon>
+                                                            </template>
+                                                            <template if:false={fosterParentDetails.backgroundCheck}>
+                                                                <lightning-icon icon-name="action:close" size="small"
+                                                                    alternative-text="Approved" title="Approved">
+                                                                </lightning-icon>
+                                                            </template>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 model-item-list">
+                                                <div class="slds-form-element set-child-grid">
+                                                    <label class="slds-form-element__label"
+                                                        for="checkbox-unique-id-7">Criminal Records
+                                                        Check:</label>
+                                                    <div class="slds-form-element__control slds-p-top_xxx-small">
+                                                        <span class="slds-checkbox slds-checkbox_standalone">
+                                                            
+                                                            <template if:true={fosterParentDetails.financialStability}>
+                                                                <lightning-icon icon-name="action:approval" size="small"
+                                                                    alternative-text="Approved" title="Approved">
+                                                                </lightning-icon>
+                                                            </template>
+                                                            <template if:false={fosterParentDetails.financialStability}>
+                                                                <lightning-icon icon-name="action:close" size="small"
+                                                                    alternative-text="Approved" title="Approved">
+                                                                </lightning-icon>
+                                                            </template>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 model-item-list">
+                                                <div class="slds-form-element set-child-grid">
+                                                    <label class="slds-form-element__label"
+                                                        for="checkbox-unique-id-7">Central Registry
+                                                        Check:</label>
+                                                    <div class="slds-form-element__control slds-p-top_xxx-small">
+                                                        <span class="slds-checkbox slds-checkbox_standalone">
+                                                            
+                                                            <template if:true={fosterParentDetails.licensed}>
+                                                                <lightning-icon icon-name="action:approval" size="small"
+                                                                    alternative-text="Approved" title="Approved">
+                                                                </lightning-icon>
+                                                            </template>
+                                                            <template if:false={fosterParentDetails.licensed}>
+                                                                <lightning-icon icon-name="action:close" size="small"
+                                                                    alternative-text="Approved" title="Approved">
+                                                                </lightning-icon>
+                                                            </template>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 model-item-list">
+                                                <div class="slds-form-element set-child-grid">
+                                                    <label class="slds-form-element__label"
+                                                        for="checkbox-unique-id-7">Home Fire Inspection
+                                                        :</label>
+                                                    <div class="slds-form-element__control slds-p-top_xxx-small">
+                                                        <span class="slds-checkbox slds-checkbox_standalone">
+                                                            
+                                                            <lightning-icon icon-name="action:approval" size="small"
+                                                                alternative-text="Approved" title="Approved">
+                                                            </lightning-icon>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 model-item-list">
+                                                <div class="slds-form-element set-child-grid">
+                                                    <label class="slds-form-element__label"
+                                                        for="checkbox-unique-id-7">Home Health Inspection
+                                                        :</label>
+                                                    <div class="slds-form-element__control slds-p-top_xxx-small">
+                                                        <span class="slds-checkbox slds-checkbox_standalone">
+                                                            
+                                                            <lightning-icon icon-name="action:approval" size="small"
+                                                                alternative-text="Approved" title="Approved">
+                                                            </lightning-icon>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 model-item-list">
+                                                <div class="slds-form-element set-child-grid">
+                                                    <label class="slds-form-element__label"
+                                                        for="checkbox-unique-id-7">Home Health Inspection
+                                                        :</label>
+                                                    <div class="slds-form-element__control slds-p-top_xxx-small">
+                                                        <span class="slds-checkbox slds-checkbox_standalone">
+                                                            
+                                                            <lightning-icon icon-name="action:approval" size="small"
+                                                                alternative-text="Approved" title="Approved">
+                                                            </lightning-icon>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 model-item-list">
+                                                <div class="slds-form-element set-child-grid">
+                                                    <label class="slds-form-element__label"
+                                                        for="checkbox-unique-id-7">Medical Information Forms for each
+                                                        family member in your home
+                                                        :</label>
+                                                    <div class="slds-form-element__control slds-p-top_xxx-small">
+                                                        <span class="slds-checkbox slds-checkbox_standalone">
+                                                            
+                                                            <lightning-icon icon-name="action:approval" size="small"
+                                                                alternative-text="Approved" title="Approved">
+                                                            </lightning-icon>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+                                            <div class="slds-col slds-size_1-of-1 model-item-list">
+                                                <div class="slds-form-element set-child-grid">
+                                                    <label class="slds-form-element__label"
+                                                        for="checkbox-unique-id-79">Foster Parent Liability
+                                                        Insurance:</label>
+                                                    <div class="slds-form-element__control slds-p-top_xxx-small">
+                                                        <span class="slds-checkbox slds-checkbox_standalone ">
+                                                            <!-- <input type="checkbox" id="checkbox-unique-id-9"
+                                                                name="label" value="option" disabled
+                                                                checked={fosterParentDetails.homeInspection} />
+                                                            <span class="slds-checkbox_faux"></span> -->
+                                                            <template if:true={fosterParentDetails.homeInspection}>
+                                                                <lightning-icon icon-name="action:approval" size="small"
+                                                                    alternative-text="Approved" title="Approved">
+                                                                </lightning-icon>
+                                                            </template>
+                                                            <template if:false={fosterParentDetails.homeInspection}>
+                                                                <lightning-icon icon-name="action:close" size="small"
+                                                                    alternative-text="Approved" title="Approved">
+                                                                </lightning-icon>
+                                                            </template>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 model-item-list">
+                                                <div class="slds-form-element set-child-grid">
+                                                    <label class="slds-form-element__label"
+                                                        for="checkbox-unique-id-7">21-hour course entitled
+                                                        FACES:</label>
+                                                    <div class="slds-form-element__control slds-p-top_xxx-small">
+                                                        <span class="slds-checkbox slds-checkbox_standalone">
+                                                            <!-- <input type="checkbox" id="checkbox-unique-id-79"
+                                                                name="label" value="option" disabled
+                                                                checked={fosterParentDetails.backgroundCheck} />
+                                                            <span class="slds-checkbox_faux"></span> -->
+                                                            <template if:true={fosterParentDetails.backgroundCheck}>
+                                                                <lightning-icon icon-name="action:approval" size="small"
+                                                                    alternative-text="Approved" title="Approved">
+                                                                </lightning-icon>
+                                                            </template>
+                                                            <template if:false={fosterParentDetails.backgroundCheck}>
+                                                                <lightning-icon icon-name="action:close" size="small"
+                                                                    alternative-text="Approved" title="Approved">
+                                                                </lightning-icon>
+                                                            </template>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 model-item-list">
+                                                <div class="slds-form-element set-child-grid">
+                                                    <label class="slds-form-element__label"
+                                                        for="checkbox-unique-id-7">Criminal Records
+                                                        Check:</label>
+                                                    <div class="slds-form-element__control slds-p-top_xxx-small">
+                                                        <span class="slds-checkbox slds-checkbox_standalone">
+                                                            <!-- <input type="checkbox" id="checkbox-unique-id-80"
+                                                                name="label" value="option" disabled
+                                                                checked={fosterParentDetails.financialStability} />
+                                                            <span class="slds-checkbox_faux"></span> -->
+                                                            <template if:true={fosterParentDetails.financialStability}>
+                                                                <lightning-icon icon-name="action:approval" size="small"
+                                                                    alternative-text="Approved" title="Approved">
+                                                                </lightning-icon>
+                                                            </template>
+                                                            <template if:false={fosterParentDetails.financialStability}>
+                                                                <lightning-icon icon-name="action:close" size="small"
+                                                                    alternative-text="Approved" title="Approved">
+                                                                </lightning-icon>
+                                                            </template>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 model-item-list">
+                                                <div class="slds-form-element set-child-grid">
+                                                    <label class="slds-form-element__label"
+                                                        for="checkbox-unique-id-7">Central Registry
+                                                        Check:</label>
+                                                    <div class="slds-form-element__control slds-p-top_xxx-small">
+                                                        <span class="slds-checkbox slds-checkbox_standalone">
+                                                            <!-- <input type="checkbox" id="checkbox-unique-id-81"
+                                                                name="label" value="option" disabled
+                                                                checked={fosterParentDetails.licensed} />
+                                                            <span class="slds-checkbox_faux"></span> -->
+                                                            <template if:true={fosterParentDetails.licensed}>
+                                                                <lightning-icon icon-name="action:approval" size="small"
+                                                                    alternative-text="Approved" title="Approved">
+                                                                </lightning-icon>
+                                                            </template>
+                                                            <template if:false={fosterParentDetails.licensed}>
+                                                                <lightning-icon icon-name="action:close" size="small"
+                                                                    alternative-text="Approved" title="Approved">
+                                                                </lightning-icon>
+                                                            </template>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 model-item-list">
+                                                <div class="slds-form-element set-child-grid">
+                                                    <label class="slds-form-element__label"
+                                                        for="checkbox-unique-id-7">Home Fire Inspection
+                                                        :</label>
+                                                    <div class="slds-form-element__control slds-p-top_xxx-small">
+                                                        <span class="slds-checkbox slds-checkbox_standalone">
+                                                            <!-- <input type="checkbox" id="checkbox-unique-id-82"
+                                                                name="label" value="option" disabled checked />
+                                                            <span class="slds-checkbox_faux"></span> -->
+                                                            <lightning-icon icon-name="action:approval" size="small"
+                                                                alternative-text="Approved" title="Approved">
+                                                            </lightning-icon>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 model-item-list">
+                                                <div class="slds-form-element set-child-grid">
+                                                    <label class="slds-form-element__label"
+                                                        for="checkbox-unique-id-7">Home Health Inspection
+                                                        :</label>
+                                                    <div class="slds-form-element__control slds-p-top_xxx-small">
+                                                        <span class="slds-checkbox slds-checkbox_standalone">
+                                                            <!-- <input type="checkbox" id="checkbox-unique-id-83"
+                                                                name="label" value="option" disabled checked />
+                                                            <span class="slds-checkbox_faux"></span> -->
+                                                            <lightning-icon icon-name="action:approval" size="small"
+                                                                alternative-text="Approved" title="Approved">
+                                                            </lightning-icon>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 model-item-list">
+                                                <div class="slds-form-element set-child-grid">
+                                                    <label class="slds-form-element__label"
+                                                        for="checkbox-unique-id-7">Home Health Inspection
+                                                        :</label>
+                                                    <div class="slds-form-element__control slds-p-top_xxx-small">
+                                                        <span class="slds-checkbox slds-checkbox_standalone">
+                                                            <!-- <input type="checkbox" id="checkbox-unique-id-83"
+                                                                name="label" value="option" disabled checked />
+                                                            <span class="slds-checkbox_faux"></span> -->
+                                                            <lightning-icon icon-name="action:approval" size="small"
+                                                                alternative-text="Approved" title="Approved">
+                                                            </lightning-icon>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 model-item-list">
+                                                <div class="slds-form-element set-child-grid">
+                                                    <label class="slds-form-element__label"
+                                                        for="checkbox-unique-id-7">Medical Information Forms for each
+                                                        family member in your home
+                                                        :</label>
+                                                    <div class="slds-form-element__control slds-p-top_xxx-small">
+                                                        <span class="slds-checkbox slds-checkbox_standalone">
+                                                            <!-- <input type="checkbox" id="checkbox-unique-id-83"
+                                                                name="label" value="option" disabled checked />
+                                                            <span class="slds-checkbox_faux"></span> -->
+                                                            <lightning-icon icon-name="action:approval" size="small"
+                                                                alternative-text="Approved" title="Approved">
+                                                            </lightning-icon>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <footer class="slds-modal__footer">
+                            <lightning-button label="Back" class="slds-m-right_medium" variant="neutral"
+                                onclick={handleCloseModal}></lightning-button>
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </div>
+        </template>
+    </div>
+    <div class="slds-p-around_medium" if:true={isOpenPlacementModal}>
+        <template if:true={isOpenPlacementModal}>
+            <c-fc-placement-checklist-table foster-parent-details={fosterParentDetails}
+                onclosechecklistmodal={handleCloseModal}></c-fc-placement-checklist-table>
+        </template>
+    </div>
+
+    <!--
+    <div class="nh_card">
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_12-of-12">
+                <div class="search-card">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_3-of-12 section-parts">
+                            <div class="slds-grid slds-wrap">
+                                <img class="slds-col slds-size_4-of-12 user--image" src={profileimage1} />
+                                <div class="slds-col slds-size_8-of-12 user--content">
+                                    <div class="user--name">Julie Ward</div>
+                                    <div class="user--address">88 North Main St
+                                        Test City, NH 03015</div>
+                                    <div class="user-distance">15 mi</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_6-of-12 section-parts">
+                            <div class="nh_grid-container">
+                                <div class="nh_grid-item">
+                                    Marrital status
+                                    <span class="item-value">Married</span>
+                                </div>
+                                <div class="nh_grid-item">
+                                    Employment
+                                    <span class="item-value">Full-time employee</span>
+                                </div>
+                                <div class="nh_grid-item">
+                                    Homeowner
+                                    <span class="item-value">Owner</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_3-of-12 section-parts">
+                            <div class="nh_grid-container--two">
+                                <div class="nh_grid-item">
+                                    Match Percentage
+                                    <span class="item-value">91%</span>
+                                </div>
+                                <div class="nh_grid-item">
+                                    <button class="slds-button slds-button_brand nh_custom-btn">Details</button>
+                                    <button class="slds-button slds-button_neutral nh_custom-btn">Placement</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="nh_card">
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_12-of-12">
+                <div class="search-card">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_3-of-12 section-parts">
+                            <div class="slds-grid slds-wrap">
+                                <img class="slds-col slds-size_4-of-12 user--image" src={profileimage2} />
+                                <div class="slds-col slds-size_8-of-12 user--content">
+                                    <div class="user--name">Alexis Bailey</div>
+                                    <div class="user--address">88 North Main St
+                                        Test City, NH 03015</div>
+                                    <div class="user-distance">10 mi</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_6-of-12 section-parts">
+                            <div class="nh_grid-container">
+                                <div class="nh_grid-item">
+                                    Marrital status
+                                    <span class="item-value">Married</span>
+                                </div>
+                                <div class="nh_grid-item">
+                                    Employment
+                                    <span class="item-value">Full-time employee</span>
+                                </div>
+                                <div class="nh_grid-item">
+                                    Homeowner
+                                    <span class="item-value">Owner</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_3-of-12 section-parts">
+                            <div class="nh_grid-container--two">
+                                <div class="nh_grid-item">
+                                    Match Percentage
+                                    <span class="item-value">92%</span>
+                                </div>
+                                <div class="nh_grid-item">
+                                    <button class="slds-button slds-button_brand nh_custom-btn">Details</button>
+                                    <button class="slds-button slds-button_neutral nh_custom-btn">Placement</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    -->
+</template>

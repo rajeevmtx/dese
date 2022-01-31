@@ -1,0 +1,19 @@
+.date-box{
+    margin-left: 0.1rem !important;
+    margin-right: 0.1rem !important;
+}
+.button-margin{
+    margin-right: 1rem !important;
+}
+.slds-modal__container {
+    max-height: 80rem !important;
+    height: 80% !important;
+}
+.slds-listbox{
+    max-height: 9rem!important;
+    overflow: scroll!important;
+    overflow-x: hidden!important;
+}
+.slds-modal__content{
+    min-height: 24rem!important;
+}

@@ -1,0 +1,113 @@
+<template>
+        <div class="backdrop" if:true={showSpinner}>  
+            <div class="spinner">
+                <lightning-spinner alternative-text="Loading..."></lightning-spinner>  
+            </div>
+        </div> 
+        <c-psr-sidebar selected-tab="Fill Non-Compliance Corrective Actions" show-footer>
+            <div slot="body">
+                <div class="pageTextCenter">
+                    <span>
+                        <h2>Submit Corrective Actions</h2>
+                    </span>
+                </div>
+                
+                <div class="container license-grid slds-p-around_small">
+                    <lightning-button variant="brand" label="Submit" onclick={handleSave}>
+                    </lightning-button>
+                    <lightning-button variant="Neutral"  label="save" onclick={handleOnlySave} class="slds-p-left_small">
+                    </lightning-button>
+                    <lightning-button variant="Neutral"  label="save and return to home" onclick={handleHome} class="slds-p-left_small">
+                    </lightning-button>
+                </div>
+                <c-psr-help-text></c-psr-help-text>
+                <template for:each={inspectionRecords} for:index="indexParent" for:item="parent">
+                    <table class="slds-table slds-table_bordered slds-table_resizable-cols slds-table_fixed-layout slds-table_col-bordered slds-table_striped" key={parent.parentId}>
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="slds-truncate slds-text-align_left slds-cell-wrap">Inspection Number</th>
+                                <th class="slds-truncate slds-text-align_left slds-cell-wrap">Observations</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="slds-truncate slds-cell-wrap slds-cell-buffer_right">
+                                    {parent.name}  
+                                </td>
+                                <td class="slds-truncate slds-cell-wrap slds-cell-buffer_right">
+                                    {parent.inspectionDate}  
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <table class="slds-table slds-table_bordered slds-table_resizable-cols slds-table_fixed-layout slds-table_col-bordered slds-table_striped" key={parent.parentId}>
+                                        <thead>
+                                            <tr class="slds-line-height_reset">
+                                                <th class="slds-truncate slds-text-align_left slds-cell-wrap smallerColumns">Item Number</th>
+                                                <th class="slds-truncate slds-text-align_left slds-cell-wrap">Observations</th>
+                                                <th class="slds-truncate slds-text-align_left slds-cell-wrap">Correction Plan</th>
+                                                <th class="slds-truncate slds-text-align_left slds-cell-wrap" style="width:10rem;">Date Implemented</th>
+                                                <th class="slds-truncate slds-text-align_left slds-cell-wrap">Corrective Action Feedback</th> 
+                                                <th class="slds-truncate slds-text-align_left slds-cell-wrap smallerColumns">Documents</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template for:each={parent.items} for:index="indexChild" for:item="child"> 
+                                                <tr key={child.recId}>
+                                                    <td data-label={child.name} class="slds-truncate slds-cell-wrap slds-cell-buffer_right">
+                                                        {child.name}
+                                                    </td> 
+                                                    <td data-label={child.observations} class="slds-truncate slds-cell-wrap slds-cell-buffer_right">
+                                                        {child.observations}
+                                                    </td> 
+                                                    <td data-label={child.correctionPlan} class="slds-truncate slds-cell-wrap slds-cell-buffer_right">
+                                                        <!-- <lightning-input type="" value={child.correctionPlan} data-id={child.recId} onchange={bindCorrectionPlan}></lightning-input> -->
+                                                        <lightning-textarea name="input1" value={child.correctionPlan} data-id={child.recId} onchange={bindCorrectionPlan}></lightning-textarea>
+                                                    </td> 
+                                                    <td data-label={child.dateImplemented} class="slds-truncate slds-cell-wrap slds-cell-buffer_right">
+                                                        <lightning-input type="Date" value={child.dateImplemented} data-id={child.recId} onchange={bindDateImplemented}></lightning-input>
+                                                    </td>
+                                                    <td data-label={child.feedback} class="slds-truncate slds-cell-wrap slds-cell-buffer_right">
+                                                        {child.feedback} 
+                                                    </td>
+                                                    <td class="slds-cell-wrap slds-cell-buffer_right"> 
+                                                        <!-- <lightning-file-upload class="slds-m-bottom_small slds-float_left" label="" name="fileUploader" record-id={child.recId}
+                                                                onuploadfinished={handleUploadFinished} multiple>
+                                                        </lightning-file-upload> -->
+                                                        <div>
+                                                            <lightning-button-icon onclick={handleFileUpload} icon-name="utility:upload"
+                                                            alternative-text="Upload" style="margin-left: 5px;" data-recid={child.recId}> 
+                                                            </lightning-button-icon>
+                                                        </div>
+                                                        <div>  
+                                                            <lightning-button-icon onclick={handleViewFile} icon-name="utility:preview"
+                                                            alternative-text="View Files" style="margin-left: 5px;" data-recid={child.recId}> 
+                                                            </lightning-button-icon>
+                                                        </div>
+                                                    </td> 
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </template>
+                <c-psr-modal if:true={openFileModal} classes='slds-modal newModal slds-fade-in-open zindex9004'
+                backdrop-class="slds-backdrop slds-backdrop_open zindex9003">
+                 <span slot="header">File Upload</span> 
+                 <div slot="body">
+                    <lightning-file-upload name="imageUploader" class="file-uploader"
+                    record-id={uploadFileRecId}>
+                    </lightning-file-upload>
+                    <div slot="footer">
+                        <lightning-button class="slds-p-right_xx-small" name="cancel" label="Cancel"
+                            onclick={cancelFileUploadModal}>
+                        </lightning-button>
+                    </div>
+                </div>   
+                </c-psr-modal>
+            </div>
+        </c-psr-sidebar>
+    </template>

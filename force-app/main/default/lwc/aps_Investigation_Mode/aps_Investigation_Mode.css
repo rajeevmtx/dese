@@ -1,0 +1,30 @@
+.navigation{
+    margin-top: 20rem !important;
+}
+
+/*th{
+ /*background-color: #aba6bb !important;
+ color: black !important;
+ font-size: .8rem !important;
+ padding: .5rem 0.2rem !important;
+}*/
+
+th:nth-last-child(2){
+    width:30% !important;
+}
+th:last-child{
+    width:7% !important;
+
+} 
+
+th:first-child{
+    width:12% !important;
+}
+
+.observationClass textarea{
+    height: 9rem !important;
+}
+
+td{
+    height: 10rem !important;
+}

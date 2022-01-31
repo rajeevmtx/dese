@@ -1,0 +1,25 @@
+<apex:page standardController="Project__c" sidebar="false">
+     <script src="{!URLFOR($Resource.Frameworks, 'jquery/dist/jquery.min.js')}"></script>
+     <apex:enhancedList type="Project__c" height="500" rowsPerPage="10" reRender="scriptPanel" oncomplete="hideNewBtn();"/>
+
+     <apex:outputPanel id="scriptPanel">
+         <script>
+             $(document).ready(function(){
+                 hideNewBtn();
+             });
+
+             function hideNewBtn(){
+                 $('input[title="New Project"]').hide();
+                 $('.zen-headerTop').hide();
+                 $('.zen-inlineList').hide();
+                 $('.controls').hide();
+             }
+         </script>
+     </apex:outputPanel>
+     <style>
+	     body #AppBodyHeader{
+	     	display:none !important;
+	     }
+     </style>
+
+</apex:page>

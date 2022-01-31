@@ -1,0 +1,8 @@
+.thankyou {
+  color: green;
+  font-size: 3rem;
+  min-height: 400px;
+}
+.terms-input textarea {
+  min-height: 140px;
+}

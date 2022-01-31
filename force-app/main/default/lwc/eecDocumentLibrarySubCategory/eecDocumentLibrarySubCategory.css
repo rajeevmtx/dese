@@ -1,0 +1,80 @@
+.slds-m-top_medium {
+    padding-left : 1rem;
+    padding-right : 1rem;
+  }
+  
+  .docTypeName {
+    width : 36%;
+ }
+ 
+ .generalHeader {
+    width : 12%;
+ }
+ 
+ .notApplicable {
+    width : 12%;
+    padding-right: 0;
+}
+ 
+ .statusColumn {
+     width : 18%;
+ }
+   .view-button {
+      color:#006DCC;
+      cursor: pointer;
+  }
+  
+  .view-button:hover{
+      text-decoration: underline;
+  }
+  
+  .view-upload-seperator {
+      padding-left : 0.5rem;
+      padding-right : 0.5rem;
+      color : #E8E8E8;
+  }
+  
+  .slds-modal__container {
+      max-width: 70rem !important;
+      width: 70% !important;
+  }
+  
+  .slds-table {
+      box-shadow: 1px 1px 5px 1px #888888;
+  }
+    
+  .helpText {
+      padding-left: 0.5rem;
+  }
+ 
+  th{
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+  }
+
+  tr>th{
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+  }
+
+  .documentName {
+    color: #006DCC;
+  }
+
+
+.table {
+    margin-top: 2rem;
+}
+
+.slds-table {
+    margin-left: 1rem;
+    width: 360% !important;
+}
+
+.subCategory {
+    padding-left: 0.5rem;
+}
+
+.comboBox {
+    position: relative;
+}

@@ -1,0 +1,58 @@
+<template>
+    <lightning-card>
+        <div class="page-content">
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col slds-size_2-of-3">
+                    <div class="overview-content">
+                        <h1 class="header slds-m-bottom_large" if:false={readOnly}>Overview</h1>
+                        <p class="paragraph slds-m-bottom_large">The consolidated application allows LEAs (districts and other eligible entities, referred to in this application collectively as districts) to apply for funding for any combination of the following federal programs of the Elementary and Secondary Education Act (ESEA), as most recently reauthorized by the Every Student Succeeds Act (2015) (ESSA):
+                        </p>
+                        <ul class="list slds-m-bottom_large titleList">
+                            <li>Title I, Parts A & D (Fund Code 305)</li>
+                            <li>Title II, Part A  (Fund Code 140)</li>
+                            <li>Title III, Part A (Fund Code 180 only)</li>
+                            <li>Title IV, Part A (Fund Code 309)    </li>
+                        </ul>
+                        <p class="paragraph">
+                            You may notice that some requirements of past applications have been omitted or are requested in a different way, which is permitted by ESSA to reduce burden to districts when applying for grants.  However, <b>all districts are still required to meet all statutory requirements for any program for which they receive funds.</b>If you have questions about these requirements, please refer to our <a href="#">Federal Grant Programs web pages</a> and/or contact <a href="#">the Federal Programs Specialist assigned to your district</a> for guidance.
+                        </p>
+                        
+                        <h2 class="sub-header slds-m-top_xx-large slds-m-bottom_large">
+                            EdGrants Submission Information
+                        </h2>
+                        <p class="paragraph slds-m-bottom_large">
+                            Most districts/applicants already have designated control users in EdGrants: Front Office, who have access to submit grant applications as well as to make payment requests.  Each district/applicant needs to ensure that it has an authorized control user prior to grant submission.  If a district waits until its grant submission is ready to submit before inquiring about a new user name/login, grant submissions may be delayed several business days waiting for control user set-up.  Please review the <a href="#">EdGrants Security Controls documents</a> and/or contact DESE's Grants Management Office, <b>781-338-6595</b> or <a href="#">EdGrants@doe.mass.edu</a>, regarding assigning your EdGrants: Front Office control users. 
+                        </p>
+                        <p class="paragraph">
+                            The district/applicant control users will register each grant opportunity, create each grant project and enter contact information, budget, and required attachments in EdGrants. All districts' business offices have been contacted with information regarding training.  If you are unsure of who in your office is  a control user, please contact your business office.  <b>The Consolidation Application Workbook must be uploaded with your Title I budget in EdGrants.</b>  If you do not receive a Title I allocation, please contact the DESE liaison for your district for submission instructions.
+                        </p>                          
+                    </div>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                <div class="note">
+                    <h2 class="note__header slds-m-bottom_medium">
+                        EdGrants Submission Information
+                    </h2>
+                    <ul class="note__list">
+                        <li>Districts that submit near the due date should expect to wait a few weeks for review. Districts that submit early may see a shorter turnaround. </li>
+                        <li>The start date for each grant is the date on which the district submits substantially approvable information and budget for that grant.  For example, if the completed consolidated ESSA application is submitted on August 15 and all grant information but that for Title III, Part A is substantially approvable, the start date for all grants but Title III, Part A will be August 15.  The start date for Title III, Part A will be the date on which any deficiency for that grant has been cured and it becomes substantially approvable.  However, no grant funds for any ESSA grant will be issued until all of the grants contained within this consolidated ESSA application have been approved. </li>
+                        <li>Districts that fail to file by September 13, 2019 will receive last priority for review.  </li>
+                        <li> Expenses incurred prior to approval of a district's consolidated application and start date(s) are not payable with grant funds!</li>
+                        <li> Responding quickly to requests for information can result in an earlier approval of your grant application. </li>
+                        <li> Grant payment notices will be available in EdGrants after the grant application has been approved and the initial payment is processed.</li>
+                    </ul>
+                </div>
+                </div>
+                </div>      
+        </div>
+        <div slot="footer" if:false={readOnly}>
+            <div class="button">   
+                    <lightning-button variant="brand-outline" label="Cancel" title="Primary action with lighter look" onclick={handleClick} class="slds-m-left_x-small button__white"></lightning-button>   
+                    <lightning-button variant="brand" label="Next" title="Primary action" onclick={handleNext} class="slds-m-left_x-small"></lightning-button>
+            </div>
+        </div>
+        <!-- <c-dese_intake_docusign record-id={projectId}></c-dese_intake_docusign> -->
+    </lightning-card>    
+
+    
+</template>

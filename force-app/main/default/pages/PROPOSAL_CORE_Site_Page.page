@@ -1,0 +1,424 @@
+<apex:page sidebar="false" controller="PROPOSAL_CORE_Site_Controller" standardStylesheets="false">
+    <style>
+        #validationErrorMessage1{
+            display: none;
+        }
+        #validationErrorMessage2 {
+            display: none;
+        }
+        .required {
+             font-weight: bold;
+             color: red;
+         }
+         .field .select2-container {
+            width: 250px !important;
+         }
+         .mb0 {
+            margin-bottom: 0;
+         }
+         .w100 {
+            width: 100%;
+         }
+         .popover {
+		    width: 250px;
+		 }
+    </style>
+
+    <apex:composition template="CORE_APPINTAKE_Template_Page">
+        <apex:define name="body">
+            <div class="page">
+                <c:CORE_StepNav_Component pgName="{!$CurrentPage.Name}"/>
+                <div class="application">
+
+                    <div class="alert-container">
+                        <apex:outputPanel layout="none">
+                            <div class="alert alert-info">
+                            	{!$Label.Proposal_Site_Page_Help_Text}
+                            </div>
+                            <div class="alert alert-danger" id="validationErrorMessage2"></div>
+                        </apex:outputPanel>
+                    </div>
+
+                    <div class="row">
+                        &nbsp;
+                    </div>
+
+                    <div class="content content-body">
+                        <div>
+                            <apex:outputPanel rendered="{!AND(site.Id == null, !isReadOnlyApplicationWizard)}" layout="none"> <!--  T-02655 -->
+                                <a href="javascript:void(0)" onclick="resetSearch();" class="add-button pull-right">Add a Site</a>
+                            </apex:outputPanel>
+                            <br/>
+                            <input id="totalSites" type="hidden" value="{!projectsiteList.size}" />
+                            <table id="siteTable" class="table table-striped datatable" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Action</th>
+                                        <th>Address 1</th>
+                                        <th>Address 2</th>
+                                        <th>City</th>
+                                        <th>State</th>
+                                        <th>Zip</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <apex:repeat value="{!projectsiteList}" var="site">
+                                        <tr>
+                                            <td>
+                                                <apex:outputPanel rendered="{!!isReadOnlyApplicationWizard}">
+                                                    <div class="controls pull-left">
+                                                        <a onclick="getProjectSite('{!site.Id}')" class="actionLink">Edit</a>
+                                                        &nbsp;|&nbsp;
+                                                        <a onclick="confirmDelete('{!site.Id}')" class="actionLink">Delete</a>
+                                                    </div>
+                                                </apex:outputPanel>
+                                            </td>
+                                            <td>{!site.Address_1__c}</td>
+                                            <td>{!site.Address_2__c}</td>
+                                            <td>{!site.City__c}</td>
+                                            <td>{!site.State__c}</td>
+                                            <td>{!site.Zip__c}</td>
+                                            <td>{!site.Utility_Company__c}</td>
+                                        </tr>
+                                    </apex:repeat>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <apex:form id="frm" html-autocomplete="off">
+                <div class="modal fade" id="editModal" role="dialog">
+                    <div class="modal-dialog modal-md">
+                        <div class="modal-content">
+                            <apex:outputPanel id="modalFormPanel">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h4 class="modal-title" id="add-an-addressLabel">{!IF(AND(site.Id != null, site.Id != ''),'Edit Site Address','Add New Site Address')}</h4>
+                                </div>
+
+                                <div class="modal-body">
+                                    <apex:pageMessages />
+                                    <div class="alert alert-danger" id="validationErrorMessage1"></div>
+
+                                    <div class="flex-row">
+                                        <label for="{!$component.siteName}" class="lg">Site Name<span class="required">&nbsp;* </span></label>
+                                        <div class="flex-row lg flex-row mb0 w100">
+                                            <apex:inputField value="{!site.Site_Name__c}" id="siteName" styleClass="form-control siteName" />
+                                            <span class="icon-help" style="margin-left:10px;font-size:16px;" data-toggle="popover" data-placement="right" data-trigger="hover"
+                                                                data-content="{!$Label.Proposal_Site_Name_Help_Text}"> </span>
+                                        </div><!-- /.field -->
+                                    </div>
+
+                                    <div class="flex-row">
+                                         <label for="{!$component.address1}" class="lg">Address 1<span class="required">&nbsp;* </span></label>
+                                        <div class="field">
+                                            <apex:inputField value="{!site.Address_1__c}" id="address1" styleClass="form-control address1" />
+                                        </div><!-- /.field -->
+                                    </div>
+
+                                    <div class="flex-row">
+                                        <label for="{!$component.address2}" class="lg">Address 2</label>
+                                        <div class="field">
+                                            <apex:inputField value="{!site.Address_2__c}" id="address2" styleClass="form-control address2" />
+                                        </div><!-- /.field -->
+                                    </div>
+
+                                    <div class="flex-row">
+                                        <label for="{!$component.city}" class="lg">City<span class="required">&nbsp;* </span></label>
+                                        <div class="field">
+                                            <apex:inputField value="{!site.City__c}" onKeyDown="isAlphabateOnly(event);" html-maxlength="120" id="city" styleClass="form-control city" html-autocomplete="off" />
+                                        </div><!-- /.field -->
+                                    </div>
+
+                                    <div class="flex-row">
+                                        <label for="{!$component.state}" class="lg">State<span class="required">&nbsp;* </span></label>
+                                        <div class="field">
+                                            <apex:inputField value="{!site.State__c}" id="state" styleClass="form-control state" html-autocomplete="off" />
+                                        </div><!-- /.field -->
+                                    </div>
+
+                                    <div class="flex-row">
+                                        <label for="{!$component.zip}" class="lg">Zip<span class="required">&nbsp;* </span></label>
+                                        <div class="field">
+                                            <apex:inputField id="zip" value="{!site.Zip__c}" onKeyDown="isNumberOnly(event);" html-maxlength="5" styleClass="form-control zip" html-autocomplete="off" />
+                                        </div><!-- /.field -->
+                                    </div>
+
+
+
+                                    <apex:outputPanel layout="block" styleClass="flex-row" >
+                                        <label for="{!$component.economicDevelopment}" class="lg">Regional Economic Development Council</label>
+                                        <div class="field">
+                                            <apex:inputField value="{!site.Regional_Economic_Development_Council__c}" id="economicDevelopment" styleClass="form-control economicDevelopment select2"  html-autocomplete="off"/>
+                                        </div><!-- /.field -->
+                                    </apex:outputPanel>
+
+
+                                    <div class="flex-row">
+                                        <label for="{!$component.utilityAccNumber}" class="lg">Electric Utility Account Number</label>
+                                        <div class="flex-row lg flex-row mb0 w100">
+                                            <apex:inputField value="{!site.Electric_Utility_Account_Number__c}" id="utilityAccNumber" styleClass="form-control utilityAccNumber select2" html-autocomplete="off"/>
+                                            <span class="icon-help" style="margin-left:10px;font-size:16px;" data-toggle="popover" data-placement="right" data-trigger="hover"
+                                                                data-content="{!$Label.Proposal_Electric_Utility_Account_Number_Help_Text}"> </span>
+                                        </div><!-- /.field -->
+                                    </div>
+
+                                    <div class="flex-row">
+                                        <label for="{!$component.gasUtilityCompany}" class="lg">Gas Utility Company</label>
+                                        <div class="field">
+                                            <apex:inputField value="{!site.Gas_Utility_Company__c}" id="gasUtilityCompany" styleClass="form-control gasUtilityCompany select2" html-autocomplete="off"/>
+                                        </div><!-- /.field -->
+                                    </div>
+
+
+                                    <div class="flex-row">
+                                        <label for="{!$component.gasUtilityAccNumber}" class="lg">Gas Utility Account Number</label>
+                                        <div class="flex-row lg flex-row mb0 w100">
+                                            <apex:inputField value="{!site.Gas_Utility_Account_Number__c}" id="gasUtilityAccNumber" styleClass="form-control gasUtilityAccNumber select2" html-autocomplete="off"/>
+                                            <span class="icon-help" style="margin-left:10px;font-size:16px;" data-toggle="popover" data-placement="right" data-trigger="hover"
+                                                                data-content="{!$Label.Proposal_Gas_Utility_Account_Number_Help_Text}"> </span>
+                                        </div><!-- /.field -->
+                                    </div>
+
+                                    <apex:outputPanel layout="block" styleClass="flex-row" >
+                                        <label for="{!$component.nypaType}" class="has-helper lg">
+                                            <span>Do you pay System benefits Charge (SBC)?</span>
+                                            <!-- <span class="icon-help chk-box-help-text" style="position:relative;margin:0" data-toggle="popover" data-placement="top" title="{!$ObjectType.Project_Site__c.fields.NYPA__c.InlineHelpText}"> </span> -->
+                                        </label>
+                                        <div class="flex-row lg flex-row mb0 w100">
+                                            <apex:inputField value="{!site.Is_Contributing_to_SBC__c}" id="nypaType" styleClass="form-control nypaType" />
+                                            <span class="icon-help" style="margin-left:10px;font-size:16px;" data-toggle="popover" data-placement="right" data-trigger="hover"
+                                                                data-content="{!$Label.Proposal_SBC_Help_Text}"> </span>
+                                        </div><!-- /.field -->
+                                    </apex:outputPanel>
+
+                                    <input type="hidden" id="hiddenContactId"/>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <span id="cancelBtnDiv">
+                                        <button id="cancelBtn" type="button" class="btn-bs btn-default" data-dismiss="modal">Cancel</button>
+                                    </span>
+                                    <span id="savingBtnDiv">
+                                        <button class="btn-bs btn-default btn-warning" id="savingBtn" disabled="disabled"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Saving Site...</button>
+                                    </span>
+                                    <span id="saveBtnDiv">
+                                        <button type="button" class="btn-bs btn-primary" id="saveBtn" onclick="startSaveContact()">Save</button>
+                                    </span>
+                                </div>
+                            </apex:outputPanel>
+                        </div>
+                    </div>
+                </div>
+
+                 <apex:actionFunction name="deleteProjectSite" action="{!deleteProjectSite}" rerender="mainPanel" oncomplete="createTable()"  immediate="true">
+                    <apex:param value="" name="selectedProjectSiteId" assignTo="{!selectedProjectSiteId}" />
+                </apex:actionFunction>
+
+                <apex:actionFunction name="getProjectSite" action="{!getProjectSite}" rerender="modalFormPanel" oncomplete="openModal();" immediate="true">
+                    <apex:param value="" name="selectedProjectSiteId" assignTo="{!selectedProjectSiteId}" />
+                </apex:actionFunction>
+
+                <apex:actionFunction name="next" action="{!next}" rerender="mainPanel" immediate="true" status="status">
+                    <apex:param value="" name="currentPage" assignTo="{!currentPage}"/>
+                </apex:actionFunction>
+
+                <apex:actionFunction name="previous" action="{!previous}" rerender="mainPanel" immediate="true" status="status">
+                    <apex:param value="" name="currentPage" assignTo="{!currentPage}"/>
+                </apex:actionFunction>
+
+                <apex:actionFunction name="saveProjectSite" action="{!saveProjectSite}" rerender="modalFormPanel, mainPanel" oncomplete="stopSaveContact(); createTable();">
+                </apex:actionFunction>
+
+                <apex:actionFunction name="resetProjectSite" action="{!resetProjectSite}" rerender="modalFormPanel" oncomplete="openModal();" immediate="true"/>
+
+                <!--
+                <apex:actionFunction name="showSectorFields" rerender="modalFormPanel" oncomplete="manageUI();"/>
+
+                <apex:actionFunction name="discardChanges" action="{!discardChanges}" rerender="frm" status="status" ></apex:actionFunction> -->
+
+
+            </apex:form>
+
+            <footer>
+               <div class="content flex controls sm">
+                   <a href="javascript:void(0)" onclick="previous('{!$CurrentPage.Name}')" class="btn-bs btn-lg btn-blank">Previous</a>
+                    <a href="javascript:void(0)" onclick="nextAction('{!$CurrentPage.Name}')" class="btn-bs btn-lg btn-primary continueBtn">Continue</a>
+               </div>
+           </footer>
+
+      </apex:define>
+    </apex:composition>
+
+    <script>
+        $(document).ready(function() {
+        	jQuery("html").attr("lang", "en");
+            createTable();
+        });
+
+
+        function createTable(){
+            $('#siteTable').DataTable({
+                "order": [],
+                "language": {
+                  "emptyTable": "Please add a site address."
+                },
+                "bPaginate": false,
+                "columnDefs": [ {
+                  "targets": [ 0 ],
+                  "orderable": false,
+                  "searchable": false
+                } ]
+            });
+            $('.dataTables_info').addClass('hidden');
+            $('.dataTables_filter').hide();
+        }
+
+        function resetSearch() {
+            $('.searchBox').val('');
+            $('#hiddenContactId').val('');
+
+            resetProjectSite();
+        }
+
+        function openModal(){
+            $('#savingBtnDiv').hide();
+            $('#editModal').modal('show');
+            $(document).on('mouseover', '[data-toggle="popover"]', function () { $(this).popover('show'); });
+            //$('[data-toggle="popover"]').popover();
+        }
+
+        function manageUI(){
+            $(".modal select").select2();
+            $('[data-toggle="popover"]').popover();
+        }
+
+        function startSaveContact(){
+            $('#validationErrorMessage1').hide();
+
+            var siteName = $('.siteName').val();
+            if(siteName == null || siteName == '' || siteName == undefined){
+                $('#validationErrorMessage1').html('<strong>Error!</strong> Site Name: You must enter a value.');
+                $('#validationErrorMessage1').show();
+                return false;
+            }
+
+            var address1 = $('.address1').val();
+            if(address1 == null || address1 == '' || address1 == undefined){
+                $('#validationErrorMessage1').html('<strong>Error!</strong> Address 1: You must enter a value.');
+                $('#validationErrorMessage1').show();
+                return false;
+            }
+
+            var city = $('.city').val();
+            if(city == null || city == '' || city == undefined){
+                $('#validationErrorMessage1').html('<strong>Error!</strong> City: You must enter a value.');
+                $('#validationErrorMessage1').show();
+                return false;
+            }
+
+            var state = $('.state').val();
+            if(state == null || state == '' || state == undefined){
+                $('#validationErrorMessage1').html('<strong>Error!</strong> State: You must enter a value.');
+                $('#validationErrorMessage1').show();
+                return false;
+            }
+
+            var zip = $('.zip').val();
+            if(zip == null || zip == '' || zip == undefined){
+                $('#validationErrorMessage1').html('<strong>Error!</strong> Zip: You must enter a value.');
+                $('#validationErrorMessage1').show();
+                return false;
+            } else if(zip.length < 5){
+                $('#validationErrorMessage1').html('You must enter a at least 5 digit Zip.');
+                $('#validationErrorMessage1').show();
+                 return false;
+            }
+
+            if('{!isDueDatePassed}' == 'true' && '{!isExceptionalAccessProvided}' == 'false') {
+                $('#validationErrorMessage1').html('<strong>Error!</strong> Sorry, the due date and time passed for this solicitation and we are not able to accept your changes.');
+                $('#validationErrorMessage1').show();
+                return false;
+            }
+
+            $('#savingBtnDiv').show();
+            $('#savingBtn').show();
+            $('#saveBtnDiv, #cancelBtnDiv').hide();
+
+            saveProjectSite();
+        }
+
+        function stopSaveContact(){
+            $('#savingBtnDiv').hide();
+            $('#savingBtn').hide();
+            $('#saveBtnDiv, #cancelBtnDiv').show();
+        }
+
+        function confirmDelete(projectSiteId){
+            if(confirm('Are you sure to delete ?')) {
+                deleteProjectSite(projectSiteId);
+            }
+        }
+
+        function reset() {
+            $('.firstName').val('');
+            $('.lastName').val('');
+            $('.email').val('');
+            $('.phone').val('');
+            $('.searchBox').val('');
+            $('.primary').attr('checked', false);
+            $('#resetDiv').hide();
+        }
+
+        // Allowed only alphabet in input field
+        function isAlphabateOnly(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if((charCode >= 65 && charCode <= 90) || charCode == 8 || charCode == 9 || charCode == 32 || (charCode >= 37 && charCode <= 40)) {
+                return true;
+            } else {
+                evt.preventDefault();
+                return false;
+            }
+        }
+
+        // Allowed only number in input field
+        function isNumberOnly(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if(evt.shiftKey){
+                evt.preventDefault();
+                return false;
+            }
+            if((charCode > 47 && charCode < 58) || (charCode >= 96 && charCode <= 105) || charCode == 8 || charCode == 9 || (charCode >= 37 && charCode <= 40)) {
+                return true;
+            } else {
+                evt.preventDefault();
+                return false;
+            }
+        }
+
+        function nextAction(currentPageName) {
+            $('#validationErrorMessage2').hide();
+            var totalSites = parseInt($('#totalSites').val());
+            if(totalSites == 0 && '{!isSiteRequired}' == 'true') {
+                $('#validationErrorMessage2').html('<strong>Error!</strong> At least one Site is required.');
+                $('#validationErrorMessage2').show();
+                return false;
+            }
+            next(currentPageName);
+        }
+    </script>
+
+    <style>
+        .dataTables_wrapper table .controls > a:not(:last-of-type):after {
+            content: "";
+        }
+    </style>
+
+</apex:page>

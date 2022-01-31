@@ -1,0 +1,141 @@
+.slds-m-top_medium {
+  padding-left : 1rem;
+  padding-right : 1rem;
+}
+
+.lgc-bg {
+    /* background-color: rgb(242, 242, 242); */
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 1rem;
+}
+
+.note {
+    padding-left: 0.5rem;
+}
+
+.icon-description {
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+    font-size: 0.9rem;
+}
+
+.icon-section {
+    padding-top: 1rem;
+}
+.icon-seperator {
+    margin-right: 0.5%;
+}
+
+.docTypeName {
+   width : 36%;
+}
+
+.generalHeader {
+   width : 12%;
+}
+
+.statusColumn {
+    width : 18%;
+}
+
+.notApplicable {
+    width : 11%;
+}
+
+.notApplicableField {
+    padding-right: 0px;
+}
+
+.view-button {
+    color:#006DCC;
+    cursor: pointer;
+}
+
+.view-button:hover{
+    text-decoration: underline;
+}
+
+.view-upload-seperator {
+    padding-left : 0.5rem;
+    padding-right : 0.5rem;
+    color : #E8E8E8;
+}
+
+.slds-modal__container {
+    max-width: 70rem !important;
+    width: 70% !important;
+}
+
+.slds-table {
+    /* box-shadow: 1px 1px 5px 1px #888888; */
+    
+}
+.slds-table thead th {
+    background: #105cb1;
+    color:white;
+}
+.slds-table_fixed-layout tbody, .slds-table--fixed-layout tbody {
+    font-size: 14px;
+}
+.helpText {
+    padding-left: 0.5rem;
+}
+
+.slds-accordion__summary-heading{
+    font-weight: bold;
+}
+
+.slds-line-height_reset {
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+}
+
+th{
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+    font-weight: normal !important; 
+}
+
+tr>th{
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem; 
+}
+
+.sectionHeadername
+{
+    font-weight: bolder;
+}
+
+.documentName {
+    padding-right: 1rem;
+}
+
+.comboBox {
+  position: relative;
+}
+
+.categoryHeader {
+    padding-top: 2rem;
+    padding-bottom: 0.5rem;
+}
+
+.categoryName {
+    padding-left: 0.5rem;
+    vertical-align: middle;
+    font-size: 1.1rem;
+}
+
+.statusText {
+    margin-left: 0.2rem;
+}
+
+.categoryDescription {
+    padding-left: 2rem;
+}
+
+
+.slds-card{
+    border: none;
+    background: none;
+}

@@ -1,0 +1,59 @@
+<!--
+ - Created by arunm on 22-03-2020.
+ -->
+
+<!-- NysDOH Bids -->
+<template>
+
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+             aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close"
+                        onclick={handleCloseModal}
+                >
+                    <lightning-icon
+                            icon-name="utility:close"
+                            variant="inverse"
+                            alternative-text="Close"
+                            size="medium"
+                    >
+                    </lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 class="slds-text-heading_small">Bids</h2>
+            </header>
+            <div class="slds-modal__content " id="modal-content-id-1">
+                <div class="slds-m-around_large">
+                    <div class="has-shadow slds-p-vertical_medium slds-m-bottom_x-large bg-white"
+                         style="margin-bottom: 0px;">
+                        <div class="container d-flex justify-space-between">
+                            <div class="d-flex justify-space-between">
+                                <h4 class="header-pane-title">Bids</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <c-psr-help-text help-text={Portal_Work_Order_Help_Text}></c-psr-help-text>
+                    <div class="slds-grid slds-wrap woTable">
+                        <table style="margin-top: 20px;" class="slds-table">
+                            <tr class="table_header_brand">
+                                <td><b>Amount</b></td>
+                                <td><b>Status</b></td>
+                            </tr>
+                            <template for:each={bids} for:item="item">
+                                <tr key={item.Id}>
+                                    <td>{item.Amount__c}</td>
+                                    <td>{item.Status__c}</td>
+                                </tr>
+                            </template>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+
+</template>

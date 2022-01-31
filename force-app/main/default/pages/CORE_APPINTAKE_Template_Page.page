@@ -1,0 +1,357 @@
+<apex:page applyHtmlTag="false" applyBodyTag="false" showHeader="false" sidebar="false" standardStylesheets="false" cache="false">
+  <html lang="en-US">
+     <c:Grants_StyleOverrides id="pageHeader" />
+      <c:Grants_HomePageStyles />
+    <head>
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <apex:stylesheet value="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600" />
+      <apex:stylesheet value="{!URLFOR($Resource.NS_Design, 'css/custom-bootstrap.css')}" />
+      <apex:stylesheet value="{!URLFOR($Resource.NS_Design, 'css/main.css')}" />
+      <!-- Dev only, remove before production-->
+      <apex:stylesheet value="https://i.icomoon.io/public/9bc07b849f/NYSERDA/style.css" />
+      <!--REMOVE COMMENT AFTER REVIEW | Manish : moved jQuery up in the header, as it was needed in other pages-->
+      <script src="{!URLFOR($Resource.NS_Design, 'bower_components/jquery/dist/jquery.min.js')}"></script>
+      <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-26477206-6', 'auto');
+          ga('send', 'pageview');
+    // Accessibility fix
+     $(document).ready(function() {
+
+        jQuery("html").attr("lang", "en");
+
+      try {
+            var ua = window.navigator.userAgent;
+            var msie = ua.indexOf("MSIE ");
+                if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))  // If Internet Explorer, return version number
+                {
+                    $("#feedback").css("margin-Right","1.2%");
+                }
+                } catch (err) {
+                        // Do nothing
+                      }
+     });
+      // EndOf:  Accessibility fix
+
+      </script>
+        <style type="text/css">
+
+            .container > .navbar-header{
+            margin: 12px;
+            margin-right: 0;
+            margin-left: 40px;}
+
+        .bPageHeader, .zen{
+        display:none;
+        }
+        .hasMotif{
+        margin: 0 0 !important;
+        }
+        #contentWrapper {
+            max-width: 100%;
+            margin: 0 0 !important;
+            min-height: 100vh;
+        }
+        footer {
+           /* bottom: 50px; */
+            position: absolute;
+            width: 100%;
+        }
+        .page {
+                margin-bottom: 130px;
+            }
+         .bodyDiv{
+             min-height: inherit;
+             }
+          #feedback {
+            -webkit-transform: rotate(-90deg);
+            -moz-transform: rotate(-90deg);
+            -ms-transform: rotate(-90deg);
+            filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+            padding:4px;
+            margin:0px auto;
+            background-color:#666666;
+            color:#ffffff;
+            font-size:14px;
+            letter-spacing: 1px;
+            position: fixed;
+            top:300px;
+            right: -30px;
+            display:inline;
+            -webkit-appearance: none;
+            /* box-shadow: -5px 0px 13px 0px rgba(0,0,0,0.5); */
+          }
+          #feedback a {color: #ffffff;}
+          #feedback a:hover {color: #000000;}
+          #feedback:hover {background-color: #cccccc; color:#000000;}
+          .NYGB_banner_img {
+            width:100%
+          }
+          .NYGB_logo {
+            padding: 30px;
+          }
+
+          .dateFormat a{
+        text-decoration: underline;
+
+        }
+            html body.sfdcBody {
+             background: #ffffff !important;
+            }
+                        body {
+                height : 100%;
+            }
+            .page-header{
+              margin: 20px 0 20px;
+            }
+            .page-header h2{
+              font-size: 26px;
+            }
+            @media (min-width: 1200px){
+                .container {
+                    width: 100%;
+                }
+            }
+            @media (max-width: 1199px){
+                .link-desc{
+                    display : none;
+                }
+            }
+            .brand{
+                display : none;
+            }
+            .navbar-fixed-bottom{
+                /*position : absolute; */
+                display : none;
+            }
+            .container{
+                display: flex;
+            }
+            .welcome-message{
+                margin-bottom : 20px;
+            }
+            .left-panel{
+                margin-right: 10px;
+                background-color: #eaeaea;
+                margin-top: -20px;
+                padding-left: 0;
+                padding-right: 0;
+                padding-top : 30px;
+                min-height : 680px;
+            }
+
+            .left-panel-item{
+                margin-top : 15px;
+                background-color: #f6f6f6;
+                padding-left: 20px;
+                padding-top : 10px;
+                padding-bottom : 10px;
+                padding-right : 0;
+                height : 90px;
+            }
+            .header-img{
+                margin-bottom : 10px;
+                text-align : center;
+                margin-top: -8px;
+                padding-top: 12%;
+                height : 78px;
+            }
+            .left-panel-item i{
+                color : #115AB1;
+                font-size: 30px;
+                padding-right: 20px;
+                margin-top: 10px;
+            }
+            .left-panel a{
+                color : #000;
+            }
+            .left-panel-item .icon-wrapper{
+                margin-right : 10px;
+            }
+            .link-desc{
+                font-size : 10px;
+            }
+            .left-panel-profile{
+                padding-left: 10%;
+                padding-right: 10%;
+            }
+            .left-panel-profile hr{
+                border-top: 2px solid #7a7a7a;
+                margin-bottom: 10px;
+            }
+            .left-panel-profile .left-panel-profile-cont{
+                padding-left : 35%;
+                margin-bottom: 20px;
+                color : inherit;
+            }
+            .left-panel-profile-cont a{
+                color : inherit;
+            }
+            .resources{
+                min-height : 50px;
+                background-color : #cecece;
+                padding: 10px 20px 20px 20px;
+            }
+            .link-cont{
+                margin-top: 12px;
+                font-size : 16px;
+            }
+            .leftpanel-tooltip i{
+                font-size : 0.8em;
+            }
+            @media (max-width: 1200px){
+                .link-cont{
+                    font-size : 0.8em;
+                }
+                .left-panel-item i{
+                    font-size: 20px;
+                }
+                .leftpanel-tooltip i{
+                    font-size : 0.8em;
+                }
+            }
+            @media (max-width: 675px){
+                .header-img {
+                    margin-top: -30px;
+                    padding-top: 38px;
+                    padding-left : 15%;
+                }
+            }
+            @media (max-width: 415px){
+                .page-header h2{
+                    font-size : 1em;
+                }
+                .item-content{
+                    font-size : 1em;
+                }
+            }
+            .navbar-nav > li > a {
+                height:100%;
+            }
+                           .loading-spinner
+            {
+            display: none;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            width: 100%;
+            height: 100%;
+            background: rgba(22, 50, 92, 0.6);
+            z-index: 9000;
+        }
+        .loading-spinner-inner
+        {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            align-content: center;
+            height: 100%;
+            color: #ffffff;
+            text-transform: uppercase;
+         }
+        .loading-spinner img
+        {
+          max-width: 185px;
+        }
+
+        .alert-warning{
+        color : red;
+        margin-top: 15px;
+        }
+             .page-header{
+        border-bottom:0px !important;
+        }
+        </style>
+        <c:WCAG_Styles />
+    </head>
+       <c:Grants_Nav_Bar />
+    <body>
+      <!-- <c:NS_Header /> -->
+
+   <!--     <c:Grants_Nav_Bar providerId="{!acc.id}" accountName="{!acc.Name}" id="navBar" /> -->
+      <apex:actionStatus id="status">
+        <apex:facet name="start">
+          <div class="sk-folding-cube">
+            <div class="sk-cube1 sk-cube"></div>
+            <div class="sk-cube2 sk-cube"></div>
+            <div class="sk-cube4 sk-cube"></div>
+            <div class="sk-cube3 sk-cube"></div>
+          </div>
+          <div class="loading-overlay"></div>
+        </apex:facet>
+      </apex:actionStatus>
+
+      <apex:insert name="body" />
+
+      <!--<script src="{!URLFOR($Resource.NS_Design, 'bower_components/jquery/dist/jquery.min.js')}"></script>-->
+      <script src="{!URLFOR($Resource.NS_Design, 'bower_components/twbs-bootstrap-sass/assets/javascripts/bootstrap.min.js')}"></script>
+      <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+      <script src="{!URLFOR($Resource.NS_Design, 'bower_components/select2/dist/js/select2.min.js')}"></script>
+      <script src="{!URLFOR($Resource.Frameworks, 'bower_components/datatables.net/js/jquery.dataTables.min.js')}"></script>
+      <script src="{!URLFOR($Resource.Frameworks, 'bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js')}"></script>
+      <script src="{!URLFOR($Resource.Frameworks, 'bower_components/datatables-responsive/js/dataTables.responsive.js')}"></script>
+
+      <script src="{!URLFOR($Resource.Frameworks, 'bower_components/better-dom/dist/better-dom.js')}"></script>
+      <script src="{!URLFOR($Resource.Frameworks, 'bower_components/better-i18n-plugin/dist/better-i18n-plugin.js')}"></script>
+      <script src="{!URLFOR($Resource.Frameworks, 'bower_components/better-time-element/dist/better-time-element.js')}"></script>
+      <script src="{!URLFOR($Resource.Frameworks, 'bower_components/better-emmet-plugin/dist/better-emmet-plugin.js')}"></script>
+      <script src="{!URLFOR($Resource.Frameworks, 'bower_components/better-dateinput-polyfill/dist/better-dateinput-polyfill.js')}"></script>
+      <script src="{!URLFOR($Resource.NS_Design, 'js/main.js')}"></script>
+      <div class="col-md-4">
+<div id="feedback"><a type="button" data-toggle="modal" data-src="/apex/Customer_Support_Case_Form" data-width="500" data-height="400" data-target="#myModal" id='helpLink' target="_new" onclick="document.getElementById('helplinkFrame').src = document.getElementById('helplinkFrame').src + '?frompage=' + window.location.href ">FEEDBACK</a></div>
+
+      <div class="modal fade" id="myModal" role="dialog" aria-labelledby="feedbackModal" aria-describedby="feedbackModal">
+        <div class="modal-dialog">
+            <div class="modal-content" style="height:525px;">
+
+                <div class="modal-body" >
+
+          <div class="close-button">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+        <div class="embed-responsive embed-responsive-16by9" id="feedbackModal" style="height:500px;">
+
+               <iframe id="helplinkFrame" title="feedback" class="embed-responsive-item" frameborder="0" src="/apex/Customer_Support_Case_Form"></iframe>
+
+          </div>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+</div>
+
+    </body>
+    <c:Grants_Site_Footer id="siteFooter" />
+
+    <script>
+      $('.alert-container').bind('DOMNodeInserted DOMNodeRemoved', function(event) {
+        if (event.type == 'DOMNodeInserted') {
+          window.scrollTo(75, 75);
+        }
+      });
+
+      // Accessibility fix
+            try {
+              $('#zen-moreTabsAssistiveLink').html("<b><span style='display:none'>more tabs</span></b>");
+              $('#phSearchClearButton').html("<b><span style='display:none'>clear search</span></b>");
+            } catch (err) {
+              // Do nothing
+            }
+      // EndOf:  Accessibility fix
+
+    </script>
+
+  </html>
+</apex:page>

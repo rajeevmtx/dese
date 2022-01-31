@@ -1,0 +1,279 @@
+<apex:page sidebar="false" controller="PROPOSAL_CORE_SelectProposal_Controller" standardStylesheets="false" action="{!setProject}">
+    <style>
+        .text-justify {
+            text-align: justify;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        #validationErrorMessage1 {
+            display: none;
+        }
+
+        body .btn-bs.btn-lg.br5 {
+            border-radius: 5px;
+        }
+
+        .table-border {
+            border: 1px solid #ddd;
+        }
+
+        .ml_7 {
+            margin-left: 1%;
+        }
+
+        .back-btn {
+            background-color: #ddd;
+        }
+
+        .investment-link {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .mt15 {
+            margin-top: 10px;
+        }
+
+        .green-bank-logo {
+            margin: 2% 0 0 40px;
+        }
+
+        .greenBankName {
+            margin-left: 20px !important;
+        }
+
+        .bodyDiv,
+        .page {
+            background: #F5F7FA !important;
+        }
+
+        .card--style {
+            background: white;
+            box-shadow: 0 12.5px 10px rgba(0, 0, 0, 0.035), 0 100px 80px rgba(0, 0, 0, 0.07);
+            padding: 2rem;
+            margin-top: 2rem;
+            border-radius: 10px;
+        }
+    </style>
+
+    <apex:composition template="CORE_APPINTAKE_Template_Page">
+        <apex:define name="body">
+            <div class="page">
+                <div class="application">
+                    <apex:form id="frm">
+                        <div class="content">
+                        <div class="card--style">
+                        <!--
+                        <div class="container container-fluid row">
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xsm-12 left-panel">
+                                <apex:repeat value="{! lstMenuItems }" var="item">
+                                    <c:Grants_LeftPanel_Widget name="{! item.name }" 
+                                                               description="{! item.description }" 
+                                                               icon="{! item.icon }" 
+                                                               destination="{! item.destination }"/>
+                                </apex:repeat>
+                            </div>
+                        </div>
+-->
+                        <apex:outputPanel layout="none" rendered="{!greenBankLogoURL != ''}">
+                            <div class="centerAlign green-bank-logo pull-left">
+                                <img src="{!greenBankLogoURL}" />
+                            </div>
+                            <br/>
+                            <div class="page-header">
+                                <div class=" flex sm greenBankName">
+                                    <h1>{!solicitationRec.Solicitation_Number__c}:&nbsp;{!solicitationRec.Name}</h1>
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel layout="none" rendered="{!greenBankLogoURL == ''}">
+                            <div class=" content-header">
+                                <h1>{!solicitationRec.Name}</h1>
+                            </div>
+                        </apex:outputPanel>
+
+                        <div class="alert-container">
+                            <div class="alert alert-danger" id="validationErrorMessage1"> </div>
+                        </div>
+
+                        <div class=" content-body">
+                            <div class="row">
+                                <apex:outputPanel rendered="{!!solicitationRec.NY_Green_Bank_RFP__c}" layout="none">
+                                    <div class="form-group col-xs-12">
+                                        {!$Label.Proposal_Select_Proposal_Page_Help_Text}
+                                    </div>
+                                </apex:outputPanel>
+                            </div>
+                            <apex:outputPanel rendered="{!solicitationRec.Concept_Paper__c}">
+                                <div class="row">
+                                    <div class="form-group col-xs-12">
+                                        {!$Label.Proposal_Select_Proposal_Page_Concept_Paper_Table_Help_Text}
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-xs-12">
+                                        <table id="contactTable" class="table" cellspacing="0" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Action</th>
+                                                    <th>Primary Contact</th>
+                                                    <th>Proposal Title</th>
+                                                    <th>Round</th>
+                                                    <th>Proposal Budget</th>
+                                                    <th>Status</th>
+                                                    <th>Result</th>
+                                                    <th>Next Step</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                <apex:repeat value="{!conceptPaperList}" var="pro">
+                                                    <tr>
+                                                        <td>
+                                                            <apex:outputlink onclick="navigateToExistingProject('{!pro.projectRec.Id}'); return false;" rendered="{!(((!isConceptPaperDueDatePassed && !pro.isConceptPaperDueDatePassed_Project) || isExceptionalAccessProvided)
+                                                                                       && pro.projectRec.Projects__r.size == 0
+                                                                                       && ((solicitationRec.Solicitation_Type__c == 'Rolling Solicitation' && pro.projectRec.Status__c == 'Unsubmitted')
+                                                                                       || (pro.projectRec.Status__c == 'Unsubmitted' || pro.projectRec.Status__c == 'Submitted')
+                                                                                       ))}" target="_blank">
+                                                                Edit
+                                                            </apex:outputlink>
+                                                        </td>
+                                                        <td> {!pro.principalInvestigator} </td>
+                                                        <td> {!pro.projectRec.Name} </td>
+                                                        <td> {!pro.projectRec.Solicitation_Round__r.Name} </td>
+                                                        <td>
+                                                            <apex:outputField value="{!pro.projectRec.Proposed_Total_Cost__c}"
+                                                            /> </td>
+                                                        <td> {!pro.projectRec.Status__c} </td>
+                                                        <td> {!pro.projectRec.Concept_Paper_Result__c} </td>
+                                                        <td>
+                                                            <apex:outputlink onclick="checkForExistingProposal('{!pro.projectRec.Id}'); return false;" rendered="{!AND(((!isDueDatePassed && !pro.isDueDatePassed_Project) || isExceptionalAccessProvided),
+                                                                                       pro.projectRec.Concept_Paper_Result__c == 'Pass',
+                                                                                       pro.projectRec.Recommendation__c == 'Accepted',
+                                                                                       !pro.isAlreadySubmittedProposalOnCP
+                                                                                       )}">
+                                                                {!IF(pro.projectRec.Projects__r.size == 0,"Submit Proposal","Continue with Proposal")}
+                                                            </apex:outputlink>
+                                                            <apex:outputText rendered="{!pro.isAlreadySubmittedProposalOnCP}" value="Proposal Submitted" />
+                                                        </td>
+                                                    </tr>
+                                                </apex:repeat>
+                                                <apex:outputPanel rendered="{!conceptPaperList.size == 0}">
+                                                    <tr>
+                                                        <td colspan="8" class="text-center">No Concept Paper's record found. </td>
+                                                    </tr>
+                                                </apex:outputPanel>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+
+                            <div class="row">
+                                <div class="form-group col-xs-12">
+                                    {!$Label.Proposal_Select_Proposal_Page_Proposal_Table_Help_Text}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-xs-12">
+                                    <table id="contactTable" class="table" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Action</th>
+                                                <th>Primary Contact</th>
+                                                <th>Proposal Title</th>
+                                                <th>Round</th>
+                                                <th>Proposal Budget</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <apex:repeat value="{!proposalList}" var="pro">
+                                                <tr>
+                                                    <td>
+                                                        <apex:outputlink onclick="navigateToExistingProject('{!pro.projectRec.Id}'); return false;" rendered="{!(((!isDueDatePassed && !pro.isDueDatePassed_Project) || isExceptionalAccessProvided)
+                                                                                   && (    (solicitationRec.Solicitation_Type__c == 'Rolling Solicitation' && pro.projectRec.Status__c == 'Unsubmitted')
+                                                                                   || (pro.projectRec.Status__c == 'Unsubmitted' || pro.projectRec.Status__c == 'Submitted')
+                                                                                   )
+                                                                                   )}" target="_blank"> Edit </apex:outputlink>
+                                                    </td>
+                                                    <td> {!pro.principalInvestigator} </td>
+                                                    <td> {!pro.projectRec.Name} </td>
+                                                    <td> {!pro.projectRec.Solicitation_Round__r.Name} </td>
+                                                    <td>
+                                                        <apex:outputField value="{!pro.projectRec.Proposed_Total_Cost__c}" /> </td>
+                                                    <td> {!pro.projectRec.Status__c} </td>
+                                                </tr>
+                                            </apex:repeat>
+                                            <apex:outputPanel rendered="{!proposalList.size == 0}">
+                                                <tr>
+                                                    <td colspan="6" class="text-center">No record found. </td>
+                                                </tr>
+                                            </apex:outputPanel>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <apex:outputPanel Rendered="{!OR(AND(!solicitationRec.Concept_Paper__c, (!isDueDatePassed || isExceptionalAccessProvided)),
+                                                        AND(solicitationRec.Concept_Paper__c, (!isConceptPaperDueDatePassed || isExceptionalAccessProvided)))}">
+                                <div class="row">
+                                    <div class="form-group col-xs-3">
+                                        <div class="text-center">
+                                            <h2> OR </h2>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-xs-4">
+                                        <a href="javascript:void(0)" onclick="createNewProject({!solicitationRec.Concept_Paper__c});" class="br5 btn-bs ml_7 btn-lg btn-primary continueBtn">Create a new submission</a>
+                                    </div>
+                                    <div class="form-group col-xs-8">
+                                        <apex:outputPanel rendered="{!solicitationRec.NY_Green_Bank_RFP__c}" layout="none">
+
+                                        </apex:outputPanel>
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+                        </div>
+
+
+                        <apex:actionFunction name="createNewProject" action="{!createNewProject}" rerender="frm" immediate="true" status="status">
+                            <apex:param name="isConceptPaper" assignTo="{!isConceptPaper}" value="" />
+                        </apex:actionFunction>
+
+                        <apex:actionFunction name="navigateToExistingProject" action="{!navigateToExistingProject}" rerender="frm" immediate="true"
+                            status="status">
+                            <apex:param name="projectId" assignTo="{!projectId}" value="" />
+                        </apex:actionFunction>
+
+                        <apex:actionFunction name="checkForExistingProposal" action="{!checkForExistingProposal}" rerender="frm" immediate="true"
+                            status="status">
+                            <apex:param name="projectId" assignTo="{!projectId}" value="" />
+                        </apex:actionFunction>
+                    </div>
+                </div>
+                    </apex:form>
+                </div>
+            </div>
+        </apex:define>
+    </apex:composition>
+
+    <script>
+        $(document).ready(function () {
+            jQuery("html").attr("lang", "en");
+            var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+            link.type = 'image/x-icon';
+            link.rel = 'shortcut icon';
+            document.getElementsByTagName('head')[0].appendChild(link);
+        });
+    </script>
+
+</apex:page>

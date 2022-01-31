@@ -1,0 +1,11 @@
+<!--
+  Page Name: CORE_Solicitation_Document_Page
+  Description: Page to be used in CORE_Solicitation_Detail_Page
+               for creating download link for documents
+  Author/Date: Ashish Sharma/ May 20, 2017
+-->
+<apex:page controller="CORE_Solicitation_Document_Controller" showHeader="false">
+	<script>
+		window.parent.location.href='/servlet/servlet.FileDownload?file={!attachmentId}';
+	</script>
+</apex:page>

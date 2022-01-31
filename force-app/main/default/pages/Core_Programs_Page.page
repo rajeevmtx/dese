@@ -1,0 +1,48 @@
+<apex:page sidebar="false" controller="Core_Programs_Page_Controller" action="{!checkForPrograms}">
+    <style>
+        .text-justify {
+            text-align: justify;
+        }
+    </style>
+    <apex:composition template="CORE_APPINTAKE_Template_Page">
+        <apex:define name="body">
+            <div class="page">
+                <div class="application">
+
+                    <div class="content content-header">
+                        <h1>Choose a program</h1>
+                        <div class="description"></div>
+                    </div>
+                    <apex:outputPanel layout="block" id="alertOuter">
+                        <div class="alert-container">
+                            <apex:outputPanel rendered="{!hasError}">
+                                <div class="alert alert-danger reset-m">
+                                    <strong>{!errorMessage}</strong>
+                                </div>
+                            </apex:outputPanel>
+                        </div>
+                    </apex:outputPanel>
+                    <div class="content content-body">
+                        <apex:outputPanel rendered="{!!hasError}">
+                            <apex:repeat var="programId" value="{!programMap}">
+                                <a href="javascript:void(0)" onclick="setProject('{!programId}')" class="arrow-button">
+                                    <div class="body">
+                                        <div class="title">{!programMap[programId].Name}</div>
+                                        <div class="copy text-justify">{!programMap[programId].Description__c}</div>
+                                    </div>
+                                    <div class="control-button"><span class="icon-chevron-thin-right"></span></div>
+                                </a>
+                            </apex:repeat>
+                        </apex:outputPanel>
+
+                        <apex:form >
+                            <apex:actionFunction name="setProject" action="{!setProject}" rerender="alertOuter,frm" immediate="true" status="status">
+                                <apex:param value="" name="programId" assignTo="{!programId}" />
+                            </apex:actionFunction>
+                        </apex:form>
+                    </div>
+                </div>
+            </div>
+        </apex:define>
+    </apex:composition>
+</apex:page>

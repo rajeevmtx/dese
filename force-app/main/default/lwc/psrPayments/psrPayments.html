@@ -1,0 +1,356 @@
+<template>
+  <div class="slds-grid">
+    <div class="slds-col slds-size_1-of-2">
+      <div
+        class="slds-text-heading_small slds-text-title_bold slds-p-top_large"
+      >
+        Payment Fee: $65
+      </div>
+    </div>
+  </div>
+  <template if:false={checkpickvalue}>
+    <div class="slds-grid">
+      <div class="slds-col slds-size_1-of-2" style="margin-top: 30px;">
+        Will you make payment via money order or check by mailing?<span
+          class="slds-required"
+          >*</span
+        >
+      </div>
+      <div class="slds-col slds-size_1-of-2">
+        <div class="slds-m-around_small">
+          <lightning-combobox
+            name="Will you make payment via money order or check by mailing?"
+            label=""
+            value={value}
+            placeholder="None"
+            options={options}
+            onchange={handleChange}
+            disabled={disabledFields}
+          >
+          </lightning-combobox>
+        </div>
+      </div>
+    </div>
+  </template>
+  <template if:true={checkpickvalue}>
+    <div
+      class="slds-text-heading_small slds-text-title_bold slds-border_bottom slds-m-around_small"
+    >
+      You have made a payment through credit card
+    </div>
+  </template>
+  <template if:true={yesflag}>
+    <div class="addressForm1">
+      <div class="slds-p-bottom_large slds-p-left_small">
+        <lightning-record-edit-form
+          id="recordViewForm"
+          record-id={appId}
+          record-type-id=""
+          object-api-name="Application__c"
+          density="compact"
+        >
+          <lightning-messages></lightning-messages>
+          <div class="slds-grid">
+            <div class="slds-size_1-of-2">
+              <div class="slds-m-top_large">Money Order/Check Number</div>
+            </div>
+            <div
+              class="slds-size_1-of-2 slds-m-around_small"
+              style="width:47.2%;padding:5px;"
+            >
+              <lightning-input-field
+                field-name="Money_Order_Check_Number__c"
+                variant="label-hidden"
+                data-field="LastName"
+                disabled={disabledFields}
+              >
+              </lightning-input-field>
+            </div>
+          </div>
+        </lightning-record-edit-form>
+      </div>
+    </div>
+  </template>
+  <template if:true={noflag}>
+    <div class="addressForm">
+      <div
+        class="slds-text-heading_small slds-text-title_bold slds-border_bottom slds-p-top_large"
+      >
+        Card Holder Details
+      </div>
+      <div class="slds-grid slds-p-top_large">
+        <div
+          class="slds-form-element slds-form-element_horizontal slds-col slds-size_1-of-2"
+        >
+          <label class="slds-form-element__label" for="horizontal-input-id-05"
+            >Card Holder Name</label
+          >
+          <div class="slds-form-element__control">
+            <template if:true={disabledFields}>
+              <input
+                type="text"
+                id="horizontal-input-disabled-id-05"
+                placeholder="Name"
+                class="slds-input"
+                disabled={disabledFields}
+              />
+            </template>
+
+            <!--This will render if isFalse = false-->
+            <template if:false={disabledFields}>
+              <input
+                type="text"
+                id="horizontal-input-id-05"
+                placeholder="Name"
+                class="slds-input"
+              />
+            </template>
+          </div>
+        </div>
+        <div class="slds-col slds-size_1-of-2">
+          <div class="slds-form-element slds-form-element_horizontal">
+            <label class="slds-form-element__label" for="horizontal-input-id-04"
+              >Card Number</label
+            >
+            <div class="slds-form-element__control">
+              <template if:true={disabledFields}>
+                <input
+                  type="text"
+                  id="horizontal-input-disabled-id-04"
+                  placeholder="Card Number"
+                  class="slds-input"
+                  disabled={disabledFields}
+                />
+              </template>
+
+              <!--This will render if isFalse = false-->
+              <template if:false={disabledFields}>
+                <input
+                  type="text"
+                  id="horizontal-input-id-04"
+                  placeholder="Card Number"
+                  class="slds-input"
+                />
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slds-grid">
+        <div class="slds-form-element slds-form-element_horizontal slds-col slds-size_1-of-2">
+            <label
+              class="slds-form-element__label"
+              for="horizontal-input-id-02"
+              style="padding: 0 15px!important;"
+              >Expiration Date</label
+            >
+            <div class="slds-form-element__control">
+              <template if:true={disabledFields}>
+                <input
+                  type="text"
+                  id="horizontal-input-disabled-id-02"
+                  placeholder="MM/YY"
+                  class="slds-input"
+                  disabled={disabledFields}
+                />
+              </template>
+
+              <!--This will render if isFalse = false-->
+              <template if:false={disabledFields}>
+                <input
+                  type="text"
+                  id="horizontal-input-id-02"
+                  placeholder="MM/YY"
+                  class="slds-input"
+                />
+              </template>
+            </div>
+        </div>
+        <div class="slds-col slds-size_1-of-2">
+          <div class="slds-form-element slds-form-element_horizontal">
+            <label class="slds-form-element__label" for="horizontal-input-id-03"
+              >Security Code</label
+            >
+            <div class="slds-form-element__control">
+              <template if:true={disabledFields}>
+                <input
+                  type="text"
+                  id="horizontal-input-disabled-id-03"
+                  placeholder="Security Code"
+                  class="slds-input"
+                  disabled={disabledFields}
+                />
+              </template>
+
+              <!--This will render if isFalse = false-->
+              <template if:false={disabledFields}>
+                <input
+                  type="text"
+                  id="horizontal-input-id-03"
+                  placeholder="Security Code"
+                  class="slds-input"
+                />
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="slds-text-heading_small slds-text-title_bold slds-border_bottom slds-p-top_large"
+      >
+        Billing Information
+      </div>
+      <div class="slds-grid slds-p-top_large">
+        <div
+          class="slds-form-element slds-form-element_horizontal slds-col slds-size_1-of-2"
+        >
+          <label class="slds-form-element__label" for="horizontal-input-id-06"
+            >Street</label
+          >
+          <div class="slds-form-element__control">
+            <template if:true={disabledFields}>
+              <input
+                type="text"
+                id="horizontal-input-disabled-id-06"
+                placeholder="Street"
+                class="slds-input"
+                disabled={disabledFields}
+              />
+            </template>
+
+            <!--This will render if isFalse = false-->
+            <template if:false={disabledFields}>
+              <input
+                type="text"
+                id="horizontal-input-id-06"
+                placeholder="Street"
+                class="slds-input"
+              />
+            </template>
+          </div>
+        </div>
+        <div
+          class="slds-form-element slds-form-element_horizontal slds-col slds-size_1-of-2"
+        >
+          <label class="slds-form-element__label" for="horizontal-input-id-08"
+            >City</label
+          >
+          <div class="slds-form-element__control">
+            <template if:true={disabledFields}>
+              <input
+                type="text"
+                id="horizontal-input-disabled-id-08"
+                placeholder="City"
+                class="slds-input"
+                disabled={disabledFields}
+              />
+            </template>
+
+            <!--This will render if isFalse = false-->
+            <template if:false={disabledFields}>
+              <input
+                type="text"
+                id="horizontal-input-id-08"
+                placeholder="City"
+                class="slds-input"
+              />
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <div class="slds-grid">
+        <div
+          class="slds-form-element slds-form-element_horizontal slds-col slds-size_1-of-2"
+        >
+          <label class="slds-form-element__label" for="horizontal-input-id-09"
+            >State</label
+          >
+          <div class="slds-form-element__control">
+            <template if:true={disabledFields}>
+              <input
+                type="text"
+                id="horizontal-input-disabled-id-09"
+                placeholder="State"
+                class="slds-input"
+                disabled={disabledFields}
+              />
+            </template>
+
+            <!--This will render if isFalse = false-->
+            <template if:false={disabledFields}>
+              <input
+                type="text"
+                id="horizontal-input-id-09"
+                placeholder="State"
+                class="slds-input"
+              />
+            </template>
+          </div>
+        </div>
+        <div
+          class="slds-form-element slds-form-element_horizontal slds-col slds-size_1-of-2"
+        >
+          <label class="slds-form-element__label" for="horizontal-input-id-11"
+            >Zip code</label
+          >
+          <div class="slds-form-element__control">
+            <template if:true={disabledFields}>
+              <input
+                type="text"
+                id="horizontal-input-disabled-id-11"
+                placeholder="Zip code"
+                class="slds-input"
+                disabled={disabledFields}
+              />
+            </template>
+
+            <!--This will render if isFalse = false-->
+            <template if:false={disabledFields}>
+              <input
+                type="text"
+                id="horizontal-input-id-11"
+                placeholder="Zip code"
+                class="slds-input"
+              />
+            </template>
+          </div>
+        </div>
+      </div>
+      <div class="slds-grid">
+        <div
+          class="slds-form-element slds-form-element_horizontal slds-col slds-size_1-of-2"
+        >
+          <label class="slds-form-element__label" for="horizontal-input-id-13"
+            >Country</label
+          >
+          <div class="slds-form-element__control">
+            <template if:true={disabledFields}>
+              <select
+                class="slds-select"
+                name="optionSelect"
+                id="horizontal-input-disabled-id-13"
+                disabled={disabledFields}
+              >
+                <option value="USA">USA</option>
+                <option value="CANADA">CANADA</option>
+              </select>
+            </template>
+
+            <!--This will render if isFalse = false-->
+            <template if:false={disabledFields}>
+              <select
+                class="slds-select"
+                name="optionSelect"
+                id="horizontal-input-id-13"
+              >
+                <option value="USA">USA</option>
+                <option value="CANADA">CANADA</option>
+              </select>
+            </template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+</template>

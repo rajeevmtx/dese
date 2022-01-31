@@ -1,0 +1,22 @@
+.address-card{
+    height: 10rem;
+    border: 1px solid #ececec;
+    background: #f8fbff;
+    border-radius: 2px;
+    box-shadow: none;
+    overflow: hidden;
+    margin-top:2rem ;
+}
+.address-heading{
+    font-weight: bold;
+    font-size: 1.8rem;
+    font-family: Roboto,"Helvetica Neue",sans-serif;   
+}
+.address-col{
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    font-size: 1rem;
+    
+}
+.buttons-container {
+    float: right;
+}

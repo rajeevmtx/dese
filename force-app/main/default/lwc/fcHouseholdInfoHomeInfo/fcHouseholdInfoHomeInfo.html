@@ -1,0 +1,40 @@
+<template>
+    <div class="page-header">
+        <h1 class="page-title">Home Information</h1>
+    </div>
+    <div class="app-container slds-grid slds-gutters slds-wrap">
+        <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <c-fc-intake-form-help-text help-text={helpTextVerification}></c-fc-intake-form-help-text>
+        </div>
+    </div>
+    <div class="slds-form">
+
+        <lightning-radio-group name="radioGroup"
+        label="Do you own, rent or lease the residence?"
+        options={optionsforResidence}
+        value={valueForResidence}
+        required
+        onchange={handleChangeForResidence}
+        type="radio"></lightning-radio-group>
+
+        <lightning-input type="text" label="Language spoken at the home" placeholder="" required></lightning-input> 
+
+        <lightning-radio-group name="radioGroup"
+        label="Do you have any weapons at home?"
+        options={optionsforYesNo}
+        value={valueForWeapons}
+        required
+        onchange={handleChangeForWeapons}
+        type="radio"></lightning-radio-group>
+
+        <lightning-radio-group name="radioGroup"
+        label="Do you have a body of water anywhere on the property of your residence?"
+        options={optionsforYesNo}
+        value={valueForWater}
+        required
+        onchange={handleChangeForWater}
+        type="radio"></lightning-radio-group>
+
+    </div>
+
+</template>

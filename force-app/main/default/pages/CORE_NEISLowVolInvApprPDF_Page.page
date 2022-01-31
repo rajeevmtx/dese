@@ -1,0 +1,260 @@
+<apex:page showHeader="false" sidebar="false" StandardController="Project_Invoice__c" extensions="CORE_NEISLowVolInvApprPDF_Controller" title="{!Project_Invoice__c.Project__r.Program_Version__r.Name} Invoice">
+
+  <body>
+    <div style="margin:0 auto;max-width:1016px;font-family:sans-serif;font-size:14px;line-height:1.4">
+      <div style="text-align:center;padding:10px;font-size:150%;">Invoice</div>
+      <div style="margin-top:30px;">Program: {!Project_Invoice__c.Project__r.Program_Version__r.Program__r.Name}</div>
+      <div style="margin-top:30px;">Project: {!Project_Invoice__c.Project__r.Name}</div>
+ 
+      <table style="width:100%;font-size:13px;margin-top:20px;">
+        <thead>
+          <tr>
+            <th style="font-size:14px;text-transform:uppercase;padding:5px 0;width:300px;text-align:left;">Contractor Information</th>
+            <th style="font-size:14px;text-transform:uppercase;padding:5px 0;text-align:left;">Invoice Summary / Payment Information</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div>{!Project_Invoice__c.Company_Name__c}</div>
+              <div>{!supplierAccount.BillingStreet}</div>
+              <div>{!supplierAccount.BillingCity}</div>
+              <div>{!supplierAccount.County__c}</div>
+              <div>{!supplierAccount.BillingState}-{!supplierAccount.BillingPostalCode} <span style="font-weight: bold;color: red; Display: {!IF(AND(is_NYSUN_COMMERCIAL_INDUSTRAIL,Project_Invoice__c.Project__r.Payment_Assignment__c),'','none')} " >*</span></div> 
+              <div>Supplier Id:&nbsp;{!supplierAccount.Supplier_ID__c}</div>
+            </td>
+            <td>
+              <table>
+                <tr>
+                  <td width="160">Supplier Id:</td>
+                  <td>{!paymentSupplierId}</td>
+                </tr>
+                <tr>
+                  <td>NYSERDA Reference #:</td>
+                  <td>{!Project_Invoice__c.Name}</td>
+                </tr>
+                <tr>
+                  <td>Invoice Date:</td>
+                  <td><apex:outputField value="{!Project_Invoice__c.Invoice_Date__c}" /></td>
+                </tr>
+                <tr>
+                  <td>PO #:</td>
+                  <td>{!Project_Invoice__c.NEIS_PO_ID__c}</td>
+                </tr>
+                <tr style="display: {!IF(AND(is_NYSUN_COMMERCIAL_INDUSTRAIL,Project_Invoice__c.Project__r.Payment_Assignment__c),'','none')}">
+                  <td>Payee Name:</td>
+                  <td>
+                      <apex:outputText value="{!payeeName}"/>
+                  </td>
+                </tr>
+                <tr style="display: {!IF(OR(is_NYSUN_COMMERCIAL_INDUSTRAIL,is_GSHP),'','none')}">
+                  <td >
+                      Total NYSERDA Incentive Amount:
+                  </td>
+                  <td >
+                      <apex:outputField value="{!Project_Invoice__c.Project__r.Total_NYSERDA_Incentive_Amount_Scale2__c}"/>
+                  </td>
+                </tr>
+                 <tr style="display: {!IF(is_NYSUN_COMMERCIAL_INDUSTRAIL,'','none')}">
+                  <td>
+                      Disencumber Remaining Purchase Order Balance:
+                  </td>
+                  <td>
+                      <apex:outputField value="{!Project_Invoice__c.Disencumber_Remaining_PO_Balance__c}"/>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+
+          <td colspan="3">
+                <apex:outputPanel rendered="{! AND(Project_Invoice__c.Project__r.Payment_Assignment__c, is_NYSUN_COMMERCIAL_INDUSTRAIL )}">
+                    <div style="padding-top: 15px">
+                        <div style="padding: 15px;font-style: normal;font-size: 14px;background-color: #d9edf7;border-color: #bce8f1;color: #31708f;border: 1px solid transparent;border-radius: 0px;margin-bottom: 5px;">
+                            <span style="font-weight: bold;color: red;">* </span>
+                            The Billing address reflects the name of the Contractor who submitted the application. 
+                            If the Contractor assigned payments, the payment listed will be paid directly to the Payment Assignee indicated at time of Assignment
+                        </div>
+                    </div>
+                </apex:outputPanel>
+          </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="height:80px">&nbsp;</div>
+
+      <div style="text-transform:uppercase;font-weight:bold;font-size:14px;">Milestones</div>
+      <table style="width:100%;font-size:13px;margin-top:20px;border:1px solid #ddd;border-collapse:collapse;">
+        <thead>
+          <tr>
+            <th style="border:1px solid #aaa;padding:5px 10px;background:#ddd;text-align:left;">Name</th>
+            <th style="display: {!IF(is_NYSUN_COMMERCIAL_INDUSTRAIL,'yes','none')};border:1px solid #aaa;padding:5px 10px;background:#ddd;text-align:left;">
+                <div>Date Range</div>
+            </th>
+            <th style="border:1px solid #aaa;padding:5px 10px;background:#ddd;text-align:left;">Description</th> <!-- width:200px; -->
+
+                 <apex:outputPanel layout="none" rendered="{!AND(Project_Invoice__c.Project_Purchase_Order__c != null,NOT(Project_Invoice__c.Project__r.Program_Version__r.Skip_Invoice_Funding_Split__c))}">
+                   <apex:repeat value="{!invoiceItem.distributions}" var="distribution">
+                     <th style="border:1px solid #aaa;padding:5px 10px;background:#ddd;text-align:left;"><apex:outputText value="{!distribution.header}" escape="false" /><br/><br/>{!distribution.fund}</th>
+                   </apex:repeat>
+                 </apex:outputPanel>
+                 
+            
+
+
+            <th style="border:1px solid #aaa;padding:5px 10px;background:#ddd;width:100px;text-align:right;">
+                <div style="display: {!IF(is_NYSUN_COMMERCIAL_INDUSTRAIL,'inline','none')}">Invoice</div> Amount
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <apex:repeat value="{!lstInvoiceLines}" var="invLine">
+          <tr style="vertical-align:top;">
+            <td style="padding:5px 10px;border:1px solid #ddd;">{!invLine.Milestone__r.Name_with_Percentage__c}</td>
+            <td style="display: {!IF(is_NYSUN_COMMERCIAL_INDUSTRAIL,'yes','none')};padding:5px 10px;border:1px solid #ddd;">  <apex:outputField value="{!invLine.Date_Range_Start__c}"/>
+                &nbsp;-&nbsp;<apex:outputField value="{!invLine.Date_Range_End__c}"/></td>
+            <td style="padding:5px 10px;border:1px solid #ddd;">{!invLine.Milestone__r.Type__c}</td>
+
+            <apex:outputPanel layout="none" rendered="{!AND(Project_Invoice__c.Project_Purchase_Order__c != null,NOT(Project_Invoice__c.Project__r.Program_Version__r.Skip_Invoice_Funding_Split__c))}">
+              <apex:repeat value="{!invoiceItem.distributions}" var="distribution">
+                <td style="padding:5px 10px;border:1px solid #ddd;">
+                  <apex:outputField value="{!distribution.distribution.Amount__c}" />
+                </td>
+              </apex:repeat>
+            </apex:outputPanel>
+
+            <td style="padding:5px 10px;border:1px solid #ddd;text-align:right"><apex:outputField value="{!invLine.Amount__c}" /></td>
+          </tr>
+          </apex:repeat>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td style="border-left:1px solid white;border-bottom:1px solid white;" colspan="1"></td>
+
+            <apex:outputPanel layout="none" rendered="{!AND(Project_Invoice__c.Project_Purchase_Order__c != null,NOT(Project_Invoice__c.Project__r.Program_Version__r.Skip_Invoice_Funding_Split__c))}">
+              <apex:repeat value="{!invoiceItem.distributions}" var="distribution">
+                <td style="border-left:1px solid white;border-bottom:1px solid white;"> </td>
+              </apex:repeat>
+            </apex:outputPanel>
+            <td style="display: {!IF(is_NYSUN_COMMERCIAL_INDUSTRAIL,'yes','none')};border-left:1px solid white;border-bottom:1px solid white;"></td>
+            <td style="padding:5px 10px;background:#eee;text-align:right;font-weight:bold;line-height:1;border-right:1px solid #ddd;border-left:1px solid #ddd">Total Amount:</td>
+            <td style="padding:5px 10px;background:#eee;text-align:right"><apex:outputField value="{!Project_Invoice__c.Total_Amount_Due__c}" /></td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <hr class="page-divide" />
+
+      <apex:outputPanel rendered="{!isCommunityDG && OR((is_NYSUN_RESIDENTIAL_COMMERCIAL && (NOT(isFirstInvoice) || (lstInvoiceLines.size > 0 && lstInvoiceLines[0].Requesting__c == '100%'))), (is_NYSUN_COMMERCIAL_INDUSTRAIL && isFirstInvoice))}" layout="none">
+          <table style="width:100%;font-size:13px;margin-top:20px;">
+            <thead>
+              <tr>
+                <th style="font-size:14px;text-transform:uppercase;padding:5px 0;width:300px;text-align:left;">Miscellaneous</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <table>
+                  <!--    <tr>
+                      <td width="160" style="white-space: nowrap;">Residential: Number of Members:</td>
+                      <td><apex:outputField value="{!project.Number_of_Members__c}" /></td>
+                    </tr> 
+                    <tr>
+                      <td width="160" style="white-space: nowrap;">Residential: Distribution Percentage (%):</td>
+                      <td><apex:outputField value="{!project.Distribution_Percentage__c}" /></td>
+                    </tr> 
+                    <tr>
+                      <td style="white-space: nowrap;">Non-Residential: Number of Members:</td>
+                      <td><apex:outputField value="{!project.Non_Residential_Number_of_Members__c}" /></td>
+                    </tr>
+                    <tr>
+                      <td style="white-space: nowrap;">Non-Residential: Distribution Percentage (%):</td>
+                      <td><apex:outputField value="{!project.Non_Residential_Distribution_Percentage__c}" /></td>
+                    </tr> -->
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+      </apex:outputPanel>
+
+      <div style="height:50px">&nbsp;</div>
+
+      <div style="text-transform:uppercase;font-weight:bold;font-size:14px;">Description</div>
+      <table style="width:100%;font-size:13px;margin-top:20px">
+        <tbody>
+          <tr>
+            <td style="vertical-align:top;padding:0;width:150px">Invoice Notes</td>
+            <td style="vertical-align:top;padding:0;width:500px">{!Project_Invoice__c.Invoice_Notes__c}</td>
+            <td style="width:auto;"></td>
+          </tr>
+          <tr>
+            <td style="vertical-align:top;padding:0;width:150px; display:{!IF(Project_Invoice__c.Project__r.Payment_Assignment__c,'','none')};">Payee Notes</td>
+            <td style="vertical-align:top;padding:0;width:500px;display:{!IF(Project_Invoice__c.Project__r.Payment_Assignment__c,'','none')};">{!Project_Invoice__c.Payee_Notes__c}</td>
+            <td style="width:auto;"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="height:50px">&nbsp;</div>
+
+      <table style="width:100%;font-size:13px;margin-top:20px">
+        <tbody>
+          <tr>
+            <td style="width:auto;"></td>
+            <td style="vertical-align:top;padding:0;width:340px;">
+              <div style="text-transform:uppercase;font-weight:bold;font-size:14px;text-align:center;">Approval Information</div>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>
+              <table style="margin-top:20px;margin-left:auto;margin-right:auto;">
+                <tr>
+                  <td style="text-align:right;padding:3px 10px;">Date of approval:</td>
+                  <td style="padding:3px 10px;"><apex:outputField value="{!Project_Invoice__c.Approved_Date__c}" /></td>
+                </tr>
+                <tr>
+                  <td style="text-align:right;padding:3px 10px;">Approved By:</td>
+                  <td style="padding:3px 10px;">{!Project_Invoice__c.Approved_By__r.Name}</td>
+                </tr>
+                <tr>
+                  <td style="text-align:right;padding:3px 10px;">Title:</td>
+                  <td style="padding:3px 10px;">Project Manager</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="height:50px">&nbsp;</div>
+
+      <hr style="border-top:0;border-bottom:1px solid #ddd;margin:0 0 10px" />
+
+      <table style="width:100%;">
+        <tr>
+          <td style="padding:0 10px 0 0;width:160px">
+            <div style="text-transform:uppercase;font-weight:bold;font-size:14px;">Program Contact:</div>
+          </td>
+          <td>
+            <a href="mailto:{!programContactEmail}">{!programContactEmail}</a>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:0 10px 0 0;width:160px">
+            <div style="text-transform:uppercase;font-weight:bold;font-size:14px;">Deliverable Link:</div>
+          </td>
+          <td>
+            View&nbsp;<apex:outputLink style="color:blue" value="/{!Project_Invoice__c.Id}">Deliverables</apex:outputLink>&nbsp;associated to this invoice
+          </td>
+        </tr>
+      </table>
+
+    </div>
+
+  </body>
+</apex:page>

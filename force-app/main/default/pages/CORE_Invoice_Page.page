@@ -1,0 +1,623 @@
+<apex:page sidebar="false" tabStyle="Application__tab" language="en" standardController="Project_Invoice__c" extensions="CORE_Invoice_Extension" docType="html-5.0" >
+    <head>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
+
+
+        <!-- local CSS -->
+        <style>
+            .disabled{
+                pointer-events: none;
+            }
+
+            .project-selector{
+            margin: 5% 0 ;
+            }
+
+            .project-selector input, .project-selector input:focus{
+            font-size: 44px;
+            border: none;
+            outline: none;
+            width: 100%;
+            }
+
+            .textAreaStyle {
+                resize: none;
+                width: 100%;
+                height: 110%;
+            }
+
+            .page-header, h1{
+            transition: 1s;
+            -webkit-transition: 1s;
+            }
+
+            .nys-inv-card{
+            padding: 20px;
+            min-height: 290px;
+            margin-bottom: 10px;
+            }
+
+            .nys-inv-card.red{
+            background-color: #F5F5F5;
+            box-shadow: 0px 0px 5px #888;
+            transition: 0.1s;
+            -webkit-transition: 0.1s;
+            }
+
+            .nys-inv-card.red:hover{
+            box-shadow: 0px 0px 0px #888;
+            transition: 0.1s;
+            -webkit-transition: 0.1s;
+            }
+
+            .ui-autocomplete-loading {
+            background: white url("/img/loading32.gif") right center no-repeat;
+            }
+
+            dl{
+            margin-left: 0;
+            }
+
+            .dateOnlyInput input{
+            width: inherit;
+            }
+
+            .panel-heading .glyphicon, .panel-heading a{
+            color: #FFF;
+            }
+
+            .required{
+            display: none;
+            color: red!important;
+            margin-left: 5px;
+            }
+
+            .has-error .required{
+            display:inline;
+            }
+
+            .invoice .misc .item .name{
+            width: 180px;
+            font-weight: 600;
+            padding: 4px 0;
+            margin-right: 10px;
+            }
+
+            .invoice .item .name{
+                width: 140px;
+            }
+
+            .invoice .misc .item .result input{
+            display: inline;
+            }
+
+            .invoice .misc .section-body{
+            padding : 0 15px;
+            display: block;
+            }
+
+            .invoice .invoice-detail > div.edit{
+                width: 100%;
+            }
+
+            .table-default .action {
+                vertical-align: top;
+            }
+
+
+        </style>
+
+    </head>
+    <apex:composition template="CORE_APPINTAKE_Proposal_Template_Page">
+        <apex:define name="body">
+            <div class="page invoice">
+                <div id="projectTitleContainer" class="page-header {!IF(isNew && ISBLANK(project.Name),'project-selector','')}">
+                    <div class="content flex sm">
+
+                        <h1 class="{!IF(isNew && ISBLANK(project.Name),'hidden','')}">
+                            <apex:outputText value="{!project.Name}" rendered="{!invoice.Project__c == null}"/>
+                            <apex:outputField value="{!invoice.Project__c}" rendered="{!invoice.Project__c != null}"/>
+                        </h1>
+                        <div class="search {!IF(isNew && ISBLANK(project.Name),'','hidden')}">
+                            <label id="searchBox">Search for a project to begin</label>
+                            <input id="projectSelector" type="text" aria-labelledby="searchBox" aria-describedby="searchBox"/>
+                        </div>
+
+                        <div class="controls">
+                            <apex:outputPanel layout="none" rendered="{!NOT(isNew) && NOT(isLocked) && NOT(isEdit)}">
+                                <a id="editBtn" href="javascript:editAll()" class="btn-bs left btn-default">Edit</a>
+                            </apex:outputPanel>
+                            <a id="saveBtn" href="javascript:saveInvoice()" class="btn-bs btn-primary {!IF(isEdit,'','hidden')}">Save</a>
+                            <a id="cancelBtn" href="javascript:cancelChanges()" class="btn-bs left btn-default {!IF(isEdit,'','hidden')}">Cancel</a>
+                        </div><!-- /.controls -->
+                    </div>
+                </div>
+                <div class="application">
+                    <div class="alert-container">
+                        <div id="errorText" class="alert alert-danger hidden">
+                            Please fill the missing fields.
+                        </div>
+                        <apex:messages styleClass="alert alert alert-danger"/>
+                    </div>
+                    <div class="content content-body">
+                        <apex:form >
+                            <div id="dataContainer" class="{!IF(isNew && ISBLANK(project.Name),'hidden','')}">
+                                <div class="invoice-detail">
+                                    <apex:outputPanel layout="block" id="addressPanel" styleClass="address {!IF(isEdit,'edit','')}">
+                                        <div class="head">
+                                            <div class="title">Billing Address</div><!-- /.title -->
+                                        </div><!-- /.head -->
+                                        <apex:outputPanel rendered="{!NOT(isEdit)}" layout="block" styleClass="body">
+                                            <address>
+                                                <div><apex:outputField value="{!invoice.Company_Name__c}"/>
+                                                </div>
+                                                <div><apex:outputField value="{!invoice.Contact_Name__c}"/>
+                                                </div>
+                                                <div><apex:outputField value="{!invoice.Street__c}"/>
+                                                </div>
+                                                <div><apex:outputText value="{!invoice.City__c}, {!invoice.State__c} {!invoice.Zip__c}"/>
+                                                </div>
+                                            </address>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel rendered="{!isEdit}" layout="block" styleClass="body">
+                                            <div class="item">
+                                                <div class="name">Company Name</div>
+                                                <div class="result"><apex:inputField styleClass="form-control" value="{!invoice.Company_Name__c}" /></div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="name">Contact Name</div>
+                                                <div class="result"><apex:inputField styleClass="form-control" value="{!invoice.Contact_Name__c}" /></div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="name">Address</div>
+                                                <div class="result"><apex:inputField styleClass="form-control" value="{!invoice.Street__c}" /></div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="name">City</div>
+                                                <div class="result"><apex:inputField styleClass="form-control" value="{!invoice.City__c}" /></div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="name">State</div>
+                                                <div class="result"><apex:inputField styleClass="form-control" value="{!invoice.State__c}" /></div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="name">Zip</div>
+                                                <div class="result"><apex:inputText styleClass="form-control" value="{!invoice.Zip__c}" /></div>
+                                            </div>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+
+                                    <apex:outputPanel layout="block" id="summaryPanel" styleClass="summary {!IF(isEdit,'edit','')}">
+                                        <div class="head">
+                                            <div class="title">Invoice Summary</div><!-- /.title -->
+                                        </div><!-- /.head -->
+
+                                        <apex:outputPanel layout="block" styleClass="body" rendered="{!NOT(isEdit)}">
+                                            <div class="item">
+                                                <div class="name">Invoice #:</div>
+                                                <div class="result">
+                                                    <apex:outputField styleClass="form-control" value="{!invoice.Name}"/>
+                                                </div>
+                                            </div><!-- /.item -->
+                                            <div class="item">
+                                                <div class="name">Invoice Date:</div>
+                                                <div class="result">
+                                                    <apex:outputField value="{!invoice.Invoice_Date__c}"/>
+                                                </div>
+                                            </div><!-- /.item -->
+                                            <div class="item">
+                                                <div class="name">Invoice Status:</div>
+                                                <div class="result">
+                                                    <apex:outputField value="{!invoice.Status__c}"/>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="name">Payment Date :</div>
+                                                <div class="result">
+                                                    <apex:outputField value="{!invoice.Payment_Date__c}"/>
+                                                </div>
+                                            </div><!-- /.item -->
+                                        </apex:outputPanel>
+                                        <apex:outputPanel layout="block" styleClass="body" rendered="{!isEdit}">
+                                            <div class="item">
+                                                <div class="name">Invoice #:</div>
+                                                <div class="result">
+                                                    <apex:inputText styleClass="form-control" value="{!invoice.Name}" disabled="true"/>
+                                                </div>
+                                            </div>
+                                            <div class="item date">
+                                                <div class="name">Invoice Date:</div>
+                                                <div class="result">
+                                                    <apex:inputField styleClass="form-control sm" value="{!invoice.Invoice_Date__c}"/>
+                                                </div>
+                                            </div>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+
+                                    <apex:outputPanel id="totalAmountPanel" layout="block" styleClass="total">
+                                        <div class="head">
+                                            <div class="title">Amount Due</div><!-- /.title -->
+                                        </div><!-- /.head -->
+                                        <div class="result">$<apex:outputText id="totalAmountField" value="{!invoice.Total_Amount_Due__c}"/></div>
+                                    </apex:outputPanel>
+
+                                </div><!-- /.invoice-detail -->
+
+                                <hr class="page-divide" />
+
+                                <apex:outputPanel layout="block" styleClass="box-group" id="milestoneTable">
+                                    <div class="section-head">
+                                        <div class="title">Milestones</div>
+
+                                    </div>
+                                    <div class="section-body table-responsive">
+                                            <table class="table  table-striped table-default">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width:260px;">Name</th>
+                                                        <th>Description</th>
+                                                        <th >Amount</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <apex:variable value="{!0}" var="milestoneCount"/>
+                                                    <apex:repeat value="{!listOfMilestones}" var="milestone" >
+                                                        <tr>
+                                                            <td>
+                                                                <apex:outputField value="{!milestone.projectInvoiceLine.Milestone__r.Name}"/>
+                                                            </td>
+                                                            <td>
+                                                                <apex:outputField value="{!milestone.projectInvoiceLine.Description__c}"/>
+                                                            </td>
+                                                            <td>
+                                                                <apex:outputField value="{!milestone.projectInvoiceLine.Amount__c}"/>
+                                                            </td>
+                                                        </tr>
+                                                        <apex:variable value="{!milestoneCount + 1}" var="milestoneCount"/>
+                                                    </apex:repeat>
+                                                    <apex:repeat value="{!listOfMilestones}" var="milestone" rendered="{!OR(isEdit,isNew)}">
+                                                        <tr>
+                                                            <td>
+                                                                <div class="form-control disabled">
+                                                                    <apex:outputField value="{!milestone.projectInvoiceLine.Milestone__c}" styleClass="disabled"/>
+                                                                </div>
+                                                            </td>
+
+                                                            <td>
+                                                                <apex:inputTextarea rows="1" value="{!milestone.projectInvoiceLine.Description__c}" styleClass="form-control"/>
+                                                            </td>
+                                                            <td>
+                                                                <apex:inputField styleClass="form-control amount-field" value="{!milestone.projectInvoiceLine.Amount__c}" onkeyup="calculateAmount()"/>
+                                                            </td>
+                                                        </tr>
+                                                        <apex:variable value="{!milestoneCount + 1}" var="milestoneCount"/>
+                                                    </apex:repeat>
+                                                </tbody>
+                                            </table>
+                                    </div><!-- /.section-body -->
+                                </apex:outputPanel>
+
+                                <apex:outputPanel styleClass="box-group notes" layout="block" id="notesPanel">
+                                    <apex:actionRegion >
+                                        <div class="section-head">
+                                            <div class="title">Invoice Notes</div>
+                                        </div><!-- /.section-head -->
+                                        <div class="section-body">
+                                            <label class="sr-only" for="{!$component.notes}">Invoice Notes</label>
+                                            <apex:inputTextarea value="{!invoice.Invoice_Notes__c}" id="notes" styleClass="form-control" rows="2" disabled="{!AND(NOT(isEdit),NOT(isNEW))}"/>
+                                        </div>
+                                    </apex:actionRegion>
+                                </apex:outputPanel>
+
+                                <apex:outputPanel styleClass="box-group" rendered="{!NOT(isNew) && NOT(isEdit)}">
+                                        <apex:outputPanel id="documentPanel" layout="block" styleClass="attachments">
+                                            <apex:outputPanel layout="block" rendered="{!NOT(isEdit)}">
+                                                <div class="section-head">
+                                                    <div class="title">Deliverables (Documents)</div>
+                                                    <apex:outputPanel layout="none" styleClass="pull-right" rendered="{!AND(!isPortalUser, invoice.Status__c != 'Paid')}">
+                                                        <apex:outputPanel layout="none" rendered="{!!isEditMode}">
+                                                            <apex:outputPanel layout="none" rendered="{!invoice.Status__c != 'Approved'}">
+                                                                <a href="javascript:void(0)" class="btn-bs btn-link" onclick="setEditMode();">Edit</a>
+                                                            </apex:outputPanel>
+                                                            <apex:outputPanel layout="none" rendered="{!isRejectedDocumentPresent}">
+                                                                <a href="javascript:void(0)"  class="btn-bs btn-link sendEmailBtn" onclick="openCustomEmailPage();">Request for Information</a>
+                                                            </apex:outputPanel>
+                                                        </apex:outputPanel>
+
+                                                        <apex:outputPanel layout="none" rendered="{!isEditMode}">
+                                                            <a href="javascript:void(0)" class="btn-bs btn-link" onclick="saveProjectDocuments();">Save</a>
+                                                            <a href="javascript:void(0)" class="btn-bs btn-link" onclick="cancelChangesOfApprovalProcess();">Cancel</a>
+                                                        </apex:outputPanel>
+                                                    </apex:outputPanel>
+                                                </div>
+                                                <div class="section-body ">
+                                                    <div class="table-responsive">
+                                                    <table class="table  table-striped table-default">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Deliverable Name</th>
+                                                                <th>File Name</th>
+                                                                <th>Upload Date</th>
+                                                                <th>Action</th>
+                                                                <th>Approve / Reject</th>
+                                                                <th>Notes</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <apex:repeat value="{!mapOfIdAndDeliverables}" var="dId">
+                                                                <apex:outputPanel layout="none" rendered="{!mapOfIdAndDeliverables[dId].Project_Documents__r.size > 0}">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <apex:outputText value="{!mapOfIdAndDeliverables[dId].Name}"/>
+                                                                        </td>
+                                                                        <td>
+                                                                            <apex:outputText value="{!mapOfIdAndDocuments[mapOfIdAndDeliverables[dId].Project_Documents__r[0].Id].Attachments[0].Name}"/>
+                                                                        </td>
+                                                                        <td>
+                                                                            <apex:outputField value="{!mapOfIdAndDeliverables[dId].Project_Documents__r[0].CreatedDate}"/>
+                                                                        </td>
+                                                                        <td class="action">
+                                                                            <a target="_blank" href="/servlet/servlet.FileDownload?file={!mapOfIdAndDocuments[mapOfIdAndDeliverables[dId].Project_Documents__r[0].Id].Attachments[0].Id}">View</a>
+                                                                        </td>
+                                                                        <td class="check-set">
+                                                                            <apex:outputPanel layout="none" rendered="{!mapOfIdAndDeliverables[dId].Project_Documents__r.size > 0}">
+                                                                                <apex:outputPanel layout="none" rendered="{!!isPortalUser}">
+                                                                                    <apex:outputPanel layout="none" rendered="{!isEditMode}">
+                                                                                        <apex:selectRadio value="{!mapOfIdAndDeliverables[dId].Project_Documents__r[0].Status__c}">
+                                                                                            <apex:selectOptions value="{!status}"/>
+                                                                                        </apex:selectRadio>
+                                                                                    </apex:outputPanel>
+                                                                                    <apex:outputPanel layout="none" rendered="{!!isEditMode}">
+                                                                                        <apex:outputText value="{!mapOfIdAndDeliverables[dId].Project_Documents__r[0].Status__c}" />
+                                                                                    </apex:outputPanel>
+                                                                                </apex:outputPanel>
+
+                                                                                <apex:outputPanel layout="none" rendered="{!isPortalUser}">
+                                                                                    <apex:outputText value="{!mapOfIdAndDeliverables[dId].Project_Documents__r[0].Status__c}"/>
+                                                                                </apex:outputPanel>
+                                                                            </apex:outputPanel>
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <apex:outputPanel layout="none" rendered="{!mapOfIdAndDeliverables[dId].Project_Documents__r.size > 0}">
+                                                                                <apex:outputPanel layout="none" rendered="{!!isPortalUser}">
+                                                                                    <apex:outputPanel layout="none" rendered="{!isEditMode}">
+                                                                                        <apex:inputTextarea value="{!mapOfIdAndDeliverables[dId].Project_Documents__r[0].Notes__c}" styleClass="textAreaStyle"/>
+                                                                                    </apex:outputPanel>
+
+                                                                                    <apex:outputPanel layout="none" rendered="{!!isEditMode}">
+                                                                                        {!mapOfIdAndDeliverables[dId].Project_Documents__r[0].Notes__c}
+                                                                                    </apex:outputPanel>
+                                                                                </apex:outputPanel>
+
+                                                                                <apex:outputPanel layout="none" rendered="{!isPortalUser}">
+                                                                                    {!mapOfIdAndDeliverables[dId].Project_Documents__r[0].Notes__c}
+                                                                                </apex:outputPanel>
+                                                                            </apex:outputPanel>
+                                                                        </td>
+                                                                    </tr>
+                                                                </apex:outputPanel>
+                                                                <apex:outputPanel layout="none" rendered="{!mapOfIdAndDeliverables[dId].Project_Documents__r.size == 0 && mapOfDeliverableIdAndRequiredStatus[dId] == true}">
+                                                                    <tr class="warning">
+                                                                        <td><apex:outputText value="{!mapOfIdAndDeliverables[dId].Name}"/></td>
+                                                                        <td>
+                                                                            Visit the
+                                                                            <apex:actionRegion >
+                                                                                <apex:commandLink action="{!goToDocumentsPage}">Manage Deliverables</apex:commandLink>
+                                                                            </apex:actionRegion>
+                                                                            page to add this file.
+                                                                        </td>
+                                                                        <td>-</td>
+                                                                        <td>-</td>
+                                                                    </tr>
+                                                                </apex:outputPanel>
+                                                            </apex:repeat>
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td colspan="6">
+                                                                    <apex:actionRegion >
+                                                                        <apex:commandLink styleClass="folder-button" action="{!goToDocumentsPage}">Manage Deliverables</apex:commandLink>
+                                                                    </apex:actionRegion>
+                                                                </td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                    </div>
+                                                </div>
+                                            </apex:outputPanel>
+                                        </apex:outputPanel>
+                                </apex:outputPanel>
+
+                            </div>
+
+                            <apex:actionFunction name="addMilestone" action="{!addMilestone}" rerender="milestoneTable" status="status"/>
+                            <apex:actionFunction name="cancelChanges" action="{!cancelChanges}"  immediate="true"/>
+                            <apex:actionFunction name="saveInvoiceAction" action="{!saveInvoiceRecord}"/>
+                            <apex:actionFunction name="setEditMode" action="{!setEditMode}" rerender="documentPanel, footerPanel" status="status" />
+                            <apex:actionFunction name="saveProjectDocuments" action="{!saveProjectDocuments}" rerender="documentPanel, footerPanel" status="status"/>
+                            <apex:actionFunction name="cancelChangesOfApprovalProcess" action="{!cancelChangesOfApprovalProcess}" rerender="documentPanel" status="status"/>
+                            <apex:actionFunction name="setInvoiceStatus" action="{!setInvoiceStatus}" rerender="documentPanel, footerPanel" status="status">
+                                <apex:param name="invoiceStatus" assignTo="{!invoiceStatus}" value=""/>
+                            </apex:actionFunction>
+                            <apex:actionRegion >
+                                <apex:actionFunction name="editAll" action="{!editAll}" immediate="true"/>
+                                <apex:actionFunction name="removeMilestone" action="{!deleteMilestone}" immediate="true" reRender="milestoneTable,totalAmountPanel" status="status" oncomplete="calculateAmount(); manageUI();">
+                                    <apex:param name="index" assignTo="{!index}" value=""/>
+                                </apex:actionFunction>
+                                <apex:actionFunction name="submit" action="{!submitForReview}" immediate="true"/>
+                            </apex:actionRegion>
+                             <input type="submit" class="sr-only" role="button"/> <!-- Accessibility Fix  -->
+                        </apex:form>
+                    </div>
+                </div>
+
+            </div>
+            <apex:outputPanel id="footerPanel">
+                <footer>
+                    <div class="content flex controls">
+                        <apex:outputPanel layout="none" rendered="{!NOT(isNew) && NOT(isLocked) && NOT(OR(isEdit))}">
+                            <a id="submitBtn" href="javascript:submit()" class="btn-bs btn-primary btn-lg right">Submit</a>
+                        </apex:outputPanel>
+
+                        <apex:outputPanel layout="none" rendered="{!AND(isLocked, invoice.Status__c != 'Approved', invoice.Status__c != 'Rejected', !isEditMode, !isPortalUser)}">
+                            <apex:outputPanel rendered="{!invoice.Status__c == 'Pending Program Review'}">
+                                <a id="submitBtn" href="javascript:void(0)" onclick="openConfirmPopup('Rejected')" class="btn-bs btn-default btn-lg mr10">Reject</a>
+                            </apex:outputPanel>
+
+                            <apex:outputPanel rendered="{!isAllDeliverablesApproved}">
+                                <a id="submitBtn" href="javascript:void(0)" onclick="openConfirmPopup('Approved')" class="btn-bs btn-lg btn-primary">Approve</a>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                    </div>
+                </footer>
+            </apex:outputPanel>
+
+            <!-- CONFIRMATION POP UP -->
+            <div class="modal fade" id="confirmationPopUp" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <apex:outputPanel id="modalForm1">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">CONFIRM</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div id="confirmMessage" style="text-align: justify;">
+
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="row">
+                                    <span id="cancelBtnDiv">
+                                        <button id="okBtn" type="button" class="btn-bs btn-primary" onclick="confirmButtonAction();" data-dismiss="modal">OK</button>
+                                        <button id="cancelBtn1" type="button" class="btn-bs btn-default" data-dismiss="modal">Cancel</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+                    </div>
+                </div>
+            </div>
+        </apex:define>
+    </apex:composition>
+    <script>
+    $(function(){
+
+        $(function () {
+            $('[data-toggle="popover"]').popover();
+        });
+
+        if({!isNew && ISBLANK(project.Name)}){
+            var searchText = '';
+            $('#projectSelector').autocomplete({
+                minLength: 3,
+                source:function(request, response){
+                    searchText = request.term;
+                    // CORE_Invoice_Extension.fetchListOfProjects(request.term, function(result, event){
+                    //     if(event.status){
+                    //         response(result);
+                    //     }
+                    // });
+                },
+                focus: function( event, ui ) {
+                    $('#projectSelector').val( ui.item.Name );
+                    $('[id$=projectIdField]').val( ui.item.Id );
+                    return false;
+                },
+                select: function( event, ui ) {
+                    $('#projectSelector').val( ui.item.Name );
+                    $('[id$=projectIdField]').val( ui.item.Id );
+                    doAfterProjectSelection();
+                    return false;
+                }
+            }).data('ui-autocomplete')._renderItem = function( ul, item ) {
+                var listItem = "<a>" + item.Name;
+                listItem = listItem + "</a>";
+                return $( "<li></li>" )
+                .data( "item.autocomplete", item )
+                .append( listItem )
+                .appendTo( ul );
+            }
+        }else if({!isNew}){
+            $('#projectTitleContainer #saveBtn').removeClass('hidden');
+            calculateAmount();
+        }
+        manageUI();
+    });
+
+    function manageUI(){
+        $('.select2').select2();
+    }
+
+    function openCustomEmailPage() {
+        window.open('/apex/CustomEmail_Page?ProjectId={!project.Id}&IsMoreInfoRequired=true&InvoiceId={!$CurrentPage.parameters.id}', '_blank');
+    }
+
+    function doAfterProjectSelection(){
+        $('#projectTitleContainer h1').text( $('#projectTitleContainer input').val());
+        $('#projectTitleContainer h1').removeClass('hidden');
+        $('#projectTitleContainer .search').addClass('hidden');
+        $('#projectTitleContainer').removeClass('project-selector');
+
+    }
+
+    $("#projectTitleContainer").bind("transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+        $("#dataContainer").removeClass('hidden');
+        $('#projectTitleContainer #saveBtn').removeClass('hidden');
+    });
+
+    function saveInvoice(){
+        var hasMissingFields = false;
+        $(".doc-name").each(function(){
+            if($(this).val() == ''){
+                $(this).closest('tr').addClass('has-error');
+                hasMissingFields = true;
+            }
+        });
+        $(".doc-body").each(function(){
+            if($(this).get(0).files.length === 0){
+                $(this).closest('tr').addClass('has-error');
+                hasMissingFields = true;
+            }
+        });
+        if(hasMissingFields == false)
+            saveInvoiceAction();
+        else
+            $("#errorText").removeClass('hidden');
+    }
+
+    function calculateAmount(){
+        var totalAmountText = $("[id$=totalAmountField]").text();
+        console.log(totalAmountText);
+        var totalAmount = 0;
+        $('.amount-field').each(function(){
+            totalAmount += parseFloat(getAmount($(this).val()));
+        });
+        $("[id$=totalAmountField]").text('$'+totalAmount.toFixed(2));
+    }
+
+    function getAmount(amtToCheck){
+        var amt = 0;
+        if(amtToCheck != ''){
+            amt = amtToCheck.replace('$','').replace(',','')
+        }
+        return amt;
+    }
+
+    var invoiceStatus;
+    function openConfirmPopup(status) {
+        $('#confirmationPopUp').modal({
+            backdrop : 'static',
+            keyboard : false
+        });
+        $('#confirmMessage').html('Are you sure you want to <b>' + status + '</b> the Invoice?');
+        invoiceStatus = status;
+    }
+
+    function confirmButtonAction() {
+        setInvoiceStatus(invoiceStatus);
+    }
+    </script>
+
+</apex:page>

@@ -1,0 +1,18 @@
+<template>
+    <div class="slds-card__header">
+        <h6 class="text-500">Submit Application: {appNo}</h6>
+    </div>
+    <div class="slds-grid">
+        <div class="slds-col slds-size_1-of-1">
+            <lightning-formatted-rich-text value={submit_message}></lightning-formatted-rich-text>
+        </div>
+    </div>
+    <div class="slds-grid slds-p-top_large">
+        <div class="slds-col slds-size_1-of-1">
+            <lightning-input type="checkbox" name="input3"
+                label="I affirm that this self assessment application  is being submitted either by the licensee or with the permission of the licensee.  I understand that the act of submitting this transaction serves as an electronic signature."
+                onchange={handleCheckbox}>
+            </lightning-input>
+        </div>
+    </div>
+</template>

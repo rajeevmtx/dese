@@ -1,0 +1,222 @@
+<template>
+    <div class="subheader slds-m-top_large">
+        6.1 Part A - Improving Basic Programs (Fund Code 305)
+    </div>
+    <div class="table-header slds-m-top_small slds-m-bottom_small">
+        <div class="small-header">Title I Part A Districts</div>
+        <div class="resource-icon">
+            <img src={notebook} />
+            <div class="resources">
+                Resources
+            </div>
+        </div>
+    </div>
+    <div class=" instructions-section slds-box slds-m-bottom_medium">
+        <h3 class="instructions slds-m-bottom_medium">Program Purpose</h3>
+        <p class="instructions__data">To provide all children significant opportunity to receive a
+            fair, equitable, and high-quality education, and to close educational achievement gaps.
+        </p>
+    </div>
+    <p class="paragraph">
+        Describe those activities from each strategy/activity that will be funded in whole or in
+        part with Title I, Part A funds.
+    </p>
+    <div class="narrative-box">
+        <div class="box-header-small">
+            Initiative Name/Short Title
+        </div>
+        <div class="box-header-medium slds-m-bottom_large">
+            Sample title text here
+        </div>
+        <div class="box-header-small">
+            Strategies/Activities
+        </div>
+        <div class="box-header-medium slds-m-bottom_large">
+            Risus molestie amet, amet, at. Ac posuere nec proin sagittis. Nascetur eget ac risus
+            amet, est aliquam. Duis nunc vitae, in ultricies aliquam adipiscing arcu posuere.
+        </div>
+        <div class="box-header-small">
+            Briefly describe specific activities funded by Title I based on assessment of needs
+        </div>
+        <div class="describe-box slds-m-bottom_large">
+            <div class="slds-form-element">
+                <div class="slds-form-element__control">
+                    <textarea id="textarea-id-01" placeholder="Describe Here" class="slds-textarea"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="box-header-small">
+            Grades served by this activity
+        </div>
+        <div class="sample-box slds-m-bottom_large">
+            <lightning-input type="text" variant="label-hidden" placeholder="Sample text" label="Enter some text">
+            </lightning-input>
+        </div>
+        <div class="box-header-small">
+            What data prompted this activity? <i>(Select all that apply) </i>
+        </div>
+        <div class="sample-box slds-m-bottom_large">
+            <lightning-input type="text" variant="label-hidden" placeholder="" label="Enter some text">
+            </lightning-input>
+        </div>
+        <div class="multiselect">
+            <lightning-input type="text" variant="label-hidden" placeholder="Selected sample text 1"
+                label="Enter some text"></lightning-input><span class="close">
+                <lightning-icon icon-name="utility:close" alternative-text="close" title="Error">
+                </lightning-icon>
+            </span>
+
+            <lightning-input type="text" variant="label-hidden" placeholder="Sample text" label="Enter some text">
+            </lightning-input><span class="closed">
+                <lightning-icon icon-name="utility:close" alternative-text="close" title="Error">
+                </lightning-icon>
+            </span>
+        </div>
+
+        <div class="box-header-small">
+            What data will you use to determine progress and attainment of goals?
+        </div>
+        <div class="sample-box slds-m-bottom_large">
+            <lightning-input type="text" variant="label-hidden" placeholder="Sample text" label="Enter some text"> input
+            </lightning-input>
+        </div>
+        <div class="box-header-medium ">
+            Specify “Other”
+        </div>
+        <div class="describe-box">
+            <div class="slds-form-element">
+                <div class="slds-form-element__control">
+                    <textarea id="textarea-id-02" placeholder="Describe Here" class="slds-textarea"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="narrative-box slds-m-top_x-large">
+        <div class="describe-head slds-m-bottom_large">
+            <div class="describe-headings">
+                <div class="box-header-small">
+                    Initiative Name/Short Title
+                </div>
+                <div class="box-header-medium">
+                    Sample title text here
+                </div>
+            </div>
+            <div class="describe-btn">
+                <lightning-button variant="brand-outline" label="Describe" title="Primary action with lighter look"
+                    onclick={handleClick} class="slds-m-left_x-small button__white"></lightning-button>
+            </div>
+        </div>
+        <div class="box-header-small">
+            Initiative Name/Short Title
+        </div>
+        <div class="box-header-medium">
+            Risus molestie amet, amet, at. Ac posuere nec proin sagittis. Nascetur eget ac risus
+            amet, est aliquam. Duis nunc vitae, in ultricies aliquam adipiscing arcu posuere.
+        </div>
+    </div>
+    <div class="narrative-box slds-m-top_x-large">
+        <div class="describe-head slds-m-bottom_large">
+            <div class="describe-headings">
+                <div class="box-header-small">
+                    Initiative Name/Short Title
+                </div>
+                <div class="box-header-medium">
+                    Sample title text here
+                </div>
+            </div>
+            <div class="describe-btn">
+                <lightning-button variant="brand-outline" label="Describe" title="Primary action with lighter look"
+                    onclick={handleClick} class="slds-m-left_x-small button__white"></lightning-button>
+            </div>
+        </div>
+        <div class="box-header-small">
+            Initiative Name/Short Title
+        </div>
+        <div class="box-header-medium">
+            Risus molestie amet, amet, at. Ac posuere nec proin sagittis. Nascetur eget ac risus
+            amet, est aliquam. Duis nunc vitae, in ultricies aliquam adipiscing arcu posuere.
+        </div>
+
+    </div>
+    <div class="line slds-m-bottom_xx-large slds-m-top_xx-large"></div>
+    <div class="subheader slds-m-top_large">
+        6.1 Part D - Prevention and Intervention Programs for Children and Youth Who Are Neglected,
+        Delinquent or At Risk
+    </div>
+    <div class="table-header slds-m-top_small slds-m-bottom_small">
+        <div class="small-header">Title I, Part D Districts with residential facilities providing
+            services N or D children and youth </div>
+        <div class="resource-icon">
+            <img src={notebook} />
+            <div class="resources">
+                Resources
+            </div>
+        </div>
+    </div>
+    <div class=" instructions-section slds-box slds-m-bottom_medium">
+        <h3 class="instructions slds-m-bottom_medium">Program Purpose</h3>
+
+        <ol class="instructions__data list">
+            <li>To improve educational services for children and youth in local, tribal, and State
+                institutions for neglected or delinquent children and youth so that such children
+                and youth the opportunity to meet the same challenging State academic standards that
+                all children in the State are expected to meet.</li>
+            <li>To provide such children and youth with the services needed to make a successful
+                transition from institutionalization to further schooling or employment.</li>
+            <li> To prevent at-risk youth from dropping out of school, and to provide dropouts, and
+                children and youth returning from correctional facilities or institutions for
+                neglected or delinquent children and youth, with a support system to ensure their
+                continued education and the involvement of their families and communities.</li>
+        </ol>
+    </div>
+    <p class="paragraph">
+        Provide contact information for the residential facility or facilities in your school
+        district
+    </p>
+    <div class="narrative-box">
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col sample-box slds-size_1-of-2">
+                <lightning-input type="text" label="Name of the facility" placeholder="Sample Text">
+                </lightning-input>
+            </div>
+            <div class="slds-col sample-box  slds-size_1-of-2">
+                <lightning-input type="text" label="Name and title of contact" placeholder="Sample Text">
+                </lightning-input>
+            </div>
+        </div>
+        <div class="slds-grid slds-gutters slds-m-top_medium">
+            <div class="slds-col  sample-box slds-size_1-of-2">
+                <lightning-input type="text" label="Phone Number" placeholder="1234567890">
+                </lightning-input>
+            </div>
+            <div class="slds-col sample-box slds-size_1-of-2">
+                <lightning-input type="text" label="Email Address" placeholder="xyz@email.com">
+                </lightning-input>
+            </div>
+        </div>
+    </div>
+    <div class="add-btn">
+        <lightning-button label="Add New Contact" title="Download action" icon-name="utility:add"
+            class="slds-m-left_x-small"></lightning-button>
+    </div>
+
+    <p class="paragraph slds-m-top_x-large">
+        Select the documents that you have uploaded regarding any residential facility providing
+        services to neglected or delinquent children and youth in your district with this
+        application as an attachment in EdGrants
+        <i>(check all that apply)</i>
+    </p>
+    <lightning-checkbox-group name="Checkbox Group" options={options} value={value}>
+    </lightning-checkbox-group>
+    <p class="paragraph slds-m-top_x-large">
+        If you have not uploaded your formal agreement and/or budget, please explain.
+    </p>
+    <div class="describe-box slds-m-bottom_large">
+        <div class="slds-form-element">
+            <div class="slds-form-element__control">
+                <textarea id="textarea-id-03" placeholder="Describe Here" class="slds-textarea"></textarea>
+            </div>
+        </div>
+    </div>
+
+</template>

@@ -1,0 +1,12 @@
+/**
+ * Created by hardikranjan on 22/03/20.
+ */
+
+.label-custom {
+    font-weight: bold;
+    color: #333;
+}
+
+.radio-style {
+  width: 50% !important;
+}

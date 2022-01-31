@@ -1,0 +1,88 @@
+<template>
+    <!-- Spinner -->
+    <div class="backdrop" if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </div>
+    </div>
+
+    <!-- Heading -->
+    <div class="has-shadow slds-p-vertical_medium slds-m-bottom_medium heading_header_registration">
+        <div class="container d-flex justify-space-between">
+            <h1 class="app-title">{FC_Intake_Form_Internal}</h1>
+        </div>
+    </div> 
+
+    <div class="container">
+        <div class="app-container">
+            <!-- Flow Steps -->
+            <div class="app-sidebar">
+                <c-fc-intake-form-steps-internal current-step={currentStep} original-step={originalStep}>
+                </c-fc-intake-form-steps-internal>
+            </div>
+
+            <div class="app-content">
+                <!-- Error Message -->
+                <span if:true={erroMsg}>
+                    <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+                        <span class="slds-assistive-text">error</span>
+                        <h2>
+                            {erroMsg}
+                        </h2>
+                    </div>
+                </span>
+
+                <!-- Step-1: Varification Page -->
+                <div style={showChildInformation}>
+                    <c-fc-child-information></c-fc-child-information>
+
+                    <div class="controls">
+                        <lightning-button variant="brand" label="Next" onclick={navigateToAddressInformation}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                <!--Step-2: 2 Step Verification Page -->
+                <div style={showAddressInformation}>
+                    <c-fc-address-information></c-fc-address-information>
+
+                    <div class="controls">
+                        <lightning-button class="backButton" onclick={navigateToChildInformation} label="Back">
+                        </lightning-button>
+                        <lightning-button variant="brand" label="Next" onclick={navigateToAdditionalInformation}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                 <!--Step-3: 2 Step Verification Page -->
+                 <div style={showAdditionalInformation}>
+                    <c-fc-additional-information></c-fc-additional-information>
+
+                    <div class="controls">
+                        <lightning-button class="backButton" onclick={navigateToAddressInformation} label="Back">
+                        </lightning-button>
+                        <lightning-button variant="brand" label="Next" onclick={navigateToPartyInvolved}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                <!--Step-4: Contacts Page -->
+                <div style={showPartyInvolved}>
+                    <c-fc-party-involved case-id={caseId} wizard-data={wizardData}></c-fc-party-involved>
+
+                    <div class="controls">
+                        <lightning-button class="backButton" onclick={navigateToAdditionalInformation}
+                            label="Back">
+                        </lightning-button>
+                        <lightning-button variant="brand" label="Submit" onclick={saveRecord}></lightning-button>
+                    </div>
+                </div>
+
+                <!--Step-4: Thank You -->
+                <div style={isThankYou}>
+                    <c-fc-child-intake-thank-you></c-fc-child-intake-thank-you>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

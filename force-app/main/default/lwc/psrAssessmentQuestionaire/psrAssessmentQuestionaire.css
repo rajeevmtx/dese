@@ -1,0 +1,30 @@
+.horizontal {
+    display: flex !important;
+}
+.input-style{
+    font-weight: 100 !important;
+}
+.THIS .horizontal-radio .slds-radio {
+    float: left;
+    margin-right: 1rem;
+}
+.qast {
+    position: relative;
+}
+.qast:before {
+    content: attr(data-point) ".";
+    position: absolute;
+    left: -18px;
+}
+.THIS .slds-form-element__control {
+    display: flex;
+}
+p.slds-m-top_medium.qast {
+    margin-bottom: 1.5rem;
+}
+.hor-radio .slds-radio{
+    display: inline-block !important;
+  }
+  .THIS .hor-radio .slds-radio{
+    display: inline-block !important;
+  }

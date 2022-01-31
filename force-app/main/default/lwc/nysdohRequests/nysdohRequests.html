@@ -1,0 +1,65 @@
+<!--
+ - Created by arunm on 22-03-2020.
+ -->
+
+<!-- NYSDOH Demands -->
+<template>
+    <div class="backdrop" if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </div>
+    </div>
+    <c-nysdoh-sidebar selected-tab="PurchaseRequests" show-footer>
+        <div slot="body">
+            <div class="tab slds-m-around_large shadow-card">
+                <div class="container padding-bottom-container">
+                    <div class="slds-m-bottom_x-large doh-card-heading">
+                        <h1 class="section-title">Purchase Requests</h1>
+                    </div>
+                    <c-psr-help-text help-text={Portal_Work_Order_Help_Text}></c-psr-help-text>
+
+                    <div if:true={isHospital} class="license-grid">
+                        <lightning-button variant="Neutral" label="New" onclick={setupNewRequest}>
+                        </lightning-button>
+                    </div>
+
+                    <div class="slds-grid slds-wrap woTable">
+                        <table style="margin-top: 20px;" class="slds-table">
+                            <tr class="table_header_brand">
+                                <td if:false={isHospital}><b>Provider</b></td>
+                                <td><b>Item</b></td>
+                                <td><b>Type</b></td>
+                                <td><b>Status</b></td>
+                                <td><b>Quantity</b></td>
+                                <td if:false={isHospital}><b>Action</b></td>
+                            </tr>
+                            <template for:each={requests} for:item="item">
+                                <tr key={item.Id}>
+                                    <td if:false={isHospital}>{item.HospitalName}</td>
+                                    <td>{item.Item_Name__c}</td>
+                                    <td>{item.Type__c}</td>
+                                    <td>{item.Status__c}</td>
+                                    <td>{item.Quantity__c}</td>
+                                    <td if:false={isHospital}>
+                                        <lightning-button if:false={isHospital} variant="brand-outline" label="Make Bid" onclick={applyBid}
+                                                        data-request-id={item.Id} class="slds-m-left_x-small side_margin">
+                                        </lightning-button>
+                                        <!--<lightning-button variant="brand-outline" label="View Bids" onclick={viewBids}
+                                                        data-request-id={item.Id} class="slds-m-left_x-small">
+                                        </lightning-button>-->
+                                    </td>
+                                </tr>
+                            </template>
+                        </table>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </c-nysdoh-sidebar>
+
+    <c-nysdoh-bid if:true={isEditModalOpel} onclose={closeModal} request-id={requestId}></c-nysdoh-bid>
+    <c-nysdoh-request if:true={isNewRequestModalOpen} onclose={closeModal}></c-nysdoh-request>
+    <c-nysdoh-bids if:true={isViewBidsModalOpen} onclosemodal={closeModal} request-id={requestId}></c-nysdoh-bids>
+
+</template>

@@ -1,0 +1,1044 @@
+<apex:page controller="EEC_OwnershipAdministratorInfoController" docType="HTML-5.0" showheader="false" sidebar="false" standardStylesheets="true">
+    <title>EEC : Ownership</title>
+    <c:EEC_Header id="pageHeader" />
+    <style>
+        html {
+            font: 100%/1.5 "Salesforce Sans", Arial, sans-serif !important;
+            background: white !important;
+            color: #16325c !important;
+            -webkit-tap-highlight-color: transparent !important;
+        }
+        .button-container {
+            margin-top: 21px;
+            padding-left: 5px;
+        }
+        md-divider {
+            border-top-color: rgba(0, 0, 0, 0.12) !important;
+        }
+        .bPageBlock .requiredInput .requiredBlock {
+            background-color: #c00;
+            position: absolute;
+            left: -4px;
+            width: 3px;
+            top: 1px;
+            bottom: 1px;
+            top: 20px;
+            display: none;
+        }
+        .requiredInput2 {
+            margin-left: 0px;
+        }
+        .requiredInput1 {
+            margin-left: 0px;
+        }
+        .requiredInput,
+        md-input-container span {
+            -webkit-flex: 1 1 auto;
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+            -webkit-order: 2;
+            -ms-flex-order: 2;
+            order: 2;
+            display: block;
+            background: 0 0;
+            padding: 2px 2px 1px;
+            border-width: 0 0 1px;
+            line-height: 26px;
+            -ms-flex-preferred-size: 26px;
+            border-radius: 0;
+        }
+        .sr-item-row {
+            cursor: pointer;
+            padding: 10px;
+        }
+        .sr-item-row:hover {
+            background: rgba(225, 225, 225, 0.8);
+            cursor: pointer;
+        }
+        .top-level-label {
+            font-weight: 600;
+            margin-right: 3px;
+            line-height: 20px;
+            color: rgba(0, 0, 0, 0.54);
+        }
+        .inner-label {
+            color: black;
+            font-weight: normal;
+            line-height: initial;
+            white-space: nowrap;
+        }
+        .bPageBlock .requiredInput .requiredBlock {
+            background-color: #c00;
+            position: absolute;
+            left: -4px;
+            width: 3px;
+            top: 1px;
+            bottom: 1px;
+            top: 20px;
+            display: none;
+        }
+        .parsley-errors-list {
+            width: 100%;
+        }
+        .parsley-error {
+            border: 2px solid #c00;
+        }
+        .my_error_container {
+            position: absolute;
+            bottom: 90px;
+            width: 50%;
+        }
+        .errorMsg {
+            color: #d74c3b;
+        }
+        .message[class*='error'] {
+            background-color: #eee;
+            padding: 0 20px 10px;
+            margin-bottom: 25px;
+            border-radius: 3px;
+            -webkit-box-shadow: 0px 0px 5px 0px rgba(204, 0, 0, 0.4);
+            -moz-box-shadow: 0px 0px 5px 0px rgba(204, 0, 0, 0.4);
+            box-shadow: 0px 0px 5px 0px rgba(204, 0, 0, 0.4);
+        }
+        .message[class*='error'] .messageTable {
+            width: 100%;
+        }
+        .message[class*='error'] .messageText {
+            border-bottom: 1px solid grey;
+            height: 30px;
+        }
+        md-input-container {
+            padding-top: 15px;
+        }
+        .md-title,
+        .md-toolbar-tools {
+            margin-bottom: 15px;
+        }
+        md-input-container .input-label {
+            /*top: -50px;*/
+        }
+        md-input-container .input-label-date-picklist {
+            top: -25px;
+        }
+        .base-info {
+            margin-top: 10px;
+        }
+        .input-label {
+            color: rgba(0, 0, 0, 0.54);
+        }
+        .base-info md-content {
+            margin-bottom: 20px;
+        }
+        .provider-checkbox {
+            margin-top: -25px;
+            margin-left: -5px;
+            overflow: visible;
+        }
+        .radio-group .parsley-errors-list {
+            margin-top: 25px;
+            margin-left: -130px;
+            position: absolute;
+            width: 50%;
+        }
+        .radio-group .parsley-error {
+            border: 0px;
+        }
+        .new-address-live-at-address {
+            margin-top: 29px;
+        }
+        md-input-container:not(.md-input-invalid).md-input-has-value label {
+            transform: translate3d(0, 6px, 0) scale(1);
+        }
+        /* @see Angular Material - Input */
+        .requiredInput,
+        md-input-container span {
+            -webkit-flex: 1 1 auto;
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+            -webkit-order: 2;
+            -ms-flex-order: 2;
+            order: 2;
+            display: block;
+            background: 0 0;
+            padding: 2px 2px 1px;
+            border-width: 0 0 1px;
+            line-height: 26px;
+            -ms-flex-preferred-size: 26px;
+            border-radius: 0;
+        }
+        .requiredInput2 {
+            margin-left: 0px;
+        }
+        .other-checkbox {
+            padding-top: 20px;
+        }
+        input[type="radio"],
+        input[type="checkbox"] {
+            margin: 4px 7px 0;
+        }
+        .radio-group label {
+            font-weight: normal;
+        }
+        input[type="text"] {
+            width: 80%;
+            margin-bottom: 10px;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+        textarea.form-control {
+            width: 70%;
+            margin-bottom: 15px;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+        .navigation-buttons .md-button label {
+            white-space: normal;
+        }
+        .base-label {
+            color: rgba(0, 0, 0, 0.54);
+        }
+        md-input-container input,
+        md-input-container .md-input {
+            max-width: 200px;
+        }
+        .readonly-input {
+            border-bottom: none;
+            cursor: not-allowed;
+        }
+        .read-only-input {
+            cursor: not-allowed;
+            background: rgba(0, 0, 0, 0.54);
+        }
+        /* TODO: Remove this and use md-select with new Validation. */
+        select {
+            background: none;
+            border: none;
+            border-bottom: 1px solid #ddd;
+        }
+        .errorMsg {
+            color: red;
+        }
+        .requiredInput1 {
+            margin-left: 0px;
+        }
+        .city-outputfield {
+            outline: none;
+            text-decoration: none;
+        }
+        .top-level-label {
+            font-weight: 600;
+            margin-right: 5px;
+            line-height: 20px;
+            color: rgba(0, 0, 0, 0.54);
+        }
+        .helpText {
+            font-weight: 600;
+            margin-right: 5px;
+            line-height: 20px;
+            color: rgba(0, 0, 0, 0.54);
+            font-size: 16px;
+        }
+        @media only screen and (min-width: 0px) and (max-width: 959px) {
+            .navigation-buttons .md-button {
+                width: 100%;
+            }
+            .navigation-buttons md-content {
+                width: 100%;
+            }
+            md-input-container input {
+                max-width: none;
+            }
+        }
+        .base-info {
+            margin-bottom: 20px;
+        }
+        .transaction-info-row {
+            margin-left: 0px;
+        }
+        .reasonErrorMessage {
+            display: none;
+        }
+        .visible {
+            display: block !important;
+        }
+        .partnerErrorMessage {
+            display: none;
+            font-weight: bold;
+        }
+        thead {
+            background-color: white !important;
+        }
+        .table {
+            margin-top: 25px !important;
+            border-left: 0px !important;
+            border-right: 0px !important;
+        }
+        .modal-dialog {
+            width: 90%;
+        }
+        .status {
+            width: 80%;
+        }
+        .transacLink {
+            margin-top: 15px !important;
+        }
+        .transacAction {
+            align-items: center;
+            text-transform: uppercase;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        @media (min-width: 768px) {
+            .modal-xl {
+                width: 97%;
+                max-width: 1233px;
+            }
+        }
+        .row {
+            margin-top: 10px;
+        }
+        #errorMsg {
+            display: none;
+        }
+        .btn-pullLeft {
+            right: 30% !important;
+        }
+        .hideDiv {
+            display: none;
+        }
+        .alert-warning {
+            color: red;
+        }
+        .mtTop {
+            margin-top: 1%;
+        }
+        .modal-sm {
+            width: 50% !important;
+        }
+        .BRCRole select[size] {
+            width: 80% !important;
+        }
+        .dateFormat {
+            display: none;
+        }
+        .BlackStyle {
+            color: #0c0c0c !important;
+            text-decoration: none !important;
+        }
+        .helpOrb {
+            background-position: top right;
+        }
+        .helpOrbautomate {
+            width: 16px !important;
+            height: 16px !important;
+        }
+        .rendereDate {
+            display: none;
+        }
+        ul {
+            list-style: disc !important;
+        }
+        .brcNeeded {
+            width: 80% !important;
+        }
+        .multiSelectPicklistCell {
+            padding: 2px !important;
+        }
+        .contactRole select[multiple],
+        .contactRole select[size] {
+            width: 238px !important;
+            border: 1px solid #ccc !important;
+        }
+        .transaction-parsley-form {
+            margin-bottom: 9rem;
+        } 
+        .fix10ColumnWidth {
+            width: 10%;
+        }
+        .fix20ColumnWidth {
+            width: 20%;
+        }
+        .wordBreak {
+            white-space: normal;
+            word-break: break-word;
+        }
+    </style>
+    <c:eec_nav_bar id="navBar" providerId="{!licenseTransation.Provider__c}" accountName="{!licenseTransation.Provider__r.Name}"
+        rendered="{!loggedUser.UserType == 'PowerPartner' || loggedUser.UserType == 'PowerCustomerSuccess' 
+        || loggedUser.UserType == 'CspLitePortal' || loggedUser.UserType == 'CustomerSuccess'}"
+    />
+    <apex:outputPanel rendered="{!loggedUser.UserType == 'PowerPartner' || loggedUser.UserType == 'PowerCustomerSuccess' 
+    || loggedUser.UserType == 'CspLitePortal' || loggedUser.UserType == 'CustomerSuccess'}" layout="none">
+        <br/>
+    </apex:outputPanel>
+    <div layout-wrap="true" layout-lg="row" layout-gt-lg="row" layout="row" layout-padding="true"
+        layout-margin="true">
+        <apex:form styleClass="transaction-parsley-form col-lg-8 col-md-8 col-sm-12">
+            <apex:messages id="messages" />
+            <div>
+                <h3 class="md-display-1 header-display-name">{!applicationDisplayName}</h3>
+            </div>
+            <div>
+                <h4 class="step-name">Ownership / Administrator Information</h4>
+            </div>   
+            <div>
+                <h5 class="base-label trans-number">Application number: {!licenseTransation.Name}</h5>
+            </div>
+            <md-divider layout-align="center"></md-divider>
+            <apex:outputPanel id="Reviewers">
+                <apex:outputPanel rendered="{! licenseTransation.transactionRecordTypeDeveloperName__c != 'Background_Record_Check' 
+                    && licenseTransation.transactionRecordTypeDeveloperName__c != 'Contact_Management' 
+                    && licenseTransation.transactionRecordTypeDeveloperName__c != 'CBC_New_License_Application' 
+                    && licenseTransation.transactionRecordTypeDeveloperName__c != 'Summer_Camp_New_Application'
+                    && licenseTransation.transactionRecordTypeDeveloperName__c != 'Public_School_New_Funding_Application'
+                    && licenseTransation.transactionRecordTypeDeveloperName__c != 'Private_School_New_Funding_Application'
+                    && licenseTransation.transactionRecordTypeDeveloperName__c != 'Other_Eligible_Providers_New_Funding_Application'
+                    && licenseTransation.transactionRecordTypeDeveloperName__c != 'Licensee_Management'}">
+                    <div class="alert alert-danger hideDiv" id="errorMessage">
+                        Program Director contact information is missing.
+                    </div>
+                </apex:outputPanel>
+                <div class="alert alert-danger hideDiv" id="errorMessage1"></div>
+                <div class="alert alert-info" id="infomessage">
+                    <ul>
+                        <li>
+                            Please review all of the fields for each Contact including Name, Role, Email, and Effective date.
+                        </li>
+                        <li>
+                            If any of the data needs to be corrected, click the Edit link to the left of the Contact’s information.
+                        </li>
+                        <br />
+                        <br />
+                        <li>
+                            If a Contact listed as licensee is not the licensee at the program, you can modify and select your correct role (Licensee,
+                            Program Director, Executive Director, etc. or a combination of those).
+                        </li>
+                        <li>
+                            If a Contact’s role is licensee, their BRC Role should be licensee as well.
+                        </li>
+                        <li>
+                            If any of your active Contacts have a Role of “Director”, please change this to either “Program Director”, or “Executive
+                            Director”, as the role of “Director” is no longer a valid choice.
+                        </li>
+                        <li>
+                            If a Contact is listed more than once, please keep only one Contact for each person marked as active. All of an individual’s
+                            roles can be listed on that Contact. The duplicate contacts for that person should then be marked
+                            as Inactive.
+                        </li>
+                        <li>
+                            If a Contact no longer works at this program, please click the Edit link next to the Contact, remove the checkmark from the
+                            "Currently Active" checkbox, and enter a Term date (the date the Contact left the program).
+                        </li>
+                        <li>
+                            An email address must be unique to the user and not, for example, a general program email address.
+                        </li>
+                        <apex:outputPanel rendered="{!licenseTransation.transactionRecordTypeDeveloperName__c == 'Background_Record_Check'}" layout="none">
+                            <li>
+                                Please check off the “Send BRC” check box for the contact(s) for whom you are requesting a BRC form.
+                            </li>
+                        </apex:outputPanel>
+                    </ul>
+                </div>
+                <div class="transacLink">
+                    <span class="helpText">To add contacts, click the link below.</span>
+                    <br />
+                    <a href="javascript:resetMember();" Class="add-button transacAction">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i> Add a Contact
+                    </a>
+                </div>
+                <table id="contactTable" class="table table-striped" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th style="width: 100px;">Action</th>
+                            <apex:outputPanel rendered="{!licenseTransation.transactionRecordTypeDeveloperName__c == 'Background_Record_Check'}" layout="none">
+                                <th class="fix10ColumnWidth">Send BRC Form</th>
+                            </apex:outputPanel>
+                            <th class="fix20ColumnWidth">Name</th>
+                            <th class="fix10ColumnWidth">Role</th>
+                            <th class="fix10ColumnWidth">BRC Role</th>
+                            <apex:outputPanel layout="none" rendered="{!licenseTransation.providerRecordTypeDeveloperName__c == 'Large_Group' 
+                                    || licenseTransation.providerRecordTypeDeveloperName__c == 'Small_Group' }">
+                                <th class="fix10ColumnWidth">BRC ID</th>
+                            </apex:outputPanel>
+                            <th class="fix20ColumnWidth">Email</th>
+                            <th class="fix10ColumnWidth">Effective Date</th>
+                            <th class="fix10ColumnWidth">Term Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <apex:variable var="count" value="{!0}" />
+                        <apex:repeat value="{!transactionContactList}" var="transactionContact">
+                            <tr>
+                                <td style="width: 100px;">
+                                    <apex:outputPanel rendered="{!!isSubmitted}">
+                                        <!-- && (( transactionContact.transactionContact.BRC_Role__c == 'Licensee' 
+                                        && (licenseTransation.transactionRecordTypeDeveloperName__c == 'Licensee_Management'  
+                                        || licenseTransation.transactionRecordTypeDeveloperName__c == 'GSA_New_License') 
+                                        && (licenseTransation.providerRecordTypeDeveloperName__c == 'Large_Group'  
+                                        || licenseTransation.providerRecordTypeDeveloperName__c == 'Small_Group'))  
+                                        || (transactionContact.transactionContact.BRC_Role__c != 'Licensee' ))  -->
+                                        <a href="javascript:void(0);" onclick="getTransactionContactMember('{!transactionContact.transactionContact.Id}');">Edit</a>
+                                        <!--<apex:outputPanel rendered="{! IF(transactionContact.transactionContact.Contact__c == null,true,false )}">
+                                        |
+                                        <a href="javascript:void(0);" onclick="confirmDelete('{!transactionContact.transactionContact.Id}')" class="actionLink">Delete</a>
+                                    </apex:outputPanel> -->
+                                    </apex:outputPanel>
+                                </td>
+                                <apex:outputPanel rendered="{!licenseTransation.transactionRecordTypeDeveloperName__c == 'Background_Record_Check'}" layout="none">
+                                    <td class="wordBreak">
+                                        <apex:inputCheckbox value="{!transactionContact.needBrcForm}" disabled="{!IF(licenseTransation.Status__c == 'Submitted',true,false)}">
+                                            <apex:actionSupport action="{!updateTransactionContactBrcValue}" event="onchange" rerender="mainPanel" status="status">
+                                                <apex:param value="{!count}" name="transactionIndex" />
+                                            </apex:actionsupport>
+                                        </apex:inputCheckbox>
+                                    </td>
+                                </apex:outputPanel>
+                                <td class="wordBreak">{!transactionContact.transactionContact.First_Name__c} {!transactionContact.transactionContact.Last_Name__c}</td>
+                                <td class="wordBreak">{!transactionContact.transactionContact.Role__c}</td>
+                                <td class="wordBreak">{!transactionContact.transactionContact.BRC_Role__c}</td>
+                                <apex:outputPanel rendered="{!licenseTransation.providerRecordTypeDeveloperName__c == 'Large_Group' || licenseTransation.providerRecordTypeDeveloperName__c == 'Small_Group' }">
+                                    <td class="wordBreak">{!transactionContact.transactionContact.BRC_Id__c}</td>
+                                </apex:outputPanel>
+                                <td class="emailContact wordBreak"> {!transactionContact.transactionContact.Email__c}</td>
+                                <td class="wordBreak">
+                                    <apex:outputText value="{0, date, MM/dd/yy}">
+                                        <apex:param value="{!transactionContact.transactionContact.Start_Date__c}" />
+                                    </apex:outputText>
+                                </td>
+                                <td class="wordBreak">
+                                    <apex:outputText value="{0, date, MM/dd/yy}">
+                                        <apex:param value="{!transactionContact.transactionContact.End_Date__c}" />
+                                    </apex:outputText>
+                                </td>
+                            </tr>
+                            <apex:variable value="{!count+1}" var="count" />
+                        </apex:repeat>
+                    </tbody>
+                </table>
+            </apex:outputPanel>
+            <!-- Add/Edit Contact Pop Up -->
+            <apex:outputPanel id="patentPopupPanel">
+                <div class="modal fade" id="editModal" role="dialog" data-backdrop="static" data-keyboard="false">
+                    <div class="modal-dialog modal-md">
+                        <div class="modal-content">
+                            <apex:outputPanel id="modalForm">
+                                <apex:outputPanel id="modalForm112">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <h4 class="modal-title" id="editModalLabel">
+                                            {!IF(selectedTransactionContactId == null,'Add a Contact','Edit Contact')}
+                                        </h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="alert alert-danger" id="errorMsg"></div>
+                                        <div class="alert alert-danger" id="errorMsg1">
+                                            <apex:messages />
+                                        </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="flex-row">
+                                                        <label for="{!$component.role}"> Role
+                                                            <span class="required">&nbsp;* </span>
+                                                            &nbsp;</label>
+                                                        <a data-toggle="tooltip" data-placement="top" class="BlackStyle" title="Pick all roles that apply for each individual." data-html="true">
+                                                            <i class="fa fa-question-circle"></i>
+                                                        </a>
+                                                        <div class="field contactRole">
+                                                            <apex:inputField styleClass="role" onchange="checkForProgramDirectorRole();" value="{!transaContactObj.Role__c}" id="role"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6 mtTop">
+                                                    <!-- <apex:outputPanel layout="none" rendered="{!(((licenseTransation.transactionRecordTypeDeveloperName__c == 'Licensee_Management' 
+                                                                                                    || licenseTransation.transactionRecordTypeDeveloperName__c == 'GSA_New_License'
+                                                                                                    || licenseTransation.transactionRecordTypeDeveloperName__c == 'GSA_Change_of_Admin_Authority') 
+                                                                                                    && (licenseTransation.providerRecordTypeDeveloperName__c == 'Large_Group' 
+                                                                                                    || licenseTransation.providerRecordTypeDeveloperName__c == 'Small_Group')) 
+                                                                                                    || ((licenseTransation.providerRecordTypeDeveloperName__c != 'Large_Group' 
+                                                                                                    && licenseTransation.providerRecordTypeDeveloperName__c != 'Small_Group'
+                                                                                                    && licenseTransation.providerRecordTypeDeveloperName__c != 'Public_School'
+                                                                                                    && licenseTransation.providerRecordTypeDeveloperName__c != 'Private_School'
+                                                                                                    && licenseTransation.providerRecordTypeDeveloperName__c != 'Other_Eligible_Provider'))) }"> -->
+                                                        <div class="flex-row">
+                                                            <label> BRC Role </label>
+                                                            <div class="field BRCRole">
+                                                                <!-- <apex:inputField styleClass="form-control BRCRole" value="{!transaContactObj.BRC_Role__c}" id="brcRole" /> -->
+                                                                <apex:selectList styleClass="form-control" value="{!transaContactObj.BRC_Role__c}" size="1" id="brcRole">
+                                                                    <apex:selectOptions value="{!brcRoleOptions}" />
+                                                                </apex:selectList>
+                                                            </div>
+                                                        </div>
+                                                    <!-- </apex:outputPanel> -->
+                                                </div>
+                                                <div class="col-sm-6 mtTop">
+                                                    <div class="flex-row">
+                                                        <label for="{!$component.email}"> Email
+                                                            <span class="required">&nbsp;* </span>
+                                                            &nbsp;</label>
+                                                        <div class="field">
+                                                            <apex:inputField styleClass="form-control email" value="{!transaContactObj.Email__c}" id="email" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="flex-row">
+                                                        <label for="{!$component.fName}"> First Name
+                                                            <span class="required">&nbsp;* </span>
+                                                        </label>
+                                                        <div class="field">
+                                                            <apex:inputField styleClass="form-control fName" value="{!transaContactObj.First_Name__c}" id="fName" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="flex-row">
+                                                        <label for="{!$component.lName}"> Last Name
+                                                            <span class="required">&nbsp;* </span> &nbsp;</label>
+                                                        <div class="field">
+                                                            <apex:inputField styleClass="form-control lName" value="{!transaContactObj.Last_Name__c}" id="lName" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="flex-row">
+                                                        <label for="{!$Component.mName}"> Middle Name</label>
+                                                        <div class="field">
+                                                            <apex:inputField styleClass="form-control" value="{!transaContactObj.Middle_Initial__c}" id="mName" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <apex:outputPanel rendered="{!licenseTransation.transactionRecordTypeDeveloperName__c == 'GSA_New_License'
+                                                                    || licenseTransation.transactionRecordTypeDeveloperName__c == 'GSA_Renewal'
+                                                                    || licenseTransation.transactionRecordTypeDeveloperName__c == 'GSA_Move'
+                                                                    || licenseTransation.transactionRecordTypeDeveloperName__c == 'GSA_Temporary_Move'
+                                                                    || licenseTransation.transactionRecordTypeDeveloperName__c == 'GSA_Change_of_Admin_Authority'
+                                                                    || licenseTransation.transactionRecordTypeDeveloperName__c == 'GSA_License_Change'}">
+                                                    <div class="col-sm-6 hideDiv adminHourPanel">
+                                                        <div class="flex-row">
+                                                            <label for="{!$component.saHours}"> Scheduled Administrative Hours per Week : &nbsp;
+                                                                <span class="required">*
+                                                                </span>
+                                                            </label>
+                                                            <div class="field">
+                                                                <apex:inputField styleClass="form-control adminHour" html-maxlength="2" onKeyDown="isNumberOnly(event);" value="{!transaContactObj.Schedule_Administrative_Hours__c}"
+                                                                    html-data-parsley-required="true" id="saHours" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputPanel>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                </div>
+                                                <apex:outputPanel rendered="{!licenseTransation.transactionRecordTypeDeveloperName__c == 'GSA_New_License'
+                                                                    || licenseTransation.transactionRecordTypeDeveloperName__c == 'GSA_Renewal'
+                                                                    || licenseTransation.transactionRecordTypeDeveloperName__c == 'GSA_Move'
+                                                                    || licenseTransation.transactionRecordTypeDeveloperName__c == 'GSA_Temporary_Move'
+                                                                    || licenseTransation.transactionRecordTypeDeveloperName__c == 'GSA_Change_of_Admin_Authority'
+                                                                    || licenseTransation.transactionRecordTypeDeveloperName__c == 'GSA_License_Change'}">
+                                                    <div class="col-sm-6 teachingHourPanel hideDiv">
+                                                        <div class="flex-row">
+                                                            <label for="{!$component.stHours}"> Scheduled Teaching Hours per Week : &nbsp;
+                                                                <span class="required">*
+                                                                </span>
+                                                            </label>
+                                                            <div class="field">
+                                                                <apex:inputField styleClass="form-control TeachingHour" html-maxlength="2" onKeyDown="isNumberOnly(event);" value="{!transaContactObj.Schedule_Teaching_Hours__c}"
+                                                                    html-data-parsley-required="true" id="stHours" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputPanel>
+                                            </div>
+                                            <div class="row">
+                                                <div class="alert alert-info" style="width:98%;margin-left:15px;">
+                                                    <strong>Note!</strong> The purpose of the effective and term date fields is to
+                                                    capture when this individual became member. If this person is still an
+                                                    active contact, keep the checkbox checked. If you uncheck the checkbox,
+                                                    you are stating that this person is no longer active. As a result, the
+                                                    background record check (BRC) consent form notification will no longer
+                                                    be sent for this person.
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="flex-row">
+                                                        <label for="{!$component.sDate}">Effective Date
+                                                            <span class="required">&nbsp;* </span> &nbsp;</label>
+                                                        <a data-toggle="tooltip" data-placement="top" class="BlackStyle" title="This field captures the date since this person is active in this location."
+                                                            data-html="true">
+                                                            <i class="fa fa-question-circle"></i>
+                                                        </a>
+                                                        <div class="field">
+                                                            <apex:inputField styleClass="form-control sDate" value="{!transaContactObj.Start_Date__c}" html-data-provide="datepicker"
+                                                                id="sDate" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="flex-row rendereDate">
+                                                        <label for="{!$Component.eDate}">Term Date
+                                                            <apex:outputPanel rendered="{!transaContactObj.Status__c =='Inactive'}">
+                                                                <span class="required">&nbsp;* </span>
+                                                            </apex:outputPanel> &nbsp;</label>
+                                                        <a data-toggle="tooltip" data-placement="top" class="BlackStyle" title="If you fill out this field, it indicates that this person is no longer an active contact and will no longer receive BRC consent forms."
+                                                            data-html="true">
+                                                            <i class="fa fa-question-circle"></i>
+                                                        </a>
+                                                        <div class="field">
+                                                            <apex:inputField styleClass="form-control eDate" value="{!transaContactObj.End_Date__c}" html-data-provide="datepicker" id="eDate"
+                                                            />
+                                                        </div>
+                                                        <span class="required">
+                                                            If you fill out this field, it indicates that this person is no longer an active contact and will no longer receive BRC consent
+                                                            forms.
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="flex-row checkBox-flex-row">
+                                                        <apex:inputCheckbox styleClass="userOnPremise" onChange="userIsActive();" value="{!isUserOnPremise}" />
+                                                        <label for="{!$component.startDate}">Currently Active
+                                                        </label>
+                                                        <a data-toggle="tooltip" data-placement="top" class="BlackStyle" title="Check this box if this individual is a current active contact."
+                                                            data-html="true">
+                                                            <i class="fa fa-question-circle"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </apex:outputPanel>
+                                <div class="modal-footer">
+                                    <span id="cancelBtnDiv">
+                                        <button id="cancelBtn" type="button" role="button" class="md-button md-raised md-button md-default-theme" data-dismiss="modal">Close</button>
+                                    </span>
+                                    <span id="savingBtnDiv">
+                                        <button class="md-button md-raised md-button md-default-theme" id="savingBtn" role="button" disabled="disabled">
+                                            <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+                                            Saving...</button>
+                                    </span>
+                                    <span id="saveBtnDiv">
+                                        <button type="button" class="md-button md-raised md-eec save-btn" role="button" id="saveBtn" onclick="validateFields('{!transaContactObj.Id}'); return false;">Save Changes</button>
+                                    </span>
+                                </div>
+                            </apex:outputPanel>
+                        </div>
+                    </div>
+                </div>
+            </apex:outputPanel>
+            <!-- END : Contact Popup -->
+            <!-- CONFIRMATION POP UP -->
+            <div class="modal fade" id="confirmationPopUp" role="dialog">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <apex:outputPanel id="modalForm1">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">CONFIRM</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div id="confirmMessage" class="justifyText">
+                                </div>
+                                <br />
+                                <!--                                 <div class="form-group"> -->
+                                <!--                                     <label for="statusNote">Enter a reason:</label> -->
+                                <!--                                     <input type="text" id="statusNote" class="form-control" name="statusNote" maxlength="100"/> -->
+                                <!--                                 </div> -->
+                            </div>
+                            <div class="modal-footer">
+                                <div class="row">
+                                    <span id="cancelBtnDiv">
+                                        <button id="okBtn" type="button" role="button" class="md-button md-raised md-eec save-btn" onclick="confirmButtonAction();"
+                                            data-dismiss="modal">OK</button>
+                                        <button id="cancelBtn" type="button" role="button" class="md-button md-raised md-button md-default-theme" data-dismiss="modal">Cancel</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+                    </div>
+                </div>
+            </div>
+            <apex:actionFunction name="resetMember" action="{!resetMember}" rerender="modalForm" status="status" onComplete="openPopup();updateMultiPickList();">
+                <apex:param value="" name="selectedTransactionContactId" assignTo="{!selectedTransactionContactId}" />
+            </apex:actionFunction>
+            <apex:actionFunction name="getTransactionContactMember" action="{!getTransactionContactMember}" rerender="modalForm" status="status"
+                onComplete="openPopup();updateMultiPickList();ChangeTitle();">
+                <apex:param value="" name="selectedTransactionContactId" assignTo="{!selectedTransactionContactId}" />
+            </apex:actionFunction>
+            <apex:actionFunction name="saveTransactionContact" action="{!saveTransactionContact}" rerender="modalForm112" oncomplete="return false;"
+                status="status">
+            </apex:actionFunction>
+            <apex:actionFunction name="deleteTransactionContact" action="{!deleteTransactionContact}" rerender="frm" status="status"
+                oncomplete="return false;" immediate="true">
+                <apex:param value="" name="selectedTransactionContactId" assignTo="{!selectedTransactionContactId}" />
+            </apex:actionFunction>
+            <apex:actionFunction action="{!SaveAndNextOwnership}" name="SaveNext" status="status" />
+            <apex:actionFunction action="{!SaveAndPreviousOwnership}" name="SavePrevious" oncomplete="addMargin();" status="status">
+                <apex:param name="previousPage" assignTo="{!previousPageName}" value="" />
+            </apex:actionFunction>
+            <div class="row">
+                <md-divider layout-align="center"></md-divider>
+                <md-content class="navigation-buttons" layout="column" layout-lg="row" layout-align="space-between center" layout-gt-lg="row"
+                    layout-align-sm="center center" layout-align-md="center center">
+                    <apex:commandLink styleClass="md-button md-raised md-button md-default-theme" reRender="showMsg" value="Previous" action="{!SaveAndPreviousOwnership}"
+                        html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" status="status"
+                    />
+                    <apex:commandLink styleClass="md-button md-raised md-button md-default-theme btn-pullLeft" value="Close" action="{!closeAndreturnToHome}"
+                        html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" status="status"
+                    />
+                    <apex:commandLink styleClass="md-button md-raised md-eec save-btn" reRender="showMsg" value="Next" onClick="checkForProgramDirector();"
+                        html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" status="status"
+                    />
+                </md-content>
+                <md-divider layout-align="center"></md-divider>
+                <!--                     <md-content class="navigation-buttons" layout="column" layout-lg="row" layout-align="space-between center" layout-gt-lg="row" layout-align-sm="center center" layout-align-md="center center">     -->
+                <!--                         <apex:commandLink status="status" styleClass="md-button md-raised"   immediate="true" action="{!CancelTransaction}" value="Cancel {!formattedLicenseRecordTypeLabel} Transaction"  onclick="return confirm('Are you sure to cancel the transaction?');" html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true"/> -->
+                <!--                         <apex:commandLink status="status" styleClass="md-button md-raised" reRender="showMsg" onclick="if(!validateDates() || !validateReasonLeaving()){addMargin(); return false;}" value="{!saveAndReturnLabel}" action="{!SaveAndReturnOwnership}" html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true"/> -->
+                <!--                     </md-content>   -->
+            </div>
+        </apex:form>
+        <eec-wizard btn-progress-color="#fff" class="col-lg-3" flex="30" passed-btn-bg-color="#4CAF50" btn-bg-color="#FAFAFA" active-btn-bg-color="#0288D1"
+            hide="true" show-gt-md="true">
+            <c:EEC_Navigation current="Ownership and Administrator information" highest="{!licenseTransation.Highest_Reached_Step__c}"
+                recordTypeDeveloperName="{!licenseTransation.transactionRecordTypeDeveloperName__c}" providerRecordType="{!licenseTransation.providerRecordTypeDeveloperName__c}">
+            </c:EEC_Navigation>
+        </eec-wizard>
+    </div>
+    <c:eec_site_footer id="siteFooter" />
+    <script>
+        j$(document).ready(function () {
+            var currentTransContactId = '';
+            if ('{!isProgramContractorPresent}' == 'true') {
+                j$('#errorMessage').addClass('hideDiv');
+            } else {
+                j$('#errorMessage').removeClass('hideDiv');
+            }
+        });
+        function updateMultiPickList() {
+            j$(".role option").each(function (i) {
+                if('{!licenseTransation.Provider__r.Is_GSA__c}' == 'true' 
+                        && '{!licenseTransation.transactionRecordTypeDeveloperName__c}' != 'Licensee_Management'
+                        && '{!licenseTransation.transactionRecordTypeDeveloperName__c}' != 'GSA_New_License' 
+                        && j$(this).text() == 'Licensee') {
+                    j$(this).remove();
+                }
+            });
+            j$(".role").click();
+            checkForProgramDirectorRole();
+            j$('[data-toggle="tooltip"]').tooltip();
+        }
+        function doNavigate(previousPage, nextPage) {
+            if (nextPage != '') {
+                SaveNext();
+            } else if (previousPage != '') {
+                SavePrevious(previousPage);
+            }
+        }
+        function checkForProgramDirectorRole() {
+            if (j$(".role option:selected").length > 0) {
+                j$(".role option:selected").each(function () {
+                    if (j$(this).text().includes('Program Director') || j$(this).text().includes(
+                        'Site Coordinator') || j$(this).text().includes('Assistant Director')) {
+                        j$('.teachingHourPanel').removeClass('hideDiv');
+                        j$('.adminHourPanel').removeClass('hideDiv');
+                    } else {
+                        j$('.teachingHourPanel').addClass('hideDiv');
+                        j$('.adminHourPanel').addClass('hideDiv');
+                    }
+                });
+            }
+        }
+        function addMargin() {
+            j$(".required-input").addClass("required-input-with-error");
+        }
+        function checkForProgramDirector() {
+            var noOfMainContacts = '{!noOfMainContact}';
+            var emailAddress = j$('.emailContact');
+            var recordType = '{!licenseTransation.transactionRecordTypeDeveloperName__c}';
+            var noOfAdminDesigneePresentArray = JSON.parse('{!noOfAdminDesigneePresentString}');
+            if ('{!isProgramContractorPresent}' == 'false' && (recordType != 'Background_Record_Check' &&
+                recordType != 'Contact_Management' &&  recordType != 'Licensee_Management' &&
+                recordType != 'Public_School_New_Funding_Application' && recordType != 'Private_School_New_Funding_Application' &&
+                recordType != 'Summer_Camp_New_Application' && recordType != 'Other_Eligible_Providers_New_Funding_Application')) {
+                j$('#errorMessage').removeClass('hideDiv');
+                j$("html, body").animate({
+                    scrollTop: 0
+                }, 600);
+                return false;
+            } else if (noOfMainContacts < 1 && (recordType != 'Background_Record_Check' &&
+                recordType != 'Public_School_New_Funding_Application' && recordType != 'Private_School_New_Funding_Application' && recordType != 'Summer_Camp_New_Application' && recordType != 'Other_Eligible_Providers_New_Funding_Application' &&  recordType != 'Licensee_Management' )) {
+                j$('#errorMessage1').removeClass('hideDiv');
+                j$('#errorMessage1').html('<strong>Error!</strong> You Must assign Licensee role to one contact record.');
+                j$("html, body").animate({
+                    scrollTop: 0
+                }, 600);
+                j$('#errorMessage1').show();
+                return false;
+            } else if ('{!noMainContactBrcRolePresent}' < 1 && recordType != 'Background_Record_Check' &&
+                recordType != 'Contact_Management' &&
+                recordType != 'Public_School_New_Funding_Application' && recordType != 'Private_School_New_Funding_Application'
+                && recordType != 'Summer_Camp_New_Application' && recordType != 'Other_Eligible_Providers_New_Funding_Application') {
+                j$('#errorMessage1').removeClass('hideDiv');
+                j$('#errorMessage1').html('<strong>Error!</strong> You must assign Licensee BRC role to at least one contact record.');
+                j$("html, body").animate({
+                    scrollTop: 0
+                }, 600);
+                j$('#errorMessage1').show();
+                return false;
+            } else if (noOfAdminDesigneePresentArray.length < 1 && (recordType == 'Public_School_New_Funding_Application'
+                || recordType == 'Other_Eligible_Providers_New_Funding_Application' || recordType == 'Private_School_New_Funding_Application'
+                || recordType == 'Summer_Camp_New_Application')) {
+                j$('#errorMessage1').removeClass('hideDiv');
+                j$('#errorMessage1').html('<strong>Error!</strong> You must assign Designated Administrator role to at least one contact record.'
+                );
+                j$("html, body").animate({
+                    scrollTop: 0
+                }, 600);
+                j$('#errorMessage1').show();
+                return false;
+            } else if (('{!licenseTransation.providerRecordTypeDeveloperName__c}' == 'Private_School'
+                || '{!licenseTransation.providerRecordTypeDeveloperName__c}' == 'Public_School'
+                || '{!licenseTransation.providerRecordTypeDeveloperName__c}' == 'Other_Eligible_Provider')
+                && noOfAdminDesigneePresentArray.length > 1) {
+                j$('#errorMessage1').removeClass('hideDiv');
+                j$('#errorMessage1').html('<strong>Error!</strong> You are only allowed to add one Designated Administrator. Please select a different role.'
+                );
+                j$("html, body").animate({
+                    scrollTop: 0
+                }, 600);
+                j$('#errorMessage1').show();
+                return false;
+            } else {
+                j$('#errorMessage').addClass('hideDiv');
+                j$('#errorMessage1').addClass('hideDiv');
+                SaveNext();
+            }
+        }
+        function openPopup() {
+            j$('#errorMsg1').hide();
+            j$('#savingBtnDiv').hide();
+            j$('#editModal').modal('show');
+            j$(document).on('mouseover', '[data-toggle="popover"]', function () {
+                $(this).popover('show');
+            });
+            userIsActive();
+        }
+        function validateFields(transactionContactId) {
+            j$('#errorMsg1').hide();
+            var firstName = j$('.fName').val();
+            var lastName = j$('.lName').val();
+            var email = j$('.email').val();
+            var status = j$('.status').val();
+            var startdate = j$('.sDate').val();
+            var role = j$('[id$="role"]').val()
+            var BRCRole = j$('[id$="brcRole"]').val()
+            var adminHour = j$(".adminHour").val();
+            var TeachingHour = j$(".TeachingHour").val();
+            var brcNeeded = j$(".brcNeeded").val();
+            var recordTypeName = "{!licenseTransation.transactionRecordTypeDeveloperName__c}";
+            var noOfAdminDesigneePresentArray = JSON.parse('{!noOfAdminDesigneePresentString}');
+            var dt = $j(".sDate").datepicker("getDate");
+            if ((role == null || role == '' || role == undefined)) {
+                j$('#errorMsg').html('<strong>Error!</strong> Role: You must select a value.');
+                j$('#errorMsg').show();
+                return false;
+            } else if (email == null || email == '' || email == undefined) {
+                j$('#errorMsg').html('<strong>Error!</strong> Email: You must enter a value.');
+                j$('#errorMsg').show();
+                return false;
+            } else if (email != null && email != '' && isValidEmailAddress(email) == false) {
+                j$('#errorMsg').html('<strong>Error!</strong> Email: Please enter a valid email address.');
+                j$('#errorMsg').show();
+                return false;
+            } else if (firstName == null || firstName == '' || firstName == undefined) {
+                j$('#errorMsg').html('<strong>Error!</strong> First Name: You must enter a value.');
+                j$('#errorMsg').show();
+                return false;
+            } else if (recordTypeName != 'Contact_Management' && (startdate == null || startdate == '' ||
+                startdate == undefined)) {
+                j$('#errorMsg').html('<strong>Error!</strong> Effective Date: You must enter a value.');
+                j$('#errorMsg').show();
+                return false;
+            } else if (lastName == null || lastName == '' || lastName == undefined) {
+                j$('#errorMsg').show();
+                return false;
+            } else if (dt == null || dt == undefined || dt == '') {
+                j$('#errorMsg').show(); 
+                return false;
+            } else if (('{!licenseTransation.providerRecordTypeDeveloperName__c}' == 'Private_School'
+                || '{!licenseTransation.providerRecordTypeDeveloperName__c}' == 'Public_School'
+                || '{!licenseTransation.providerRecordTypeDeveloperName__c}' == 'Other_Eligible_Provider')
+                && noOfAdminDesigneePresentArray.length >= 1
+                && noOfAdminDesigneePresentArray.includes(transactionContactId) == false
+                && role != null && role != '' && role != undefined
+                && role.includes('Designated Administrator')) {
+                j$('#errorMsg').removeClass('hideDiv');
+                j$('#errorMsg').html('<strong>Error!</strong> You are only allowed to add one Designated Administrator. Please select a different role.');
+                j$('#errorMsg').show();
+                return false;
+            } /* else if(recordTypeName == 'Licensee_Management' 
+                    && ((role.includes('Licensee') && BRCRole != 'Licensee')
+                    || (BRCRole == 'Licensee' && !role.includes('Licensee')))) {
+                j$('#errorMsg').removeClass('hideDiv');
+                j$('#errorMsg').html('<strong>Error!</strong> Role and Brc Role must be same for the Licensee Management transaction.');
+                j$('#errorMsg').show();
+            } */ else {
+                j$('#saveBtnDiv, #cancelBtnDiv').show();
+                saveTransactionContact();
+            }
+        }
+        function isNumberOnly(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (evt.shiftKey) {
+                evt.preventDefault();
+                return false;
+            }
+            if ((charCode > 47 && charCode < 58) || (charCode >= 96 && charCode <= 105) || charCode == 8 ||
+                charCode == 9 || (charCode >= 37 && charCode <= 40)) {
+                return true;
+            } else {
+                evt.preventDefault();
+                return false;
+            }
+        }
+        function isValidEmailAddress(emailAddress) {
+            var pattern =
+                /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+            return pattern.test(emailAddress);
+        }
+        function ChangeTitle() {
+            $('.modal-title').text('Edit Product');
+        }
+        function confirmDelete(contactId) {
+            j$('#confirmationPopUp').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+            j$('#confirmMessage').html('Are you sure you want to delete the member?');
+            currentTransContactId = contactId;
+        }
+        function confirmButtonAction() {
+            deleteTransactionContact(currentTransContactId);
+        }
+        function closePopup() {
+            j$('#editModal').modal('hide');
+        }
+        function userIsActive() {
+            var isHouseholfmemberOnPremise = j$('.userOnPremise').prop('checked');
+            var enddate = j$('.eDate').val();
+            if (isHouseholfmemberOnPremise == false || (enddate != null && enddate != '')) {
+                j$('.rendereDate').show();
+            } else {
+                j$('.rendereDate').hide();
+            }
+        }
+    </script>
+</apex:page>

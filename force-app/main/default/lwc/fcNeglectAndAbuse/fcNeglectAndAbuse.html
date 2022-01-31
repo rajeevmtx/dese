@@ -1,0 +1,67 @@
+<template>
+    <div class="app-container slds-grid slds-gutters slds-wrap">
+        <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <c-fc-intake-form-help-text help-text={helpTextVerification}></c-fc-intake-form-help-text>
+        </div>
+        <div class="slds-form slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <!-- <lightning-input type="text" autocomplete="none" label="Signs of physical abuse" maxlength=255
+                         onblur={handleInput} name="streetaddressline1" class="streetaddressline1" style="width: 100%;" required>
+                    </lightning-input> -->
+                    <c-fc-multi-select-dropdown picklist-label="Signs of Physical Abuse" style="width: 100%;"
+                        onabusepagedata={handleIncomingData} key-now="signsPhysicalAbuse"
+                        abuse-page-data={abusePageData} past-states={signsPhysicalAbuse}>
+                    </c-fc-multi-select-dropdown>
+                </div>
+            </div>
+
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <!-- <lightning-input type="text" autocomplete="none" label="Street Address Line 2" maxlength=255 onblur={handleInput} name="streetaddressline2" class="streetaddressline2"  style="width: 100%;">
+                    </lightning-input> -->
+                    <c-fc-multi-select-dropdown picklist-label="Signs of Emotional Injury" style="width: 100%;"
+                        onabusepagedata={handleIncomingData} key-now="signsEmotionalInjury"
+                        abuse-page-data={abusePageData} past-states={signsEmotionalInjury}></c-fc-multi-select-dropdown>
+
+                </div>
+            </div>
+
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <!-- <lightning-input type="text" autocomplete="none" label="City" maxlength=255 required
+                        onblur={handleInput}  message-when-pattern-mismatch={cityValidation}
+                        pattern="^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$"
+                        name="city" class="city" style="width: 100%;">
+                    </lightning-input> -->
+                    <c-fc-multi-select-dropdown picklist-label="Signs of Sexual Abuse" style="width: 100%;"
+                        onabusepagedata={handleIncomingData} key-now="signsSexualAbuse" abuse-page-data={abusePageData}
+                        past-states={signsSexualAbuse}>
+                    </c-fc-multi-select-dropdown>
+
+                </div>
+            </div>
+
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <!-- <lightning-input name="state" class="state" label="State" required
+                    onchange={handleInput} value="" style="width: 100%;"></lightning-input> -->
+                    <c-fc-multi-select-dropdown picklist-label="Signs of Neglect" style="width: 100%;"
+                        onabusepagedata={handleIncomingData} key-now="singsNeglect" abuse-page-data={abusePageData}
+                        past-states={singsNeglect}>
+                    </c-fc-multi-select-dropdown>
+
+                </div>
+            </div>
+
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-textarea style="width: 100%;" type="text" class="zipcode" autocomplete="none"
+                        onchange={handleDescription} data-field="description" label="Description">
+                    </lightning-textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

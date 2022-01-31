@@ -1,0 +1,63 @@
+<template>
+    <template if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+    </template>
+    <div class="slds-grid slds-wrap">
+        <div class="slds-col slds-size_1-of-1 page-header">
+            <h1 class="page-title">Documents</h1>
+        </div>
+        <div class="slds-col slds-size_1-of-1 slds-card__header">
+            <c-fc-intake-form-help-text help-text={helpText}></c-fc-intake-form-help-text>
+        </div>
+        <div class="slds-col slds-size_1-of-1">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="DOCUMENT NAME">DOCUMENT NAME</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="UPLOAD DOC">UPLOAD DOC</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="STATUS">STATUS</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="ADD/UPDATE DOCUMENT">ADD/UPDATE DOCUMENT</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={uploadedFiles} for:item="files" for:index="index">
+    
+                        <tr key={files.documentId} class="slds-hint-parent">
+                            <th data-label="DOCUMENT NAME" scope="row">
+                                <div class="slds-truncate" title="DOCUMENT NAME">
+                                    {files.DocumentName}
+                                </div>
+                            </th>
+                            <th data-label="UPLOAD DOC" scope="row">
+                                <a>
+                                    <p>{files.fileName}</p>
+                                </a>
+                            </th>
+                            <th data-label="STATUS" scope="row">
+                                <div class="slds-truncate" title="STATUS">
+                                    {files.status}
+                                </div>
+                            </th>
+                            <th data-label="UPLOAD FILES" scope="row">
+                                <!-- <lightning-file-upload class="slds-m-bottom_small slds-float_left" label="" disabled={isReadyOnly} name="fileUploader" data-record={files.Id} record-id={files.Id}
+                                            onuploadfinished={handleUploadFinished} multiple>
+                                         </lightning-file-upload> -->
+                                <lightning-input type="file" name={files.DocumentName} variant="label-hidden" accept=".pdf"
+                                    onchange={handleFileUpload}></lightning-input>
+                            </th>
+    
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>

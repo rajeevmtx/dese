@@ -1,0 +1,153 @@
+<template>
+    <div if:true={showSpinner}>
+        <div class="backdrop">
+            <div class="spinner">
+                <lightning-spinner alternative-text="Loading...">
+                </lightning-spinner>
+            </div>
+        </div>
+    </div>
+    <br />
+    <c-psr-sidebar selected-tab="Home" show-footer>
+        <div slot="body">
+            <div class="slds-card requiredNotification">
+                <header>
+                    <div class="slds-card__header">
+                        <h2 class="slds-card__header-title">Submit Required Notification</h2>
+                    </div>
+                </header>
+                <div class="slds-card__body slds-card__body_inner">
+                    <div if:true={step1}>
+                        <p>Please use the <b>"Submit Required Notification"</b> button when you are reporting for the
+                            following:
+                        </p>
+                    </br>
+
+                        <ol class="slds-list_ordered">
+                            <li>In case of fire or other emergencies which requires the evacuation of the facility and
+                                results
+                                in the need to seek other shelters.</li>
+                            <li>Within 10 days of receipt of notice of the initiation of civil, criminal or
+                                administrative
+                                action against the licensee or any person employed by the licensee regarding the
+                                licensee's
+                                care
+                                of children and teen parents in
+                                its program or which could affect the continued operation of the program.
+                            </li>
+                            <li>In the event of serious illness.</li>
+                            <li>In the event of serious accident or death.</li>
+                            <li>In the evnet of a serious injury to a resident resulting in hospitalization.</li>
+                            <li>The incident involving firearms or dangerous weapons which results in a report to laws
+                                enforcement officials.</li>
+                            <li>An incident involving fire which results in a response by fire officials.</li>
+                            <li>The incident involving an escape from secure facility.</li>
+                            <li>If during the period of licensure the program is unable to renew its health, building or
+                                fire inspection certificates.</li>
+                            <li>The licensee shall notify the Office prior to any substantial change in the program,
+                                physical facility, staffing, population served, policies, and within two weeks of a
+                                change
+                                in the advanced degree
+                                person for treatment planning.
+                            </li>
+                        </ol>
+                        <p>Please add a comprehensive narrative of the notification and add any involved persons, if
+                            applicable. Your licensor will be in touch if there are any questions or need for additional
+                            information.</p>
+                        <p>Continue to use the report the "Submit an Incident/51A" for all required notifications about
+                            51A
+                            reports and major program occurrences.</p>
+                        <p>If the incident involves death, evacuation of the facility, or high profile/media, contact
+                            your
+                            licensor directly after entering the notification.</p>
+
+                        <footer class="slds-card__footer">
+                            <button class="slds-button slds-button_outline-brand" onclick={goToHome}>Cancel</button>
+                            <button class="slds-button slds-button_brand" onclick={goToStep2}>SUBMIT A REQUIRED
+                                NOTIFICATION</button>
+                        </footer>
+                    </div>
+                    <div if:true={step2}>
+                        <div class="slds-card">
+                            <header>
+                                <div class="slds-card__header lgc-bg">
+                                    <h3 class="slds-card__header-title slds-text-color_weak">Provider and Reporter</h3>
+                                </div>
+                            </header>
+                            <div class="slds-card__body slds-card__body_inner">
+                                <div class="slds-grid slds-gutters">
+                                    <div class="slds-col">
+                                        <p><strong>Provider Name:</strong> Devereux Therapeutic Foster Care
+                                            Program-Central</p>
+                                        <p><strong>Program Director / Licensee:</strong> Claire Sullivan</p>
+                                    </div>
+                                    <div class="slds-col">
+                                        <p><strong>Contact Number: </strong></p>
+                                        <p><strong>Email Address: </strong>nbrenan@devereux.org</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-card">
+                            <header>
+                                <div class="slds-card__header">
+                                    <h3 class="slds-card__header-title slds-text-color_weak">Requried Notification
+                                        Description</h3>
+                                </div>
+                            </header>
+                            <div class="slds-card__body slds-card__body_inner">
+                                <div class="slds-grid slds-gutters">
+                                    <div class="slds-col">
+                                        <div>
+                                            <label><strong>Summary / Type Of Case</strong><b
+                                                    class="slds-text-color_destructive">*</b></label>
+                                            <lightning-input variant="label-hidden"></lightning-input>
+                                        </div>
+                                        <div>
+                                            <label><strong>Notification Type</strong><b
+                                                    class="slds-text-color_destructive">*</b></label>
+                                            <lightning-combobox name="progress" placeholder="" options={options}
+                                                onchange={handleChange} variant="label-hidden"></lightning-combobox>
+                                        </div>
+                                        <div>
+                                            <label><strong>When did the incident / event occur?</strong><b
+                                                    class="slds-text-color_destructive">*</b></label>
+                                            <lightning-input variant="label-hidden"></lightning-input>
+                                        </div>
+                                    </div>
+                                    <div class="slds-col">
+                                        <div>
+                                            <label><strong>What happenened? (Please Describe)</strong><b
+                                                    class="slds-text-color_destructive">*</b></label>
+                                            <lightning-textarea variant="label-hidden"></lightning-textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-card">
+                            <header>
+                                <div class="slds-card__header">
+                                    <h3 class="slds-card__header-title slds-text-color_weak">Involved Persons</h3>
+                                </div>
+                            </header>
+                            <div class="slds-card__body slds-card__body_inner">
+                                <div class="slds-grid slds-gutters">
+                                    <div class="slds-col">
+                                        <div>
+                                            <button class="slds-button slds-button_brand">ADD</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <footer class="slds-card__footer">
+                            <button class="slds-button slds-button_outline-brand" onclick={goToStep1}>SAVE AND PREVIOUS</button>
+                            <button class="slds-button slds-button_brand" onclick={goToHome}>SAVE AND NEXT</button>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </c-psr-sidebar>
+</template>

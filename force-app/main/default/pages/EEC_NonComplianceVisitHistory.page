@@ -1,0 +1,260 @@
+<apex:page standardController="Inspection__c" extensions="EEC_NonComplianceProviderHistory" showheader="false">
+    <c:eec_javascriptcsscontainer includeJquery="true" includeBootStrapJS="true" includeLightningCSS="true" includeFontAwesome="true"
+        />
+    <style>
+        .documentsTable th,
+        .documentsTable td {
+            padding: 8px !important;
+            line-height: 1.42857143 !important;
+            vertical-align: top !important;
+        }
+
+        .downArrowClass {
+            height: 1rem !important;
+            fill: rgb(0, 109, 204) !important;
+        }
+
+        .fade {
+            display: none;
+        }
+
+        .fade.in {
+            display: block;
+        }
+
+        .nested-table:before {
+            content: '';
+        }
+
+        .slds-table td.nested-table {
+            padding: 0px !important;
+        }
+
+        .collapsed:after {
+            transform: rotate(225deg) !important;
+        }
+
+        .deliverable-expand:not(.collapsed) i {
+            transform: rotate(90deg);
+        }
+
+        .btnNeutralClass {
+            padding: 6px 12px !important;
+            line-height: 1.42857143 !important;
+            color: #555 !important;
+            min-width: 8rem !important;
+            font-size: medium !important;
+            max-width: 25rem !important;
+        }
+
+        .btnBrandClass {
+            padding: 6px 12px !important;
+            line-height: 1.42857143 !important;
+            min-width: 8rem !important;
+            font-size: medium !important;
+            max-width: 25rem !important;
+        }
+
+        .close {
+            float: right;
+            cursor: pointer;
+        }
+
+        .slds-scope img {
+            max-width: none !important;
+        }
+
+        .fa-exclamation-red {
+            color: red;
+            font-size: 24px;
+        }
+
+        .fa-exclamation-yellow{
+            color: rgb(255, 208, 0);
+            font-size: 24px; 
+        }
+
+        .fa-exclamation-green{
+            color: rgb(82, 170, 56);
+            font-size: 24px; 
+        }
+
+        .slds-card{
+            min-height: 8.2rem !important;
+        }
+
+        .slds-card__header-title{
+            text-align:center !important;
+        }
+        .sldsCardBody{
+            text-align: center;
+            font-size: 3rem;
+        }
+
+        .slds-scope .slds-table td {
+            padding: .25rem .5rem;
+            white-space: normal;
+            position: relative;
+        }
+
+        th{
+            background-color: #69c !important;
+            color: white !important;
+        }
+        
+    </style>
+    <div class="slds-scope">
+        <apex:form id="reviewForm">
+
+
+
+            <apex:outputPanel >
+                <div class="slds-p-top_x-small slds-p-bottom_x-small">
+                    <apex:outputPanel >
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_1-of-2">
+                                <span class="slds-text-heading--small">
+                                   
+                                    <article class="slds-card" style="background: #ff00007d;">
+                                        <div class="slds-card__header slds-grid">
+                                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                                <div class="slds-media__body">
+                                                    <h2 class="slds-card__header-title">
+                                                        <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="Accounts">
+                                                            <span>Current Overall Non Compliance Score </span>
+                                                        </a>
+                                                    </h2>
+                                                </div>
+                                               
+                                            </header>
+                                        </div>
+                                        <div class="slds-card__body slds-card__body_inner sldsCardBody">
+                                            20% 
+                                        </div>
+                                        <div class="slds-card__body" style="text-align:center;ont-size:0.8rem;">
+                                            (Based On past 3 years History)
+                                        </div>
+                                    </article>
+                                </span>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <span class="slds-text-heading--small">
+                                    <article class="slds-card" style="background: #05ff468a; height=9rem;">
+                                        <div class="slds-card__header slds-grid">
+                                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                                <div class="slds-media__body">
+                                                    <h2 class="slds-card__header-title">
+                                                        <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="Accounts">
+                                                            <span> Predicted Non-Compliance Score </span>
+                                                        </a>
+                                                    </h2>
+                                                </div>
+                                               
+                                            </header>
+                                        </div>
+                                        <div class="slds-card__body slds-card__body_inner sldsCardBody">
+                                             30%
+                                        </div>
+                                    </article>
+                                   
+                                </span>
+                            </div>
+                        </div>
+                    </apex:outputPanel>
+                </div>
+                <apex:pageMessages id="pageMessage" />
+                <table class="slds-table slds-table_bordered documentsTable slds-max-medium-table--stacked">
+                    <thead>
+                        <tr>
+                            <th>Domain Name</th>
+                            <th class="slds-text-align_center">Number Of Non-Compliance Items</th>
+                           
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <apex:variable var="rowCount" value="{!0}" />
+                        <apex:repeat value="{!visitItemMapToShow}" var="domain" id="theRepeat">
+                            <tr>
+                                <td>
+                                    <a class="deliverable-expand collapsed" onclick="toggleDataDiv('collapse{!rowCount}', this);">
+                                        <i class="fa fa-chevron-right"></i>&nbsp;
+                                    </a>
+                                    {!domain}
+                                </td>
+                                <td class="slds-text-align_center">
+                                    {!visitItemMapToShow[domain].totalNonCompliance}/{!visitItemMapToShow[domain].totalOccurence}
+                                </td>
+                               
+                            </tr>
+                            
+                            <tr>
+                                <td colspan="8" class="nested-table">
+                                    <div class="slds-hide slds-p-around_x-small" id="collapse{!rowCount}">
+                                        <div class="slds-card">
+                                            <div class="slds-card__body slds-card__body_inner">
+                                                <apex:outputPanel >
+                                                    <table class="slds-table slds-table_bordered slds-table_striped slds-max-medium-table--stacked">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Program Area</th>
+                                                                <th>Regulations</th>
+                                                                <th>Number of Non-Compliance Items</th>
+                                                                <th class="slds-text-align_center"> Indicator </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <apex:repeat value="{!visitItemMapToShow[domain].listVisitItems}" var="visit">
+                                                                <tr>
+                                                                    <td style="width:15rem;" colspan="1">
+                                                                        {!visit.name}
+                                                                    </td>
+                                                                    <td colspan="1" style="width:30rem;">
+                                                                        {!visit.listOfRegulations}
+                                                                    </td>
+                                                                    <td colspan="1"  style="width:8rem;">
+                                                                       {!visit.noOfNonComp}/{!visit.occurence} 
+                                                                    </td>
+                                                                    <td colspan="1" class="slds-text-align_center">
+                                                                        <apex:outputPanel rendered="{!visit.noOfNonComp > 2 || (visit.noOfNonComp == visit.occurence && visit.noOfNonComp > 2 && visit.occurence > 2)}">
+                                                                            <i class="fa fa-exclamation-triangle fa-exclamation-red" aria-hidden="true"></i>
+                                                                        </apex:outputPanel>
+                                                                        <apex:outputPanel rendered="{!visit.noOfNonComp >= 1 &&  visit.noOfNonComp <= 2}">
+                                                                            <i class="fa fa-exclamation-triangle fa-exclamation-yellow" aria-hidden="true"></i>
+                                                                        </apex:outputPanel>
+                                                                        <apex:outputPanel rendered="{!visit.noOfNonComp == 0}">
+                                                                            <i class="fa fa-exclamation-triangle fa-exclamation-green" aria-hidden="true"></i>
+                                                                        </apex:outputPanel>
+                                                                    </td>
+                                                                </tr>
+                                                            </apex:repeat>
+                                                        </tbody>
+                                                    </table>
+                                                </apex:outputPanel>
+                                                
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="slds-p-top_x-small">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                         <apex:variable value="{!rowCount+1}" var="rowCount" />
+                        </apex:repeat>
+                        
+                    </tbody>
+                </table>
+            </apex:outputPanel>
+        </apex:form>
+    </div>
+    <script>
+		function toggleDataDiv(divId, anchor) {
+            document.getElementById(divId).classList.toggle('slds-hide');
+            anchor.classList.toggle('collapsed');
+            console.log('anchor',anchor);
+            /* $('#' + divId).toggleClass('slds-hide');
+            $(anchor).toggleClass('collapsed'); */
+        }
+
+    </script>
+</apex:page>

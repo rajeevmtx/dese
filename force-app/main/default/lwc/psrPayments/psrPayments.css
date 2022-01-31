@@ -1,0 +1,15 @@
+.slds-combobox_container {
+    width : 50% !important;
+    padding: 0 20px !important;
+}
+.addressForm{
+    background: white;
+    padding: 1rem;
+}
+.slds-input-has-icon{
+    width : 50% !important;
+    padding: 0 20px !important;
+}
+.updatelabel{
+    margin-top: -5px;
+}

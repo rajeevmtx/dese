@@ -1,0 +1,996 @@
+<apex:page controller="EEC_TransactionWizardController" standardStylesheets="false" showheader="false" sidebar="false" docType="html-5.0">
+	<title>EEC : Transaction - PLACEMENT AGENCY ADDITIONAL INFORMATION</title>
+	<c:EEC_Header id="pageHeader" />
+	<script>
+		j$ = jQuery.noConflict();
+		j$(document).ready(function () {
+			j$('.phonenumber').inputmask({ "mask": "(999) 999-9999" }); //specifying options
+			if ('{!LicenseRecordTypeName}' == 'FCC_Assistant_New_License')
+				j$("[id*=requestedLicensePicklistHidden]").val(j$("[id*=requestedLicensePicklist] :selected").text());
+			j$("[id*=mailingState]").prop("disabled", true);
+			j$(".navigation-buttons a").click(function () {
+				//j$("[id*=requestedLicensePicklistHidden]").val(j$("[id*=requestedLicensePicklist] :selected").text());                   
+			});
+			internationalCountries();
+			otherCountriesRender();
+			var isSubmitted = '{!isSubmitted}';
+			if (isSubmitted == 'true') {
+				j$('.saveButton').addClass('visibilityHidden');
+				j$("input[type=text]").prop('disabled', true);
+				j$("input[type=radio]").prop('disabled', true);
+				j$("select").prop('disabled', true);
+			}
+			//Populate level of care picklist options for R&P Provider based on provider record type [LEAD-6020] 
+			var providerRecordType = "{!licenseTransation.Provider__r.RecordType.Name}";
+			var arrGroupCareOptions = new Array('Group Home', 'Residential School/ 766', 'Transition to Independent Living', 'Teen Parent', 'DYS Hardware Secure Treatment', 'DYS Staff Secure Treatment', 'DYS Transition to Independent Living');
+			var arrFosterCareOptions = new Array('DCF Foster Care', 'DYS Foster Care', 'Contracted CFC', 'Short Term Transitional');
+			var arrAdoptionOptions = new Array('International', 'Domestic Infant', 'DCF/Special Needs');
+			var arrTmpShelterOptions = new Array('STARR', 'CBAT', 'TCU', 'Respite', 'DYS Detention', 'DYS Assessment');
+			var arrRecordTypeOptions = new Array();
+			switch (providerRecordType) {
+				case 'Group Care':
+					arrRecordTypeOptions = arrGroupCareOptions;
+					break;
+				case 'Foster Care Agency':
+					arrRecordTypeOptions = arrFosterCareOptions;
+					break;
+				case 'Adoption Agency':
+					arrRecordTypeOptions = arrAdoptionOptions;
+					break;
+				case 'Temporary Shelter':
+					arrRecordTypeOptions = arrTmpShelterOptions;
+					break;
+			}
+			if (arrRecordTypeOptions.length > 0) {
+				j$(".loc").empty();
+				var intLen = arrRecordTypeOptions.length;
+				j$('.loc').append(j$('<option>', {
+					value: '',
+					text: '--None--'
+				}));
+				for (var i = 0; i < intLen; i++) {
+					j$('.loc').append(j$('<option>', {
+						value: arrRecordTypeOptions[i],
+						text: arrRecordTypeOptions[i]
+					}));
+				}
+				if ('{!licenseTransation.Level_of_care__c}' != null && '{!licenseTransation.Level_of_care__c}' != '' && '{!licenseTransation.Level_of_care__c}' != undefined) {
+					j$('.loc').val('{!licenseTransation.Level_of_care__c}');
+				}
+			}
+		});
+		function fs() {
+			var n = j$("[id*=characteristics_selected]").val();
+			//var n = j$("#j_id0:TransactionDesignationForm:designation:characteristics_selected").val();
+			//var n = j$("[id*=characteristics]").val();
+			if (n == null) {
+				j$("#radioChoose").prop('checked', true);
+				var flag = j$("#radioChoose").val();
+			} else {
+				j$("#radioChoose").prop('checked', false);
+				var flag = j$("#radioChoose").val();
+			}
+		}
+		function internationalCountries() {
+			var internationCounty = j$('.characteristicsCs').val();
+			if (internationCounty != undefined && internationCounty.indexOf('International Adoption') > -1) {
+				j$('.internationalCountries').show();
+			} else if (internationCounty != undefined) {
+				j$('.internationalCountries').hide();
+				j$('.otherCountries').hide();
+				j$('.internationalCountry').val('');
+				j$('.otherCountries').val('');
+			}
+		}
+		function otherCountriesRender() {
+			var otherCounty = j$('.internationalAdoptionCountry').val();
+			if (otherCounty != undefined && otherCounty.indexOf('Other(s)') > -1) {
+				console.log('otherCounty' + otherCounty);
+				j$('.otherCountries').show();
+			} else if (otherCounty != undefined || otherCounty == null) {
+				j$('.otherCountries').hide();
+			}
+		}
+	</script>
+	<style>
+		.internationalCountries {
+			display: none;
+		}
+
+		.otherCountries {
+			display: none;
+		}
+
+		.bPageBlock .requiredInput .requiredBlock {
+			background-color: #c00;
+			position: absolute;
+			left: -4px;
+			width: 3px;
+			top: 1px;
+			bottom: 1px;
+			top: 20px;
+			display: none;
+		}
+
+		.parsley-errors-list {
+			width: 50%;
+		}
+
+		.parsley-error {
+			border: 2px solid #c00;
+		}
+
+		.my_error_container {
+			position: absolute;
+			bottom: 90px;
+			width: 50%;
+		}
+
+		.errorMsg {
+			color: #d74c3b;
+		}
+
+		.message[class*='error'] {
+			background-color: #eee;
+			padding: 0 20px 10px;
+			margin-bottom: 25px;
+			border-radius: 3px;
+			-webkit-box-shadow: 0px 0px 5px 0px rgba(204, 0, 0, 0.4);
+			-moz-box-shadow: 0px 0px 5px 0px rgba(204, 0, 0, 0.4);
+			box-shadow: 0px 0px 5px 0px rgba(204, 0, 0, 0.4);
+		}
+
+		.message[class*='error'] .messageTable {
+			width: 100%;
+		}
+
+		.message[class*='error'] .messageText {
+			border-bottom: 1px solid grey;
+			height: 30px;
+		}
+
+		.transplacement-info-container {
+			margin-bottom: 120px;
+		}
+
+		md-input-container {
+			padding-top: 15px;
+		}
+
+		.md-title,
+		.md-toolbar-tools {
+			margin-bottom: 15px;
+		}
+
+		md-input-container .input-label {
+			/*top: -50px;*/
+		}
+
+		md-input-container .input-label-date-picklist {
+			top: -25px;
+		}
+
+		.base-info {
+			margin-top: 10px;
+		}
+
+		.input-label {
+			color: rgba(0, 0, 0, 0.54);
+		}
+
+		.base-info md-content {
+			margin-bottom: 20px;
+		}
+
+		.provider-checkbox {
+			margin-top: -25px;
+			margin-left: -5px;
+			overflow: visible;
+		}
+
+		.radio-group .parsley-errors-list {
+			margin-top: 20px;
+			margin-left: -50px;
+			position: absolute;
+			width: 50%;
+		}
+
+		.radio-group .parsley-error {
+			border: 0px;
+		}
+
+		.new-address-live-at-address {
+			margin-top: 29px;
+		}
+
+		md-input-container:not(.md-input-invalid).md-input-has-value label {
+			transform: translate3d(0, 6px, 0) scale(1);
+		}
+
+		/* @see Angular Material - Input */
+
+		.requiredInput,
+		md-input-container span {
+			-webkit-flex: 1 1 auto;
+			-ms-flex: 1 1 auto;
+			flex: 1 1 auto;
+			-webkit-order: 2;
+			-ms-flex-order: 2;
+			order: 2;
+			display: block;
+			background: 0 0;
+			padding: 2px 2px 1px;
+			border-width: 0 0 1px;
+			line-height: 26px;
+			-ms-flex-preferred-size: 26px;
+			border-radius: 0;
+		}
+
+		.other-checkbox {
+			padding-top: 20px;
+		}
+
+		input[type="radio"],
+		input[type="checkbox"] {
+			margin: 4px 7px 0;
+		}
+
+		.radio-group label {
+			font-weight: normal;
+		}
+
+		.commandBtn {
+			-webkit-appearance: none;
+			border: none;
+			box-shadow: none;
+			background: none;
+			text-transform: uppercase;
+			font-weight: 500;
+			font-size: 14px;
+			font-style: inherit;
+			font-variant: inherit;
+			font-family: inherit;
+			outline: none;
+			letter-spacing: .01em;
+			margin: 3px 0px;
+			white-space: normal;
+		}
+
+		input[type="text"] {
+			width: 70%;
+			margin-bottom: 10px;
+			border-bottom-left-radius: 4px;
+			border-bottom-right-radius: 4px;
+		}
+
+		textarea.form-control {
+			width: 70%;
+			margin-bottom: 15px;
+			border-bottom-left-radius: 4px;
+			border-bottom-right-radius: 4px;
+		}
+
+		.navigation-buttons .md-button label {
+			white-space: normal;
+		}
+
+		.base-label {
+			color: rgba(0, 0, 0, 0.54);
+		}
+
+		.md-input-has-value {}
+
+		md-input-container input,
+		md-input-container .md-input {
+			max-width: 200px;
+		}
+
+		.readonly-input {
+			border-bottom: none;
+			cursor: not-allowed;
+		}
+
+		.read-only-input {
+			cursor: not-allowed;
+			background: rgba(0, 0, 0, 0.54);
+		}
+
+		/* TODO: Remove this and use md-select with new Validation. */
+
+		select {
+			background: none;
+			border: none;
+			border-bottom: 1px solid #ddd;
+		}
+
+		.errorMsg {
+			color: red;
+		}
+
+		.city-outputfield {
+			outline: none;
+			text-decoration: none;
+		}
+
+		@media only screen and (min-width: 0px) and (max-width: 959px) {
+			.navigation-buttons .md-button {
+				width: 100%;
+			}
+			.navigation-buttons md-content {
+				width: 100%;
+			}
+			md-input-container input {
+				max-width: none;
+			}
+		}
+
+		.base-info {
+			margin-bottom: 20px;
+		}
+
+		.visibilityHidden {
+			visibility: hidden;
+		}
+
+		#errorMsgHeader {
+			display: none;
+			color: red;
+		}
+	</style>
+
+	<body ng-app="eecApp">
+		<c:eec_nav_bar id="navBar" providerId="{!provider.Id}" accountName="{!provider.Name}" rendered="{!loggedUser.UserType == 'PowerPartner' 
+				|| loggedUser.UserType == 'PowerCustomerSuccess' || loggedUser.UserType == 'CspLitePortal' || loggedUser.UserType == 'CustomerSuccess'}"
+		/>
+		<div class="transplacement-info-container" layout-wrap="true" layout-lg="row" layout-gt-lg="row" layout="row" layout-padding="true"
+		 layout-margin="true" ng-controller="TransactionPlacement as ctrl">
+			<md-content style="margin-top: 20px;" ng-show="ctrl.checkForMessages()" layout="row" flex="100" layout-align="center center">
+				<md-whiteframe class="md-whiteframe-z2 ng-cloak" layout="column" layout-padding="true" flex="75">
+					<apex:pageMessages id="showmsg"></apex:pageMessages>
+				</md-whiteframe>
+			</md-content>
+			<apex:form id="TransactionDesignationForm" styleClass="transaction-parsley-form col-lg-8 col-md-8 col-sm-12">
+				<apex:outputPanel style="padding:50px 50px 50px 50px" id="userDetail" styleClass="ng-cloak">
+					<div class="top-header-section">
+						<div class="header-name-section">
+							<h3 class="md-display-1 header-display-name">{!applicationDisplayName}</h3>
+							<h4 class="step-name">Placement Agency Additional Information</h4>
+							<h5 class="base-label trans-number">Application number: {!licenseTransation.Name}</h5>
+						</div>
+					</div>
+					<md-divider layout-align="center center"></md-divider>
+					<apex:pageBlock html-layout="column" html-layout-padding="true" id="designation">
+						<!-- Basic Information -->
+						<!--                 <div class="base-info" layout="column" layout-lg="row" layout-gt-lg="row" layout-wrap="true">    -->
+						<!--                     <h3 class="md-title" flex="100">Provider / Transaction information</h3> -->
+						<!--                     <md-content flex="50" layout="column"> -->
+						<!--                       <label class="base-label">Provider Name</label> -->
+						<!--                       <apex:outputText value="{!provider.Name}" id="providerName" /> -->
+						<!--                     </md-content> -->
+						<!--                     <md-content flex="50" layout="column"> -->
+						<!--                       <label class="base-label">Transaction Type</label> -->
+						<!--                       <apex:outputText value="{!LicenseRecordTypeLabel}" id="transactionTypeTA" /> -->
+						<!--                     </md-content> -->
+						<!--                     <md-content flex="50" layout="column"> -->
+						<!--                       <label class="base-label">Transaction Number</label> -->
+						<!--                       <apex:outputText value="{!licenseTransation.Name}" id="transactionNumberTA" /> -->
+						<!--                     </md-content> -->
+						<!--                 </div> -->
+						<!-- Level of Care -->
+						<div layout="row" layout-wrap="true" id="business">
+							<h3 class="md-title" flex="100">Level of Care</h3>
+							<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Level_of_care__c==null,false,true)}}">
+								<label class="input-label">Level of Care
+									<span class="required">*</span>
+								</label>
+								<apex:InputField style="width:300px" onchange="dcfSpecial();" styleClass="form-control loc" value="{!licenseTransation.Level_of_care__c}"
+								 html-data-parsley-required="true" id="level_of_care" />
+							</div>
+							<div id="charChild" flex="100" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Characteristics_of_children_served__c==null,false,true)}}">
+								<br/>
+								<label class="input-label">Characteristics of Children Served
+									<span class="required">*</span>
+								</label>
+								<apex:inputfield styleclass="form-control characteristicsCs" id="characteristics" onchange="internationalCountries();" value="{!licenseTransation.Characteristics_of_children_served__c}"
+								/>
+							</div>
+							<apex:actionFunction name="interCount" action="{!internationalCountries}" reRender="intCount,radioChoose" />
+							<div flex="100">
+								<apex:outputPanel id="radioChoose">
+									<apex:outputPanel html-hidden="true">
+										<apex:inputCheckbox selected="{!characterRadio}" html-hidden="true" />
+									</apex:outputPanel>
+								</apex:outputPanel>
+							</div>
+							<apex:outputPanel id="intCount">
+								<br/>
+
+								<apex:outputPanel styleclass="internationalCountries">
+									<div flex="100" ng-class="{'md-input-has-value' : {!IF(licenseTransation.International_adoption_countries__c==null,false,true)}}">
+										<br/>
+										<label class="input-label">International Adoption Countries
+											<span class="required">*</span>
+										</label>
+										<apex:InputField id="internationalAdoptionCountry" styleClass="form-control internationalAdoptionCountry" onchange="otherCountriesRender();"
+										 value="{!licenseTransation.International_adoption_countries__c}" />
+									</div>
+									<p id="errorMsgHeader">This value is required.</p>
+								</apex:outputPanel>
+							</apex:outputPanel>
+							<apex:actionFunction name="otherCountries" action="{!otherCountries}" reRender="otherCount,intAdoptCount" />
+							<!--<div flex="100" >
+                                <apex:outputPanel id="intAdoptCount">
+                                    <apex:outputPanel html-hidden="true">  
+                                        <apex:inputCheckbox selected="{!intAdoptCheck}" html-hidden="true" html-data-parsley-required="true" />
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                            </div>-->
+							<div flex="100" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Other_countries__c==null,false,true)}}">
+								<apex:outputPanel id="otherCount">
+									<apex:outputPanel styleClass="otherCountries">
+										<br/>
+										<label class="input-label">Other Countries
+											<span class="required">*</span>
+										</label>
+										<apex:InputField style="width:300px" styleClass="form-control " value="{!licenseTransation.Other_countries__c}" />
+									</apex:outputPanel>
+								</apex:outputPanel>
+							</div>
+						</div>
+						<!-- Program Characteristics -->
+						<div layout="row" layout-wrap="true" id="development">
+							<h3 class="md-title" flex="100">Program Characteristics</h3>
+							<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Minimum_age_of_children_served__c==null,false,true)}}">
+								<label class="input-label">Min. Age of Children Served
+									<span class="required">*</span>
+								</label>
+								<apex:InputField style="width:300px" styleClass="form-control" value="{!licenseTransation.Minimum_age_of_children_served__c}"
+								 html-data-parsley-required="true" />
+							</div>
+							<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Maximum_age_of_children_served__c==null,false,true)}}">
+								<label class="input-label">Max. Age of Children Served
+									<span class="required">*</span>
+								</label>
+								<apex:InputField style="width:300px" styleClass="form-control" value="{!licenseTransation.Maximum_age_of_children_served__c}"
+								 html-data-parsley-required="true" />
+							</div>
+							<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Working_with_which_Referral_Agencies__c==null,false,true)}}">
+								<br/>
+								<label class="input-label">What referral Agencies are you working with?
+									<span class="required">*</span>
+								</label>
+								<apex:InputField styleClass="form-control" onchange="referralAgen();" value="{!licenseTransation.Working_with_which_Referral_Agencies__c}"
+								/>
+							</div>
+							<apex:actionFunction name="referralAgen" action="{!otherReferral}" reRender="otherRef,refAgnChe" />
+							<div flex="100">
+								<apex:outputPanel id="refAgnChe">
+									<apex:outputPanel html-hidden="true">
+										<apex:inputCheckbox selected="{!refCheck}" html-hidden="true" html-data-parsley-required="true" />
+									</apex:outputPanel>
+								</apex:outputPanel>
+							</div>
+							<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Other_Referral_Agency__c==null,false,true)}}">
+								<apex:outputPanel id="otherRef">
+									<apex:outputPanel rendered="{!referralAgency}">
+										<label class="input-label">Other Referral Agencies
+											<span class="required">*</span>
+										</label>
+										<apex:InputField style="width:300px" styleClass="form-control" value="{!licenseTransation.Other_Referral_Agency__c}" html-data-parsley-required="true"
+										/>
+									</apex:outputPanel>
+								</apex:outputPanel>
+							</div>
+						</div>
+						<!-- Specifics of Service -->
+						<apex:outputPanel rendered="{!providerRecordType=='Adoption Agency'}">
+							<div layout="row" layout-wrap="true" id="other">
+								<h3 class="md-title" flex="100">Specifics of Service</h3>
+								<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Number_of_Adoptive_Placements__c==null,false,true)}}">
+									<label class="input-label">Number of Adoptive Placements
+										<span class="required">*</span>
+									</label>
+									<apex:InputField type="number" style="width:300px" styleClass="form-control" value="{!licenseTransation.Number_of_Adoptive_Placements__c}"
+									 html-data-parsley-required="true" html-data-parsley-type="number" html-data-parsley-min="0" />
+								</div>
+								<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Number_of_Foster_Homes__c==null,false,true)}}">
+									<label class="input-label">Number of Foster Homes
+										<span class="required">*</span>
+									</label>
+									<apex:InputField type="number" style="width:300px" styleClass="form-control" value="{!licenseTransation.Number_of_Foster_Homes__c}"
+									 html-data-parsley-required="true" html-data-parsley-type="number" html-data-parsley-min="0" />
+								</div>
+								<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Number_of_birth_mothers_recving_services__c==null,false,true)}}">
+									<label class="input-label">Number of Birth Mothers Receiving Services
+										<span class="required">*</span>
+									</label>
+									<apex:InputField type="number" style="width:300px" styleClass="form-control" value="{!licenseTransation.Number_of_birth_mothers_recving_services__c}"
+									 html-data-parsley-required="true" html-data-parsley-type="number" html-data-parsley-min="0" />
+								</div>
+								<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Birth_mothers_making_adoption_plans__c==null,false,true)}}">
+									<label class="input-label">Number of Birth Mothers Making Adoption Plan
+										<span class="required">*</span>
+									</label>
+									<apex:InputField type="number" style="width:300px" styleClass="form-control" value="{!licenseTransation.Birth_mothers_making_adoption_plans__c}"
+									 html-data-parsley-required="true" html-data-parsley-type="number" html-data-parsley-min="0" />
+								</div>
+								<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Number_of_Waiting_Families__c==null,false,true)}}">
+									<label class="input-label">Number of Waiting Families
+										<span class="required">*</span>
+									</label>
+									<apex:InputField type="number" style="width:300px" styleClass="form-control" value="{!licenseTransation.Number_of_Waiting_Families__c}"
+									 html-data-parsley-required="true" html-data-parsley-type="number" html-data-parsley-min="0" />
+								</div>
+								<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Families_recving_home_study_services__c==null,false,true)}}">
+									<label class="input-label">No. Families Rec Home Stdy Serv Only
+										<span class="required">*</span>
+									</label>
+									<apex:InputField type="number" style="width:300px" styleClass="form-control" value="{!licenseTransation.Families_recving_home_study_services__c}"
+									 html-data-parsley-required="true" html-data-parsley-type="number" html-data-parsley-min="0" />
+								</div>
+								<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Recving_search_and_or_reunion_service1__c==null,false,true)}}">
+									<label class="input-label">Do you provide Receiving Search and / or</label>
+									<label class="input-label">Reunion Services?
+										<span class="required">*</span>
+									</label>
+									<apex:selectradio value="{!licenseTransation.Recving_search_and_or_reunion_service1__c}">
+										<apex:selectoptions value="{!items}" />
+										<apex:actionsupport event="onchange" reRender="Reunion" status="status" />
+									</apex:selectradio>
+								</div>
+								<apex:outputpanel id="Reunion">
+									<apex:outputpanel rendered="{!licenseTransation.Recving_search_and_or_reunion_service1__c=='Yes'}">
+										<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Number_recving_Search_reunion_services__c==null,false,true)}}">
+											<label class="input-label">Number of Individuals Receiving Search and/or Reunion Services
+												<span class="required">*</span>
+											</label>
+											<apex:InputField type="number" style="width:300px" styleClass="form-control" value="{!licenseTransation.Number_recving_Search_reunion_services__c}"
+											 html-data-parsley-required="true" html-data-parsley-type="number" html-data-parsley-min="0" />
+										</div>
+										<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Number_of_Reunions_Facilitated__c==null,false,true)}}">
+											<label class="input-label">Number of Reunions Facilitated
+												<span class="required">*</span>
+											</label>
+											<apex:InputField type="number" style="width:300px" styleClass="form-control" value="{!licenseTransation.Number_of_Reunions_Facilitated__c}"
+											 html-data-parsley-required="true" html-data-parsley-type="number" html-data-parsley-min="0" />
+										</div>
+									</apex:outputpanel>
+								</apex:outputpanel>
+							</div>
+						</apex:outputPanel>
+						<!-- DCF Contracted Services -->
+						<apex:actionFunction name="dcfSpecial" action="{!dcfSpecialNeeds}" reRender="dcfSpecial" />
+						<apex:outputPanel id="dcfSpecial">
+							<apex:outputPanel rendered="{!dcfSpecial}">
+								<div layout="row" layout-wrap="true" id="business">
+									<h3 class="md-title" flex="100">DCF Contracted Services</h3>
+									<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Number_of_Child_Assessments__c==null,false,true)}}">
+										<label class="input-label">Number of Child Assessments
+											<span class="required">*</span>
+										</label>
+										<apex:InputField type="number" style="width:300px" styleClass="form-control" value="{!licenseTransation.Number_of_Child_Assessments__c}"
+										 html-data-parsley-required="true" html-data-parsley-type="number" html-data-parsley-min="0" />
+									</div>
+									<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Number_of_Home_Study_Services__c==null,false,true)}}">
+										<label class="input-label">Number of Home Study Services
+											<span class="required">*</span>
+										</label>
+										<apex:inputfield type="number" style="width:300px" styleclass="form-control" value="{!licenseTransation.Number_of_Home_Study_Services__c}"
+										 html-data-parsley-required="true" html-data-parsley-type="number" html-data-parsley-min="0" />
+									</div>
+									<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Families_recving_case_mgmt_services__c==null,false,true)}}">
+										<br/>
+										<label class="input-label">Number of Families Rec Case Mgmt Services
+											<span class="required">*</span>
+										</label>
+										<apex:InputField type="number" style="width:300px" styleClass="form-control" value="{!licenseTransation.Families_recving_case_mgmt_services__c}"
+										 html-data-parsley-required="true" html-data-parsley-type="number" html-data-parsley-min="0" />
+									</div>
+									<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Families_recving_information_referral__c==null,false,true)}}">
+										<br/>
+										<label class="input-label">Number Families Receiving Info and Referral
+											<span class="required">*</span>
+										</label>
+										<apex:InputField type="number" style="width:300px" styleClass="form-control" value="{!licenseTransation.Families_recving_information_referral__c}"
+										 html-data-parsley-required="true" html-data-parsley-type="number" html-data-parsley-min="0" />
+									</div>
+									<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Number_of_children_placed_in_care__c==null,false,true)}}">
+										<br/>
+										<label class="input-label">Number of Children Placed in Care
+											<span class="required">*</span>
+										</label>
+										<apex:InputField type="number" style="width:300px" styleClass="form-control" value="{!licenseTransation.Number_of_children_placed_in_care__c}"
+										 html-data-parsley-required="true" html-data-parsley-type="number" html-data-parsley-min="0" />
+									</div>
+								</div>
+							</apex:outputPanel>
+						</apex:outputPanel>
+						<!-- Additional Information -->
+						<div flex="100" layout="row" layout-wrap="true" id="business">
+							<h3 class="md-title" flex="100"> Additional Information </h3>
+							<div flex="100">
+								<div flex="100" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Out_of_state_childcare_related_licenses1__c==null,false,true)}}">
+									<label class="input-label">Are any out of State child caring related licenses held by the applicant?
+										<span class="required">*</span>
+									</label>
+									<apex:InputField styleClass="form-control" value="{!licenseTransation.Out_of_state_childcare_related_licenses1__c}" html-data-parsley-required="true">
+										<apex:actionSupport event="onchange" rerender="LicenseInfo" action="{!checkHeld}" status="status" />
+									</apex:InputField>
+								</div>
+								<apex:outputPanel id="LicenseInfo">
+									<apex:outputPanel rendered="{!licenseTransation.Out_of_state_childcare_related_licenses1__c =='Yes'}">
+										<apex:repeat value="{!heldLicense}" var="held">
+											<label class="input-label">Please provide the following information for each license application
+												<span class="required">*</span>
+											</label>
+											<div layout="row" layout-wrap="true" flex="100">
+												<div flex="25" ng-class="{'md-input-has-value' : {!IF(held.Name_of_Licensee__c==null,false,true)}}">
+													<label class="input-label">Name of Licensee
+														<span class="required">*</span>
+													</label>
+													<apex:inputfield styleclass="form-control" value="{!held.Name_of_Licensee__c}" html-data-parsley-required="true" />
+												</div>
+												<div flex="25" ng-class="{'md-input-has-value' : {!IF(held.Type_of_License__c==null,false,true)}}">
+													<label class="input-label">Type of License
+														<span class="required">*</span>
+													</label>
+													<apex:InputField styleClass="form-control" value="{!held.Type_of_License__c}" html-data-parsley-required="true" />
+												</div>
+												<div flex="25" ng-class="{'md-input-has-value' : {!IF(held.State_Country_Issuing_the_License__c==null,false,true)}}">
+													<label class="input-label">State/Country issuing the License
+														<span class="required">*</span>
+													</label>
+													<apex:InputField styleClass="form-control" value="{!held.State_Country_Issuing_the_License__c}" html-data-parsley-required="true"
+													/>
+												</div>
+												<div flex="25" ng-class="{'md-input-has-value' : {!IF(held.License_Number__c==null,false,true)}}">
+													<label class="input-label">License Number
+														<span class="required">*</span>
+													</label>
+													<apex:InputField styleClass="form-control" value="{!held.License_Number__c}" html-data-parsley-required="true" />
+												</div>
+											</div>
+										</apex:repeat>
+										<apex:outputPanel rendered="{!!isSubmitted}">
+											<apex:commandButton styleClass="md-button md-raised md-eec save-btn" value="Add" action="{!AddLicenseHeld}" reRender="LicenseInfo"
+											 status="status" />
+											<apex:commandButton styleClass="md-button md-raised md-eec save-btn" value="Delete" action="{!DeleteLicenseHeld}" disabled="{!disableHeld}"
+											 reRender="LicenseInfo" status="status" />
+										</apex:outputPanel>
+									</apex:outputPanel>
+								</apex:outputPanel>
+							</div>
+							<div flex="100">
+								<div flex="100" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Out_of_state_license_appl_in_process1__c==null,false,true)}}">
+									<br/>
+									<label class="input-label">Are out of State child caring related license applications in process?
+										<span class="required">*</span>
+									</label>
+									<apex:InputField styleClass="form-control" value="{!licenseTransation.Out_of_state_license_appl_in_process1__c}" html-data-parsley-required="true">
+										<apex:actionSupport event="onchange" rerender="RelatedInfo" action="{!checkRelated}" status="status" />
+									</apex:InputField>
+								</div>
+								<apex:outputPanel id="RelatedInfo">
+									<apex:outputPanel rendered="{!licenseTransation.Out_of_state_license_appl_in_process1__c =='Yes'}">
+										<apex:repeat value="{!relatedLicense}" var="rel">
+											<br/>
+											<label class="input-label">Please provide the following information for each license application
+												<span class="required">*</span>
+											</label>
+											<div layout="row" layout-wrap="true" flex="75">
+												<div flex="25" ng-class="{'md-input-has-value' : {!IF(rel.Name_of_Applicant__c==null,false,true)}}">
+													<label class="input-label">Name of Applicant
+														<span class="required">*</span>
+													</label>
+													<apex:inputfield styleclass="form-control" value="{!rel.Name_of_Applicant__c}" html-data-parsley-required="true" />
+												</div>
+												<div flex="25" ng-class="{'md-input-has-value' : {!IF(rel.State_Country_of_Applicant__c==null,false,true)}}">
+													<label class="input-label">State/Country of application
+														<span class="required">*</span>
+													</label>
+													<apex:InputField styleClass="form-control" value="{!rel.State_Country_of_Applicant__c}" html-data-parsley-required="true"
+													/>
+												</div>
+												<div flex="25" ng-class="{'md-input-has-value' : {!IF(rel.Name_of_Licensing_Authority__c==null,false,true)}}">
+													<label class="input-label">Name of Licensing Authority
+														<span class="required">*</span>
+													</label>
+													<apex:InputField styleClass="form-control" value="{!rel.Name_of_Licensing_Authority__c}" html-data-parsley-required="true"
+													/>
+												</div>
+											</div>
+											<div layout="row" layout-wrap="true" flex="75">
+												<div flex="25" ng-class="{'md-input-has-value' : {!IF(rel.Address_of_Licensing_authority__c==null,false,true)}}">
+													<label class="input-label">Address of Licensing Authority
+														<span class="required">*</span>
+													</label>
+													<apex:InputField styleClass="form-control" value="{!rel.Address_of_Licensing_authority__c}" html-data-parsley-required="true"
+													/>
+												</div>
+												<div flex="25" ng-class="{'md-input-has-value' : {!IF(rel.Phone_No_of_Licensing_Authority__c==null,false,true)}}">
+													<label class="input-label">Phone Number of Licensing Authority
+														<span class="required">*</span>
+													</label>
+													<apex:InputField styleClass="form-control phonenumber" value="{!rel.Phone_No_of_Licensing_Authority__c}" html-data-parsley-required="true"
+													 html-data-parsley-pattern="{!$Label.Phone_Number_Validation}" html-data-parsley-pattern-message="{!$Label.Phone_Number_Validation_Error}"
+													 onblur="formatPhone(this);" />
+												</div>
+												<div flex="25" ng-class="{'md-input-has-value' : {!IF(rel.Status_of_Application__c==null,false,true)}}">
+													<label class="input-label">Status of application
+														<span class="required">*</span>
+													</label>
+													<apex:InputField styleClass="form-control" value="{!rel.Status_of_Application__c}" html-data-parsley-required="true" />
+												</div>
+											</div>
+										</apex:repeat>
+										<apex:outputPanel rendered="{!!isSubmitted}">
+											<apex:commandButton styleClass="md-button md-raised md-eec save-btn" value="Add" action="{!AddRelatedLicense}" reRender="RelatedInfo"
+											 status="status" />
+											<apex:commandButton styleClass="md-button md-raised md-eec save-btn" value="Delete" action="{!DeleteRelatedLicense}" disabled="{!disableRelated}"
+											 reRender="RelatedInfo" status="status" />
+										</apex:outputPanel>
+									</apex:outputPanel>
+								</apex:outputPanel>
+							</div>
+							<div flex="100">
+								<div flex="100" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Admin_Civil_criminal_action_last_5_yrs1__c==null,false,true)}}">
+									<br/>
+									<label class="input-label">Has the applicant or its officers had administrative, civil or criminal action brought with respect to the provision
+										of child care services during the five years prior to the date of application?
+										<span class="required">*</span>
+									</label>
+									<apex:InputField styleClass="form-control" value="{!licenseTransation.Admin_Civil_criminal_action_last_5_yrs1__c}" html-data-parsley-required="true">
+										<apex:actionSupport event="onchange" rerender="CriminalInfo" action="{!checkCriminal}" status="status" />
+									</apex:InputField>
+								</div>
+								<apex:outputPanel id="CriminalInfo">
+									<apex:outputPanel rendered="{!licenseTransation.Admin_Civil_criminal_action_last_5_yrs1__c =='Yes'}">
+										<apex:repeat value="{!criminalAct}" var="crim">
+											<label class="input-label">Please provide the following information:
+												<span class="required">*</span>
+											</label>
+											<div layout="row" layout-wrap="true" flex="100">
+												<div flex="25" ng-class="{'md-input-has-value' : {!IF(crim.Name_Admin_civil_criminal_action__c==null,false,true)}}">
+													<label class="input-label">Name
+														<span class="required">*</span>
+													</label>
+													<apex:inputfield styleclass="form-control" value="{!crim.Name_Admin_civil_criminal_action__c}" html-data-parsley-required="true"
+													/>
+												</div>
+												<div flex="25" ng-class="{'md-input-has-value' : {!IF(crim.Nature_of_Proceedings__c==null,false,true)}}">
+													<label class="input-label">Nature of proceedings
+														<span class="required">*</span>
+													</label>
+													<apex:InputField styleClass="form-control" value="{!crim.Nature_of_Proceedings__c}" html-data-parsley-required="true" />
+												</div>
+												<div flex="25" ng-class="{'md-input-has-value' : {!IF(crim.Caption__c==null,false,true)}}">
+													<label class="input-label">Caption
+														<span class="required">*</span>
+													</label>
+													<apex:InputField styleClass="form-control" value="{!crim.Caption__c}" html-data-parsley-required="true" />
+												</div>
+												<div flex="25" ng-class="{'md-input-has-value' : {!IF(crim.Docket_Number__c==null,false,true)}}">
+													<label class="input-label">Docket number
+														<span class="required">*</span>
+													</label>
+													<apex:InputField styleClass="form-control" value="{!crim.Docket_Number__c}" html-data-parsley-required="true" />
+												</div>
+											</div>
+											<div layout="row" layout-wrap="true" flex="75">
+												<div flex="25" ng-class="{'md-input-has-value' : {!IF(crim.Name_of_court_or_administrative_body__c==null,false,true)}}">
+													<label class="input-label">Name of court or administrative body
+														<span class="required">*</span>
+													</label>
+													<apex:InputField styleClass="form-control" value="{!crim.Name_of_court_or_administrative_body__c}" html-data-parsley-required="true"
+													/>
+												</div>
+												<div flex="25" ng-class="{'md-input-has-value' : {!IF(crim.Address_of_court__c==null,false,true)}}">
+													<label class="input-label">Address of court or administrative body
+														<span class="required">*</span>
+													</label>
+													<apex:InputField styleClass="form-control" value="{!crim.Address_of_court__c}" html-data-parsley-required="true" />
+												</div>
+												<div flex="25" ng-class="{'md-input-has-value' : {!IF(crim.Disposition__c==null,false,true)}}">
+													<label class="input-label">Disposition
+														<span class="required">*</span>
+													</label>
+													<apex:InputField styleClass="form-control" value="{!crim.Disposition__c}" html-data-parsley-required="true" />
+												</div>
+											</div>
+										</apex:repeat>
+										<apex:outputPanel rendered="{!!isSubmitted}">
+											<apex:commandButton styleClass="md-button md-raised md-eec save-btn" value="Add" action="{!AddCriminalAct}" reRender="CriminalInfo"
+											 status="status" />
+											<apex:commandButton styleClass="md-button md-raised md-eec save-btn" value="Delete" action="{!DeleteCriminalHeld}" disabled="{!disableCriminal}"
+											 reRender="CriminalInfo" status="status" />
+										</apex:outputPanel>
+									</apex:outputPanel>
+								</apex:outputPanel>
+							</div>
+							<div flex="100">
+								<div flex="100" ng-class="{'md-input-has-value' : {!IF(licenseTransation.State_Federal_investigation_last_5_yrs1__c==null,false,true)}}">
+									<br/>
+									<label class="input-label">Has the applicant or its officers been the subject of state or federal investigations with respect to the provision
+										of child care services during the five years prior to the date of application?
+										<span class="required">*</span>
+									</label>
+									<apex:InputField styleClass="form-control" value="{!licenseTransation.State_Federal_investigation_last_5_yrs1__c}" html-data-parsley-required="true">
+										<apex:actionSupport event="onchange" rerender="FederalInfo" action="{!checkFederal}" status="status" />
+									</apex:InputField>
+								</div>
+								<apex:outputPanel id="FederalInfo">
+									<apex:outputPanel rendered="{!licenseTransation.State_Federal_investigation_last_5_yrs1__c=='Yes'}">
+										<apex:repeat value="{!federalInv}" var="fed">
+											<br/>
+											<label class="input-label">Please provide the following information:
+												<span class="required">*</span>
+											</label>
+											<div layout="row" layout-wrap="true" flex="75">
+												<div flex="25" ng-class="{'md-input-has-value' : {!IF(fed.Name_of_Person_Agency_Investigated__c==null,false,true)}}">
+													<label class="input-label">Name of the person/agency investigated
+														<span class="required">*</span>
+													</label>
+													<apex:inputfield styleclass="form-control" value="{!fed.Name_of_Person_Agency_Investigated__c}" html-data-parsley-required="true"
+													/>
+												</div>
+												<div flex="25" ng-class="{'md-input-has-value' : {!IF(fed.State_and_or_Federal_Agency__c==null,false,true)}}">
+													<label class="input-label">By which state and/or federal agency investigated
+														<span class="required">*</span>
+													</label>
+													<apex:InputField styleClass="form-control" value="{!fed.State_and_or_Federal_Agency__c}" html-data-parsley-required="true"
+													/>
+												</div>
+												<div flex="25" ng-class="{'md-input-has-value' : {!IF(fed.Nature_of_Investigation__c==null,false,true)}}">
+													<label class="input-label">Nature of the investigation
+														<span class="required">*</span>
+													</label>
+													<apex:InputField styleClass="form-control" value="{!fed.Nature_of_Investigation__c}" html-data-parsley-required="true" />
+												</div>
+											</div>
+										</apex:repeat>
+										<apex:outputPanel rendered="{!!isSubmitted}">
+											<apex:commandButton styleClass="md-button md-raised md-eec save-btn" value="Add" action="{!AddFederalInv}" reRender="FederalInfo"
+											 status="status" />
+											<apex:commandButton styleClass="md-button md-raised md-eec save-btn" value="Delete" action="{!DeleteFederalInv}" disabled="{!disableFederal}"
+											 reRender="FederalInfo" status="status" />
+										</apex:outputPanel>
+									</apex:outputPanel>
+								</apex:outputPanel>
+							</div>
+							<div>
+								<div flex="50" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Existing_Fiduciary_Admin_relationships1__c==null,false,true)}}">
+									<div class="radio-group">
+										<br/>
+										<br/>
+										<label class="input-label">Does the applicant have fiduciary or administrative relationships to other child care agencies or independent contractors?
+											<span class="required">*</span>
+										</label>
+										<apex:selectradio value="{!licenseTransation.Existing_Fiduciary_Admin_relationships1__c}">
+											<apex:selectOptions value="{!items}" html-data-parsley-required="true" />
+										</apex:selectradio>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- Navigation Buttons -->
+						<md-divider layout-align="center center" style="margin-top:50px;"></md-divider>
+						<md-content class="navigation-buttons" layout="column" layout-lg="row" layout-align="space-between center" layout-gt-lg="row"
+						 layout-align-sm="center center" layout-align-md="center center">
+							<apex:commandLink styleClass="md-button md-raised md-button md-default-theme" value="Previous" action="{!saveAndPreviousPlacement}"
+							 html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" status="status" />
+							<apex:commandLink styleClass="md-button md-raised md-button md-default-theme btn-pullLeft" value="Close" action="{!closeAndreturnToHome}"
+							 html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" status="status" />
+							<apex:commandLink styleClass="md-button md-raised md-eec save-btn btn-pullRight saveButton" value="Save" onclick="if(!form.validate() || !validateRecord()){return false;}"
+							 action="{!saveAndNextPlacement}" html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true"
+							 status="status">
+								<apex:param name="isSaveOnly" value="true" assignTo="{!isSaveOnly}" />
+							</apex:commandLink>
+							<apex:commandLink styleClass="md-button md-raised md-eec save-btn" onclick="if(!form.validate() || !validateRecord()){return false;}"
+							 action="{!saveAndNextPlacement}" html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true"
+							 status="status">
+								<apex:outputText rendered="{!!isSubmitted}">Save and </apex:outputText> Next
+							</apex:commandLink>
+						</md-content>
+						<md-divider layout-align="center center"></md-divider>
+						<!--                 <md-content class="navigation-buttons" layout="column" layout-lg="row" layout-align="space-between center" layout-gt-lg="row" layout-align-sm="center center" layout-align-md="center center">     -->
+						<!--                     <apex:commandLink status="status" styleClass="md-button md-raised"   immediate="true" action="{!CancelTransaction}" value="Cancel {!formattedLicenseRecordTypeLabel} Transaction"  onclick="return confirm('Are you sure to cancel the transaction?');" html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true"/> -->
+						<!--                     <apex:commandLink status="status" styleClass="md-button md-raised save-btn" value="{!saveAndReturnLabel}" onclick="if(!form.validate()){return false;}" action="{!saveAndReturnPlacement}" html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true"/> -->
+						<!--                 </md-content>  -->
+					</apex:pageBlock>
+				</apex:outputPanel>
+				<apex:actionFunction action="{!saveAndNextPlacement}" name="SaveNext" status="status" />
+				<apex:actionFunction action="{!saveAndPreviousPlacement}" name="SavePrevious" oncomplete="addMargin();" status="status">
+					<apex:param name="previousPage" assignTo="{!previousPageName}" value="" />
+				</apex:actionFunction>
+			</apex:form>
+			<eec-wizard btn-progress-color="#fff" class="col-lg-3" flex="30" passed-btn-bg-color="#4CAF50" btn-bg-color="#FAFAFA" active-btn-bg-color="#0288D1"
+			 hide="true" show-gt-md="true">
+				<c:EEC_Navigation current="Placement Agency Additional info" recordTypeDeveloperName="{!LicenseRecordTypeName}" highest="{!highestStepReached}"
+				 providerRecordType="{!licenseTransation.providerRecordTypeDeveloperName__c}">
+				</c:EEC_Navigation>
+			</eec-wizard>
+		</div>
+		<c:eec_site_footer id="siteFooter" />
+		<script>
+			function addMargin() {
+				j$(".required-input").addClass("required-input-with-error");
+			}
+			var form = j$(".transaction-parsley-form").parsley({
+				errorsWrapper: '<div class="parsley-errors-list"></div>',
+				errorTemplate: '<p class="errorMsg"></p>'
+			});
+			window.onload = function myFunction() {
+				_.each(jQuery('[id*=lookup'), function (value, key) {
+					jQuery(value).off('click');
+					jQuery(value).attr('href', '');
+					jQuery(value).css('text-decoration', 'none');
+					jQuery(value).css('cursor', 'not-allowed');
+					jQuery(value).css('color', 'black');
+					jQuery(value).hover(function () {
+						jQuery(this).css('color', 'black');
+						jQuery(this).css('cursor', 'not-allowed');
+						jQuery(this).css('text-decoration', 'none');
+					});
+				});
+			};
+		</script>
+		<script>
+			app.controller('TransactionPlacement', ['$scope', '$location', 'Util', function ($scope, $location, Util) {
+				// Instance of controller.
+				var tranCtrl = this;
+				// Controller level variables.
+				tranCtrl.data = {};
+				tranCtrl.data.addressCheckbox = "{!provider.Live_at_this_address__c}";
+				tranCtrl.wizardElements = Util.generateWizardElements("{!licenseRecordTypeName}", 'Transaction/Provider Info');
+				tranCtrl.selected = [];
+				//  Function to toggle the checkbox.
+				tranCtrl.toggle = function (item, list) {
+					var idx = list.indexOf(item);
+					if (idx > -1) list.splice(idx, 1);
+					else list.push(item);
+				};
+				// Function to check if checkbox is already checked.
+				tranCtrl.exists = function (item, list) {
+					return list.indexOf(item) > -1;
+				};
+				// Function to check for messages available due to errors.
+				tranCtrl.checkForMessages = function () {
+					// TODO: Switch this to use Angular and now jQuery.            
+					var ele = jQuery('[id*="showmsg"]');
+					if (ele.children().length > 0) {
+						return true;
+					}
+					return false;
+				};
+			}]);
+			// TODO: Attempt this in Angular over jQuery.     
+			// If a dateformat is clicked - generated by SForce - then attach input-has-value class.
+
+			jQuery('.dateFormat').on('click', function () { jQuery(this).parent().parent().parent().addClass('md-input-has-value'); });
+			function doNavigate(previousPage, nextPage) {
+				if (nextPage != '') {
+					if (!form.validate()) {
+						return false;
+					}
+					else {
+						SaveNext();
+					}
+				} else if (previousPage != '') {
+					SavePrevious(previousPage);
+				}
+			}
+			function validateRecord() {
+				j$('#errorMsgHeader').hide();
+				var internationCounty = j$('.characteristicsCs').val();
+				if (internationCounty.includes('International Adoption')) {
+					var internationalAdoption = j$('.internationalAdoptionCountry').val();
+					if (internationalAdoption == null || internationalAdoption == '') {
+						j$('#errorMsgHeader').show();
+						return false;
+					}
+				}
+				return true;
+			}
+		</script>
+	</body>
+</apex:page>

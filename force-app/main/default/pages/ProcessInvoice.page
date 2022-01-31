@@ -1,0 +1,6 @@
+<apex:page standardController="Project_Invoice__c" extensions="XMLDownloadController" action="{!generateXML}">
+<script>
+    alert('Sent to Finance!!');
+    window.history.back();
+</script>
+</apex:page>

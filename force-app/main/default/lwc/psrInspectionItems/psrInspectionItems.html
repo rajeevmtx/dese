@@ -1,0 +1,227 @@
+<template>
+    <div if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </div>
+    <div class="slds-align_absolute-center">
+        <div if:false={isInspectionComplete}>
+            
+            <lightning-button variant="brand" label="Visitation Complete" onclick={handleInspectionCompleteClick}
+                class="slds-m-left_small slds-m-bottom_none "></lightning-button>
+            <lightning-button variant="brand" label="New Review Criteria" onclick={handleNewVisitItem}
+                class="slds-m-left_small slds-m-bottom_none "></lightning-button>
+            <lightning-button variant="brand" label="Bulk Assess" onclick={handleBulkUpdateClick}
+                class="slds-m-left_small slds-m-bottom_none"></lightning-button>
+        </div>
+    </div>
+    <lightning-layout>
+        <lightning-layout-item size="2">
+            <c-psr-nav-bar-inspection-item result-options={resultOptions} category-options={categoryOptions}
+                onitemselection={handleNavItemSelection} class="slds-col slds-size_3-of-12 navigation">
+            </c-psr-nav-bar-inspection-item>
+        </lightning-layout-item>
+        <lightning-layout-item size="10">
+            <lightning-card class="slds-col slds-size_9-of-12 ">
+                <div class="slds-table_edit_container slds-is-relative">
+                    <!-- Due Diligence List Start Here  -->
+                    <table aria-multiselectable="true"
+                        class="slds-table slds-table_bordered slds-table_resizable-cols slds-table_fixed-layout slds-table_striped slds-table_col-bordered"
+                        role="grid" style="width: 100%;">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <template for:each={columnConfiguration} for:item="column">
+                                    <th key={column.fieldApiName} scope="col" class="slds-text-align_left">
+                                        <div class="slds-grid slds-has-flexi-truncate">
+                                            <div class="slds-truncate slds-text-body_medium slds-p-around_xx-small">
+                                                {column.heading}</div>
+                                        </div>
+                                    </th>
+                                </template>
+</tr>
+</thead>
+<tbody>
+    <template for:each={data} for:item='item'>
+                                <tr class="slds-hint-parent" key={item.Id}>
+                                    <td role="gridcell" style="word-break:break-word;white-space: normal;">
+                                        <div class="slds-align_absolute-left">
+                                            {item.Name}
+                                        </div>
+                                    </td>
+                                    <td role="gridcell" style="word-break:break-word;white-space: normal;">
+                                        <div class="slds-align_absolute-left"> {item.Inspection_Item_Name__c} </div>
+                                        <br/>
+                                        <div class="slds-align_absolute-left" onclick={handleRegulationClick} if:true={item.Regulation_New__c} data-regid={item.Regulation_New__c} style= "color:blue;cursor: pointer;"><u> {item.Regulation_New__r.Name}</u></div>
+                                    </td>
+                                    <td role="gridcell" style="word-break:break-word;white-space: normal;">
+                                        <div class="slds-align_absolute-left"> {item.Category__c} </div>
+                                    </td>
+                                    <td role="gridcell" style="word-break:break-word;white-space: normal;">
+                                        <div class="slds-align_absolute-left">
+                                            <lightning-combobox class="resultClass" data-recid={item.Id} name="result"
+                                                value={item.Result__c} options={resultOptions} onchange={handleSave}
+                                                disabled={isInspectionComplete}>
+                                            </lightning-combobox>
+                                        </div>
+                                    </td>
+                                    <td role="gridcell" style="word-break:break-word;white-space: normal;">
+                                        <div class="slds-align_absolute-left">
+                                            <!-- <lightning-combobox class="resultClass" data-recid={item.Id} name="result"
+                                                value="" options={progTypeOptions} onchange={handleSave}
+                                                disabled={isInspectionComplete}>
+                                            </lightning-combobox> -->
+                                            <lightning-checkbox-group name="Checkbox Group"
+                                                label=""
+                                                options={progTypeOptions}
+                                                value={value}
+                                                >
+                                            </lightning-checkbox-group>
+                                        </div>
+                                    </td>
+                                    <td role="gridcell" style="word-break:break-word;white-space: normal;width:5rem;">
+                                        <div class="slds-align_absolute-left">
+                                            <lightning-textarea data-recid={item.Id} name="observation" data-name=""
+                                                value={item.Observations__c} class="observationClass"
+                                                onfocusout={handleSave} disabled={isInspectionComplete}>
+                                            </lightning-textarea>
+                                        </div>
+                                    </td>
+                                    <td role="gridcell" style="word-break:break-word;white-space: normal;width:5rem;">
+                                        <div class="slds-align_absolute-left">
+                                            <lightning-textarea data-recid={item.Id} name="observation" data-name=""
+                                                value="" class="observationClass"
+                                                disabled={isInspectionComplete}>
+                                            </lightning-textarea>
+                                        </div>
+                                    </td>
+                                    <td role="gridcell" style="word-break:break-word;white-space: normal;">
+                                        <div class="slds-align_absolute-center">
+                                            <div if:false={isInspectionComplete}>
+                                                <lightning-button-icon onclick={handleFileUpload}
+                                                    icon-name="utility:upload" alternative-text="Upload"
+                                                    style="margin-left: 5px;" data-recid={item.Id}>
+                                                </lightning-button-icon>
+                                            </div>
+                                            <div>
+                                                <lightning-button-icon onclick={handleViewFile}
+                                                    icon-name="utility:preview" alternative-text="View Files"
+                                                    style="margin-left: 5px;" data-recid={item.Id}>
+                                                </lightning-button-icon>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+</tbody>
+</table>
+<!-- Due Diligence List End Here  -->
+<div if:true={isTableEmpty} class="slds-p-top_small slds-text-align_center">
+    <span class="slds-m-around_small status"> No records found</span>
+</div>
+</div>
+<!-- Bulk update Start Here Modal -->
+<c-psr-modal if:true={showBulkUpdateModal} classes='slds-modal newModal slds-fade-in-open zindex9004' backdrop-class="slds-backdrop slds-backdrop_open zindex9003">
+    <span slot="header">Bulk Assess</span>
+    <div slot="body">
+        <div>
+            <c-psr-help-text help-text={Internal_Bulk_Update_Help_Text}></c-psr-help-text>
+        </div>
+        <div class="slds-p-around_medium lgc-bg">
+            Filter by Category:
+            <lightning-combobox name="category" value={bulkCategory} options={categoryOptions} onchange={handleCategoryChange}>
+            </lightning-combobox>
+        </div>
+        <div class="slds-p-around_medium lgc-bg">
+            Mark all items currently without result (Non-Selected Items):
+            <lightning-combobox class="resultClass" name="result" value={bulkResult} options={resultOptions} onchange={handleResultChange}>
+            </lightning-combobox>
+        </div>
+        <div class="slds-p-around_medium lgc-bg">
+            Observation:
+            <lightning-textarea name="observation" value={bulkObservation} class="observationClass" onchange={handleObservationChange}>
+            </lightning-textarea>
+        </div>
+    </div>
+    </div>
+    <div slot="footer">
+        <lightning-button class="slds-p-right_xx-small" name="cancel" label="Cancel" onclick={cancelConfirmationModal}>
+        </lightning-button>
+        <lightning-button name="Confirm" label="Confirm" variant="brand" onclick={handleConfirm}>
+        </lightning-button>
+    </div>
+</c-psr-modal>
+<!-- Bulk update End Modal -->
+
+<!-- file upload modal start-->
+<c-psr-modal if:true={openFileModal} classes='slds-modal newModal slds-fade-in-open zindex9004' backdrop-class="slds-backdrop slds-backdrop_open zindex9003">
+    <span slot="header">File Upload</span>
+    <div slot="body">
+        <lightning-file-upload name="imageUploader" class="file-uploader" record-id={uploadFileRecId}>
+        </lightning-file-upload>
+    </div>
+    </div>
+    <div slot="footer">
+        <lightning-button class="slds-p-right_xx-small" name="cancel" label="Cancel" onclick={cancelFileUploadModal}>
+        </lightning-button>
+    </div>
+</c-psr-modal>
+<!-- file upload modal end-->
+</lightning-card>
+</lightning-layout-item>
+</lightning-layout>
+
+<template if:true={isModalOpen}>
+    <!-- Modal/Popup Box LWC starts here -->
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <!-- Modal/Popup Box LWC header here -->
+            <header class="slds-modal__header" style="background: cornflowerblue;">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                    <lightning-icon icon-name="utility:close"
+                        alternative-text="close"
+                        variant="inverse"
+                        size="small" ></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Regulation Detail</h2>
+            </header>
+            <!-- Modal/Popup Box LWC body starts here -->
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_1-of-3">
+                        <b>Regulation Number</b>
+                    </div>
+                    <div class="slds-col slds-size_2-of-3">
+                        {regulation.Name}
+                    </div>
+                    <div class="slds-col slds-size_1-of-3">
+                        <b>Parent Regulation Number</b>
+                    </div>
+                    <div class="slds-col slds-size_2-of-3" if:true={regulation.Parent_Regulation__c}>
+                        {regulation.Parent_Regulation__r.Name}
+                    </div>
+                    <div class="slds-col slds-size_2-of-3" if:false={regulation.Parent_Regulation__c}>
+                        <!-- {regulation.parentRegulation} -->
+                    </div>
+                    <div class="slds-col slds-size_1-of-3">
+                        <b>Article</b>
+                    </div>
+                    <div class="slds-col slds-size_2-of-3">
+                        {regulation.Article__c}
+                    </div>
+                    <div class="slds-col slds-size_1-of-3">
+                        <b>Applicable To</b>
+                    </div>
+                    <div class="slds-col slds-size_2-of-3">
+                        {regulation.Applicable_To__c}
+                    </div>
+                </div>
+            </div>
+            <!-- Modal/Popup Box LWC footer starts here -->
+            <footer class="slds-modal__footer">
+                <button class="slds-button slds-button_brand" onclick={closeModal} title="Close">Close</button>
+                <!-- <button class="slds-button slds-button_brand" onclick={submitDetails} title="OK">OK</button> -->
+            </footer>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>
+</template>

@@ -1,0 +1,440 @@
+<template>
+    <lightning-card >
+        <template if:true={showSpinner}>
+            <lightning-spinner variant="brand" size="large"></lightning-spinner>
+        </template>
+        <div class="allocation-header slds-m-bottom_x-large" if:false={readOnly}>Allocation and Flexing</div>
+        <div class="allocation-subheader slds-m-bottom_medium">FY2020 Allocation</div>
+        <div class="allocation-content dasePagePadding">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered"
+                aria-label="Example table of Opportunities with vertical borders">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Federal Grants">Federal Grants</div>
+                        </th>
+                        <th class="" scope="col" colspan="2">
+                            <div class="slds-truncate" title="From">Project Duration</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Total Allocation">Total Allocation</div>
+                        </th>
+                    </tr>
+                    <tr class="slds-line-height_reset">
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title=""></div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="From">From</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="To">To</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title=""></div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="slds-hint-parent">
+                        <th data-label="Federal Grants" scope="row">
+                            <div class="slds-truncate" title="Title I, Part A Fund Code 305">Title I, Part A Fund Code
+                                305</div>
+                        </th>
+                        <td data-label="From">
+                            <div class="slds-truncate" title="Upon Approval">Upon Approval</div>
+                        </td>
+                        <td data-label="To">
+                            <div class="slds-truncate" title="6/30/2022">6/30/2022</div>
+                        </td>
+                        <td data-label="Total Allocation">
+                            <lightning-input data-id="inputval1" type="number" step="0" formatter="currency" name="input1" variant="label-hidden"
+                                value={inputval1} onchange={genericHandler} disabled={readOnly}></lightning-input>
+                        </td>
+                    </tr>
+                    <tr class="slds-hint-parent">
+                        <th data-label="Federal Grants" scope="row">
+                            <div class="slds-truncate" title="Title II, Part A Fund Code 140">Title II, Part A Fund Code
+                                140</div>
+                        </th>
+                        <td data-label="From">
+                            <div class="slds-truncate" title="Upon Approval">Upon Approval</div>
+                        </td>
+                        <td data-label="To">
+                            <div class="slds-truncate" title="6/30/2022">6/30/2022</div>
+                        </td>
+                        <td data-label="Total Allocation">
+                            <lightning-input data-id="inputval2" type="number" step="0" formatter="currency" name="input1" variant="label-hidden"
+                                value={inputval2} onchange={genericHandler} disabled={readOnly}></lightning-input>
+                        </td>
+                    </tr>
+                    <tr class="slds-hint-parent">
+                        <th data-label="Federal Grants" scope="row">
+                            <div class="slds-truncate" title=" Title III, Part A Fund Code 180">
+                                Title III, Part A Fund Code 180
+                            </div>
+                        </th>
+                        <td data-label="From">
+                            <div class="slds-truncate" title="Upon Approval">Upon Approval</div>
+                        </td>
+                        <td data-label="TO">
+                            <div class="slds-truncate" title="6/30/2022">6/30/2022</div>
+                        </td>
+                        <td data-label="Total Allocation">
+                            <lightning-input data-id="inputval3" type="number" step="0" formatter="currency" name="input1" variant="label-hidden"
+                                value={inputval3} onchange={genericHandler} disabled={readOnly}></lightning-input>
+                        </td>
+                    </tr>
+                    <tr class="slds-hint-parent">
+                        <th data-label="Federal Grants" scope="row">
+                            <div class="slds-truncate" title="Title IV, Part A Fund Code 309">
+                                Title IV, Part A Fund Code 309
+                            </div>
+                        </th>
+                        <td data-label="From">
+                            <div class="slds-truncate" title="Upon Approval">Upon Approval</div>
+                        </td>
+                        <td data-label="To">
+                            <div class="slds-truncate" title="6/30/2022">6/30/2022</div>
+                        </td>
+                        <td data-label="Total Allocation">
+                            <lightning-input data-id="inputval4" type="number" step="0" formatter="currency" name="input1" variant="label-hidden"
+                                value={inputval4} onchange={genericHandler} disabled={readOnly}></lightning-input>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="line slds-m-bottom_xx-large slds-m-top_xx-large"></div>
+            <c-allocation-instructions></c-allocation-instructions>
+            <div class="allocation-accordion slds-m-top_xx-large">
+                <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection} allow-multiple-sections-open
+                    active-section-name={activeSections}>
+                    <lightning-accordion-section name="A"
+                        label="Title I, Part A, Improving Basic Programs (Fund Code 305)">
+                        <div class="allocation-accordion-content">
+                            <table
+                                class="slds-table slds-table_cell-buffer slds-table_header-hidden slds-table_bordered"
+                                aria-label="Example headless table of Opportunities">
+                                <thead class="slds-assistive-text">
+                                    <tr class="slds-line-height_reset">
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Opportunity Name">Opportunity Name</div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Account Name">Account Name</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate"
+                                                title="Total original Title I, Part A allocation">
+                                                Total original Title I, Part A allocation
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate last-row" title="value">${inputval1}</div>
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate" title=" Funds flexed from Title II, Part As">
+                                                Funds flexed from Title II, Part As
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate last-row" title="value">${T2val2}</div>
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate" title="Funds flexed from Title IV, Part A">
+                                                Funds flexed from Title IV, Part A
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate last-row" title="value">${T4val2}</div>
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate"
+                                                title="Post-flexing funds for use per Title I, Part A:">
+                                                <b>Post-flexing funds for use per Title I, Part A:</b>
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate last-row" title="$ 44,909">${totalsum}</div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="B"
+                        label="Title II, Part A, Supporting Effective Instruction (Fund Code 140)">
+                        <div class="allocation-accordion-content">
+                            <table
+                                class="slds-table slds-table_cell-buffer slds-table_header-hidden slds-table_bordered opportunitiesTable"
+                                aria-label="Example headless table of Opportunities">
+                                <thead class="slds-assistive-text">
+                                    <tr class="slds-line-height_reset">
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Opportunity Name">Opportunity Name</div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Account Name">Account Name</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate"
+                                                title="Total original Title I, Part A allocation">
+                                                Total original Title I, Part A allocation
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate last-row" title="value">${inputval2}</div>
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate"
+                                                title=" Title II, Part A funds flexed into Title I, Part A">
+                                                Title II, Part A funds flexed into Title I, Part A
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <lightning-input data-id="T2val2" type="number" step="0" formatter="currency" name="input1"
+                                                variant="label-hidden" value={T2val2} onchange={genericHandler} disabled={readOnly}>
+                                            </lightning-input>
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate"
+                                                title=" Title II, Part A funds flexed into Title III, Part A">
+                                                Title II, Part A funds flexed into Title III, Part A
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <lightning-input data-id="T2val3" type="number" step="0" formatter="currency" name="input1"
+                                                variant="label-hidden" value={T2val3} onchange={genericHandler} disabled={readOnly}>
+                                            </lightning-input>
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate"
+                                                title=" Title II, Part A funds flexed into Title IV, Part A">
+                                                Title II, Part A funds flexed into Title IV, Part A
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <lightning-input data-id="T2val4" type="number" step="0" formatter="currency" name="input1"
+                                                variant="label-hidden" value={T2val4} onchange={genericHandler} disabled={readOnly}>
+                                            </lightning-input>
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate" title="Funds flexed from Title IV, Part A">
+                                                Funds flexed from Title IV, Part A
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate last-row" title="Value">${T4val3}</div>
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate"
+                                                title="Post-flexing funds for use per Title II, Part A:">
+                                                <b>Post-flexing funds for use per Title II, Part A:</b>
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate last-row" title="$ 44,909">${totalsum2}</div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <template if:true={negativeVar1}>
+                                <p>Invalid Sum---Sum should not be a Negative value</p>
+                            </template>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="C"
+                        label="Title III, Part A, Support for English Learners (Fund Code 180)">
+                        <div class="allocation-accordion-content">
+                            <table
+                                class="slds-table slds-table_cell-buffer slds-table_header-hidden slds-table_bordered"
+                                aria-label="Example headless table of Opportunities">
+                                <thead class="slds-assistive-text">
+                                    <tr class="slds-line-height_reset">
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Opportunity Name">Opportunity Name</div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Account Name">Account Name</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate"
+                                                title="Total original Title III, Part A allocation">
+                                                Total original Title III, Part A allocation
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate last-row" title="value">${inputval3}</div>
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate" title=" Funds flexed from Title II, Part A">
+                                                Funds flexed from Title II, Part A
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate last-row" title="Cloudhub">${T2val3}</div>
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate" title="Funds flexed from Title IV, Part A">
+                                                Funds flexed from Title IV, Part A
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate last-row" title="Cloudhub">${T4val4}</div>
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate"
+                                                title="Post-flexing funds for use per Title III, Part A:">
+                                                <b>Post-flexing funds for use per Title III, Part A:</b>
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate last-row" title="$ 44,909">${totalsum3}</div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </lightning-accordion-section>
+                    <lightning-accordion-section name="D"
+                        label="Title IV, Part A, Student Support and Academic Enrichment (Fund Code 309)">
+                        <div class="allocation-accordion-content">
+                            <table
+                                class="slds-table slds-table_cell-buffer slds-table_header-hidden slds-table_bordered"
+                                aria-label="Example headless table of Opportunities">
+                                <thead class="slds-assistive-text">
+                                    <tr class="slds-line-height_reset">
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Opportunity Name">Opportunity Name</div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Account Name">Account Name</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate"
+                                                title="Total original Title IV, Part A allocation">
+                                                Total original Title IV, Part A allocation
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate last-row" title="Cloudhub">${inputval4}</div>
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate"
+                                                title="Title IV, Part A funds flexed into Title I, Part A">
+                                                Title IV, Part A funds flexed into Title I, Part A
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <lightning-input data-id="T4val2" type="number" step="0" formatter="currency" name="input1"
+                                                variant="label-hidden" value={T4val2} onchange={genericHandler} disabled={readOnly}>
+                                            </lightning-input>
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate"
+                                                title=" Title IV, Part A funds flexed into Title II, Part A">
+                                                Title IV, Part A funds flexed into Title II, Part A
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <lightning-input data-id="T4val3" type="number" step="0" formatter="currency" name="input1"
+                                                variant="label-hidden" value={T4val3} onchange={genericHandler} disabled={readOnly}>
+                                            </lightning-input>
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate"
+                                                title=" Title IVA funds flexed into Title III, Part A">
+                                                Title IVA funds flexed into Title III, Part A
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <lightning-input data-id="T4val4" type="number" step="0" formatter="currency" name="input1"
+                                                variant="label-hidden" value={T4val4} onchange={genericHandler} disabled={readOnly}>
+                                            </lightning-input>
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate" title="Funds flexed from Titles II, Part A">
+                                                Funds flexed from Titles II, Part A
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate last-row" title="Value">${T2val4}</div>
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate"
+                                                title="Post-flexing funds for use per Title IV, Part A:">
+                                                <b>Post-flexing funds for use per Title IV, Part A:</b>
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate last-row" title="$ 44,909">${totalsum4}</div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <template if:true={negativeVar2}>
+                                <p>Invalid Sum---Sum should not be a Negative value</p>
+                            </template>
+                        </div>
+                    </lightning-accordion-section>
+                </lightning-accordion>
+            </div>
+        </div>
+        <div slot="footer" if:false={readOnly}>
+            <div class="button">
+                <lightning-button variant="brand-outline" label="Back" title="Primary action with lighter look"
+                    onclick={handlePrev} class="slds-m-left_x-small button__white"></lightning-button>
+                <lightning-button variant="brand" label="Next" title="Primary action" onclick={handleNext}
+                    class="slds-m-left_x-small"></lightning-button>
+            </div>
+        </div>
+    </lightning-card>
+</template>

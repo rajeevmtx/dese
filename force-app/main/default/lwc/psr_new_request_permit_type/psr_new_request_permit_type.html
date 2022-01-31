@@ -1,0 +1,49 @@
+<template>
+    <c-psr_modal classes='slds-modal newModal slds-fade-in-open zindex9004'
+        backdrop-class="slds-backdrop slds-backdrop_open zindex9003">
+        <span slot="header">New Request Permit Type</span>
+
+        <div slot="body">
+            
+            <div class="padding-horizontal">
+                <c-psr-help-text help-text={Portal_New_Request_Permit_Type_Help_Text} ></c-psr-help-text>
+                </div>
+            <lightning-record-edit-form object-api-name={CASE_OBJECT} onsubmit={handleFormSubmit} style="width: 100%;">
+                <div class="slds-card__header slds-grid slds-wrap slds-gutters_direct-x-small">
+                    <div
+                        class="slds-form-element slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-large-size_12-of-12 vehicle-div">
+                        <lightning-combobox label="Permit Type" value={form.Request_Permit_Type__c} options={permitTypes}
+                            onchange={handleFormInputs} name="Request_Permit_Type__c">
+                        </lightning-combobox>
+                    </div>
+
+                    <div
+                        class="slds-form-element slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-large-size_12-of-12 vehicle-div">
+                        <lightning-input-field field-name={Description} value={form.Description}
+                            onchange={handleFormInputs} name="Description"></lightning-input-field>
+                    </div>
+
+                    <!--  <div
+                      class="slds-form-element slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-large-size_12-of-12 vehicle-div">
+                        <lightning-input-field field-name={colorField} value={form.Color__c} onchange={handleFormInputs}
+                          name="color" class="formInput3"></lightning-input-field>
+                    </div>
+                    <div
+                      class="slds-form-element slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-large-size_12-of-12 vehicle-div">
+                        <lightning-input-field field-name={makeField} value={form.Make__c} onchange={handleFormInputs}
+                          name="make"></lightning-input-field>
+                    </div> -->
+                </div>
+            </lightning-record-edit-form>
+        </div>
+
+        <div slot="footer">
+            <lightning-button class="slds-p-right_xx-small" name="cancel" label="Cancel"
+                onclick={closeDeleteConfirmationModal}>
+            </lightning-button>
+
+            <lightning-button name="Save" label="Save" variant="brand" onclick={handleSave}>
+            </lightning-button>
+        </div>
+    </c-psr_modal>
+</template>

@@ -1,0 +1,61 @@
+@media only screen and (max-width: 991px) {
+    .mobileHeightAuto{
+        height:auto !important;
+    }
+   }
+ .zindex9001{
+     z-index:9001;
+ }
+ .zindex9002{
+     z-index:9002;
+ } 
+ .zindex9003{
+     z-index:9003;
+ } 
+ .zindex9004{
+     z-index:9004;
+ }   
+ .redbkg{
+     background-color:rgba(241, 151, 151, 0.6);
+ }
+ .headerclass{
+     border-width: 5px 5px 1px;
+     border-top-style: solid;
+     border-top-color: #c13833;
+     border-left-style: solid;
+     border-left-color: #c13833;
+     border-right-style: solid;
+     border-right-color: #c13833;
+ }
+ .bodyclass{
+     border-left: 5px solid rgb(193, 56, 51);
+     border-right: 5px solid rgb(193, 56, 51);
+ }
+ .footerclass{
+     border-width: 0px 5px 5px;
+     border-bottom-style: solid;
+     border-bottom-color: rgb(193, 56, 51);
+     border-left-style: solid;
+     border-left-color: rgb(193, 56, 51);
+     border-right-style: solid;
+     border-right-color: rgb(193, 56, 51);
+     border-top-style: initial;
+     border-top-color: initial;
+ 
+ }
+ 
+ .modalDarkModeBodyClass{
+     background: #2e2d30;
+     color: white;
+ }
+ 
+ .headerDarkModeClass{
+     background: #2e2d30;
+     color: white;
+     border-bottom: 1px solid #111112;
+ }
+ 
+ .footerDarkModeClass{
+     background: #2e2d30;
+     border-top: 1px solid #111112;
+ }

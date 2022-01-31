@@ -1,0 +1,39 @@
+<template>
+    <div class="content"> 
+        <div class="nav-bar slds-border_right">
+            <nav class="slds-nav-vertical">
+                <div class="slds-nav-vertical__section">
+                    <h3 class="filter_heading">Result</h3>
+                    <ul aria-describedby="entity-header">
+                        <li class="slds-nav-vertical__item nav-bar__item slds-is-active"
+                            onclick={handleItemSelection} data-name="All" data-type="All">
+                            <a class="slds-nav-vertical__action">
+                                <span class="slds-m-left_medium item-title all-item"> All </span>
+                            </a>
+                        </li>
+                        <template for:each={resultOptions} for:item="item">
+                            <li key={item} class="slds-nav-vertical__item nav-bar__item training-info"
+                            onclick={handleItemSelection} data-name={item.value} data-type="result">
+                            <a class="slds-nav-vertical__action">
+                                <span class="slds-m-left_medium item-title"> {item.label} </span>
+                            </a>
+                            </li>
+                        </template>
+                    </ul>
+                    <div class="slds-border_bottom"></div>
+                    <h3 class="filter_heading">Area</h3>
+                    <ul aria-describedby="entity-header">
+                        <template for:each={categoryOptions} for:item="item">
+                            <li key={item} class="slds-nav-vertical__item nav-bar__item training-info"
+                            onclick={handleItemSelection} data-name={item.value} data-type="category">
+                            <a class="slds-nav-vertical__action">
+                                <span class="slds-m-left_medium item-title"> {item.label} </span>
+                            </a>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,27 @@
+.c-layoutcontainer{
+    background: #ECECEC;
+    padding: 1.50rem;
+    display: inline-block;
+    width: 100%;
+}
+
+.c-inbound_message {
+    background: #F2F4F9;
+    padding: .50rem;
+    float: left;
+    margin:0.9rem 0rem 0.9rem 0rem;
+    min-width: 100px;
+}
+
+.c-outbound_message {
+    background:  #F1E4D8;
+    padding: .50rem;
+    float: right;
+    margin:0.9rem 0rem 0.9rem 0rem;
+    min-width: 100px;
+}
+
+.c-datetime {
+    color: #5a5a5a;
+    font-size: 10px;
+}

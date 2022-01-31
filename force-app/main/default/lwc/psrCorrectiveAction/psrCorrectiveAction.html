@@ -1,0 +1,150 @@
+<template>
+    <div class="slds-align_absolute-center slds-m-bottom_small">
+        <lightning-button variant="brand" label="Save" onclick={handleSaveClick} class="slds-m-left_x-small">
+        </lightning-button>
+        <lightning-button variant="brand" label="Publish Back To Portal" onclick={handlePublishBackToPortal}
+            class="slds-m-left_x-small" disabled={isVisible}>
+        </lightning-button>
+        <lightning-button variant="brand" label="Accept Corrective Actions" onclick={handleAcceptCorrectiveActions}
+            class="slds-m-left_x-small" disabled={isVisible}>
+        </lightning-button>
+
+    </div>
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-no-row-hover correctiveAction-table"
+        style="white-space: normal !important;">
+        <thead>
+            <tr class="slds-line-height_reset">
+                <th class="slds-is-resizable" scope="col">
+                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                        <div
+                            class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small">
+                            <lightning-input onchange={allSelected} type="checkbox"></lightning-input>
+                        </div>
+                    </div>
+                </th>
+                <th class="slds-is-resizable" scope="col">
+                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                        <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small"
+                            title="Inspection Item Number">INSPECTION NO.</div>
+                    </div>
+                </th>
+                <th class="slds-is-resizable" scope="col">
+                    <div class="slds-truncate" title="Inspection Item Name">INSPECTION ITEM NAME</div>
+                </th>
+                <th class="slds-is-resizable" scope="col">
+                    <div class="slds-truncate" title="Observation">OBSERVATION</div>
+                </th>
+                <th class="slds-is-resizable" scope="col">
+                    <div class="slds-truncate" title="Observation">CORRECT PLAN</div>
+                </th>
+                <th class="slds-is-resizable" scope="col">
+                    <div class="slds-truncate" title="Status ">STATUS</div>
+                </th>
+                <th class="slds-is-resizable" scope="col">
+                    <div class="slds-truncate" title="Date Implemented">DATE IMPLEMENTED</div>
+                </th>
+                <th class="slds-is-resizable" scope="col">
+                    <div class="slds-truncate" title="Corrective Action Feedback">CORRECTIVE ACTION FEEDBACK</div>
+                </th>
+                <th class="slds-is-resizable" scope="col">
+                    <div class="slds-truncate" title="Documents">DOCUMENTS</div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <template for:each={inspectionData} for:item="con">
+                <tr key={con.Id} style="height:9rem">
+                    <th scope="col">
+                        <div>
+                            <lightning-input type="checkbox" value={con.Name} data-id={con.Id}
+                                onchange={handleCheckboxes}></lightning-input>
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div>{con.Name}</div>
+
+                    </th>
+                    <th scope="col">
+                        <div>{con.Inspection_Item_Name__c}</div>
+                    </th>
+                    <th scope="col">
+                        <div>
+                            <lightning-textarea data-id={con.Id} style="height: 9rem !important;" name="input1" label=""
+                                value={con.Observations__c} onchange={bindObservations}>
+                            </lightning-textarea>
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div>
+                            <lightning-textarea name="input1" style="height: 9rem !important;" data-id={con.Id} label=""
+                                value={con.Correction_Plan__c} onchange={bindCorrectionPlan}>
+                            </lightning-textarea>
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <!--<div class="slds-form-element__control">
+                            <div class="slds-select_container">
+                                <select class="slds-select" data-line={con.Id}
+                                 onchange={handlePeriod}>
+                                    <option value="12" selected={part.twelveMonths}>12
+                                    </option>
+                                    <option value="24" selected={part.twentyFourMonths}>24
+                                    </option>
+                                </select>
+                            </div>
+                        </div>-->
+                        {con.Correction_Plan_Status__c}
+
+                    </th>
+                    <th scope="col">
+                        <div>
+                            <lightning-input type="date" name="input1" label="" value={con.Date_Implemented__c}
+                                data-id={con.Id} onchange={bindDateImplemented}></lightning-input>
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div>
+                            <lightning-textarea name="input1" label="" value={con.Corrective_Action_Feedback__c}
+                                data-id={con.Id} onchange={bindCorrectionFeedBack} style="height: 9rem !important;">
+                            </lightning-textarea>
+                        </div>
+                    </th>
+                    <!-- <th scope="col">
+                        <lightning-file-upload class="slds-m-bottom_small slds-float_left" label="" name="fileUploader"
+                            data-record={con.Id} record-id={con.Id} onuploadfinished={handleUploadFinished} multiple>
+                        </lightning-file-upload>
+                    </th> -->
+                    <td role="gridcell" style="word-break:break-word;white-space: normal;">
+                        <div class="slds-align_absolute-center">
+                            <div>
+                                <lightning-button-icon onclick={handleFileUpload} icon-name="utility:upload"
+                                    alternative-text="Upload" style="margin-left: 5px;" data-recid={con.Id}>
+                                </lightning-button-icon>
+                            </div>
+                            <div>
+                                <lightning-button-icon onclick={handleViewFile} icon-name="utility:preview"
+                                    alternative-text="View Files" style="margin-left: 5px;" data-recid={con.Id}>
+                                </lightning-button-icon>
+                            </div>
+                        </div>
+                    </td>
+
+                </tr>
+            </template>
+</tbody>
+</table>
+<!-- file upload modal start-->
+<c-psr-modal if:true={openFileModal} classes='slds-modal newModal slds-fade-in-open zindex9004' backdrop-class="slds-backdrop slds-backdrop_open zindex9003">
+    <span slot="header">File Upload</span>
+    <div slot="body">
+        <lightning-file-upload name="imageUploader" class="file-uploader" record-id={uploadFileRecId}>
+        </lightning-file-upload>
+    </div>
+    </div>
+    <div slot="footer">
+        <lightning-button class="slds-p-right_xx-small" name="cancel" label="Cancel" onclick={cancelFileUploadModal}>
+        </lightning-button>
+    </div>
+</c-psr-modal>
+<!-- file upload modal end-->
+</template>

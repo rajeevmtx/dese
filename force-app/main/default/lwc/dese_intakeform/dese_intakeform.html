@@ -1,0 +1,69 @@
+<template>
+        <div class="intake-header">
+            <div class="header-info">
+                <div class="information">
+                   <div class="info">
+                      <div class="info__main">
+                         Standard Contract Form and Application for Program Grants
+                      </div>
+                      <div class="info__sub">
+                         {projectName}
+                      </div>
+                   </div>
+                   <div class="date">
+                      <div class="date__dueD">
+                         Due Date
+                      </div>
+                      <div class="date__format slds-is-today ">
+                         <lightning-formatted-date-time value={projectDate} year="numeric"
+                         day="2-digit"
+                         month="long" class="dateFormate"></lightning-formatted-date-time>
+                      </div>
+                   </div>
+                </div>
+             </div>
+            </div>
+    <div class="container">
+        <div class="content-container ">
+            <div class="left-sidebar">
+                <c-dese_homepage current-step={currentStep} onselected={handleStepChange}></c-dese_homepage>
+            </div>
+            <div class="main-content titleI">
+                <template if:true={isStep1}>
+                    <c-dese_overview onnext={handleNext} onprevious={handlePrev} project-id={projectId}></c-dese_overview>
+                </template>
+                <template if:true={isStep2}>
+                    <c-dese_contact_information onnext={handleNext} onprevious={handlePrev} contacts={wrapper.contacts} project-id={projectId}></c-dese_contact_information>
+                </template>
+                <template if:true={isStep3}>
+                    <c-dese_allocation onnext={handleNext} onprevious={handlePrev} allocations={wrapper.allocations} project-id={projectId}></c-dese_allocation>
+                </template>
+                <template if:true={isStep4}>
+                    <c-dese_private_school_services  onnext={handleNext} onprevious={handlePrev} pss={wrapper.pss} project-id={projectId}></c-dese_private_school_services>
+                </template>
+                <template if:true={isStep5}>
+                    <c-dese_districtwide_startegies  onnext={handleNext} onprevious={handlePrev} pss={wrapper.pss} project-id={projectId}></c-dese_districtwide_startegies>
+                </template>
+                <template if:true={isStep6}>
+                    <c-dese_title_narrative  onnext={handleNext} onprevious={handlePrev} pss={wrapper.pss} project-id={projectId}></c-dese_title_narrative>
+                </template>
+                <template if:true={isStep7}>
+                    <c-dese_title2_narrative  onnext={handleNext} onprevious={handlePrev} pss={wrapper.pss} project-id={projectId}></c-dese_title2_narrative>
+                </template>
+                <template if:true={isStep8}>
+                    <c-dese_title3_narrative  onnext={handleNext} onprevious={handlePrev} pss={wrapper.pss} project-id={projectId}></c-dese_title3_narrative>
+                </template>
+                <template if:true={isStep9}>
+                    <c-dese_title4_narrative  onnext={handleNext} onprevious={handlePrev} pss={wrapper.pss} project-id={projectId}></c-dese_title4_narrative>
+                </template>
+                <template if:true={isStep10}>
+                    <!-- <c-dese_signature  onnext={handleNext} onprevious={handlePrev} pss={wrapper.pss} project-id={projectId}></c-dese_signature> -->
+                    <c-dese_intake_review onnext={handleNext} onprevious={handlePrev} pss={wrapper.pss} project-id={projectId}></c-dese_intake_review>
+                </template>
+                <template if:true={isStep11}>
+                    <c-dese_signature  onnext={handleNext} onprevious={handlePrev} pss={wrapper.pss} project-id={projectId}></c-dese_signature>
+                </template>
+            </div>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,844 @@
+<apex:page controller="EEC_TransactionWizardController" standardStylesheets="false" showheader="false" sidebar="false">
+    <title>EEC : Transaction - Operation Details</title>
+    <c:EEC_Header />
+    <style>
+        .bPageBlock .requiredInput .requiredBlock {
+            background-color: #c00;
+            position: absolute;
+            left: -4px;
+            width: 3px;
+            top: 1px;
+            bottom: 1px;
+            top: 20px;
+            display: none;
+        }
+        .parsley-errors-list {
+            width: 50%;
+        }
+        .parsley-error {
+            border: 2px solid #c00;
+        }
+        .my_error_container {
+            position: absolute;
+            bottom: 90px;
+            width: 50%;
+        }
+        .errorMsg {
+            color: #d74c3b;
+        }
+        .message[class*='error'] {
+            background-color: #eee;
+            padding: 0 20px 10px;
+            margin-bottom: 25px;
+            border-radius: 3px;
+            -webkit-box-shadow: 0px 0px 5px 0px rgba(204, 0, 0, 0.4);
+            -moz-box-shadow: 0px 0px 5px 0px rgba(204, 0, 0, 0.4);
+            box-shadow: 0px 0px 5px 0px rgba(204, 0, 0, 0.4);
+        }
+        .message[class*='error'] .messageTable {
+            width: 100%;
+        }
+        .message[class*='error'] .messageText {
+            border-bottom: 1px solid grey;
+            height: 30px;
+        }
+        .collectcapacity-info-container {
+            margin-bottom: 120px;
+        }
+        md-input-container {
+            padding-top: 15px;
+        }
+        .md-title,
+        .md-toolbar-tools {
+            margin-bottom: 15px;
+        }
+        md-input-container .input-label {
+            /*top: -50px;*/
+        }
+        md-input-container .input-label-date-picklist {
+            top: -25px;
+        }
+        .base-info {
+            margin-top: 10px;
+        }
+        .input-label {
+            color: rgba(0, 0, 0, 0.54);
+        }
+        .base-info md-content {
+            margin-bottom: 20px;
+        }
+        .provider-checkbox {
+            margin-top: -25px;
+            margin-left: -5px;
+            overflow: visible;
+        }
+        .radio-group .parsley-errors-list {
+            margin-top: 20px;
+            margin-left: -50px;
+            position: absolute;
+            width: 50%;
+        }
+        .radio-group .parsley-error {
+            border: 0px;
+        }
+        .new-address-live-at-address {
+            margin-top: 29px;
+        }
+        md-input-container:not(.md-input-invalid).md-input-has-value label {
+            transform: translate3d(0, 6px, 0) scale(1);
+        }
+        /* @see Angular Material - Input */
+        .requiredInput,
+        md-input-container span {
+            -webkit-flex: 1 1 auto;
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+            -webkit-order: 2;
+            -ms-flex-order: 2;
+            order: 2;
+            display: block;
+            background: 0 0;
+            padding: 2px 2px 1px;
+            border-width: 0 0 1px;
+            line-height: 26px;
+            -ms-flex-preferred-size: 26px;
+            border-radius: 0;
+        }
+        .other-checkbox {
+            padding-top: 20px;
+        }
+        input[type="radio"],
+        input[type="checkbox"] {
+            margin: 4px 7px 0;
+        }
+        .radio-group label {
+            font-weight: normal;
+        }
+        .commandBtn {
+            -webkit-appearance: none;
+            border: none;
+            box-shadow: none;
+            background: none;
+            text-transform: uppercase;
+            font-weight: 500;
+            font-size: 14px;
+            font-style: inherit;
+            font-variant: inherit;
+            font-family: inherit;
+            outline: none;
+            letter-spacing: .01em;
+            margin: 3px 0px;
+            white-space: normal;
+        }
+        input[type="text"] {
+            width: 70%;
+            margin-bottom: 10px;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+        textarea.form-control {
+            width: 42.2em;
+            margin-bottom: 15px;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+        .navigation-buttons .md-button label {
+            white-space: normal;
+        }
+        .base-label {
+            color: rgba(0, 0, 0, 0.54);
+        }
+        .md-input-has-value {}
+        md-input-container input,
+        md-input-container .md-input {
+            max-width: 200px;
+        }
+        .readonly-input {
+            border-bottom: none;
+            cursor: not-allowed;
+        }
+        .read-only-input {
+            cursor: not-allowed;
+            background: rgba(0, 0, 0, 0.54);
+        }
+        /* TODO: Remove this and use md-select with new Validation. */
+        select {
+            background: none;
+            border: none;
+            border-bottom: 1px solid #ddd;
+        }
+        .errorMsg {
+            color: red;
+        }
+        .city-outputfield {
+            outline: none;
+            text-decoration: none;
+        }
+        @media only screen and (min-width: 0px) and (max-width: 959px) {
+            .navigation-buttons .md-button {
+                width: 100%;
+            }
+            .navigation-buttons md-content {
+                width: 100%;
+            }
+            md-input-container input {
+                max-width: none;
+            }
+        }
+        .base-info {
+            margin-bottom: 20px;
+        }
+    </style>
+    <body ng-app="eecApp">
+        <c:eec_nav_bar id="navBar" rendered="{!loggedUser.UserType == 'PowerPartner' || loggedUser.UserType == 'PowerCustomerSuccess' || loggedUser.UserType == 'CspLitePortal' || loggedUser.UserType == 'CustomerSuccess'}"
+        />
+        <div class="collectcapacity-info-container" layout-wrap="true" layout-lg="row" layout-gt-lg="row" layout="row" layout-padding="true"
+            layout-margin="true" ng-controller="TransactionController as ctrl">
+            <md-content style="margin-top: 20px;" ng-show="ctrl.checkForMessages()" layout="row" flex="100" layout-align="center center">
+                <md-whiteframe class="md-whiteframe-z2 ng-cloak" layout="column" layout-padding="true" flex="75">
+                    <apex:pageMessages id="showmsg"></apex:pageMessages>
+                </md-whiteframe>
+            </md-content>
+            <apex:form id="TransactionDesignationForm" styleClass="transaction-parsley-form col-lg-8 col-md-8 col-sm-12">
+                <apex:outputPanel style="padding:50px 50px 50px 50px" id="userDetail" styleClass="ng-cloak">
+                    <div class="top-header-section">
+                        <div class="header-name-section">
+                            <h3 class="md-display-1 header-display-name">{!applicationDisplayName}</h3>
+                            <h4 class="step-name">Operation Details</h4>
+                            <h5 class="base-label trans-number">Application number: {!licenseTransation.Name}</h5>
+                        </div>
+                    </div>
+                    <md-divider layout-align="center center"></md-divider>
+                    <apex:pageBlock html-layout="column" html-layout-padding="true">
+                        <!-- Basic Information -->
+                        <!--             <div class="base-info" layout="column" layout-lg="row" layout-gt-lg="row" layout-wrap="true">    -->
+                        <!--                 <h3 class="md-title" flex="100">Program / Transaction Information</h3> -->
+                        <!--                 <md-content flex="50" layout="column"> -->
+                        <!--                   <label class="base-label">Program Name</label> -->
+                        <!--                   <apex:outputText value="{!provider.Name}" id="providerName" /> -->
+                        <!--                 </md-content> -->
+                        <!--                 <md-content flex="50" layout="column"> -->
+                        <!--                   <label class="base-label">Transaction Type</label> -->
+                        <!--                   <apex:outputText value="{!LicenseRecordTypeLabel}" id="transactionTypeTA" /> -->
+                        <!--                 </md-content> -->
+                        <!--                 <md-content flex="50" layout="column"> -->
+                        <!--                   <label class="base-label">Transaction Number</label> -->
+                        <!--                   <apex:outputText value="{!licenseTransation.Name}" id="transactionNumberTA" /> -->
+                        <!--                 </md-content> -->
+                        <!--             </div> -->
+                        <!-- Operation Type-->
+                        <apex:outputPanel rendered="{! LicenseRecordTypeName !='Public_School_New_Funding_Application' && LicenseRecordTypeName !='Other_Eligible_Providers_New_Funding_Application'  && LicenseRecordTypeName !='Private_School_New_Funding_Application' && LicenseRecordTypeName !='Summer_Camp_New_Application'}">
+                            <div layout="row" layout-wrap="true">
+                                <h3 class="md-title" flex="100">Operation Type</h3>
+                                <apex:pageBlock >
+                                    <apex:outputpanel >
+                                        <apex:actionregion >
+                                            <div>
+                                                <div class="requiredBlock"></div>
+                                                <label class="input-label">Operation Type
+                                                    <span class="required">*</span>
+                                                </label>
+                                                <apex:inputField styleclass="form-control" style="width:320px" value="{!licenseTransation.Operation_Type__c}" html-data-parsley-required="true">
+                                                    <apex:actionsupport status="status" event="onchange" rerender="chmDesc" />
+                                                </apex:inputField>
+                                            </div>
+                                        </apex:actionregion>
+                                    </apex:outputpanel>
+                                    <!--                     <apex:outputpanel id="chmDesc" style="display:{!IF(licenseTransation.Operation_Type__c=='School Year','','none')}"><br/> -->
+                                    <!--                         <label class="input-label">From<span class="required">*</span></label> -->
+                                    <!--                         <apex:inputfield styleclass="form-control" value="{!licenseTransation.Operation_Start_Month__c}" html-data-parsley-required="true"/> <br/>  -->
+                                    <!--                         <label class="input-label">To<span class="required">*</span></label> -->
+                                    <!--                         <apex:inputfield styleclass="form-control" value="{!licenseTransation.Operation_End_Month__c}" html-data-parsley-required="true"/>   -->
+                                    <!--                     </apex:outputpanel> -->
+                                </apex:pageBlock>
+                            </div>
+                        </apex:outputPanel>
+                        <!-- Operation Period - Full Day Program-->
+                        <div layout="row" layout-wrap="true">
+                            <h3 class="md-title" flex="100">Operation Period - Full Day Program</h3>
+                            <apex:pageBlock >
+                                <apex:outputpanel >
+                                    <apex:actionregion >
+                                        <div class="radio-group">
+                                            <div class="requiredBlock"></div>
+                                            <label class="input-label">Do you provide Full Day Program option?
+                                                <span class="required">*</span>
+                                            </label>
+                                            <apex:selectRadio value="{!licenseTransation.Provide_Full_Day_Program__c}">
+                                                <apex:selectOptions value="{!items}" html-data-parsley-required="true" />
+                                                <apex:actionSupport status="status" event="onchange" action="{!showLSDesc}" reRender="chmDesc1,fullDaysSection" oncomplete="saveCheckboxes();"/>
+                                            </apex:selectRadio>
+                                        </div>
+                                    </apex:actionregion>
+                                </apex:outputpanel>
+                                <apex:outputpanel id="fullDaysSection" style="display:{!IF(licenseTransation.Provide_Full_Day_Program__c == 'Yes','','none')}">
+                                    <apex:actionregion >
+                                        <div class="radio-group" id="availableDays">
+                                            <div class="requiredBlock"></div>
+                                            <br/>
+                                            <label class="input-label">Available Days
+                                                <span class="required">*</span>
+                                            </label>
+                                            <apex:selectCheckboxes value="{!selectedDay}" id="fullDay" onchange="saveCheckboxes();">
+                                                <apex:selectOptions value="{!weekDays}" html-data-parsley-required="{!licenseTransation.Provide_Full_Day_Program__c == 'Yes'}"
+                                                />
+                                            </apex:selectCheckboxes>
+                                            <input type="hidden" id="Provide_Full_Day_Program__c" value="{!licenseTransation.Provide_Full_Day_Program__c}" />
+                                        </div>
+                                    </apex:actionregion>
+                                </apex:outputpanel>
+                                <apex:outputpanel id="chmDesc1" style="display:{!IF(licenseTransation.Provide_Full_Day_Program__c == 'Yes','','none')}">
+                                    <br/>
+                                    <label class="input-label">From
+                                        <span class="required">*</span>
+                                    </label>
+                                    <apex:inputfield styleclass="form-control" value="{!licenseTransation.Start_Time_Full_day_program__c}" html-data-parsley-required="{!licenseTransation.Provide_Full_Day_Program__c == 'Yes'}"
+                                    />
+                                    <br/>
+                                    <label class="input-label">To
+                                        <span class="required">*</span>
+                                    </label>
+                                    <apex:inputfield styleclass="form-control" value="{!licenseTransation.End_Time_Full_day_program__c}" html-data-parsley-required="{!licenseTransation.Provide_Full_Day_Program__c == 'Yes'}"
+                                    />
+                                </apex:outputpanel>
+                            </apex:pageBlock>
+                        </div>
+                        <!-- Operation Period - Half Day Morning Program-->
+                        <div layout="row" layout-wrap="true">
+                            <h3 class="md-title" flex="100">Operation Period - Half Day Morning Program</h3>
+                            <apex:pageBlock >
+                                <apex:outputpanel >
+                                    <apex:actionregion >
+                                        <div class="radio-group">
+                                            <div class="requiredBlock"></div>
+                                            <label class="input-label">Do you provide Half Day Morning Program option?
+                                                <span class="required">*</span>
+                                            </label>
+                                            <apex:selectRadio value="{!licenseTransation.Provide_Half_Day_Morning_Program__c}">
+                                                <apex:selectOptions value="{!items}" html-data-parsley-required="true" />
+                                                <apex:actionSupport status="status" event="onchange" action="{!showLSDesc}" reRender="chmDesc2,halfDaysSection" oncomplete="saveHalfCheck();"/>
+                                            </apex:selectRadio>
+                                        </div>
+                                    </apex:actionregion>
+                                </apex:outputpanel>
+                                <apex:outputpanel id="halfDaysSection" style="display:{!IF(licenseTransation.Provide_Half_Day_Morning_Program__c == 'Yes','','none')}">
+                                    <apex:actionregion >
+                                        <div class="radio-group" id="halfDays">
+                                            <div class="requiredBlock"></div>
+                                            <label class="input-label">Available Days
+                                                <span class="required">*</span>
+                                            </label>
+                                            <apex:selectCheckboxes value="{!selectedHalfDay}" onchange="saveHalfCheck();">
+                                                <apex:selectOptions value="{!weekHalfDays}" html-data-parsley-required="{!licenseTransation.Provide_Half_Day_Morning_Program__c == 'Yes'}"
+                                                />
+                                            </apex:selectCheckboxes>
+                                            <input type="hidden" id="Provide_Half_Day_Morning_Program__c" value="{!licenseTransation.Provide_Half_Day_Morning_Program__c}"
+                                            />
+                                        </div>
+                                    </apex:actionregion>
+                                </apex:outputpanel>
+                                <apex:outputpanel id="chmDesc2" style="display:{!IF(licenseTransation.Provide_Half_Day_Morning_Program__c == 'Yes','','none')}">
+                                    <br/>
+                                    <label class="input-label">From
+                                        <span class="required">*</span>
+                                    </label>
+                                    <apex:inputfield styleclass="form-control" value="{!licenseTransation.Start_Time_Morning_program__c}" html-data-parsley-required="{!licenseTransation.Provide_Half_Day_Morning_Program__c == 'Yes'}"
+                                    />
+                                    <br/>
+                                    <label class="input-label">To
+                                        <span class="required">*</span>
+                                    </label>
+                                    <apex:inputfield styleclass="form-control" value="{!licenseTransation.End_Time_Morning_program__c}" html-data-parsley-required="{!licenseTransation.Provide_Half_Day_Morning_Program__c == 'Yes'}"
+                                    />
+                                </apex:outputpanel>
+                            </apex:pageBlock>
+                        </div>
+                        <!-- Operation Period - Half Day Afternoon Program-->
+                        <div layout="row" layout-wrap="true">
+                            <h3 class="md-title" flex="100">Operation Period - Half Day Afternoon Program</h3>
+                            <apex:pageBlock >
+                                <apex:outputpanel >
+                                    <apex:actionregion >
+                                        <div class="radio-group">
+                                            <div class="requiredBlock"></div>
+                                            <label class="input-label">Do you provide Half Day Afternoon Program option?
+                                                <span class="required">*</span>
+                                            </label>
+                                            <apex:selectRadio value="{!licenseTransation.Provide_Half_Day_Afternoon_Program__c}">
+                                                <apex:selectOptions value="{!items}" html-data-parsley-required="true" />
+                                                <apex:actionSupport status="status" event="onchange" action="{!showLSDesc}" reRender="chmDesc3,halfADaysSection" oncomplete="saveHalfACheck();"/>
+                                            </apex:selectRadio>
+                                        </div>
+                                    </apex:actionregion>
+                                </apex:outputpanel>
+                                <apex:outputpanel id="halfADaysSection" style="display:{!IF(licenseTransation.Provide_Half_Day_Afternoon_Program__c == 'Yes','','none')}">
+                                    <apex:actionregion >
+                                        <div class="radio-group" id="halfaDays">
+                                            <div class="requiredBlock"></div>
+                                            <label class="input-label">Available Days
+                                                <span class="required">*</span>
+                                            </label>
+                                            <apex:selectCheckboxes value="{!selectedHalfAfterDay}" onchange="saveHalfACheck();">
+                                                <apex:selectOptions value="{!weekHalfAfterDays}" html-data-parsley-required="{!licenseTransation.Provide_Half_Day_Afternoon_Program__c == 'Yes'}"
+                                                />
+                                            </apex:selectCheckboxes>
+                                            <input type="hidden" id="Provide_Half_Day_Afternoon_Program__c" value="{!licenseTransation.Provide_Half_Day_Afternoon_Program__c}"
+                                            />
+                                        </div>
+                                    </apex:actionregion>
+                                </apex:outputpanel>
+                                <apex:outputpanel id="chmDesc3" style="display:{!IF(licenseTransation.Provide_Half_Day_Afternoon_Program__c == 'Yes','','none')}">
+                                    <br/>
+                                    <label class="input-label">From
+                                        <span class="required">*</span>
+                                    </label>
+                                    <apex:inputfield styleclass="form-control" value="{!licenseTransation.Start_Time_Afternoon_program__c}" html-data-parsley-required="{!licenseTransation.Provide_Half_Day_Afternoon_Program__c == 'Yes'}"
+                                    />
+                                    <br/>
+                                    <label class="input-label">To
+                                        <span class="required">*</span>
+                                    </label>
+                                    <apex:inputfield styleclass="form-control" value="{!licenseTransation.End_Time_Afternoon_program__c}" html-data-parsley-required="{!licenseTransation.Provide_Half_Day_Afternoon_Program__c == 'Yes'}"
+                                    />
+                                </apex:outputpanel>
+                            </apex:pageBlock>
+                        </div>
+                        <!-- Operation Period - Extended Days-->
+                        <div layout="row" layout-wrap="true">
+                            <h3 class="md-title" flex="100">Operation Period - Extended Days</h3>
+                            <apex:pageBlock >
+                                <apex:outputpanel >
+                                    <apex:actionregion >
+                                        <div class="radio-group">
+                                            <div class="requiredBlock"></div>
+                                            <label class="input-label">Do you provide Extended Days option?
+                                                <span class="required">*</span>
+                                            </label>
+                                            <apex:selectRadio value="{!licenseTransation.Provide_Extended_Days1__c}">
+                                                <apex:selectOptions value="{!items}" html-data-parsley-required="true" />
+                                                <apex:actionSupport status="status" event="onchange" action="{!showLSDesc}" 
+                                                reRender="chmDesc4,chmExtendedDaysFromTo,chmDescdupe,chmExtendedDaysFromTo1" oncomplete="saveExtendedOpPeriodCheck();"/>
+                                            </apex:selectRadio>
+                                        </div>
+                                    </apex:actionregion>
+                                </apex:outputpanel>
+                                <apex:outputpanel id="chmDesc4">
+                                    <div class="radio-group" style="display: {!IF(licenseTransation.Provide_Extended_Days1__c == 'Yes','','none')};" id="opExtended">
+                                        <!--                           <p class="md-subhead top-level-label"> -->
+                                        <!-- 							If your organization has operates morning and afternoon schedule, please utilize the options below to accurately present morning and late afternoon operations information. -->
+                                        <!--                       	 </p> -->
+                                        <div class="requiredBlock"></div>
+                                        <label class="input-label">Available Days - Option 1
+                                            <span class="required">*</span>
+                                        </label>
+                                        <apex:selectCheckboxes value="{!selectedExtendDay}" onchange="saveExtendedOpPeriodCheck();">
+                                            <apex:selectOptions value="{!weekExtendDays}" html-data-parsley-required="{!licenseTransation.Provide_Extended_Days1__c == 'Yes'}"/>
+                                        </apex:selectCheckboxes>
+                                        <input type="hidden" id="Provide_Extended_Days1__c" value="{!licenseTransation.Provide_Extended_Days1__c}" />
+                                    </div>
+                                </apex:outputpanel>
+                                <apex:outputpanel id="chmExtendedDaysFromTo" style="display: {!IF(licenseTransation.Provide_Extended_Days1__c == 'Yes','','none')}">
+                                    <br/>
+                                    <label class="input-label">From
+                                        <span class="required">*</span>
+                                    </label>
+                                    <apex:inputfield styleclass="form-control" value="{!licenseTransation.Start_Time_Extended_Program__c}" html-data-parsley-required="{!licenseTransation.Provide_Extended_Days1__c == 'Yes'}"
+                                    />
+                                    <br/>
+                                    <label class="input-label">To
+                                        <span class="required">*</span>
+                                    </label>
+                                    <apex:inputfield styleclass="form-control" value="{!licenseTransation.End_Time_Extended_Program__c}" html-data-parsley-required="{!licenseTransation.Provide_Extended_Days1__c == 'Yes'}"/>
+                                </apex:outputpanel>
+                                <apex:outputpanel id="chmDescdupe">
+                                    <div class="radio-group" style="margin-top: 15px;display: {!IF(licenseTransation.Provide_Extended_Days1__c == 'Yes','','none')}"
+                                        id="opExtended1">
+                                        <div class="requiredBlock"></div>
+                                        <label class="input-label">Available Days - Option 2</label>
+                                        <apex:selectCheckboxes value="{!selectedExtendDay1}" onchange="saveExtendedOpPeriodCheck();">
+                                            <apex:selectOptions value="{!weekExtendDays1}" />
+                                        </apex:selectCheckboxes>
+                                        <input type="hidden" id="Provide_Extended_Days1__c1" value="{!licenseTransation.Provide_Extended_Days1__c}" />
+                                    </div>
+                                </apex:outputpanel>
+                                <apex:outputpanel id="chmExtendedDaysFromTo1" style="display: {!IF(licenseTransation.Provide_Extended_Days1__c == 'Yes','','none')}">
+                                    <br/>
+                                    <label class="input-label">From</label>
+                                    <apex:inputfield styleclass="form-control" value="{!licenseTransation.Start_Time_Extended_Program_Option_2__c}" />
+                                    <br/>
+                                    <label class="input-label">To</label>
+                                    <apex:inputfield styleclass="form-control" value="{!licenseTransation.End_Time_Extended_Program_Option_2__c}" />
+                                </apex:outputpanel>
+                            </apex:pageBlock>
+                        </div>
+                        <!-- Other Service Provided-->
+                        <div layout="row" layout-wrap="true">
+                            <h3 class="md-title" flex="100">Other Service Provided</h3>
+                            <div flex="100" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Drop_in_Service1__c==null,false,true)}}">
+                                <div class="radio-group">
+                                    <label class="input-label">Drop-in Service Provided?
+                                        <span class="required">*</span>
+                                    </label>
+                                    <apex:selectRadio value="{!licenseTransation.Drop_in_Service1__c}">
+                                        <apex:actionSupport status="status" event="onchange" action="{!showLSDesc}" reRender="drpDesc" />
+                                        <apex:selectOptions value="{!items}" html-data-parsley-required="true" />
+                                    </apex:selectRadio>
+                                </div>
+                            </div>
+                            <apex:outputpanel id="drpDesc">
+                                <apex:outputpanel rendered="{!licenseTransation.Drop_in_Service1__c == 'Yes'}">
+                                    <apex:outputtext styleclass="top-level-label required" value="Please describe" style="font-weight: bold !important;" />
+                                    <span class="required">*</span>
+                                    <apex:inputfield styleclass="form-control" required="false" value="{!licenseTransation.Drop_in_Service_Description__c}" html-data-parsley-required="true"/>
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                            <div flex="100" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Evenings_Service1__c==null,false,true)}}">
+                                <div class="radio-group">
+                                    <br/>
+                                    <label class="input-label">Evenings Service Provided?
+                                        <span class="required">*</span>
+                                    </label>
+                                    <apex:selectRadio value="{!licenseTransation.Evenings_Service1__c}">
+                                        <apex:selectOptions value="{!items}" html-data-parsley-required="true" />
+                                        <apex:actionSupport status="status" event="onchange" action="{!showLSDesc}" reRender="evnSerDesc" />
+                                    </apex:selectRadio>
+                                </div>
+                            </div>
+                            <apex:outputpanel id="evnSerDesc">
+                                <apex:outputpanel rendered="{!licenseTransation.Evenings_Service1__c == 'Yes'}">
+                                    <apex:outputtext styleclass="top-level-label required" value="Please describe" style="font-weight: bold !important;" />
+                                    <span class="required">*</span>
+                                    <apex:inputfield styleclass="form-control" required="false" value="{!licenseTransation.Evenings_Service_Description__c}"
+                                        html-data-parsley-required="true" />
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                            
+                            <apex:outputPanel rendered="{! LicenseRecordTypeName !='Public_School_New_Funding_Application' 
+                                                        && LicenseRecordTypeName !='Other_Eligible_Providers_New_Funding_Application'  
+                                                        && LicenseRecordTypeName !='Private_School_New_Funding_Application'}">
+
+                                                        <div flex="100" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Summer_Camp_Service1__c==null,false,true)}}">
+                                                                <div class="radio-group">
+                                                                    <br/>
+                                                                    <label class="input-label">Will you provide Summer Camp Service?
+                                                                        <span class="required">*</span>
+                                                                    </label>
+                                                                    <apex:selectRadio value="{!licenseTransation.Summer_Camp_Service1__c}">
+                                                                        <apex:actionSupport status="status" event="onchange" action="{!showLSDesc}" reRender="smrCmpDesc" />
+                                                                        <apex:selectOptions value="{!items}" html-data-parsley-required="true" />
+                                                                    </apex:selectRadio>
+                                                                </div>
+                                                            </div>
+
+                                                            <apex:outputpanel html-flex="100" id="smrCmpDesc">
+                                                                <apex:outputpanel rendered="{!licenseTransation.Summer_Camp_Service1__c == 'Yes'}">
+                                                                    <div class="radio-group">
+                                                                        <br/>
+                                                                        <apex:outputtext styleclass="input-label required" value="Do you have DPH Sumer Camp License" style="margin-top: 10px !important;"
+                                                                        />
+                                                                        <span class="required">*</span>
+                                                                        <apex:selectRadio value="{!licenseTransation.Summer_Camp_Service_Description__c}">
+                                                                            <apex:actionSupport status="status" event="onchange" action="{!showLSDesc}" reRender="campPermit,campPermitNumber" />
+                                                                            <apex:selectOptions value="{!items}" html-data-parsley-required="true" />
+                                                                        </apex:selectRadio>
+                                                                    </div>
+                                                                </apex:outputpanel>
+                                                            </apex:outputpanel>
+
+                                                            <apex:outputpanel html-flex="100" id="campPermit">
+                                                                <apex:outputPanel rendered="{!licenseTransation.Summer_Camp_Service_Description__c  == 'Yes'}">
+                                                                    <div class="form-group cstmText">
+                                                                        <label class="base-label">Camp Permit Issue Date</label>
+                                                                        <span class="required">*</span>
+                                                                        <apex:inputField style="width:30%;" styleClass="form-control" value="{!licenseTransation.Camp_Permit_Issue_Date__c}" html-data-parsley-required="true"
+                                                                            html-data-provide="datepicker" html-data-date-end-date="0d" />
+                                                                    </div>
+                                                                </apex:outputPanel>
+                                                            </apex:outputPanel>
+
+                                                            <apex:outputpanel html-flex="100" id="campPermitNumber">
+                                                                <apex:outputPanel rendered="{!licenseTransation.Summer_Camp_Service_Description__c == 'Yes'}">
+                                                                    <div class="form-group cstmText">
+                                                                        <label class="base-label">Camp Permit Number</label>
+                                                                        <span class="required">*</span>
+                                                                        <apex:inputField style="width:30%;" styleClass="form-control" value="{!licenseTransation.Camp_Permit_Number__c}" html-data-parsley-required="true"
+                                                                            onKeyDown="isNumberOnly(event);" />
+                                                                    </div>
+                                                                </apex:outputPanel>
+                                                            </apex:outputpanel>
+                                                    
+                            </apex:outputPanel>
+                            
+    
+                            <apex:outputpanel html-flex="100" rendered="{!LicenseRecordTypeName != 'GSA_New_License' && LicenseRecordTypeName != 'GSA_Renewal'}">
+                                 
+                            </apex:outputpanel>
+                            <apex:outputpanel id="cafeUsedDesc">
+                                
+                            </apex:outputpanel>
+                            <!--   -->
+                            <apex:outputpanel html-flex="100" rendered="{!LicenseRecordTypeName != 'GSA_New_License' && LicenseRecordTypeName != 'GSA_Renewal' && LicenseRecordTypeName !='GSA_Change_of_Admin_Authority'}">
+                                <div ng-class="{'md-input-has-value' : {!IF(licenseTransation.Everbeen_involved_in_legal_action__c==null,false,true)}}">
+                                    <div class="radio-group">
+                                        <br/>
+                                        <label class="input-label">
+                                            <!--  Do you have a cafeteria that will be used during program hours? -->
+                                            Have you ever been involved with EEC legal action?
+                                            <span class="required">*</span>
+                                        </label>
+                                        <apex:selectRadio value="{!licenseTransation.Everbeen_involved_in_legal_action__c}">
+                                            <apex:actionSupport status="status" event="onchange" action="{!showLSDesc}" reRender="eeclegalaction" />
+                                            <apex:selectOptions value="{!items}" html-data-parsley-required="true" />
+                                        </apex:selectRadio>
+                                    </div>
+                                </div>
+                            </apex:outputpanel>
+                            <apex:outputpanel id="eeclegalaction">
+                                <apex:outputpanel rendered="{!licenseTransation.Everbeen_involved_in_legal_action__c == 'Yes'}">
+                                    <apex:outputtext styleclass="top-level-label required" value="Please describe" style="font-weight: bold !important;" />
+                                    <span class="required">*</span>
+                                    <apex:inputfield styleclass="form-control" required="false" value="{!licenseTransation.Ever_involved_in_EEC_legal_action_Desc__c}"
+                                        html-data-parsley-required="true" />
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                            <apex:outputPanel rendered="{!LicenseRecordTypeName != 'GSA_New_License' && LicenseRecordTypeName != 'GSA_Move' && LicenseRecordTypeName != 'GSA_Renewal'&& LicenseRecordTypeName != 'GSA_License_Change'&& LicenseRecordTypeName != 'GSA_Temporary_Move'}">
+                                <div flex="100" ng-class="{'md-input-has-value' : {!IF(licenseTransation.Gym_Facility_Used_During_Program_Hours1__c==null,false,true)}}">
+                                    <div class="radio-group">
+                                        <br/>
+                                        <label class="input-label">Do you have a gym facility that will be used during program hours?
+                                            <span class="required">*</span>
+                                        </label>
+                                        <apex:selectRadio value="{!licenseTransation.Gym_Facility_Used_During_Program_Hours1__c}">
+                                            <apex:actionSupport status="status" event="onchange" action="{!showLSDesc}" reRender="gymDesc" />
+                                            <apex:selectOptions value="{!items}" html-data-parsley-required="true" />
+                                        </apex:selectRadio>
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+                            <apex:outputpanel id="gymDesc">
+                                <apex:outputpanel rendered="{!licenseTransation.Gym_Facility_Used_During_Program_Hours1__c == 'Yes'}">
+                                    <apex:outputtext styleclass="top-level-label required" value="Please describe" style="font-weight: bold !important;" />
+                                    <span class="required">*</span>
+                                    <apex:inputfield styleclass="form-control" required="false" value="{!licenseTransation.Gym_Facility_Used_in_Program_Hours_Desc__c}"
+                                        html-data-parsley-required="true" />
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                            <div flex="100">
+                                <apex:outputpanel rendered="{!LicenseRecordTypeName == 'GSA_New_License' || LicenseRecordTypeName == 'GSA_Temporary_Move' || LicenseRecordTypeName == 'GSA_License_Change'
+                                                  || LicenseRecordTypeName == 'GSA_Renewal' || LicenseRecordTypeName == 'GSA_Move'}">
+                                    <div class="radio-group">
+                                        <br/>
+                                        <label class="input-label">Have you ever held any other EEC Licenses?
+                                            <span class="required">*</span>
+                                        </label>
+                                        <apex:selectRadio value="{!licenseTransation.Do_you_hold_any_other_EEC_licenses__c}">
+                                            <apex:actionSupport event="onchange" status="status" action="{!showLSDesc}" reRender="otherLicenseSection01" />
+                                            <apex:selectOptions value="{!items}" html-data-parsley-required="true" />
+                                        </apex:selectRadio>
+                                    </div>
+                                </apex:outputpanel>
+                            </div>
+                            <apex:outputpanel id="otherLicenseSection01">
+                                <apex:outputpanel rendered="{!licenseTransation.Do_you_hold_any_other_EEC_licenses__c == 'Yes'}">
+                                    <apex:outputtext styleclass="top-level-label required" value="When and what type of licenses?" />
+                                    <span class="required">*</span>
+                                    />
+                                </apex:outputpanel>
+                            </apex:outputpanel>
+                            <!--                  <apex:outputpanel rendered="{!(LicenseRecordTypeName == 'GSA_New_License' || LicenseRecordTypeName == 'GSA_Renewal' || LicenseRecordTypeName == 'GSA_Move')}"> -->
+                            <!--                      <div class="radio-group"><br/> -->
+                            <!--                          <label class="input-label">Have you ever been involved in EEC legal action?<span class="required">*</span></label> -->
+                            <!--                          <apex:selectRadio value="{!licenseTransation.Everbeen_involved_in_legal_action__c}" > -->
+                            <!--                             <apex:selectOptions value="{!items}" html-data-parsley-required="true" /> -->
+                            <!--                             <apex:actionSupport event="onchange" status="status" action="{!showLSDesc}" reRender="otherLicenseSection03" /> -->
+                            <!--                          </apex:selectRadio> -->
+                            <!--                      </div>                   -->
+                            <!--                  </apex:outputpanel> -->
+                            <!--                  <apex:outputpanel id="otherLicenseSection03">  -->
+                            <!--                      <apex:outputpanel rendered="{!licenseTransation.Everbeen_involved_in_legal_action__c == 'Yes'}"> -->
+                            <!--                         <apex:outputtext styleclass="top-level-label required" value="Please describe" style="font-weight: bold !important;" /> -->
+                            <!--                         <span class="required">*</span> -->
+                            <!--                         <apex:inputfield styleclass="form-control" required="false" value="{!licenseTransation.Ever_involved_in_EEC_legal_action_Desc__c}" html-data-parsley-required="true" />                 -->
+                            <!--                      </apex:outputpanel> -->
+                            <!--                  </apex:outputpanel>                                                   -->
+                        </div>
+                        <!-- Navigation Buttons -->
+                        <md-divider layout-align="center center" style="margin-top:50px;"></md-divider>
+                        <md-content class="navigation-buttons" layout="column" layout-lg="row" layout-align="space-between center" layout-gt-lg="row"
+                            layout-align-sm="center center" layout-align-md="center center">
+                            <apex:commandLink styleClass="md-button md-raised md-button md-default-theme" value="Previous" action="{!SaveAndPreviousOperation}"
+                                html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" status="status"/>
+                            <apex:commandLink status="status" styleClass="md-button md-raised md-button md-default-theme btn-pullLeft" value="Close" action="{!closeAndreturnToHome}"
+                                html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true"/>
+                            <apex:commandLink status="status" styleClass="md-button md-raised md-eec save-btn btn-pullRight" value="Save" onclick="if(!form.validate()){console.log('Form validation error.');return false;}"
+                                action="{!SaveAndNextOperation}" html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1"
+                                html-md-button="true">
+                                <apex:param name="isSaveOnly" value="true" assignTo="{!isSaveOnly}" />
+                            </apex:commandLink>
+                            <apex:commandLink styleClass="md-button md-raised md-eec save-btn" status="status" onclick="if(!form.validate()){console.log('Form validation error.');return false;}"
+                                action="{!SaveAndNextOperation}" html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1"
+                                html-md-button="true">
+                                <apex:outputText rendered="{!!isSubmitted}">Save and</apex:outputText>
+                                Next
+                            </apex:commandLink>
+                        </md-content>
+                        <md-divider layout-align="center center"></md-divider>
+                        <!--             <md-content class="navigation-buttons" layout="column" layout-lg="row" layout-align="space-between center" layout-gt-lg="row" layout-align-sm="center center" layout-align-md="center center">     -->
+                        <!--                 <apex:commandLink status="status" styleClass="md-button md-raised"   immediate="true" action="{!CancelTransaction}" value="Cancel {!formattedLicenseRecordTypeLabel} Transaction"  onclick="return confirm('Are you sure to cancel the transaction?');" html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true"/> -->
+                        <!--                 <apex:commandLink status="status" styleClass="md-button md-raised save-btn" value="{!saveAndReturnLabel}" onclick="if(!form.validate()){return false;}" action="{!saveAndReturnOperation}" html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true"/> -->
+                        <!--             </md-content>  -->
+                    </apex:pageBlock>
+                </apex:outputPanel>
+                <apex:actionFunction action="{!SaveAndNextOperation}" name="SaveNext" status="status"/>
+                <apex:actionFunction action="{!SaveAndPreviousOperation}" name="SavePrevious" oncomplete="addMargin();" status="status">
+                    <apex:param name="previousPage" assignTo="{!previousPageName}" value="" />
+                </apex:actionFunction>
+            </apex:form>
+            <eec-wizard btn-progress-color="#fff" class="col-lg-3" flex="30" passed-btn-bg-color="#4CAF50" btn-bg-color="#FAFAFA" active-btn-bg-color="#0288D1"
+                hide="true" show-gt-md="true">
+                <c:EEC_Navigation current="Operation details Information" recordTypeDeveloperName="{!LicenseRecordTypeName}" highest="{!highestStepReached}"
+                    providerRecordType="{!licenseTransation.providerRecordTypeDeveloperName__c}">
+                </c:EEC_Navigation>
+            </eec-wizard>
+        </div>
+        <c:eec_site_footer id="siteFooter" />
+        <script>
+            var form = j$(".transaction-parsley-form").parsley({
+                errorsWrapper: '<div class="parsley-errors-list"></div>',
+                errorTemplate: '<p class="errorMsg"></p>'
+            });
+            jQuery(window).on('load', function () {
+                _.each(jQuery('[id*=lookup'), function (value, key) {
+                    jQuery(value).off('click');
+                    jQuery(value).attr('href', '');
+                    jQuery(value).css('text-decoration', 'none');
+                    jQuery(value).css('cursor', 'not-allowed');
+                    jQuery(value).css('color', 'black');
+                    jQuery(value).hover(function () {
+                        jQuery(this).css('color', 'black');
+                        jQuery(this).css('cursor', 'not-allowed');
+                        jQuery(this).css('text-decoration', 'none');
+                    });
+                });
+            });
+            function isNumberOnly(evt) {
+                var charCode = (evt.which) ? evt.which : evt.keyCode;
+                if (evt.shiftKey) {
+                    evt.preventDefault();
+                    return false;
+                }
+                if ((charCode > 47 && charCode < 58) || (charCode >= 96 && charCode <= 105) || charCode == 8 ||
+                    charCode == 9 || (charCode >= 37 && charCode <= 40)) {
+                    return true;
+                } else {
+                    evt.preventDefault();
+                    return false;
+                }
+            }
+            function addMargin() {
+                j$(".required-input").addClass("required-input-with-error");
+            }
+            app.controller('TransactionController', ['$scope', '$location', 'Util', function ($scope, $location, Util) {
+                // Instance of controller.
+                var tranCtrl = this;
+                // Controller level variables.
+                tranCtrl.data = {};
+                tranCtrl.data.addressCheckbox = "{!provider.Live_at_this_address__c}";
+                tranCtrl.wizardElements = Util.generateWizardElements("{!licenseRecordTypeName}", 'Transaction/Provider Info');
+                tranCtrl.selected = [];
+                //  Function to toggle the checkbox.
+                tranCtrl.toggle = function (item, list) {
+                    var idx = list.indexOf(item);
+                    if (idx > -1) list.splice(idx, 1);
+                    else list.push(item);
+                };
+                // Function to check if checkbox is already checked.
+                tranCtrl.exists = function (item, list) {
+                    return list.indexOf(item) > -1;
+                };
+                // Function to check for messages available due to errors.
+                tranCtrl.checkForMessages = function () {
+                    // TODO: Switch this to use Angular and now jQuery.            
+                    var ele = jQuery('[id*="showmsg"]');
+                    if (ele.children().length > 0) {
+                        return true;
+                    }
+                    return false;
+                };
+            }]);
+            // TODO: Attempt this in Angular over jQuery.     
+            // If a dateformat is clicked - generated by SForce - then attach input-has-value class.
+            jQuery('.dateFormat').on('click', function () { jQuery(this).parent().parent().parent().addClass('md-input-has-value'); });
+            function doNavigate(previousPage, nextPage) {
+                if (nextPage != '') {
+                    if (!form.validate()) {
+                        return false;
+                    }
+                    else {
+                        SaveNext();
+                    }
+                }
+                else if (previousPage != '') {
+                    SavePrevious(previousPage);
+                }
+            }
+            j$(document).ready(function () {
+                j$('[id$=chmDesc1]').hide();
+                j$('[id$=chmDesc2]').hide();
+                j$('[id$=chmDesc3]').hide();
+                saveCheckboxes(); 
+                saveHalfCheck();
+                saveHalfACheck();
+                saveExtendedOpPeriodCheck();
+                var isSubmitted = '{!isSubmitted}';
+                if (isSubmitted == 'true') {
+                    j$('select').prop('disabled', true);
+                    j$("input[type=radio]").prop('disabled', true);
+                }
+            });
+            function saveCheckboxes() {
+                var fullDayProgramOption = j$("#Provide_Full_Day_Program__c").val();
+                var n = j$('#availableDays input:checked').length;
+                if (n != 0 && fullDayProgramOption == 'Yes') {
+                    j$('[id$=chmDesc1]').show();
+                } else {
+                    j$('[id$=chmDesc1]').hide();
+                }
+            }
+            function saveHalfCheck() {
+                var halfDayMorningOption = j$("#Provide_Half_Day_Morning_Program__c").val();
+                var n = j$('#halfDays input:checked').length;
+                if (n != 0 && halfDayMorningOption == 'Yes') {
+                    j$('[id$=chmDesc2]').show();
+                } else {
+                    j$('[id$=chmDesc2]').hide();
+                }
+            }
+            function saveHalfACheck() {
+                var halfDayAfternoonOption = j$("#Provide_Half_Day_Afternoon_Program__c").val();
+                var n = j$('#halfaDays input:checked').length;
+                if (n != 0 && halfDayAfternoonOption == 'Yes') {
+                    j$('[id$=chmDesc3]').show();
+                } else {
+                    j$('[id$=chmDesc3]').hide();
+                }
+            }
+            function saveExtendedOpPeriodCheck() {
+                var extendedDaysOption = j$("#Provide_Extended_Days1__c").val();
+                var extendedDayOption1 = j$("#Provide_Extended_Days1__c1").val();
+                var n = j$('#opExtended input:checked').length;
+                if (n != 0 && extendedDaysOption == 'Yes') {
+                    j$('[id$=chmExtendedDaysFromTo]').show();
+                } else {
+                    j$('[id$=chmExtendedDaysFromTo]').hide();
+                }
+                var n1 = j$('#opExtended1 input:checked').length;
+                if (n1 != 0 && extendedDayOption1 == 'Yes') {
+                    j$('[id$=chmExtendedDaysFromTo1]').show();
+                } else {
+                    j$('[id$=chmExtendedDaysFromTo1]').hide();
+                }
+            }
+        </script>
+    </body>
+</apex:page>

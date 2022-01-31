@@ -1,0 +1,554 @@
+<apex:page showHeader="false" sidebar="false" controller="CORE_CONAPP_Application_Controller" action="{!saveSignedAttachment}" title="Certification and Submission">
+
+    <style>
+        .heading-link {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .content {
+            font-size: 18px;
+        }
+
+        .fieldLabel b{
+            float: right;
+        }
+
+        #errorMessage{
+            display: none;
+        }
+
+        .step-bar > li {
+          width: 200px !important;
+        }
+
+        .documentSelection label{
+            margin-left: 15px;
+        }
+
+        .submitBtn{
+            margin-left: 20px;
+        }
+
+       .labelClass{
+       	    font-weight: 600;
+   			font-size: 16px;
+   			margin-bottom: 10px;
+        }
+        legend {
+           	border-bottom: 0px;
+           	margin-bottom: 5px;
+       }
+       .mr{
+       		margin-right: 20px;
+       }
+       .spanClass{
+        font-weight: 600;
+        display: inline-block;
+	    max-width: 100%;
+	    margin-bottom: 5px;
+       }
+       .ns-touch.inline > label{
+       z-index: 10px;
+       padding-left: 40px;
+       }
+       
+       .ns-touch input + i.icm{
+       z-index: -1;
+       margin-right: -40px;
+       }
+    </style>
+
+    <apex:composition template="CORE_CONAPP_Template_Page">
+        <apex:define name="body">
+            <div class="page">
+                <c:CORE_StepNav_Component pgName="{!$CurrentPage.Name}"/>
+                <div class="application">
+                    <apex:form id="frm">
+                        <div class="alert-container">
+                            <apex:outputPanel id="pageMessages">
+                            	<apex:pageMessages />
+                            </apex:outputPanel>
+
+                            <div class="alert alert-danger" id="errorMessage"></div>
+                            <div id="alertMsg"></div>
+                        </div>
+
+                        <div class="content content-body">
+                            <apex:outputPanel id="mainPanel">
+                               <apex:outputPanel id="signPanel">
+                                <apex:outputPanel rendered="{!signedDate != null}">
+                                    <div class="alert alert-info">
+                                        <strong>Application is signed</strong>
+                                    </div>
+                                </apex:outputPanel>
+
+                               </apex:outputPanel>
+                                 <div>
+                                      {!summaryDetail}
+                                </div>
+                                <br/>
+                                
+                                <div class="form-row xl">
+                                    <fieldset>
+                                    <legend class="labelClass" for="bankruptcy">Has your company filed or are you filing a petition under any chapter of the U.S. bankruptcy code during the past 3 years?</legend>
+                                    <div class="result">
+	                                    
+	                                        <div class="ns-touch inline">
+		                                        <input type="radio" id="radio11" name="exp1" class="exp1" value="true" />
+		                                        <i class="icm"></i>
+		                                        <label for="radio11">
+		                                        	<span class="mr">Yes</span>
+		                                        </label>
+	                                        </div>
+	                                        <!-- /.ns-touch -->
+	                                        <div class="ns-touch inline">
+	                                        	<input type="radio" id="radio21" name="exp1" class="exp1" value="false" />
+	                                            <i class="icm"></i>
+	                                            <label for="radio21">
+	                                                <span>No</span>
+	                                            </label>
+	                                        </div>
+                                        <!-- /.ns-touch -->
+                                    </div>
+                                    </fieldset>
+                                </div>
+                                <!-- /.form-row -->
+
+                                <div class="form-row xl">
+                                <fieldset>
+                                    <legend class="labelClass" >Have any principal or officer of your company been convicted of a felony within the past 5 years?</legend>
+                                    <div class="result">
+                                        <div class="ns-touch inline">
+                                        <input type="radio" id="radio12" name="exp2" class="exp2" value="true" />
+		                                <i class="icm"></i>
+                                        <label for="radio12">
+                                            <span class="mr">Yes</span>
+                                        </label>
+                                     </div>
+	                                        <!-- /.ns-touch -->
+                                     <div class="ns-touch inline">
+	                                     <input type="radio" id="radio22" name="exp2" class="exp2" value="false" />
+	                                     <i class="icm"></i>
+	                                     <label for="radio22">
+	                                     	<span>No</span>
+	                                     </label>
+                                     </div>
+                                        <!-- /.ns-touch -->
+                                    </div>
+                                </fieldset>
+                                </div>
+                                <!-- /.form-row -->
+
+                                <div class="form-row xl">
+                                    <fieldset>
+                                    <legend class="labelClass" for="disciplinary">Have any principal or officer of your company been under disciplinary action (probation, suspension, and termination) within a NYSERDA program?</legend>
+                                    <div class="result">
+	                                    <div class="ns-touch inline">
+		                                     <input type="radio" id="radio13" name="exp3" class="exp3" value="true" />
+		                                     <i class="icm"></i>
+		                                     <label for="radio13">
+		                                     	<span class="mr">Yes</span>
+		                                     </label>
+	                                    </div>
+	                                    <!-- /.ns-touch -->
+	                                    <div class="ns-touch inline">
+		                                    <input type="radio" id="radio23" name="exp3" class="exp3" value="false" />
+		                                    <i class="icm"></i>
+		                                    <label for="radio23">
+		                                         <span>No</span>
+		                                    </label>
+	                                    </div>
+	                                    <!-- /.ns-touch -->
+                                    </div>
+                                    </fieldset>
+                                </div>
+                                <!-- /.form-row -->
+
+                                <div class="form-row xl">
+                                <fieldset>
+                                    <legend class="labelClass" for="debarred">Have any principal or officer of your company been debarred by any government agency?</legend>
+                                    <div class="result">
+	                                    <div class="ns-touch inline">
+	                                     <input type="radio" id="radio14" name="exp4" class="exp4" value="true" />
+	                                     <i class="icm"></i>
+	                                        <label for="radio14">
+	                                            <span class="mr">Yes</span>
+	                                        </label>
+	                                    </div>
+	                                    <div class="ns-touch inline">
+	                                    	<input type="radio" id="radio24" name="exp4" class="exp4" value="false" />
+	                                        <i class="icm"></i>
+	                                        <label for="radio24">
+	                                            <span>No</span>
+	                                        </label>
+	                                    </div>
+                                    </div>
+                                </fieldset>
+                                </div>
+
+                            </apex:outputPanel>
+
+                            <apex:variable var="count" value="{!0}"   />        <!-- Initialise-->
+                            <div class="check-group">
+                                <span class="spanClass" for="review-documents">{!documentSummary}</span>
+                                <div class="box documents">
+                                    <apex:repeat value="{!documents}" var="document">
+
+                                      <apex:outputPanel rendered="{!(document.Type__c == 'Link' && document.URL__c != null)}">
+                                            <a href="{!document.URL__c}" target="_blank">
+                                              <input  id="documentSelection1{!count}"
+                                                      class="documentSelection" type="checkbox"
+                                                      name="{!document.Document_Title__c}" />&nbsp;<label for="documentSelection1{!count}">{!document.Document_Title__c}</label>
+                                            </a>
+                                            <br/>
+                                        </apex:outputPanel>
+
+                                        <apex:outputPanel rendered="{!!(document.Type__c == 'Link' && document.URL__c != null)}">
+                                            <input id="documentSelection2{!count}"
+                                                   type="checkbox" class="documentSelection"
+                                                   name="{!document.Document_Title__c}"/>&nbsp;<label for="documentSelection2{!count}">{!document.Document_Title__c}</label><br/>
+                                        </apex:outputPanel>
+                                        <apex:variable value="{!count+1}" var="count"/>  <!--increment-->
+                                    </apex:repeat>
+                                </div>
+                            </div>
+
+                            <apex:outputPanel id="electronicSignPanel">
+                                <p class="certify">I certify that all information provided in this form, including any attachments, is true and correct to the best of my knowledge. I agree to provide any additional materials NYSERDA may ask for during the review process.
+                                  <apex:outputPanel rendered="{!CONTAINS(serviceProviderApp.RecordType.DeveloperName, 'NY_Sun_Application')}"> I have also reviewed and agree to the terms and conditions set forth in the PV Program Manual(s) and the NY-Sun Incentive Program - Participation Agreement provided in the links above. </apex:outputPanel>
+                                </p>
+																<P>
+																	You will have the opportunity to attach documents after you have provided a signature.
+																</P>
+                                <div class="form-group sm">
+                                    <apex:outputPanel rendered="{!signedDate == null}">
+                                        <a class="btn-bs btn-primary btn-lg" onclick="signApplication();" href="javascript:void(0)">Click here to provide electronic signature</a>
+                                    </apex:outputPanel>
+                                </div>
+
+                                <div class="form-group sm">
+                                    <span class="labelClass" for="cert-date">Date: &nbsp;</span>
+                                    <apex:outputText value="{0,date,MMMM dd, yyyy}">
+                                         <apex:param value="{!serviceProviderApp.Authorized_Signature_Date__c}" />
+                                    </apex:outputText><br/>
+                                </div>
+
+                                <div>
+                                	<p> You have the right to access and sign this application on paper.<br/>
+									    If you prefer to submit this application on paper:<br/>
+										 &nbsp;&nbsp;1. Print the application from your browser <br/>
+										 &nbsp;&nbsp;2. Sign it by hand <br/>
+										 &nbsp;&nbsp;3. Scan or take a photo of the signed application with a smartphone <br/>
+										 &nbsp;&nbsp;4. Upload signed application to the Paperwork record (Step 6)
+  									</p>
+                                </div>
+
+
+                                <script>
+                                    var isSigned = '{!$CurrentPage.parameters.event}';
+                                    var signedDate = '{!serviceProviderApp.Authorized_Signature_Date__c}';
+                                    if ((typeof(signedDate) == 'undefined' || signedDate == null || signedDate == '') && (typeof(isSigned) != 'undefined' && isSigned != null && isSigned != '' && isSigned == 'signing_complete')) {
+                                        checkSigningStatus();
+                                    }
+
+                                    function saveAction() {
+                                        $('#errorMessage').text('');
+                                        $('#errorMessage').hide();
+
+                                        if(!beforeSigningValidation()) {
+                                            return false;
+                                        }
+
+                                        // Harshit [27th July 2016]: I-01144
+                                        /*
+                                        if ($('.documentSelection:checked').length < '{!documents.size}') {
+                                            $('#errorMessage').text('Please select all the documents.');
+                                            $('#errorMessage').show();
+                                            scrollToTop();
+                                            return false;
+                                        }
+                                        */
+                                        var selectedDocument = ''
+
+                                        $('.documentSelection:checked').each(function(){
+                                            if(selectedDocument != ''){
+                                                selectedDocument += ';';
+                                            }
+
+                                            selectedDocument += $(this).attr('name');
+                                        });
+
+                                        // rahuls91221 [27th July 2016]: commented as mentioned by Nik, Signing should not be mandatory
+                                        /*
+                                        var signedDate = '{!serviceProviderApp.Authorized_Signature_Date__c}';
+                                        if (typeof(signedDate) == 'undefined' || signedDate == null || signedDate == '') {
+                                            $('#errorMessage').text('Please sign the application first.');
+                                            $('#errorMessage').show();
+                                            scrollToTop();
+                                            return false;
+                                        }
+                                        */
+
+                                        var exp1 = getResponseFromCheckbox('.exp1');
+                                        var exp2 = getResponseFromCheckbox('.exp2');
+                                        var exp3 = getResponseFromCheckbox('.exp3');
+                                        var exp4 = getResponseFromCheckbox('.exp4');
+
+                                        save(exp1, exp2, exp3, exp4, 'NYSUN_CONAPP_CertAndSubmission_Page', selectedDocument);
+                                    }
+                                </script>
+                            </apex:outputPanel>
+                        </div>
+
+
+
+                        <apex:actionFunction name="save" action="{!saveCertificationInfo}" rerender="mainPanel" status="status">
+                            <apex:param value="" name="Has_Filed_Petition__c" assignTo="{!serviceProviderApp.Has_Filed_Petition__c}" />
+                            <apex:param value="" name="Has_Convicted__c" assignTo="{!serviceProviderApp.Has_Convicted__c}" />
+                            <apex:param value="" name="Has_Suspended_Revoked__c" assignTo="{!serviceProviderApp.Has_Suspended_Revoked__c}" />
+                            <apex:param value="" name="installerCredentials" assignTo="{!serviceProviderApp.Has_Debbared__c}" />
+                            <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                            <apex:param value="" name="selectedDocuments" assignTo="{!selectedDocuments}" />
+                        </apex:actionFunction>
+
+                        <apex:actionFunction name="saveResponse" action="{!saveAndSignInfo}" rerender="pageMessages" status="status" oncomplete="startSignApplication(); return false;">
+                            <apex:param value="" name="Has_Filed_Petition__c" assignTo="{!serviceProviderApp.Has_Filed_Petition__c}" />
+                            <apex:param value="" name="Has_Convicted__c" assignTo="{!serviceProviderApp.Has_Convicted__c}" />
+                            <apex:param value="" name="Has_Suspended_Revoked__c" assignTo="{!serviceProviderApp.Has_Suspended_Revoked__c}" />
+                            <apex:param value="" name="installerCredentials" assignTo="{!serviceProviderApp.Has_Debbared__c}" />
+                            <apex:param value="" name="selectedDocuments" assignTo="{!selectedDocuments}" />
+                        </apex:actionFunction>
+
+                        <apex:actionFunction name="saveResponseBeforePrint" action="{!saveAndSignInfo}" rerender="pageMessages" status="status" oncomplete="printAction(); return false;">
+                            <apex:param value="" name="Has_Filed_Petition__c" assignTo="{!serviceProviderApp.Has_Filed_Petition__c}" />
+                            <apex:param value="" name="Has_Convicted__c" assignTo="{!serviceProviderApp.Has_Convicted__c}" />
+                            <apex:param value="" name="Has_Suspended_Revoked__c" assignTo="{!serviceProviderApp.Has_Suspended_Revoked__c}" />
+                            <apex:param value="" name="installerCredentials" assignTo="{!serviceProviderApp.Has_Debbared__c}" />
+                            <apex:param value="" name="selectedDocuments" assignTo="{!selectedDocuments}" />
+                        </apex:actionFunction>
+
+                        <apex:actionFunction name="previous" action="{!previous}" rerender="mainPanel">
+                            <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                        </apex:actionFunction>
+
+                        <apex:actionFunction name="checkSigningStatus" action="{!checkSigningStatus}" rerender="signPanel, electronicSignPanel, btnPanel" status="status" ></apex:actionFunction>
+                    </apex:form>
+                </div>
+            </div>
+
+            <footer class="footer-nav">
+                <div class="content flex controls sm">
+                    <apex:outputPanel id="btnPanel" layout="none">
+                        <div class="left">
+                            <a href="javascript:void(0)" onclick="previous('NYSUN_CONAPP_CertAndSubmission_Page')" class="btn-bs btn-lg btn-blank">Previous</a>
+                        </div><!-- /.left -->
+                        <div class="right">
+                            <apex:outputPanel rendered="{!signedDate == null}">
+                                <a href="javascript:void(0)" onclick="saveResponseBeforePrintAction()" class="btn-bs btn-lg btn-default save">Print</a>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!signedDate != null}">
+                                <a class="btn-bs btn-lg btn-default save" onclick="printSignedDocument(); return false;">Print</a>
+                            </apex:outputPanel>
+                            <!--
+                            <apex:outputPanel rendered="{!!isSubmit}">
+                                <a href="javascript:saveAction()" class="btn-bs btn-lg btn-primary submitBtn">Submit</a>
+                            </apex:outputPanel>
+                            -->
+                            <a href="javascript:void(0)" onclick="saveAction();" class="btn-bs btn-lg btn-primary submitBtn">Continue</a>
+                        </div><!-- /.right -->
+
+                    </apex:outputPanel>
+                </div>
+            </footer>
+        </apex:define>
+    </apex:composition>
+
+    <script>
+        function reloadPage(){
+            window.location.reload();
+        }
+
+        function printAction() {
+            window.open('/apex/NYSUN_CONAPP_SubmissionPDF_Page?ApplicationId={!applicationId}');
+        }
+
+
+        function printSignedDocument() {
+            Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.CORE_CONAPP_Application_Controller.getSignedDocument}', '{!applicationId}', function(result, event) {
+
+                if (event.status) {
+                    window.open('/servlet/servlet.FileDownload?file=' + result, '_blank');
+                } else if (event.type === 'exception') {} else {
+                    console.log(event.message);
+                }
+            }, {
+                escape: true
+            });
+        }
+
+        function signApplication() {
+            if(!beforeSigningValidation()) {
+                return false;
+            }
+            var exp1 = getResponseFromCheckbox('.exp1');
+            var exp2 = getResponseFromCheckbox('.exp2');
+            var exp3 = getResponseFromCheckbox('.exp3');
+            var exp4 = getResponseFromCheckbox('.exp4');
+
+            var selectedDocument = ''
+
+            $('.documentSelection:checked').each(function(){
+                if(selectedDocument != ''){
+                    selectedDocument += ';';
+                }
+
+                selectedDocument += $(this).attr('name');
+            });
+
+            saveResponse(exp1, exp2, exp3, exp4, selectedDocument);
+        }
+
+        function saveResponseBeforePrintAction(){
+
+        	if(!beforeSigningValidation()) {
+                return false;
+            }
+            var exp1 = getResponseFromCheckbox('.exp1');
+            var exp2 = getResponseFromCheckbox('.exp2');
+            var exp3 = getResponseFromCheckbox('.exp3');
+            var exp4 = getResponseFromCheckbox('.exp4');
+
+            var selectedDocument = ''
+
+            $('.documentSelection:checked').each(function(){
+                if(selectedDocument != ''){
+                    selectedDocument += ';';
+                }
+
+                selectedDocument += $(this).attr('name');
+            });
+
+        	saveResponseBeforePrint(exp1, exp2, exp3, exp4, selectedDocument);
+        }
+
+        function getResponseFromCheckbox(ele) {
+            var exp;
+            var response;
+            if($(ele).val()) {
+                exp = $(ele + ':checked').val();
+                if(exp == 'true') {
+                    response = 'Yes';
+                } else if(exp == 'false'){
+                    response = 'No';
+                }
+            }
+            return response;
+        }
+
+        function startSignApplication() {
+              Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.CORE_CONAPP_Application_Controller.getSiginingUrl}', '{!serviceProviderApp.Id}', '{!domainURL}', 'NYSUN_CONAPP_SubmissionPDF_Page', 'NYSUN_CONAPP_CertAndSubmission_Page', function(result, event) {
+                if (event.status) {
+                    var params = ['height=' + screen.height, 'width=' + screen.width, 'fullscreen=yes'].join(',');
+                    var popup = window.open(result, '_self');
+                    //popup.moveTo(0,0);
+                } else if (event.type === 'exception') {} else {
+                    console.log(event.message);
+                }
+            }, {
+                escape: true
+            });
+        }
+
+        $(document).ready(function() {
+
+        jQuery("html").attr("lang", "en");
+
+            if('{!serviceProviderApp.Has_Filed_Petition__c}' == 'Yes') {
+                $('#radio11').prop("checked", true);
+            } else if('{!serviceProviderApp.Has_Filed_Petition__c}' == 'No') {
+                $('#radio21').prop("checked", true);
+            }
+
+            if('{!serviceProviderApp.Has_Convicted__c}' == 'Yes') {
+                $('#radio12').prop("checked", true);
+            } else if('{!serviceProviderApp.Has_Convicted__c}' == 'No') {
+                $('#radio22').prop("checked", true);
+            }
+
+            if('{!serviceProviderApp.Has_Suspended_Revoked__c}' == 'Yes') {
+                $('#radio13').prop("checked", true);
+            } else if('{!serviceProviderApp.Has_Suspended_Revoked__c}' == 'No') {
+                $('#radio23').prop("checked", true);
+            }
+
+            if('{!serviceProviderApp.Has_Debbared__c}' == 'Yes') {
+                $('#radio14').prop("checked", true);
+            } else if('{!serviceProviderApp.Has_Debbared__c}' == 'No') {
+                $('#radio24').prop("checked", true);
+            }
+
+            var selectedDocument = '{!selectedDocuments}';
+
+            $('.documentSelection').each(function(){
+                if(selectedDocument.indexOf($(this).attr('name')) != -1){
+                    $(this).prop('checked','checked');
+                }
+            });
+
+            var isSigned = '{!$CurrentPage.parameters.event}';
+            var signedDate = '{!serviceProviderApp.Authorized_Signature_Date__c}';
+            if ((typeof(signedDate) == 'undefined' || signedDate == null || signedDate == '') && (typeof(isSigned) != 'undefined' && isSigned != null && isSigned != '' && isSigned == 'signing_complete')) {
+                checkSigningStatus();
+            }
+        });
+
+
+        function beforeSigningValidation() {
+            $('#errorMessage').text('');
+            $('#errorMessage').hide();
+            if($('.exp1:checked').length == 0){
+                $('#errorMessage').text('Please answer, Has Installer or Contractor filed a petition under any chapter of the U.S. bankruptcy code during the past 3 years?');
+                $('#errorMessage').show();
+                scrollToTop();
+                return false;
+            }
+
+            if($('.exp2:checked').length == 0){
+                $('#errorMessage').text('Please answer, Has Installer or any principle or officer of the corporation been convicted of a felony within the past 5 years?');
+                $('#errorMessage').show();
+                scrollToTop();
+                return false;
+            }
+
+            if($('.exp3:checked').length == 0){
+                $('#errorMessage').text('Please answer, Has Installer or Contractor eligibility for any NYSERDA program ever been suspended/revoked?');
+                $('#errorMessage').show();
+                scrollToTop();
+                return false;
+            }
+
+            if($('.exp4:checked').length == 0){
+                $('#errorMessage').text('Please answer, Has Installer or Contractor been debarred by any government agency?');
+                $('#errorMessage').show();
+                scrollToTop();
+                return false;
+            } 
+
+            if('{!documents.size}' > $('.documentSelection:checked').length){
+            	$('#errorMessage').text('Please review all the NY Program Manual(s) and the Participation Agreement');
+                $('#errorMessage').show();
+                scrollToTop();
+                return false;
+            }
+
+            return true;
+        }
+        // call this to scroll to top of page
+        function scrollToTop() {
+            $("html, body").animate({
+                scrollTop : 0
+            }, "slow");
+        }
+    </script>
+</apex:page>

@@ -1,0 +1,37 @@
+<template>
+    <div class="app-container slds-grid slds-gutters slds-wrap">
+        <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <c-nysdoh-help-text help-text={showConfirmationMessage}></c-nysdoh-help-text>
+            <lightning-record-edit-form object-api-name="Volunteer__c" onsuccess={handleSuccess} onsubmit={handlesubmit}>
+            <div class="slds-hide">
+                <lightning-input-field field-name="First_Name__c" value={volunteer.First_Name__c} ></lightning-input-field>
+                <lightning-input-field field-name="Last_Name__c" value={volunteer.Last_Name__c} ></lightning-input-field>
+                <lightning-input-field field-name="Phone__c" value={volunteer.Phone__c} ></lightning-input-field>                            
+                <lightning-input-field field-name="Email__c" value={volunteer.Email__c} ></lightning-input-field>
+                <lightning-input-field field-name="Age__c" value={volunteer.Age__c} ></lightning-input-field>
+                <lightning-input-field field-name="Street_Address_Line_1__c" value={volunteer.Street_Address_Line_1__c} ></lightning-input-field>
+                <lightning-input-field field-name="Street_Address_Line_2__c" value={volunteer.Street_Address_Line_2__c}></lightning-input-field>
+                <lightning-input-field field-name="City__c" value={volunteer.City__c} ></lightning-input-field>
+                <lightning-input-field field-name="State__c" value={volunteer.State__c} ></lightning-input-field>
+                <lightning-input-field field-name="Zip__c" value={volunteer.Zip__c} ></lightning-input-field>
+                <lightning-input-field field-name="County_pick__c" value={volunteer.County_pick__c} ></lightning-input-field>
+                <lightning-input-field field-name="Current_Status_In_The_Field__c" value={volunteer.Current_Status_In_The_Field__c} ></lightning-input-field>
+                <lightning-input-field field-name="I_Practiced_Most_Recently_As__c" value={volunteer.I_Practiced_Most_Recently_As__c} ></lightning-input-field>
+                <lightning-input-field field-name="State__c" value={volunteer.State__c} ></lightning-input-field>
+                <lightning-input-field field-name="Speciality__c" value={volunteer.Speciality__c} ></lightning-input-field>
+                <lightning-input-field field-name="Licenses_Certifications__c" value={volunteer.Licenses_Certifications__c} ></lightning-input-field>
+                <lightning-input-field field-name="Other_Services__c" value={volunteer.Other_Services__c} ></lightning-input-field>
+                <lightning-input-field field-name="Last_Practice_Date__c" value={volunteer.Last_Practice_Date__c} ></lightning-input-field>
+            </div>  
+            <div class="slds-float_right slds-m-top_small slds-m-bottom_small ">
+                <lightning-button class="slds-m-right_medium"
+                onclick={goBack} label="Back">
+                </lightning-button>
+                <lightning-button variant="brand" 
+                type="submit" label="Submit" >
+                </lightning-button>
+            </div>
+            </lightning-record-edit-form>
+        </div>
+    </div>
+</template>

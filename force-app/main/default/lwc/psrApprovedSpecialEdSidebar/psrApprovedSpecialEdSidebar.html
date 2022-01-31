@@ -1,0 +1,68 @@
+<template>
+    <div class="container_spacing">
+        <div class="slds-grid slds-gutters mobile-block">
+            <div class="slds-col slds-size_2-of-12 mobile-full-width sidenav-margin">
+                <div>
+                    <lightning-vertical-navigation>
+                        <lightning-vertical-navigation-section>
+                            <button class="padding_space_button" onclick={navigateToPage} 
+                            data-navigatepage="approved-special-education-report" data-modal="registerEntity" style="margin-top: 3rem;">
+                                <div class="slds-grid slds-gutters pointer-event-none">
+                                    <div class="slds-col slds-size_1-of-12">
+                                        <lightning-icon icon-name="utility:identity" size="xx-small"></lightning-icon>
+                                    </div>
+                                    <div class="slds-col slds-size_11-of-12">
+                                        Corrective Action Plan Report
+                                    </div>
+
+                                </div>
+                            </button>
+                            <button class="padding_space_button" onclick={navigateToPage}
+                            data-navigatepage="approved-special-education-report">
+                            <div class="slds-grid slds-gutters pointer-event-none">
+                                <div class="slds-col slds-size_1-of-12">
+                                    <lightning-icon icon-name="utility:work_order_type" size="xx-small"></lightning-icon>
+                                </div>
+                                <div class="slds-col slds-size_11-of-12">
+                                    Mid Year Review Report
+                                </div>
+                            </div>
+                            </button>
+                            <button class="padding_space_button" onclick={navigateToPage}
+                                data-navigatepage="approved-special-education-report">
+                                <div class="slds-grid slds-gutters pointer-event-none">
+                                    <div class="slds-col slds-size_1-of-12">
+                                        <lightning-icon icon-name="utility:reassign" size="xx-small"></lightning-icon>
+                                    </div>
+                                    <div class="slds-col slds-size_11-of-12">
+                                        Program Review Report
+                                    </div>
+                                </div>
+                            </button>
+                         
+                            
+                            <!-- <button class="padding_space_button" data-modal="updateContact"
+                                data-navigatepage="approved-special-education-report" onclick={navigateToPage} >
+                                <div class="slds-grid slds-gutters pointer-event-none">
+                                    <div class="slds-col slds-size_1-of-12">
+                                        <lightning-icon icon-name="utility:event" size="xx-small"></lightning-icon>
+                                    </div>
+                                    <div class="slds-col slds-size_11-of-12">
+                                        Collaboratives
+                                    </div>
+                                </div>
+                            </button> -->
+                        </lightning-vertical-navigation-section>
+                    </lightning-vertical-navigation>
+                </div>
+            </div>
+            <div class="slds-col slds-size_10-of-12 side_space mobile-full-width">
+                <slot name="body"></slot>
+            </div>
+        </div>
+    </div>
+
+    <div class="slds-m-top_large text-right newfooter" if:true={showFooter}>
+        <p>{footerText}</p>
+    </div>
+</template>

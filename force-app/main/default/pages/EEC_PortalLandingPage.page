@@ -1,0 +1,321 @@
+<apex:page sidebar="false" showHeader="false" docType="html-5.0" controller="EEC_PortalLandingController" standardstylesheets="false"
+    action="{!actionMethod}">
+    <html>
+
+    <head>
+        <title>EEC</title>
+        <meta name="google-site-verification" content="5xRCxmZFTreb7qdfdrJuFqYw1gVmQoQLxVr1kU3usJk" />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <c:eec_styleoverrides id="pageHeader" />
+        <c:eec_homepagestyles />
+        <c:eec_javascriptcsscontainer includeJquery="true" />
+        <style>
+            body {
+                height: 100%;
+            }
+
+            .page-header {
+                margin: 20px 0 20px;
+            }
+
+            .page-header h2 {
+                font-size: 26px;
+            }
+
+            @media (min-width: 1200px) {
+                .container {
+                    width: 100%;
+                }
+                /*
+                .container > .navbar-header{
+                    margin-left: 9%;
+                }*/
+            }
+
+            @media (max-width: 1199px) {
+                .link-desc {
+                    display: none;
+                }
+            }
+
+            .brand {
+                display: none;
+            }
+
+            .navbar-fixed-bottom {
+                position: relative;
+            }
+
+            .container {
+                display: flex;
+            }
+
+            .welcome-message {
+                margin-bottom: 20px;
+            }
+
+            .left-panel {
+                margin-right: 10px;
+                background-color: #eaeaea;
+                margin-top: -20px;
+                padding-left: 0;
+                padding-right: 0;
+                padding-top: 30px;
+                min-height: 680px;
+            }
+
+            .left-panel-item {
+                margin-top: 15px;
+                background-color: #f6f6f6;
+                padding-left: 20px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                padding-right: 0;
+                height: 90px;
+            }
+
+            .header-img {
+                margin-bottom: 10px;
+                text-align: center;
+                margin-top: -8px;
+                padding-top: 12%;
+                height: 78px;
+            }
+
+            .left-panel-item i {
+                color: #115AB1;
+                font-size: 30px;
+                padding-right: 20px;
+                margin-top: 10px;
+            }
+
+            .left-panel a {
+                color: #000;
+            }
+
+            .left-panel-item .icon-wrapper {
+                margin-right: 10px;
+            }
+
+            .link-desc {
+                font-size: 10px;
+            }
+
+            .left-panel-profile {
+                padding-left: 10%;
+                padding-right: 10%;
+            }
+
+            .left-panel-profile hr {
+                border-top: 2px solid #7a7a7a;
+                margin-bottom: 10px;
+            }
+
+            .left-panel-profile .left-panel-profile-cont {
+                padding-left: 35%;
+                margin-bottom: 20px;
+                color: inherit;
+            }
+
+            .left-panel-profile-cont a {
+                color: inherit;
+            }
+
+            .resources {
+                min-height: 50px;
+                background-color: #cecece;
+                padding: 10px 20px 20px 20px;
+            }
+
+            .link-cont {
+                margin-top: 12px;
+                font-size: 16px;
+            }
+
+            .leftpanel-tooltip i {
+                font-size: 0.8em;
+            }
+
+            @media (max-width: 1200px) {
+                .link-cont {
+                    font-size: 0.8em;
+                }
+                .left-panel-item i {
+                    font-size: 20px;
+                }
+                .leftpanel-tooltip i {
+                    font-size: 0.8em;
+                }
+            }
+
+            @media (max-width: 675px) {
+                .header-img {
+                    margin-top: -30px;
+                    padding-top: 38px;
+                    padding-left: 15%;
+                }
+            }
+
+            @media (max-width: 415px) {
+                .page-header h2 {
+                    font-size: 1em;
+                }
+                .item-content {
+                    font-size: 1em;
+                }
+            }
+
+            .navbar-nav>li>a {
+                height: 100%;
+            }
+
+            .alert-warning {
+                color: red;
+                margin-top: 15px;
+            }
+
+            .header3 {
+                text-align: Center;
+                color: red;
+            }
+        </style>
+        <script>
+        </script>
+    </head>
+
+    <body>
+        <c:eec_nav_bar providerId="{!acc.id}" accountName="{!acc.Name}" id="navBar" />
+        <apex:form id="frm">
+            <div class="container container-fluid row">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xsm-12 left-panel">
+                    <div class="header-img left-panel-item">
+                        <img class="pull-left" style="max-width:70px;" src="{!URLFOR($Resource.EEC_Bootstrap,'EEC_Bootstrap/img/mass_gov.png')}"
+                        />
+                    </div>
+                    <apex:repeat value="{! lstMenuItems }" var="item">
+                        <c:eec_leftpanel_widget name="{! item.name }" description="{! item.description }" icon="{! item.icon }" destination="{! item.destination }"
+                        />
+                    </apex:repeat>
+                    <!--<div class="left-panel-profile">
+                        <hr/>
+                        <div class="left-panel-profile-cont">
+                            <apex:commandLink action="{!gotoPersonalPage}">
+                                <i class="fa fa-cog"></i>
+                                My Profile
+                            </apex:commandLink>
+                        </div>    
+                    </div>-->
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-9 col-xsm-12 main-content row">
+                    <header class="page-header text-center">
+                        <h2>Executive Office of Education - Early Education and Care</h2>
+                        <p class="lead">EEC Provider Licensing Portal</p>
+                    </header>
+                    <div class="welcome-message">
+                        <c:eec_welcome_widget welcomeMessage="{!leadConfiguration.Portal_Home_Welcome__c}" />
+                        <br/>
+                        <div class="alert alert-info" id="infomessage">
+                            <b>Support Ticket:</b> If you are facing any issues within this portal please click
+                            <apex:outputPanel rendered="{!memberId != null}">
+                                <a href="/EEC_SupportHelpdesk?member={!memberId}" target="_blank">
+                                    <b> here </b>
+                                </a>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!memberId == null}">
+                                <a href="/EEC_SupportHelpdesk" target="_blank">
+                                    <b> here </b>
+                                </a>
+                            </apex:outputPanel> to create a ticket. Our technical team will revert back as soon as possible.
+                            <!--  Please review the latest progress <a href="https://docs.google.com/spreadsheets/d/1jZ-ND7ruVz6_Wnt6_RxncLCse3VhUkfmOTKOTcaXz88/edit#gid=0" target="_blank"><b> here </b></a>  to keep up with the known portal issues and mitigation plan. -->
+                        </div>
+                        <apex:outputPanel rendered="{! acc.Recordtype.Name =='Large Group' || acc.Recordtype.Name =='Small Group'}">
+                            <div class="alert alert-warning" id="infomessage">
+                                EEC is aware that some users of the Background Record Check (BRC) Navigator – Program Portal system are experiencing deactivation
+                                of their accounts. EEC is actively working to resolve this issue and will contact all impacted
+                                users directly when their accounts have been restored.
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{! acc.Recordtype.Name =='Large Group' || acc.Recordtype.Name =='Small Group'}">
+                            <div class="alert alert-info" id="infomessage">
+                                <b> New Background Record Check System for Group and School Age Child Care Going Live on
+                                    <u>September 19, 2019 </u>
+                                </b>
+                                <br/> As a reminder, EEC has developed a new system to process Background Record Check (BRC) requests
+                                known as the BRC Navigator. EEC piloted the BRC Navigator - Program Portal with a small number
+                                of Group and School Age (GSA) Child Care programs this summer. Beginning on
+                                <u>Thursday, September 19, 2019,</u> all GSA Child Care programs will switch to using the BRC
+                                Navigator - Program Portal. **EEC will not accept new requests from GSA Child Care programs
+                                through BRC Manager after September 18th.** (Family child care, residential programs, and
+                                placement agencies will switch to using the BRC Navigator at a later date.) GSA Child Care
+                                programs that need a BRC Program Portal account should send a request to the
+                                <a href="https://massgov.service-now.com/brc" target="_Blank">
+                                    <b>
+                                        <u> BRC Support Center </u>
+                                    </b>
+                                </a>. Helpful resources are also available on
+                                <a href="https://www.mass.gov/eec-background-record-checks" target="_Blank">
+                                    <b>
+                                        <u> EEC's BRC website </u>
+                                    </b>
+                                </a>.
+                            </div>
+                        </apex:outputPanel>
+                        <div class="alert alert-warning" id="errorMessage">
+                            Please be aware that we are experiencing an issue uploading documents. Please hold off submitting documents and transactions
+                            into LEAD for now. Thank you.
+                        </div>
+                    </div>
+                    <apex:outputPanel rendered="{!acc.Recordtype.Name =='Family Child Care' || acc.Recordtype.Name =='FCC Assistant' || acc.Recordtype.Name =='Large Group' || acc.Recordtype.Name =='Small Group'}">
+                        <div class="alert alert-success">
+                            <strong>Important:</strong> The new
+                            <span style="color:red;">EEC Essentials training modules</span> must be completed by all educators by September 30, 2019
+                            on EEC's Learning Management System (LMS). For access to the training modules please visit:
+                            <a alt="String Start Training Module" href="https://strongstart.eoe.mass.gov/" target="_blank"> https://strongstart.eoe.mass.gov/</a>
+                            <br/>
+                            <br/> For additional information, including the EEC Essential Training Requirements policy, as well
+                            as FAQs, please visit:
+                            <a target="_blank" alt="eecs-strongstart-online-professional-development-system" href="https://www.mass.gov/guides/eecs-strongstart-online-professional-development-system">
+                            https://www.mass.gov/guides/eecs-strongstart-online-professional-development-system</a>
+                        </div>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!!accessUmbrellaFlag}">
+                        <div class="license-info col-lg-12 col-md-12 col-sm-12">
+                            <c:eec_providerinfo_widget account="{!acc}" isFccAssistant="{! isFccAssistant }" isRPFlow="{! isRPFlow }" />
+                            <br/>
+                            <apex:outputPanel rendered="{!acc.License_Status__c == 'Licensed' || acc.Funded_Status__c == 'Funded'}">
+                                <c:eec_providerlicensing_widget licenseType="{! acc.License_Type__c }" capacity="{! acc.Capacity__c }" issueDate="{! acc.Last_Issue_Date__c }"
+                                    expDate="{! acc.Renewal_date__c }" remDays="{! remainingDays }" daysFromRenewalDue="{!daysFromRenewalDue}"
+                                    certified="{! acc.Certified_As__c }" isFccAssistant="{! isFccAssistant }" />
+                                <br/>
+                            </apex:outputPanel>
+                            <c:eec_licensingtransactionwidget draftLT="{!providerDraftLT}" submittedLT="{!providerSubmittedLT}" inProgressLT="{!providerInProgressLT}"
+                                processedLT="{!providerProcessedLT}" providerRecordTypeDeveloperName="{!acc.Recordtype.DeveloperName}"></c:eec_licensingtransactionwidget>
+                        </div>
+                       
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!accessUmbrellaFlag}">
+                        <apex:repeat value="{! providerslist }" var="pro">
+                            <c:eec_umbrellaproviders_widget name="{! pro.Name }" status="{! pro.Provider_Status__c }" phone="{! pro.Phone }" city="{! pro.Provider_city_text__c }"
+                                memberid="{!pro.Id}" accountid="{!pro.id}" destination="/EEC_PortalLandingPage?member={!pro.Id}"></c:eec_umbrellaproviders_widget>
+                        </apex:repeat>
+                    </apex:outputPanel>
+                </div>
+            </div>
+            <apex:outputPanel rendered="{!!accessUmbrellaFlag}">
+                <div class="resources">
+                    <div>
+                        <h2>Resources</h2>
+                        <hr />
+                        <apex:outputtext value="{!leadConfiguration.Portal_Home_Useful_Links__c}" escape="false" />
+                    </div>
+                </div>
+            </apex:outputPanel>
+            <div>
+                <c:eec_site_footer id="siteFooter" />
+            </div>
+        </apex:form>
+    </body>
+
+    </html>
+</apex:page>

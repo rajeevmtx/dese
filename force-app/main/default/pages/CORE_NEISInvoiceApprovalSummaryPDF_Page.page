@@ -1,0 +1,71 @@
+<apex:page showHeader="false" sidebar="false" StandardController="Transaction_Log__c" title="{!Transaction_Log__c.Program_Version__r.Name} Invoice Summary">
+
+	<head>
+	  <style>
+	    table, th, td {
+	        border-collapse: collapse;
+	    }
+	    .tdStyle {
+	        width: 80%;
+	        margin-left:10%;
+	        margin-right:10%;
+	     }
+	     .h1Aligned{
+	         margin-left: 40%;
+	      }
+	  </style>
+	</head>
+
+	<body>
+		<br/><br/><br/>
+		  <h1 class="h1Aligned"> Invoice Approval Summary </h1>
+		<br/><br/><br/>
+		<table class="tdStyle">
+		  <tr>
+		    <td>Program:</td>
+		    <td>{!Transaction_Log__c.Program_Version__r.Program__r.Name}</td>
+		  </tr>
+		  <tr>
+		    <td>Program Contact:</td>
+		    <td>{!Transaction_Log__c.Program_Version__r.Default_Project_Coordinator__r.Name}</td>
+		  </tr>
+		  <tr>
+		    <td>Report Date:</td>
+		    <td><apex:outputField value="{!Transaction_Log__c.CreatedDate}" /></td>
+		  </tr>
+		  <tr>
+		    <td>Total number of invoices approved today &amp; sent in today's batch:</td>
+		    <td>
+		      <apex:outputText value="{0, number, 0}" rendered="{!ISNULL($CurrentPage.parameters.recordsSent)}">
+		        <apex:param value="{!Transaction_Log__c.Total_Records_Sent_Successfully__c}" />
+		      </apex:outputText>
+
+          <apex:outputText value="{0, Number, 0}" rendered="{!NOT(ISNULL($CurrentPage.parameters.recordsSent))}">
+            <apex:param value="{!VALUE($CurrentPage.parameters.recordsSent)}" />
+          </apex:outputText>
+
+		    </td>
+		  </tr>
+		  <tr>
+		    <td>Total Amount Approved:</td>
+		    <td>
+		      <apex:outputField value="{!Transaction_Log__c.Total_Amount_Approved__c}" rendered="{!ISNULL($CurrentPage.parameters.amtApproved)}" />
+		      <apex:outputText value="{0, Number, Currency}" rendered="{!NOT(ISNULL($CurrentPage.parameters.amtApproved))}">
+		        <apex:param value="{!VALUE($CurrentPage.parameters.amtApproved)}" />
+		      </apex:outputText>
+		    </td>
+		  </tr>
+		  <tr>
+		    <td>Backup Link:</td>
+		    <td><apex:outputLink value="/{!Transaction_Log__c.id}">Attached Here</apex:outputLink></td>
+		  </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="2">{!Transaction_Log__c.Program_Version__r.NEIS_Invoice_Summary_Message__c}</td>
+      </tr>
+		</table>
+	</body>
+</apex:page>

@@ -1,0 +1,23 @@
+.nav-bar {
+    position: -webkit-sticky;
+    position: sticky;
+    height: 100vh;
+    overflow: auto;
+    width: auto;
+    box-shadow: 4px 1px rgb(251,250,245);
+}
+
+.nav-bar__item {
+    display: block;
+    /*border-bottom: 1px solid darkgrey;*/
+    text-decoration: none !important;
+}
+
+.content {
+    margin-top: .8rem !important;
+}
+.filter_heading{
+    font-size: .9rem;
+    font-weight: 600;
+    padding: 1rem 0rem;
+}

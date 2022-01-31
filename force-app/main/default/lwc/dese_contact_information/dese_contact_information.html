@@ -1,0 +1,73 @@
+<template>
+    <lightning-card>
+        <template if:true={showSpinner}>
+            <lightning-spinner variant="brand" size="large"></lightning-spinner>
+        </template>
+        <div class="Contact-info dasePagePadding">
+            <div class="contact-header" if:false={readOnly}>Contact Information</div>
+            <div class="contact-subheader" if:false={readOnly}>Please provide information for primary district contact for each program's
+                application</div>
+            <div class="contact-accordion">
+                <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection}>
+                    <template for:each={contacts} for:item="contact" for:index="index">
+                        <lightning-accordion-section name={contact.section} key={contact.section}
+                            label={contact.sectionLabel}>
+                            <div class="accordion-content">
+                                <div class="slds-grid slds-gutters">
+                                    <div class="slds-col slds-size_1-of-3">
+                                        <lightning-input type="text" label="First Name"
+                                            data-index={index} data-id="FirstName" value={contact.FirstName}
+                                            onchange={genericHandler} disabled={readOnly}>
+                                        </lightning-input>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-3">
+                                        <lightning-input type="text" label="Last Name"
+                                            data-index={index} data-id="LastName" value={contact.LastName}
+                                            onchange={genericHandler} disabled={readOnly}>
+                                        </lightning-input>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-3">
+                                        <lightning-input type="text" label="Title"
+                                            data-index={index} data-id="Title" value={contact.Title}
+                                            onchange={genericHandler} disabled={readOnly}>
+                                        </lightning-input>
+                                    </div>
+                                </div>
+                                <div class="slds-grid slds-gutters">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <lightning-input type="text" label="Phone Number"
+                                            data-index={index} data-id="Phone" value={contact.Phone}
+                                            onchange={genericHandler} disabled={readOnly}>
+                                        </lightning-input>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <lightning-input type="text" label="Email"
+                                            data-index={index} data-id="Email" value={contact.Email}
+                                            onchange={genericHandler} disabled={readOnly}>
+                                        </lightning-input>
+                                    </div>
+                                </div>
+                                <template if:false={contact.isContact}>
+                                    <lightning-radio-group name="radioGroup" label="New to this program?" options={options}
+                                    data-index={index} data-id="New_to_program__c" value={contact.New_to_program__c}
+                                    type="radio" disabled={readOnly}></lightning-radio-group>
+                                </template>
+                            </div>
+                        </lightning-accordion-section>
+                    </template>
+                </lightning-accordion>
+            </div>
+
+        </div>
+        <div slot="footer" if:false={readOnly}>
+            <div class="button">
+                <lightning-button variant="brand-outline" label="Back" title="Primary action with lighter look"
+                    onclick={handlePrev} class="slds-m-left_x-small button__white"></lightning-button>
+                <lightning-button variant="brand" label="Next" title="Primary action" onclick={handleNext}
+                    class="slds-m-left_x-small"></lightning-button>
+            </div>
+        </div>
+    </lightning-card>
+
+
+</template>

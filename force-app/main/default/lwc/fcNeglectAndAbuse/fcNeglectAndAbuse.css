@@ -1,0 +1,9 @@
+@media(max-width:700px){
+    .responsiveHide{
+        display : none !important;
+    }
+}
+
+.button-padding{
+    padding-bottom: 1rem;
+}

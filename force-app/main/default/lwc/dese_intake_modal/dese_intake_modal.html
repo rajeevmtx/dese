@@ -1,0 +1,38 @@
+<template>
+    <!-- <lightning-button variant="brand" label="Show Modal" title="Show Modal" onclick={showModal}
+       class="slds-m-left_x-small"></lightning-button> -->
+       <!-- <div class="add-btn">
+         <lightning-button label="Add New School" title="Download action" icon-name="utility:add"
+             onclick={showModal} class="slds-m-left_x-small"></lightning-button>
+     </div> -->
+ 
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+       aria-describedby="modal-content-id-1" class={modalClass}>
+       <div class="slds-modal__container">
+          <header class="slds-modal__header">
+             <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close"
+                onclick={handleSave}>
+                <lightning-icon icon-name="utility:close" alternative-text="Close Modal" variant="inverse" size="small">
+                </lightning-icon>
+             </button>
+             <div class="modal-header">
+               Submission Confirmation
+           </div>
+          </header>
+          <div class="slds-modal__content slds-p-around_xx-large" id="modal-content-id-1">
+             <div class="modal-content">
+               <div class="paragraph slds-m-bottom_xx-small">Your Intake Application is Submitted Successfully. Please note you Application number is <b>{applicationName}</b> for the future reference and tracking purpose.
+               </div>
+             </div>
+          </div>
+          <footer class="slds-modal__footer">
+             <!-- <lightning-button variant="neutral" label="Cancel" title="Cancel" onclick={closeModal}>
+             </lightning-button> -->
+             <lightning-button variant="brand" class="slds-m-left_x-small" label="Okay" title="Okay"
+                onclick={handleSave}>
+             </lightning-button>
+          </footer>
+       </div>
+    </section>
+    <div class={modalBackdropClass}></div>
+ </template>

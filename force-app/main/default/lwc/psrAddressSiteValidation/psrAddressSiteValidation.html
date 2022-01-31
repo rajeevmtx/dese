@@ -1,0 +1,64 @@
+<template>
+  <div class="addressForm">
+    <div
+      class="slds-text-heading_small slds-text-title_bold slds-border_bottom"
+    >
+      Site Information
+    </div>
+
+    <c-psr-location-fetcher
+      if:false={disabledFields}
+      onfetchinglocation={locationFetched}
+    ></c-psr-location-fetcher>
+
+    <lightning-record-edit-form
+      class="slds-p-top_large"
+      record-id={appId}
+      onsuccess={handleSuccess}
+      onsubmit={handleSubmit}
+      object-api-name="Application__c"
+    >
+      <div class="slds-grid slds-p-top_large">
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input-field
+            field-name="Site_Name__c"
+            disabled={disabledFields}
+          ></lightning-input-field>
+        </div>
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input-field
+            field-name="Street__c"
+            value={addressFromGoogle.route}
+            disabled={disabledFields}
+          ></lightning-input-field>
+        </div>
+      </div>
+      <div class="slds-grid">
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input-field
+            field-name="City__c"
+            value={addressFromGoogle.city}
+            disabled={disabledFields}
+          ></lightning-input-field>
+        </div>
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input-field
+            field-name="State__c"
+            value={addressFromGoogle.state}
+            disabled={disabledFields}
+          ></lightning-input-field>
+        </div>
+      </div>
+      <div class="slds-grid">
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input-field
+            field-name="Zip__c"
+            value={addressFromGoogle.postalCode}
+            disabled={disabledFields}
+          ></lightning-input-field>
+        </div>
+        <div class="slds-col slds-size_1-of-2"></div>
+      </div>
+    </lightning-record-edit-form>
+  </div>
+</template>

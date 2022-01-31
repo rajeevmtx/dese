@@ -1,0 +1,54 @@
+<template>
+    <!-- <div
+        class="slds-col slds-p-bottom_small slds-p-bottom_small slds-p-right_medium slds-size_1-of-1 slds-large-size_6-of-12"> -->
+        <div class="slds-form-element" >
+            <div class="slds-combobox_container">
+                <div class="slds-combobox" aria-expanded="true" aria-haspopup="listbox" role="combobox">
+                    <label class="slds-form-element__label">{picklistLabel}
+                        <!-- <abbr class="slds-required" title="required">*
+                        </abbr> -->
+                    </label>
+                    <div class={addError}>
+                        <div class="slds-pill_container border" style="max-width: fit-content !important"
+                            data-pick="true" onclick={handleShowPicklist}>
+                            <template if:true={selectedStatesArray}>
+                                <template for:each={selectedStatesArray} for:index="index" for:item="picklist">
+                                    <span key={picklist} class="slds-pill slds-pill_link pill-color">
+                                        <a href="javascript:void(0);" class="slds-pill__action"
+                                            title="Full pill label verbiage mirrored here">
+                                            <span class="slds-pill__label">{picklist}</span>
+                                        </a>
+                                        <button class="slds-button slds-button_icon slds-button_icon slds-pill__remove"
+                                            title="Remove" type="button" data-picklist={picklist}
+                                            onclick={handlePicklistRemove}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                                viewBox="0 0 12 12">
+                                                <g class="nc-icon-wrapper" fill="#999999">
+                                                    <path
+                                                        d="M10.707,1.293a1,1,0,0,0-1.414,0L6,4.586,2.707,1.293A1,1,0,0,0,1.293,2.707L4.586,6,1.293,9.293a1,1,0,1,0,1.414,1.414L6,7.414l3.293,3.293a1,1,0,0,0,1.414-1.414L7.414,6l3.293-3.293A1,1,0,0,0,10.707,1.293Z"
+                                                        fill="#999999"></path>
+                                                </g>
+                                            </svg>
+                                        </button>
+                                    </span>
+                                </template>
+                            </template>
+                        </div>
+                        <template if:true={showPicklist}>
+                            <div class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid"
+                                role="listbox">
+                                <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                    <template for:each={pastStates} for:index="index" for:item="each">
+                                        <c-each-lookup key={each.value} index={index} label={each.label}
+                                            selected-set={selectedStatesArray} onthispicklist={handleSelectPicklist}>
+                                        </c-each-lookup>
+                                    </template>
+                                </ul>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- </div> -->
+</template>

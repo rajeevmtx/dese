@@ -1,0 +1,451 @@
+<apex:page cache="false" showHeader="false" standardStylesheets="false" sidebar="false" controller="CORE_CONAPP_Application_Controller" title="Contact Information">
+
+    <head>
+        <style>
+            #errorMessage {
+                display: none;
+            }
+            /* rahuls91221: I-00706*/
+            .errorMsg {
+                color: red;
+            }
+            .required {
+                font-weight: bold;
+                color: red;
+                font-size: 18px;
+            }
+            .spanClass{
+                font-size: 16px !important;
+            }
+
+        </style>
+    </head>
+
+
+    <apex:composition template="CORE_CONAPP_Template_Page">
+        <apex:define name="body">
+            <div class="page">
+                <c:CORE_StepNav_Component pgName="{!$CurrentPage.Name}"/>
+                <div class="application">
+                    <apex:form id="frm">
+                        <div class="alert-container">
+                            <apex:pageMessages />
+                            <div class="alert alert-danger" id="errorMessage"/>
+                        </div>
+                        <apex:outputPanel layout="block" id="mainPanel" styleClass="content content-body">
+                            <div class="box-group">
+
+                                <div class="heading">
+                                    Primary Contact Information
+                                    <span class="icon-help" data-toggle="tooltip" data-placement="top"
+                                        title="{!$Label.Contact_Help_Text}">
+                                    </span>
+                                </div>
+                                <div class="content box"> 
+                                    <div class="flex-row">
+                                        <div class="form-group md">
+                                            <label for="{!$Component.fNamePrimary}">First Name<span class="required">&nbsp;* </span></label>
+                                            <apex:inputField id="fNamePrimary" value="{!primaryContact.Customer_First_Name__c}" styleClass="form-control fNamePrimary" />
+                                        </div>
+                                        <div class="form-group md">
+                                            <label for="{!$Component.lNamePrimary}">Last Name<span class="required">&nbsp;* </span></label>
+                                            <apex:inputField id="lNamePrimary" value="{!primaryContact.Customer_Last_Name__c}" styleClass="form-control lNamePrimary" />
+                                        </div>
+                                    </div>
+                                    <div class="flex-row">
+                                        <div class="form-group md">
+                                            <label for="{!$Component.titlePrimary}">Title<span class="required">&nbsp;* </span></label>
+                                            <apex:inputField id="titlePrimary" value="{!primaryContact.Title__c}" styleClass="form-control titlePrimary" />
+                                        </div>
+                                        <div class="form-group md">
+                                            <label for="{!$Component.emailPrimary}">Email<span class="required">&nbsp;* </span></label>
+                                            <apex:inputField id="emailPrimary" value="{!primaryContact.Email__c}" styleClass="form-control emailPrimary" />
+                                        </div>
+                                    </div>
+                                    <div class="flex-row">
+                                        <div class="form-group md">
+                                            <label for="{!$Component.phonePrimary}">Phone<span class="required">&nbsp;* </span></label>
+                                            <apex:inputField id="phonePrimary" value="{!primaryContact.Phone_Number__c}" onKeyDown="isNumberOnlyForPrimary(event);" onKeyUp="formatPrimaryPhoneNumber();" html-maxlength="10" styleClass="form-control phonePrimary" />
+                                        </div>
+
+                                        <div class="form-group md">
+                                            <label for="{!$Component.extensionPrimary}">Extension</label>
+                                            <apex:inputField id="extensionPrimary"
+                                                value="{!primaryContact.Extension__c}"
+                                                onKeyDown="isNumberOnlyForPrimary(event);"
+                                                styleClass="form-control extensionPrimary"
+                                                html-maxlength="10"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="box-group">
+                                <div class="heading">
+                                    Accounts Receivable Contact
+                                    <span class="icon-help" data-toggle="tooltip" data-placement="top"
+                                        title="{!$ObjectType.Contractor_Application__c.fields.Account_Receivable_Contact_as_Primary__c.inlineHelpText}">
+                                    </span>
+                                </div>
+                                <apex:outputPanel id="AccountsReceivableSection" layout="none">
+                                    <div class="content box">
+                                        <div class="form-group">
+                                            <div class="checkbox">
+                                                <label for="{!$Component.ARSP}">
+                                                    <apex:inputField id="ARSP" value="{!serviceProviderApp.Account_Receivable_Contact_as_Primary__c}"
+                                                                     onchange="AccountsReceivableSameAsPrimaryAction(); return false;"
+                                                                     styleClass="accountsReceivableSameAsPrimary" />
+                                                    <span class="spanClass"> Accounts Receivable Contact is same as Primary Contact</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <apex:outputPanel rendered="{!NOT(serviceProviderApp.Account_Receivable_Contact_as_Primary__c)}" layout="block" styleClass="m-t">
+                                            <div class="flex-row">
+                                                <div class="form-group md">
+                                                    <label for="{!$Component.fNameAccountsReceivable}">First Name<span class="required">&nbsp;* </span></label>
+                                                    <apex:inputField id="fNameAccountsReceivable" value="{!accountReceivableContact.Customer_First_Name__c}" styleClass="form-control fNameAccountsReceivable" />
+                                                </div>
+                                                <div class="form-group md">
+                                                    <label for="{!$Component.lNameAccountsReceivable}">Last Name<span class="required">&nbsp;* </span></label>
+                                                    <apex:inputField id="lNameAccountsReceivable" value="{!accountReceivableContact.Customer_Last_Name__c}" styleClass="form-control lNameAccountsReceivable" />
+                                                </div>
+                                            </div>
+                                            <div class="flex-row">
+                                                <div class="form-group md">
+                                                    <label for="{!$Component.titleAccountsReceivable}">Title<span class="required">&nbsp;* </span></label>
+                                                    <apex:inputField id="titleAccountsReceivable" value="{!accountReceivableContact.Title__c}" styleClass="form-control titleAccountsReceivable" />
+                                                </div>
+                                                <div class="form-group md">
+                                                    <label for="{!$Component.emailAccountsReceivable}">Email<span class="required">&nbsp;* </span></label>
+                                                    <apex:inputField id="emailAccountsReceivable" value="{!accountReceivableContact.Email__c}" styleClass="form-control emailAccountsReceivable" />
+                                                </div>
+                                            </div>
+                                            <div class="flex-row">
+                                                <div class="form-group md">
+                                                    <label for="{!$Component.phoneAccountsReceivable}">Phone<span class="required">&nbsp;* </span></label>
+                                                    <apex:inputField id="phoneAccountsReceivable" value="{!accountReceivableContact.Phone_Number__c}" onkeyDown="isNumberOnlyForAccountsReceivable(event);" onKeyUp="formatAccountsReceivablePhoneNumber();"  html-maxlength="10" styleClass="form-control phoneAccountsReceivable" />
+                                                </div>
+
+                                                <div class="form-group md">
+                                                    <label for="{!$Component.extensionARC}">Extension</label>
+                                                    <apex:inputField id="extensionARC"
+                                                        value="{!accountReceivableContact.Extension__c}"
+                                                        onKeyDown="isNumberOnlyForPrimary(event);"
+                                                        styleClass="form-control extensionARC"
+                                                        html-maxlength="10"/>
+                                                </div>
+                                            </div>
+                                        </apex:outputPanel>
+                                    </div>
+                                </apex:outputPanel>
+                            </div>
+
+
+                            <div class="box-group">
+                                <div class="heading">
+                                   Authorized Signatory Contact
+                                    <span class="icon-help" data-toggle="tooltip" data-placement="top"
+                                       title="{!$ObjectType.Contractor_Application__c.fields.Signatory_Contacta_Same_as_Primary__c.inlineHelpText}">
+                                   </span>
+                                </div>
+                                <apex:outputPanel id="AuthorizeSection" layout="none">
+                                    <div class="content box">
+                                        <div class="form-group">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <apex:inputField value="{!serviceProviderApp.Signatory_Contacta_Same_as_Primary__c}"
+                                                                      onchange="AuthorizeSameAsPrimaryAction(); return false;"
+                                                                      styleClass="signatorySameAsPrimary" />
+                                                    <span class="spanClass" > Authorized Signatory Contact is same as Primary Contact </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <apex:outputPanel rendered="{!NOT(serviceProviderApp.Signatory_Contacta_Same_as_Primary__c)}" layout="block" styleClass="m-t">
+                                            <div class="flex-row">
+                                                <div class="form-group md">
+                                                    <label for="{!$Component.fNameSignatory}">First Name<span class="required">&nbsp;* </span></label>
+                                                    <apex:inputField id="fNameSignatory" value="{!authorizedSignatoryContact.Customer_First_Name__c}" styleClass="form-control fNameSignatory" />
+                                                </div>
+                                                <div class="form-group md">
+                                                    <label for="{!$Component.lNameSignatory}">Last Name<span class="required">&nbsp;* </span></label>
+                                                    <apex:inputField id="lNameSignatory" value="{!authorizedSignatoryContact.Customer_Last_Name__c}" styleClass="form-control lNameSignatory" />
+                                                </div>
+                                            </div>
+                                            <div class="flex-row">
+                                                <div class="form-group md">
+                                                    <label for="{!$Component.titleSignatory}">Title<span class="required">&nbsp;* </span></label>
+                                                    <apex:inputField id="titleSignatory" value="{!authorizedSignatoryContact.Title__c}" styleClass="form-control titleSignatory" />
+                                                </div>
+                                                <div class="form-group md">
+                                                    <label for="{!$Component.emailSignatory}">Email<span class="required">&nbsp;* </span></label>
+                                                    <apex:inputField id="emailSignatory" value="{!authorizedSignatoryContact.Email__c}" styleClass="form-control emailSignatory" />
+                                                </div>
+                                            </div>
+                                            <div class="flex-row">
+                                                <div class="form-group md">
+                                                    <label for="{!$Component.phoneSignatory}">Phone<span class="required">&nbsp;* </span></label>
+                                                    <apex:inputField id="phoneSignatory" value="{!authorizedSignatoryContact.Phone_Number__c}" onkeyDown="isNumberOnlyForSignatory(event);" html-maxlength="10" onKeyUp="formatSignatoryPhoneNumber();" styleClass="form-control phoneSignatory" />
+                                                </div>
+
+                                                <div class="form-group md">
+                                                    <label for="{!$Component.extensionSignatory}">Extension</label>
+                                                    <apex:inputField id="extensionSignatory"
+                                                        value="{!authorizedSignatoryContact.Extension__c}"
+                                                        onKeyDown="isNumberOnlyForPrimary(event);"
+                                                        styleClass="form-control extensionSignatory"
+                                                        html-maxlength="10"/>
+                                                </div>
+                                            </div>
+                                        </apex:outputPanel>
+                                    </div>
+                                </apex:outputPanel>
+                            </div>
+
+                        </apex:outputPanel>
+
+                        <apex:actionFunction name="next" action="{!submitContacts}" rerender="frm" status="status">
+                            <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                        </apex:actionFunction>
+                        <apex:actionFunction name="AccountsReceivableSameAsPrimaryAction" rerender="AccountsReceivableSection"/>
+                        <apex:actionFunction name="AuthorizeSameAsPrimaryAction" rerender="AuthorizeSection"/>
+                        <apex:actionFunction name="previous" action="{!previous}" rerender="frm" status="status">
+                            <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                        </apex:actionFunction>
+                    </apex:form>
+                </div>
+            </div>
+
+            <footer class="footer-nav">
+                <div class="content flex controls sm">
+                    <a href="javascript:void(0)" onclick="previous('CORE_CONAPP_ContactInformation_Page')" class="btn-bs btn-lg btn-blank">Previous</a>
+                    <a href="javascript:void(1)" onclick="saveScript()" class="btn-bs btn-lg btn-primary">Continue</a>
+                </div>
+            </footer>
+        </apex:define>
+    </apex:composition>
+
+    <script>
+        function saveScript() {
+            $('#errorMessage').hide();
+            $('#errorMessage').html("");
+            if ($('.fNamePrimary').val() == null || $('.fNamePrimary').val() == '') {
+                $('#errorMessage').html("Please enter Primary Contact's First Name");
+                $('#errorMessage').show();
+                scrollToTop();
+                return false;
+            }
+            if ($('.lNamePrimary').val() == null || $('.lNamePrimary').val() == '') {
+                $('#errorMessage').html("Please enter Primary Contact's Last Name");
+                $('#errorMessage').show();
+                scrollToTop();
+                return false;
+            }
+            if ($('.titlePrimary').val() == null || $('.titlePrimary').val() == '') {
+                $('#errorMessage').html("Please enter Primary Contact's Title");
+                $('#errorMessage').show();
+                scrollToTop();
+                return false;
+            }
+            if ($('.emailPrimary').val() == null || $('.emailPrimary').val() == '') {
+                $('#errorMessage').html("Please enter Primary Contact's Email");
+                $('#errorMessage').show();
+                scrollToTop();
+                return false;
+            }
+            if ($('.phonePrimary').val() == null || $('.phonePrimary').val() == '') {
+                $('#errorMessage').html("Please enter Primary Contact's Phone number");
+                $('#errorMessage').show();
+                scrollToTop();
+                return false;
+            }
+            var mobile = $('.phonePrimary').val();
+            mobile = mobile.replace(/[^\d]/g, "");
+            var pattern = /^\d{10}$/;
+            if (!pattern.test(mobile)) {
+                $('#errorMessage').html("Please enter valid Phone Number for the Primary Contact");
+                $('#errorMessage').show();
+                scrollToTop();
+                return false;
+            }
+            if ($('.accountsReceivableSameAsPrimary:checked').length == 0) {
+                if ($('.fNameAccountsReceivable').val() == null || $('.fNameAccountsReceivable').val() == '') {
+                    $('#errorMessage').html("Please enter Accounts Receivable Contact's First Name");
+                    $('#errorMessage').show();
+                    scrollToTop();
+                    return false;
+                }
+                if ($('.lNameAccountsReceivable').val() == null || $('.lNameAccountsReceivable').val() == '') {
+                    $('#errorMessage').html("Please enter Accounts Receivable Contact's Last Name");
+                    $('#errorMessage').show();
+                    scrollToTop();
+                    return false;
+                }
+                if ($('.titleAccountsReceivable').val() == null || $('.titleAccountsReceivable').val() == '') {
+                    $('#errorMessage').html("Please enter Accounts Receivable Contact's Title");
+                    $('#errorMessage').show();
+                    scrollToTop();
+                    return false;
+                }
+                if ($('.emailAccountsReceivable').val() == null || $('.emailAccountsReceivable').val() == '') {
+                    $('#errorMessage').html("Please enter Accounts Receivable Contact's Email");
+                    $('#errorMessage').show();
+                    scrollToTop();
+                    return false;
+                }
+                if ($('.phoneAccountsReceivable').val() == null || $('.phoneAccountsReceivable').val() == '') {
+                    $('#errorMessage').html("Please enter Accounts Receivable Contact's Phone");
+                    $('#errorMessage').show();
+                    scrollToTop();
+                    return false;
+                }
+                var mobile = $('.phoneAccountsReceivable').val();
+                mobile = mobile.replace(/[^\d]/g, "");
+                var pattern = /^\d{10}$/;
+                if (!pattern.test(mobile)) {
+                    $('#errorMessage').html("Please enter valid Phone Number for Accounts Receivable Contact");
+                    $('#errorMessage').show();
+                    scrollToTop();
+                    return false;
+                }
+            }
+            if ($('.signatorySameAsPrimary:checked').length == 0) {
+                if ($('.fNameSignatory').val() == null || $('.fNameSignatory').val() == '') {
+                    $('#errorMessage').html("Please enter Authorized Signatory Contact's First Name");
+                    $('#errorMessage').show();
+                    scrollToTop();
+                    return false;
+                }
+                if ($('.lNameSignatory').val() == null || $('.lNameSignatory').val() == '') {
+                    $('#errorMessage').html("Please enter Authorized Signatory Contact's Last Name");
+                    $('#errorMessage').show();
+                    scrollToTop();
+                    return false;
+                }
+                if ($('.titleSignatory').val() == null || $('.titleSignatory').val() == '') {
+                    $('#errorMessage').html("Please enter Authorized Signatory Contact's Title");
+                    $('#errorMessage').show();
+                    scrollToTop();
+                    return false;
+                }
+                if ($('.emailSignatory').val() == null || $('.emailSignatory').val() == '') {
+                    $('#errorMessage').html("Please enter Authorized Signatory Contact's Email");
+                    $('#errorMessage').show();
+                    scrollToTop();
+                    return false;
+                }
+                if ($('.phoneSignatory').val() == null || $('.phoneSignatory').val() == '') {
+                    $('#errorMessage').html("Please enter Authorized Signatory Contact's Phone");
+                    $('#errorMessage').show();
+                    scrollToTop();
+                    return false;
+                }
+                var mobile = $('.phoneSignatory').val();
+                mobile = mobile.replace(/[^\d]/g, "");
+                var pattern = /^\d{10}$/;
+                if (!pattern.test(mobile)) {
+                    $('#errorMessage').html("Please enter valid Phone Number for Authorized Signatory Contact");
+                    $('#errorMessage').show();
+                    scrollToTop();
+                    return false;
+                }
+            }
+            next('CORE_CONAPP_ContactInformation_Page');
+        }
+
+        function isNumberOnlyForPrimary(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if(evt.shiftKey){
+                evt.preventDefault();
+                return false;
+            }
+            if((charCode > 47 && charCode < 58) || (charCode >= 96 && charCode <= 105) || charCode == 8 || charCode == 9 || (charCode >= 37 && charCode <= 40)) {
+                return true;
+            }
+            else{
+                evt.preventDefault();
+                return false;
+            }
+        }
+
+        function isNumberOnlyForAccountsReceivable(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if(evt.shiftKey){
+                evt.preventDefault();
+                return false;
+            }
+            if((charCode > 47 && charCode < 58) || (charCode >= 96 && charCode <= 105) || charCode == 8 || charCode == 9 || (charCode >= 37 && charCode <= 40)) {
+                return true;
+            }
+            else{
+                evt.preventDefault();
+                return false;
+            }
+        }
+
+        function isNumberOnlyForSignatory(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            //console.log(charCode);
+            if(evt.shiftKey){
+                evt.preventDefault();
+                return false;
+            }
+            if((charCode > 47 && charCode < 58) || (charCode >= 96 && charCode <= 105) || charCode == 8 || charCode == 9 || (charCode >= 37 && charCode <= 40)) {
+                return true;
+            }
+            else{
+                evt.preventDefault();
+                return false;
+            }
+        }
+
+        function formatSignatoryPhoneNumber() {
+            var s = $('.phoneSignatory').val();
+            var pattern = /^\d{10}$/;
+            if (pattern.test(s)) {
+                var s2 = (""+s).replace(/\D/g, '');
+                var m = s2.match(/^(\d{3})(\d{3})(\d{4})$/);
+                $('.phoneSignatory').val("(" + m[1] + ") " + m[2] + "-" + m[3]);
+            }
+        }
+
+        function formatPrimaryPhoneNumber() {
+            var s = $('.phonePrimary').val();
+            var pattern = /^\d{10}$/;
+            if (pattern.test(s)) {
+                var s2 = (""+s).replace(/\D/g, '');
+                var m = s2.match(/^(\d{3})(\d{3})(\d{4})$/);
+                $('.phonePrimary').val("(" + m[1] + ") " + m[2] + "-" + m[3]);
+            }
+        }
+
+        function formatAccountsReceivablePhoneNumber() {
+            var s = $('.phoneAccountsReceivable').val();
+            var pattern = /^\d{10}$/;
+            if (pattern.test(s)) {
+                var s2 = (""+s).replace(/\D/g, '');
+                var m = s2.match(/^(\d{3})(\d{3})(\d{4})$/);
+                $('.phoneAccountsReceivable').val("(" + m[1] + ") " + m[2] + "-" + m[3]);
+            }
+        }
+
+        // call this to scroll to top of page
+        function scrollToTop() { 
+            $("html, body").animate({
+                scrollTop : 0
+            }, "slow");
+        }
+
+        $('.phoneAccountsReceivable, .phonePrimary, .phoneSignatory').bind('paste', function (e) {
+            e.preventDefault(); //disable paste
+        });
+
+        $(document).ready(function(){
+
+          jQuery("html").attr("lang", "en");
+
+            if('{!isRTEMApp}' == 'true'){
+                $('.sub-logo').html('VENDOR APPLICATION');
+            }
+        });
+    </script>
+</apex:page>

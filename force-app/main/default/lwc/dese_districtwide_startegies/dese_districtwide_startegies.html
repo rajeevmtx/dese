@@ -1,0 +1,312 @@
+<template>
+    <lightning-card>
+        <div class="narrative-content daseDistrictwide">
+        <div class="">
+            <h1 class="header slds-m-bottom_medium" if:false={readOnly}>
+                FY21 Districtwide Strategies and Planning
+            </h1>
+            <div class="subheader slds-m-bottom_x-large">
+                5.1 District Strategic Plan
+            </div>
+            <div class="table-header slds-m-bottom_small">
+                <div class="small-header">All Districts</div>
+                <div class="resource-icon">
+                    <img src={notebook} />
+                    <div class="resources">
+                        Resources
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="paragraph slds-m-bottom_xx-medium">
+            ESSA requires that the stakeholder groups below be consulted as part of the planning process for use of ESSA
+            funds.
+            Which of the following groups have you consulted with? (check all that apply)
+        </p>
+        
+        <lightning-checkbox-group name="essaOptions"  variant="label-hidden" disabled={readOnly} options={essaOptions} value={essavalue} onchange={handleChange} >
+        </lightning-checkbox-group>
+        <!-- <div class="slds-form-element">
+            <div class="slds-form-element__control">
+                <div class="slds-checkbox">
+                    <input type="checkbox" name="options" id="checkbox-unique-id-114" value="checkbox-unique-id-114"
+                        checked="" />
+                    <label class="slds-checkbox__label" for="checkbox-unique-id-114">
+                        <span class="slds-checkbox_faux"></span>
+                        <span class="slds-form-element__label">community partners and members</span>
+                    </label>
+                </div>
+                <div class="slds-checkbox">
+                    <input type="checkbox" name="options" id="checkbox-unique-id-115" value="checkbox-unique-id-115" />
+                    <label class="slds-checkbox__label" for="checkbox-unique-id-115">
+                        <span class="slds-checkbox_faux"></span>
+                        <span class="slds-form-element__label">families</span>
+                    </label>
+                </div>
+                <div class="slds-checkbox">
+                    <input type="checkbox" name="options" id="checkbox-unique-id-116" value="checkbox-unique-id-116" />
+                    <label class="slds-checkbox__label" for="checkbox-unique-id-116">
+                        <span class="slds-checkbox_faux"></span>
+                        <span class="slds-form-element__label">paraprofessionals</span>
+                    </label>
+                </div>
+
+                <div class="slds-checkbox">
+                    <input type="checkbox" name="options" id="checkbox-unique-id-117" value="checkbox-unique-id-117" />
+                    <label class="slds-checkbox__label" for="checkbox-unique-id-117">
+                        <span class="slds-checkbox_faux"></span>
+                        <span class="slds-form-element__label">principals/other school leaders</span>
+                    </label>
+                </div>
+                <div class="slds-checkbox">
+                    <input type="checkbox" name="options" id="checkbox-unique-id-118" value="checkbox-unique-id-118" />
+                    <label class="slds-checkbox__label" for="checkbox-unique-id-118">
+                        <span class="slds-checkbox_faux"></span>
+                        <span class="slds-form-element__label">teachers</span>
+                    </label>
+                </div>
+            </div>
+        </div> -->
+
+        <br>
+        <p class="paragraph slds-m-top_x-large">
+            If you have not yet consulted with this group in planning for use of ESSA funds for FY21,
+                when and how do you plan to get their input?
+        </p>
+        <div class="describe-box slds-m-bottom_large">
+            <div class="slds-form-element">
+                <div class="slds-form-element__control">
+                    <!-- <textarea id="textarea-id-03" placeholder="Describe Here" class="slds-textarea"></textarea> -->
+                    <lightning-textarea variant="label-hidden" placeholder="Describe Here" disabled={readOnly}  name= "ESSAFundsFY21" onchange={handleChange} value ={ESSAFundsFY21}></lightning-textarea>
+               
+                </div>
+            </div>
+        </div>
+        <!-- <div class="slds-form-element">
+            <label class="slds-form-element__label" for="textarea-id-01">
+                </label>
+            <div class="slds-form-element__control">
+                
+            </div>
+        </div> -->
+
+        <div class="line slds-m-bottom_xx-large slds-m-top_xx-large"></div>
+        <div class="subheader slds-m-bottom_x-large">
+            5.2 Title I Family Engagement
+        </div>
+        <div class="small-header slds-m-bottom_small"> Title I Districts</div>
+        <p class="paragraph slds-m-top_x-large">
+            Please describe your plan for having the 2020-2021 school year's annual
+                Title I meeting(s) for the families of all students participating in Title I programs to discuss
+                Title I programming, assessments, and opportunities for family engagement.
+        </p>
+        <div class="describe-box slds-m-bottom_large">
+            <div class="slds-form-element">
+                <div class="slds-form-element__control">
+                    <!-- <textarea id="textarea-id-03" placeholder="Describe Here" class="slds-textarea"></textarea> -->
+                    <lightning-textarea variant="label-hidden" placeholder="Describe Here" disabled={readOnly} name ="planDescription" onchange={handleChange} value ={planDescription}></lightning-textarea>
+                </div>
+            </div>
+        </div>
+
+        <p class="paragraph slds-m-top_x-large">
+            When and how do families provide input on the Title I family
+                engagement policies (both school-level and district-level)?
+        </p>
+        <div class="describe-box slds-m-bottom_large">
+            <div class="slds-form-element">
+                <div class="slds-form-element__control">
+                    <!-- <textarea id="textarea-id-03" placeholder="Describe Here" class="slds-textarea"></textarea> -->
+                    <lightning-textarea  variant="label-hidden" placeholder="Describe Here" disabled={readOnly} name ="familyDescription" onchange={handleChange} value ={familyDescription}></lightning-textarea>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="line slds-m-bottom_xx-large slds-m-top_xx-large"></div>
+        <div class="subheader slds-m-bottom_x-large">
+            5.3 Equitable Access to Excellent Educators
+
+        </div>
+        <div class="table-header slds-m-bottom_small">
+            <div class="small-header">Districts w/Equity Gaps</div>
+            <div class="resource-icon">
+                <img src={notebook} />
+                <div class="resources">
+                    Resources
+                </div>
+            </div>
+        </div>
+        <lightning-radio-group name="equitableAccessDistrictRequired" label="Is your district required to complete this Step ?"
+            options={options} value={equitableAccessDistrictRequired} disabled={readOnly} type="radio" onchange={handleChange}></lightning-radio-group>
+        <br/>
+            <p class="paragraph slds-m-bottom_large">
+            Based on the 2019-20 Student Learning Experience (SLE ) Summary Report (updated in July, 2020)
+            using three years of history, your district has district-level and/or school-level equity gaps
+            related to student assignment to experienced, in-field, and/or highly-rated teachers. Please answer the
+            following:
+        </p>
+
+        <p class="paragraph slds-m-top_x-large">
+            1. What steps are you taking to address both school-level and district-level
+                equity gaps identified in the SLE report?
+                If the district is choosing to prioritize particular equity gaps, please explain why.
+        </p>
+        <div class="describe-box slds-m-bottom_large">
+            <div class="slds-form-element">
+                <div class="slds-form-element__control">
+                    <!-- <textarea id="textarea-id-03" placeholder="Describe Here" class="slds-textarea"></textarea> -->
+                    <lightning-textarea placeholder="Describe Here" variant="label-hidden" disabled={readOnly} name ="equitableAccessDescription" onchange={handleChange} value ={equitableAccessDescription} ></lightning-textarea>
+               
+                </div>
+            </div>
+        </div>
+        
+        <div class="line slds-m-bottom_xx-large slds-m-top_xx-large"></div>
+        <div class="subheader slds-m-bottom_x-large">
+            5.4 Data and Evaluation
+
+        </div>
+        <div class="table-header slds-m-bottom_small">
+            <div class="small-header">All Districts</div>
+            <div class="resource-icon">
+                <img src={notebook} />
+                <div class="resources">
+                    Resources
+                </div>
+            </div>
+        </div>
+
+        <!-- <div> -->
+            <p class="paragraph slds-m-top_x-large">
+                Select the principal sources of data used by the district for strategies and activities 
+                <br/><i>(Select all that apply)</i></p>
+            <div class="combobox">
+                <lightning-combobox
+                    name="AllDistrictPrincipalData"
+                    value={AllDistrictPrincipalDataValue}
+                    placeholder="Select"
+                    disabled={readOnly}
+                    options={AllDistrictPrincipalSourcesOptions}
+                    onchange={handleChange} ></lightning-combobox>
+                <lightning-pill-container items={items11} onitemremove={handleItemRemove1} ></lightning-pill-container>
+            </div>
+        <!-- </div> -->
+        <p class="paragraph slds-m-top_x-large">
+            Select the principal data that will be used to track progress and success for strategies and activities 
+            <br/><i>(Select all that apply)</i></p>
+        <div class="combobox">
+            <lightning-combobox
+                name="AllDistrictPrincipalSources"
+                value={AllDistrictPrincipalSourcesValue}
+                placeholder="Select"
+                disabled={readOnly}
+                options={AllDistrictPrincipalSourcesOptions}
+                onchange={handleChange} ></lightning-combobox>
+            <lightning-pill-container items={items22} onitemremove={handleItemRemove2} ></lightning-pill-container>
+        </div>
+        <p class="paragraph slds-m-top_x-large">
+            Specify "other"
+        </p>
+        <div class="describe-box slds-m-bottom_large">
+            <div class="slds-form-element">
+                <div class="slds-form-element__control">
+                    <!-- <textarea id="textarea-id-03" placeholder="Describe Here" class="slds-textarea"></textarea> -->
+                    <lightning-textarea placeholder="Describe Here" variant="label-hidden" disabled={readOnly} name ="dataEvaluationDescription" onchange={handleChange} value ={dataEvaluationDescription} ></lightning-textarea>
+               
+                </div>
+            </div>
+         </div>
+        <!--<div class="slds-form-element">
+            <label class="slds-form-element__label" for="textarea-id-05">
+                </label>
+            <div class="slds-form-element__control">
+                <lightning-textarea placeholder="Describe Here" class="slds-textarea" name ="dataEvaluationDescription" onchange={handleChange} value ={dataEvaluationDescription}></lightning-textarea>
+            </div>
+        </div> -->
+
+        <div class="line slds-m-bottom_xx-large slds-m-top_xx-large"></div>
+        <div class="subheader slds-m-bottom_x-large">
+            5.5 School Year 2020-2021:  District Activities and Strategies
+
+
+        </div>
+        <div class="table-header slds-m-bottom_small">
+            <div class="small-header">All Districts</div>
+            <div class="resource-icon">
+                <img src={notebook} />
+                <div class="resources">
+                    Resources
+                </div>
+            </div>
+        </div>
+        <p class="paragraph slds-m-bottom_medium">
+            Input key initiatives from district improvement plan or other strategic plan to be implemented 
+            in the 2020-2021 school year using keywords/short title and then briefly describe strategies/activities. 
+        </p>
+        <p class="paragraph slds-m-bottom_medium">
+            Please list all strategic initiatives for the upcoming year, 
+            even those not funded with federal program grant funds.    
+        </p>
+        <div class="privateschool-accordion slds-m-top_small">
+        <div class="expenses-table accordion-table" if:true={hasinitiative}>
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered"
+                aria-label="Example default base table of Opportunities">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="School name">Initiative Name/Short Title</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Amount / Low Income Student">Strategies/Activities</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Amount / Low Income Student">Action</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={initiative} for:item="int">
+                    <tr key={int.Id} class="slds-hint-parent" >
+                        <td data-label="" scope="row">
+                            <div class="" title="">
+                                {int.Initiative_Name__c}
+                            </div>
+                        </td>
+                        <td data-label="">
+                            <div class="slds-truncate" title="">{int.Initiative_Strategies_Activities__c}</div>
+                        </td>
+
+                        <td class="slds-p-left_medium ">
+                            <lightning-icon icon-name="utility:delete" alternative-text="delete" title="delete"></lightning-icon>
+                        </td>
+                    </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </div>
+        <div>
+            <c-initiative-modal-window read-only={readOnly} project-id={projectId} onfetch={fetchInitiative}></c-initiative-modal-window>
+        </div>
+        
+       
+        
+        <!-- <div class="combobox">
+            <lightning-combobox name="progress" label="Status" variant="label-hidden"
+                value={value} placeholder="Select" options={options} onchange={handleChange}>
+            </lightning-combobox>
+        </div> -->
+    </div>
+    <!-- <div class="line slds-m-bottom_xx-large slds-m-top_xx-large"></div> -->
+        <div slot="footer" if:false={readOnly}>
+            <div class="button">
+                <lightning-button variant="brand-outline" label="Back" title="Primary action with lighter look"
+                    onclick={handlePrev} class="slds-m-left_x-small button__white"></lightning-button>
+                <lightning-button variant="brand" label="Next" title="Primary action" onclick={handleNext}
+                    class="slds-m-left_x-small"></lightning-button>
+            </div>
+        </div> 
+    
+    </lightning-card>
+</template>

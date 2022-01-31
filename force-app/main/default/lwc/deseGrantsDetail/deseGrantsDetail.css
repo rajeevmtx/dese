@@ -1,0 +1,60 @@
+.daseGrantsDetails{
+    background: #F3F6F9!important;
+    cursor: pointer;
+    border-top: 4px #14558F solid;
+    margin:10px auto;
+    padding:20px;
+    width: 92%;
+    font-size: 18px;
+}
+
+.backButton{
+    margin: 5% 0px;
+    color:#000;
+    font-size: 20px;
+    --sds-c-icon-color-foreground-default: #000;
+    width: 92%;
+    margin: 2% auto;
+}
+
+.backButton span{
+    cursor: pointer;
+}
+.applyOnline{
+    float:right;
+
+}
+
+.applyOnline{
+    background: #fff;
+    border: 1px solid #14558F;
+    color: #14558F;
+    padding: 4px 16px;
+    border-radius: 6px;
+    font-size: 16px;
+    margin:  0px;
+
+}
+
+
+.dashboardDetailsCard img{
+    width:144px;
+    height:144px;
+    border-radius: 100px;
+    margin: 0px auto;
+    
+}
+.dueDate{
+    text-align: right;
+    padding:10px 0px;
+    width:100%;
+    color:#14558F
+}
+
+.slds-rich-text-editor__output li{
+    margin:10px 0px!important;
+}
+
+.slds-rich-text-editor__output dt{
+color:#14558F!important;
+}

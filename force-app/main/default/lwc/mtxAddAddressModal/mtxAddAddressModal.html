@@ -1,0 +1,209 @@
+<template>
+    <!-- Spinner here -->
+    <template if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+    </template>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+        aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">                
+                <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Add Address</h2>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <!-- Form starts here -->
+                <div class="app-container slds-grid slds-gutters slds-wrap">
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+                        <lightning-combobox name="type" label="Type" placeholder="Select Type" options={typeOptions}
+                            onchange={handleTypeChange} value={recordTypeName}></lightning-combobox>
+                    </div>
+
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">                       
+                            <lightning-record-edit-form object-api-name="Address_Information__c"
+                                record-type-id={recordTypeId} record-id={recordId} onsubmit={handleFormSubmit}
+                                onsuccess={handleFormSuccess} onerror={handleError}>
+                                <div class="app-container slds-grid slds-gutters slds-wrap">
+                                    <!-- Local fields here -->
+                                    <template if:true={showLocalFields}>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="Address_Line_1__c" required><!--Added 'required' by Sajal for I-17476-->
+                                            </lightning-input-field>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="Address_Line_2__c">
+                                            </lightning-input-field>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="City__c"></lightning-input-field>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="State__c" required></lightning-input-field ><!--Added 'required' by Sajal for I-17476-->
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="Zip__c" required></lightning-input-field><!--Added 'required' by Sajal for I-17476-->
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="Country__c" required></lightning-input-field><!--Added 'required' by Sajal for I-17476-->
+                                        </div>
+                                    </template>
+
+                                    <!-- Emergence Fields here -->
+                                    <template if:true={showEmergencyFields}>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="First_Name__c"></lightning-input-field>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="Last_Name__c"></lightning-input-field>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="Relation__c"></lightning-input-field>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field class={errorClass} field-name="Contact_Number__c" required><!--Added 'required' by Sajal-->
+                                            </lightning-input-field>
+
+                                            <template if:true={invalidTelephone}>
+                                                <div role="alert" class="slds-form-element__help text-error-field">
+                                                    Wrong telephone number.
+                                                </div>
+                                            </template>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="Address_Line_1__c" required><!--Added 'required' by Sajal for I-17476-->
+                                            </lightning-input-field>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="Address_Line_2__c">
+                                            </lightning-input-field>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="City__c"></lightning-input-field>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="State__c" required></lightning-input-field ><!--Added by Sajal for I-17547-->
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="Zip__c" required></lightning-input-field><!--Added 'required' by Sajal for I-17476-->
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="Country__c" required></lightning-input-field><!--Added 'required' by Sajal for I-17476-->
+                                        </div>
+                                    </template>
+
+                                    <!-- Permanent Fields here -->
+                                    <template if:true={showPermanentFields}>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="Address_Line_1__c" required><!--Added 'required' by Sajal for I-17476-->
+                                            </lightning-input-field>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="Address_Line_2__c">
+                                            </lightning-input-field>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="City__c"></lightning-input-field>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="State__c" required></lightning-input-field><!--Added 'required' by Sajal for I-17476-->
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="Zip__c" required></lightning-input-field><!--Added 'required' by Sajal for I-17476-->
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="Country__c" required></lightning-input-field><!--Added 'required' by Sajal for I-17476-->
+                                        </div>
+                                    </template>
+
+                                    <!-- Healthcare fields here -->
+                                    <template if:true={showHealthcareFields}>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="Contact_Name__c"></lightning-input-field>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field class={errorClass} field-name="Contact_Number__c" required><!--Added 'required' by Sajal-->
+                                            </lightning-input-field>
+
+                                            <template if:true={invalidTelephone}>
+                                                <div role="alert" class="slds-form-element__help text-error-field">
+                                                    Wrong telephone number.
+                                                </div>
+                                            </template>
+
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="Contact_Email__c">
+                                            </lightning-input-field>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="Facility_Name__c">
+                                            </lightning-input-field>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="Address_Line_1__c" required><!--Added 'required' by Sajal for I-17476-->
+                                            </lightning-input-field>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="Address_Line_2__c">
+                                            </lightning-input-field>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="City__c"></lightning-input-field>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="State__c" required></lightning-input-field><!--Added 'required' by Sajal for I-17476-->
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="Zip__c" required></lightning-input-field><!--Added 'required' by Sajal for I-17476-->
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="Country__c" required></lightning-input-field><!--Added 'required' by Sajal for I-17476-->
+                                        </div>
+                                    </template>
+
+                                    <!-- Location fields here -->
+                                    <template if:true={showLocationFields}>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="Address_Line_1__c" required><!--Added 'required' by Sajal for I-17476-->
+                                            </lightning-input-field>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="Address_Line_2__c">
+                                            </lightning-input-field>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="City__c"></lightning-input-field>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="State__c" required></lightning-input-field><!--Added 'required' by Sajal for I-17476-->
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="Zip__c" required></lightning-input-field><!--Added 'required' by Sajal for I-17476-->
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                                            <lightning-input-field field-name="Country__c" required></lightning-input-field><!--Added 'required' by Sajal for I-17476-->
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="slds-m-around_x-small slds-float_right">
+                                    <!-- <button class="slds-button slds-button_neutral"
+                                        onclick={handleCloseModal}>Cancel</button> -->
+                                    <lightning-button class="slds-button" variant="Neutral" label="Cancel" onclick={handleCloseModal}>
+                                    </lightning-button>
+                                    <lightning-button class="slds-button" variant="brand" type="submit" label="Add">
+                                    </lightning-button>
+                                </div>
+
+                                <!-- <footer class="slds-modal__footer">
+                                    <button class="slds-button slds-button_neutral"
+                                        onclick={handleCloseModal}>Cancel</button>
+                                    <lightning-button class="slds-button" variant="brand" type="submit" label="Add">
+                                    </lightning-button>
+                                </footer> -->
+                            </lightning-record-edit-form>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

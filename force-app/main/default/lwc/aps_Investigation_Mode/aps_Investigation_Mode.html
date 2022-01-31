@@ -1,0 +1,143 @@
+<template>
+    <div if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </div>
+    <div class="slds-align_absolute-center">
+        <div if:false={isInvestigationComplete}>
+            <lightning-button variant="brand" label="Bulk Update" onclick={handleBulkUpdateClick}
+                class="slds-m-left_x-medium slds-m-bottom_none"></lightning-button>
+            <lightning-button variant="brand" label="Investigation Complete" onclick={handleInvestigationCompleteClick}
+                class="slds-m-left_small slds-m-bottom_none "></lightning-button>
+        </div>
+    </div>
+    <lightning-layout>
+        <lightning-layout-item size="2">
+            <c-aps_nav-bar-investigation-item result-options={resultOptions} category-options={categoryOptions}
+                onitemselection={handleNavItemSelection} class="slds-col slds-size_3-of-12 navigation">
+            </c-aps_nav-bar-investigation-item>
+        </lightning-layout-item>
+        <lightning-layout-item size="10">
+            <lightning-card class="slds-col slds-size_9-of-12 ">
+                <div class="slds-table_edit_container slds-is-relative">
+                    <!-- Due Diligence List Start Here  -->
+                    <table aria-multiselectable="true"
+                        class="slds-table slds-table_bordered slds-table_resizable-cols slds-table_fixed-layout slds-table_striped slds-table_col-bordered"
+                        role="grid" style="width: 100%;">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <template for:each={columnConfiguration} for:item="column">
+                                    <th key={column.fieldApiName} scope="col" class="slds-text-align_left">
+                                        <div class="slds-grid slds-has-flexi-truncate">
+                                            <div class="slds-truncate slds-text-body_medium slds-p-around_xx-small">
+                                                {column.heading}</div>
+                                        </div>
+                                    </th>
+                                </template>
+</tr>
+</thead>
+<tbody>
+    <template for:each={data} for:item='item'>
+                                <tr class="slds-hint-parent" key={item.Id}>
+                                    <td role="gridcell" style="word-break:break-word;white-space: normal;">
+                                        <div class="slds-align_absolute-left">
+                                            {item.Name}
+                                        </div>
+                                    </td>
+                                    <td role="gridcell" style="word-break:break-word;white-space: normal;">
+                                        <div class="slds-align_absolute-left"> {item.Investigation_Item_Name__c} </div>
+                                    </td>
+                                    <td role="gridcell" style="word-break:break-word;white-space: normal;">
+                                        <div class="slds-align_absolute-left"> {item.Category__c} </div>
+                                    </td>
+                                    <td role="gridcell" style="word-break:break-word;white-space: normal;">
+                                        <div class="slds-align_absolute-left">
+                                            <lightning-combobox class="resultClass" data-recid={item.Id} name="result"
+                                                value={item.Result__c} options={resultOptions} onchange={handleSave}
+                                                disabled={isInvestigationComplete}>
+                                            </lightning-combobox>
+                                        </div>
+                                    </td>
+                                    <td role="gridcell" style="word-break:break-word;white-space: normal;width:5rem;">
+                                        <div class="slds-align_absolute-left">
+                                            <lightning-textarea data-recid={item.Id} name="observation" data-name=""
+                                                value={item.Observations__c} class="observationClass"
+                                                onfocusout={handleSave} disabled={isInvestigationComplete}>
+                                            </lightning-textarea>
+                                        </div>
+                                    </td>
+                                    <td role="gridcell" style="word-break:break-word;white-space: normal;">
+                                        <div class="slds-align_absolute-center">
+                                            <div if:false={isInvestigationComplete}>
+                                                <lightning-button-icon onclick={handleFileUpload}
+                                                    icon-name="utility:upload" alternative-text="Upload"
+                                                    style="margin-left: 5px;" data-recid={item.Id}>
+                                                </lightning-button-icon>
+                                            </div>
+                                            <div>
+                                                <lightning-button-icon onclick={handleViewFile}
+                                                    icon-name="utility:preview" alternative-text="View Files"
+                                                    style="margin-left: 5px;" data-recid={item.Id}>
+                                                </lightning-button-icon>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+</tbody>
+</table>
+<!-- Due Diligence List End Here  -->
+<div if:true={isTableEmpty} class="slds-p-top_small slds-text-align_center">
+    <span class="slds-m-around_small status"> No records found</span>
+</div>
+</div>
+<!-- Bulk update Start Here Modal -->
+<c-psr-modal if:true={showBulkUpdateModal} classes='slds-modal newModal slds-fade-in-open zindex9004' backdrop-class="slds-backdrop slds-backdrop_open zindex9003">
+    <span slot="header">Bulk Assess</span>
+    <div slot="body">
+        <div>
+            <c-psr-help-text help-text={Internal_Bulk_Update_Help_Text}></c-psr-help-text>
+        </div>
+        <div class="slds-p-around_medium lgc-bg">
+            Filter by Category:
+            <lightning-combobox name="category" value={bulkCategory} options={categoryOptions} onchange={handleCategoryChange}>
+            </lightning-combobox>
+        </div>
+        <div class="slds-p-around_medium lgc-bg">
+            Mark all items currently without result (Non-Selected Items):
+            <lightning-combobox class="resultClass" name="result" value={bulkResult} options={resultOptions} onchange={handleResultChange}>
+            </lightning-combobox>
+        </div>
+        <div class="slds-p-around_medium lgc-bg">
+            Observation:
+            <lightning-textarea name="observation" value={bulkObservation} class="observationClass" onchange={handleObservationChange}>
+            </lightning-textarea>
+        </div>
+    </div>
+    </div>
+    <div slot="footer">
+        <lightning-button class="slds-p-right_xx-small" name="cancel" label="Cancel" onclick={cancelConfirmationModal}>
+        </lightning-button>
+        <lightning-button name="Confirm" label="Confirm" variant="brand" onclick={handleConfirm}>
+        </lightning-button>
+    </div>
+</c-psr-modal>
+<!-- Bulk update End Modal -->
+
+<!-- file upload modal start-->
+<c-psr-modal if:true={openFileModal} classes='slds-modal newModal slds-fade-in-open zindex9004' backdrop-class="slds-backdrop slds-backdrop_open zindex9003">
+    <span slot="header">File Upload</span>
+    <div slot="body">
+        <lightning-file-upload name="imageUploader" class="file-uploader" record-id={uploadFileRecId}>
+        </lightning-file-upload>
+    </div>
+    </div>
+    <div slot="footer">
+        <lightning-button class="slds-p-right_xx-small" name="cancel" label="Cancel" onclick={cancelFileUploadModal}>
+        </lightning-button>
+    </div>
+</c-psr-modal>
+<!-- file upload modal end-->
+</lightning-card>
+</lightning-layout-item>
+</lightning-layout>
+</template>

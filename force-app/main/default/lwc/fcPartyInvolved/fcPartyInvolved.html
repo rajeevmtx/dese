@@ -1,0 +1,59 @@
+<template>
+    <!-- List of Contacts -->
+    <div class="backdrop" if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </div>
+    </div>
+    <div class="app-container slds-grid slds-gutters slds-wrap">
+        <div if:false={isInternal} class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <c-fc-intake-form-help-text help-text={helpTextContacts}></c-fc-intake-form-help-text>
+        </div>
+        <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <lightning-button label="Add Parties Involved" onclick={openModal} variant="brand" class="slds-float_right button-padding"></lightning-button>
+            <table class="slds-table slds-table--bordered">    	
+                <thead>
+                    <tr class="slds-text-heading--label">                     
+                        <th>Name</th>
+                        <th>Party Involved Type</th>
+                        <!-- <th>Collateral Type</th> -->
+                        <th>Relation with child</th>     
+                        <!-- <th>Resource Type</th>       -->
+                        <th>Action</th>      
+                    </tr>        	 
+                </thead>
+                <tbody>     
+                    <template for:each={dataList} for:item="data">
+                        <tr key={data.patientContacId} class="slds-hint-parent">                    
+                            <td>
+                                {data.partyFirstName} {data.partyLastName} 
+                            </td>
+                            <td>
+                                {data.partyInvolvedType}
+                            </td>
+                            <!-- <td>
+                                {data.collateralType}
+                            </td> -->
+                            <td>
+                                {data.relationToAV}
+                            </td>
+                            <!-- <td>
+                                {data.resourceType}
+                            </td> -->
+                            <td>
+                                <lightning-button-group>
+                                    <lightning-button-menu alternative-text="Show menu">
+                                        <lightning-menu-item label="Edit" name={data.partyInvolvedId} onclick={openModal}></lightning-menu-item>
+                                    </lightning-button-menu>
+                                </lightning-button-group>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>    
+            </table>
+        </div>
+    </div>
+    <c-fc-party-involved-add-edit-contact if:true={isShowModal} selected-obj={selectedData} case-id={caseId}
+                                          onclose={refreshData} onsave={refreshData} onaftersave={afterSave}>
+    </c-fc-party-involved-add-edit-contact>
+</template>

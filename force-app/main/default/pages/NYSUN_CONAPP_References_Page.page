@@ -1,0 +1,748 @@
+<apex:page showHeader="false" sidebar="false" controller="CORE_CONAPP_Application_Controller" tabStyle="Application__tab" title="References" >
+
+    <style>
+
+        #confirmation-message,
+        #errorMessage,
+        .comProjectReference,
+        .hyperlink{
+            display: none;
+        }
+        .error {
+            border: solid 2px #FF0000;
+        }
+        .labelClass{
+        	    font-weight: 600;
+    			font-size: 14px;
+    			margin-bottom: 5px;
+        }
+        legend {
+            	border-bottom: 0px;
+            	margin-bottom: 5px;
+       } 
+       .mr{
+       		margin-right: 20px;
+       }
+       
+
+    </style>
+
+    <apex:composition template="CORE_CONAPP_Template_Page">
+        <apex:define name="body">
+            <div class="page">
+                <c:CORE_StepNav_Component pgName="{!$CurrentPage.Name}" />
+                <div class="references">
+                    <apex:form id="frm">
+                        <div class="alert-container">
+                            <apex:pageMessages id="pageMessage"/>
+                            <div class="alert alert-success" id="confirmation-message"> </div>
+                            <div class="alert alert-danger" id="errorMessage"> </div>
+                        </div>
+
+                        <apex:outputPanel layout="block" id="mainPanel" styleClass="content content-body">
+                            <apex:outputPanel layout="none" rendered="{!isOptionASelected}">
+                                <div class="box-group">
+                                    <div class="heading">
+                                        Residential/Small Commercial References
+                                        <span class="icon-help" data-toggle="tooltip" data-placement="top" title="{!$label.NYSUN_Contractor_Application_residentials_Qualification_Help_Text}" > </span>
+                                    </div>
+                                    <div class="resProjectReference">
+                                        <apex:variable value="{!1}" var="refCount"/>
+                                        <apex:repeat value="{!appContents}" var="appContent">
+                                            <div class="array">
+                                                <div class="heading">
+                                                    <div>
+                                                        <div class="state"></div>
+                                                        <div class="name"> 
+                                                            <div class="view">
+                                                                <span class="array-name">Reference {!refCount} of {!appContents.size}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a class="toggle-button collapsed" role="button" title="DropDown" data-toggle="collapse" href="#residential-section{!refCount}" aria-expanded="false" aria-controls="residential-section">
+                                                        <span class="icm"><div style="display:none;">Text</div></span>
+                                                    </a>
+                                                </div>
+                                                <div id="residential-section{!refCount}" class="collapse">
+
+                                                    <div class="content content-body">
+                                                        <div class="ref-title">Contact Information</div>
+                                                        <div class="flex-row">
+                                                            <div class="form-group md">
+                                                                <label for="{!$Component.firstnameres}">First Name</label>
+                                                                <apex:inputField id="firstnameres" value="{!appContent.Customer_First_Name__c}" styleClass="form-control requiredInfo" />
+                                                            </div>
+
+                                                            <div class="form-group md">
+                                                                <label for="{!$Component.lastname}">Last Name</label>
+                                                                <apex:inputField id="lastname" value="{!appContent.Customer_Last_Name__c}" styleClass="form-control requiredInfo" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="flex-row">
+                                                            <div class="form-group xl">
+                                                                <label for="{!$Component.streetaddress}">Project Site Address</label>
+                                                                <apex:inputField id="streetaddress" value="{!appContent.Street_Address__c}" styleClass="form-control requiredInfo" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="flex-row">
+                                                            <div class="form-group md">
+                                                                <label for="{!$Component.city}">City</label>
+                                                                <apex:inputField id="city" value="{!appContent.City__c}" onKeyDown="isAlphabateOnly(event);"  styleClass="form-control requiredInfo" />
+                                                            </div>
+                                                            <div class="form-group md">
+                                                                <label for="{!$Component.state}">State / Province</label>
+                                                                <apex:inputField id="state" value="{!appContent.State__c}" styleClass="form-control requiredInfo cState select2" />
+                                                            </div>
+                                                            <div class="form-group sm">
+                                                                <label for="{!$Component.zip}">Zip</label>
+                                                                <apex:inputField id="zip" value="{!appContent.Zip__c}" onKeyDown="isNumberOnlyForPrimary(event);" html-maxlength="5"  styleClass="form-control requiredInfo zip" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="flex-row">
+                                                            <div class="form-group md">
+                                                                <label for="{!$Component.phone}">Phone Number</label>
+                                                                <apex:inputField id="phone" value="{!appContent.Phone_Number__c}" onKeyDown="isNumberOnlyForPrimary(event);" onKeyUp="formatPrimaryPhoneNumber(this);" html-maxlength="10" styleClass="form-control requiredInfo phone"  />
+                                                            </div>
+                                                            <div class="form-group md">
+                                                                <label for="{!$Component.email}">Email Address</label>
+                                                                <apex:actionRegion >
+                                                                    <apex:inputField id="email" value="{!appContent.Email__c}" styleClass="form-control requiredInfo email" />
+                                                                </apex:actionRegion>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="content content-body">
+                                                        <div class="ref-title">Project Information</div>
+
+                                                        <div class="flex-row">
+                                                            <div class="form-group md">
+                                                                <label for="{!$Component.systemsize}">System Size(kW)</label>
+                                                                <apex:inputField id="systemsize" value="{!appContent.System_Size_kW__c}" styleClass="form-control requiredInfo decimalValue" />
+                                                            </div>
+                                                            <div class="form-group md">
+                                                                <label for="{!$Component.connectiondate}">Interconnection Date</label>
+                                                                <apex:inputField id="connectiondate" value="{!appContent.Interconnection_Date__c}" style="width:120px" styleClass="form-control requiredInfo date"    />
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-row">
+                                                            <div class="form-group xl">
+                                                                <label for="{!$Component.applicantrole}">Applicant's role in project</label>
+                                                                <apex:inputText id="applicantrole"
+                                                                                value="{!appContent.Applicant_s_Role_in_Project__c}"
+                                                                                styleClass="form-control requiredInfo"
+                                                                                html-data-toggle="popover"
+                                                                                html-data-trigger="hover"
+                                                                                html-data-placement="right"
+                                                                                html-data-content="{!$ObjectType.Application_Content__c.fields.Applicant_s_Role_in_Project__c.inlineHelpText}"/>
+                                                                <span class="icon-question"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-row">
+                                                            <div class="form-group xl">
+                                                                <label for="{!$Component.projectdescription}">Project Description</label>
+                                                                <apex:inputText id="projectdescription"
+                                                                                value="{!appContent.Project_Description__c}"
+                                                                                styleClass="form-control requiredInfo"
+                                                                                html-data-toggle="popover"
+                                                                                html-data-trigger="hover"
+                                                                                html-data-placement="right"
+                                                                                html-data-content="{!$ObjectType.Application_Content__c.fields.Project_Description__c.inlineHelpText}"/>
+                                                                <span class="icon-question"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <apex:variable value="{!refCount + 1}" var="refCount"/>
+                                        </apex:repeat>
+                                    </div>
+                                </div>  <!-- array -->
+                            </apex:outputPanel>
+
+                            <apex:outputPanel layout="none" rendered="{!isOptionBSelected}">
+                                <div class="box-group">
+                                    <div class="heading has-controls">
+                                        <div class="title">Commercial References</div>
+                                    </div>
+                                    <div class="content box">
+                                        <div class="form-row xl">
+                                            <span class="labelClass" for="provided-type">I'd like to provide</span>
+                                            <div class="result">
+                                            	<fieldset>
+	                                                <div class="ns-touch">
+	                                                	<legend>
+		                                                    <label for="hyperPro">
+		                                                        <input type="radio" name="refType" class="refType" value="Hyperlink Project" id="hyperPro"/>
+		                                                        <i class="icm"></i>
+		                                                        <span>A hyperlink to an installed project from the Commercial / Industrial Program at <a href="http://chp.nyserda.ny.gov/home/index.cfm" target="_blank">chp.nyserda.ny.gov</a></span>
+		                                                    </label>
+		                                                 </legend>
+	                                                </div>
+	                                                <div class="ns-touch">
+	                                                	<legend>
+		                                                    <label for="compRef">
+		                                                        <input type="radio" name="refType" class="refType" value="Company Reference" id="compRef"/>
+		                                                        <i class="icm"></i>
+		                                                        <span>Three project references (Totalling greater or equal to 500kW) </span>
+		                                                        <apex:outputPanel styleClass="comProjectReference" style="float:right">Total System Size(kW):&nbsp;<span id="total"></span>&nbsp;kW</apex:outputPanel>
+		                                                    </label>
+		                                                </legend>
+	                                                </div>
+	                                            </fieldset>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group lg hyperlink" id="hyperlink-section">
+                                            <label for="{!$Component.hyperlink}">Hyperlink to installed project</label>
+                                            <apex:inputField id="hyperlink" value="{!serviceProviderApp.Hyperlink_Project__c}" styleClass="form-control requiredInfoHyperLink"/>
+                                        </div>
+                                    </div>
+                                    <div class="comProjectReference">
+                                        <apex:variable value="{!1}" var="refCount"/>
+                                        <apex:repeat value="{!appOptionBContents}" var="appContent">
+                                            <div class="array">
+                                                <div class="heading">
+                                                    <div>
+                                                        <div class="state"></div>
+                                                        <div class="name">
+                                                            <div class="view">
+                                                                <span class="array-name">Reference {!refCount} of {!appContents.size}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a class="toggle-button collapsed" role="button" data-toggle="collapse" href="#commercial-section{!refCount}" aria-expanded="false" aria-controls="commercial-section">
+                                                        <span class="icm"><div style="display:none;">ui-fix</div></span>
+                                                    </a>
+                                                </div>
+                                                <div id="commercial-section{!refCount}" class="collapse">
+                                                    <div class="content content-body">
+                                                        <div class="ref-title">Contact Information</div>
+                                                        <div class="flex-row">
+                                                            <div class="form-group md">
+                                                                <label for="{!$Component.firstname1}">First Name</label>
+                                                                <apex:inputField id="firstname1" value="{!appContent.Customer_First_Name__c}" styleClass="form-control requiredInfo" />
+                                                            </div>
+
+                                                            <div class="form-group md">
+                                                                <label for="{!$Component.lastname1}">Last Name</label>
+                                                                <apex:inputField id="lastname1" value="{!appContent.Customer_Last_Name__c}" styleClass="form-control requiredInfo" />
+                                                            </div>
+                                                            <div class="form-group md">
+                                                                <label for="{!$Component.company1}">Company Name</label>
+                                                                <apex:inputField id="company1" value="{!appContent.Company_Name__c}" styleClass="form-control requiredInfo" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="flex-row">
+                                                            <div class="form-group xl">
+                                                                <label for="{!$Component.streetaddress1}">Project Site Address</label>
+                                                                <apex:inputField id="streetaddress1" value="{!appContent.Street_Address__c}" styleClass="form-control requiredInfo" />
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="flex-row">
+                                                            <div class="form-group md">
+                                                                <label for="{!$Component.city1}">City</label>
+                                                                <apex:inputField id="city1" value="{!appContent.City__c}" onKeyDown="isAlphabateOnly(event);"  styleClass="form-control requiredInfo" />
+                                                            </div>
+                                                            <div class="form-group md">
+                                                                <label for="{!$Component.state1}">State / Province</label>
+                                                                <apex:inputField id="state1" value="{!appContent.State__c}" styleClass="form-control requiredInfo cState select2" />
+                                                            </div>
+                                                            <div class="form-group sm">
+                                                                <label for="{!$Component.zip1}">Zip</label>
+                                                                <apex:inputField id="zip1" value="{!appContent.Zip__c}" styleClass="form-control requiredInfo zip" html-maxlength="5" onKeyDown="isNumberOnlyForPrimary(event);"/>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="flex-row">
+                                                            <div class="form-group md">
+                                                                <label for="{!$Component.phone1}">Phone Number</label>
+                                                                <apex:inputField id="phone1" value="{!appContent.Phone_Number__c}" onKeyDown="isNumberOnlyForPrimary(event);" onKeyUp="formatPrimaryPhoneNumber(this);" html-maxlength="10"  styleClass="form-control requiredInfo phone"  />
+                                                            </div>
+                                                            <div class="form-group md">
+                                                                <label for="{!$Component.email1}">Email Address</label>
+                                                                <apex:actionRegion >
+                                                                    <apex:inputField id="email1" value="{!appContent.Email__c}" styleClass="form-control requiredInfo email"  />
+                                                                </apex:actionRegion>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="content content-body">
+                                                        <div class="ref-title">Project Information</div>
+
+                                                        <div class="flex-row">
+                                                            <div class="form-group md">
+                                                                <label for="{!$Component.systemsize1}">System Size(kW)</label>
+                                                                <apex:inputField id="systemsize1" value="{!appContent.System_Size_kW__c}"  styleClass="form-control systemSize requiredInfo decimalValue" />
+                                                            </div>
+                                                            <div class="form-group md">
+                                                                <label for="{!$Component.connectiondate1}">Interconnection Date</label>
+                                                                <apex:inputField id="connectiondate1" value="{!appContent.Interconnection_Date__c}" styleClass="form-control requiredInfo date" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-row">
+                                                            <div class="form-group xl">
+                                                                <label for="{!$Component.applicantrole1}">Applicant's role in project</label>
+                                                                <apex:inputText id="applicantrole1"
+                                                                                value="{!appContent.Applicant_s_Role_in_Project__c}"
+                                                                                styleClass="form-control requiredInfo"
+                                                                                html-data-toggle="popover"
+                                                                                html-data-trigger="hover"
+                                                                                html-data-placement="right"
+                                                                                html-data-content="{!$ObjectType.Application_Content__c.fields.Applicant_s_Role_in_Project__c.inlineHelpText}"/>
+                                                                <span class="icon-question"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-row">
+                                                            <div class="form-group xl">
+                                                                <label for="{!$Component.projectdescription1}">Project Description</label>
+                                                                <apex:inputText id="projectdescription1"
+                                                                                value="{!appContent.Project_Description__c}"
+                                                                                styleClass="form-control requiredInfo"
+                                                                                html-data-toggle="popover"
+                                                                                html-data-trigger="hover"
+                                                                                html-data-placement="right"
+                                                                                html-data-content="{!$ObjectType.Application_Content__c.fields.Project_Description__c.inlineHelpText}"/>
+                                                                <span class="icon-question"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <apex:variable value="{!refCount + 1}" var="refCount"/>
+                                        </apex:repeat>
+                                    </div>
+                                </div>  <!-- array -->
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+
+                        <!-- rahuls91221 [I-00743]: added rerender to pageMessage, scriptPanel  -->
+                        <apex:actionFunction name="next"
+                                             action="{!saveReferences}"
+                                             rerender="mainPanel, pageMessage, scriptPanel"
+                                             oncomplete="expandSections('');"
+                                             status="status">
+                            <apex:param value=""
+                                        name="currentPage"
+                                        assignTo="{!currentPage}" />
+                            <apex:param value=""
+                                        name="refType"
+                                        assignTo="{!serviceProviderApp.Reference_Type__c}" />
+                        </apex:actionFunction>
+                        <!-- action method added by Pankaj #I-00817-->
+                        <apex:actionFunction name="saveReferenceState"
+                                             action="{!saveReferenceState}"
+                                             rerender="mainPanel, pageMessage, scriptPanel"
+                                             oncomplete="expandSections('{!strMessage}');"
+                                             status="status">
+                             <apex:param value=""
+                                        name="refType"
+                                        assignTo="{!serviceProviderApp.Reference_Type__c}" />
+                        </apex:actionFunction>
+
+
+                        <apex:actionFunction name="previous" action="{!previous}" rerender="mainPanel">
+                            <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                        </apex:actionFunction>
+
+                            <!-- rahuls91221 [24th July 2016]: Added loading component to avoid multiple save click -->
+                        <c:LoadingOverlay />
+                    </apex:form>
+                </div>
+            </div>
+            <footer class="footer-nav">
+                <div class="content flex controls sm">
+                    <a href="javascript:void(0)" onclick="previous('NYSUN_CONAPP_References_Page')" class="btn-bs btn-lg btn-blank">Previous</a>
+                    <a href="javascript:void(0)" onclick="saveMethod()" class="btn-bs btn-lg btn-primary">Save</a>
+                    <a href="javascript:void(0)" onclick="saveScript()" class="btn-bs btn-lg btn-primary">Continue</a>
+                </div>
+            </footer>
+        </apex:define>
+    </apex:composition>
+
+    <script>
+    /*$(document).on("keyup", "input.error", function(){
+            $(this).removeClass("error");
+        });*/
+
+        function saveScript() {
+            $('#errorMessage').html('');
+            $('#errorMessage').hide();
+
+            // rahuls91221 [I-00743]: hiding page message
+            $("span[id$=pageMessage]").hide();
+
+            // rahuls91221 [24th July 2016 | I-01042]: hiding confirmation message on save
+            $('#confirmation-message').hide();
+
+            var isError = 0;
+
+            $('.resProjectReference .requiredInfo').each(function() {
+            	var id = $(this).attr('id').split(/[\s:]+/);
+                var labelId = id[id.length-1];
+                var label = $("label[for='"+labelId+"']");
+                label =label[0];
+                label = $(label).text();
+                if ($(this).val() == null || $(this).val() == '') {
+                    //$(this).addClass("error"); // if an input field is empty add a error class which make input a red box #I-00817
+                    $('#errorMessage').html('Please enter a value in each field for each reference below.');
+                    $('#errorMessage').show();
+                    isError = 1;
+                }
+            });
+
+            if (typeof($('.refType').attr('class')) != 'undefined' && $('.refType:checked').length == 0) {
+                $('#errorMessage').html('Please select a reference type for commercial references.');
+                $('#errorMessage').show();
+                isError = 1;
+            }
+
+            if ($('#hyperPro:checked').length > 0) {
+                $('.requiredInfoHyperLink').each(function() {
+                    if ($(this).val() == null || $(this).val() == '') {
+                        $('#errorMessage').html('You must enter a hyperlink.');
+                        $('#errorMessage').show();
+                        isError = 1;
+                    }
+                });
+            }
+
+            if ($('#compRef:checked').length > 0) {
+                var temp = 0;
+                $('.systemSize').each(function() {
+                    var size = $(this).val().replace(/\,/g, '').replace(' ', '');
+                    if (typeof(size) != 'undefined' && size != null && size != '' && !isNaN(size)) {
+                        temp += parseFloat(size);
+                    }
+                });
+                if (temp < 500) {
+                    $('#errorMessage').html('Total System Size(kW) must be greater than 500kW');
+                    $('#errorMessage').show();
+                    isError = 1;
+                }
+
+                $('.comProjectReference .requiredInfo').each(function() {
+                    if ($(this).val() == null || $(this).val() == '') {
+                        $('#errorMessage').html('Please enter a value in each field for each reference below.');
+                        $('#errorMessage').show();
+                        isError = 1;
+                    }
+                });
+            }
+        	// validateEmails & validateDates #I-00817- added by Pankaj to check if email and date have valid values on page
+        	if(isError!=1){
+            	if(validateEmails()) isError = 1;
+                else if(validateDates())  isError = 1;
+                else if(validateDecimalFields())  isError = 1;
+                else if(validateZipFields()) isError = 1;
+             }
+            if (isError == 1) {
+                // Scroll top when error comes
+                scrollToTop();
+                return false;
+            }
+            var refType = $('.refType:checked').val();
+            next('NYSUN_CONAPP_References_Page', refType);
+        }
+
+        /***************************************************** Added by Pankaj for issue I-00817 & I-00769 starts here****************************************************************/
+        // will be called once user will click on save button . It will save current state
+        function saveMethod(){
+            // rahuls91221 [24th July 2016 | I-01042]: hiding page message on save
+            $("span[id$='pageMessage']").hide();
+
+            $('#errorMessage').html('');
+            $('#errorMessage').hide();
+
+            // rahuls91221 [24th July 2016 | I-01042]: hiding confirmation message on save
+            $('#confirmation-message').hide();
+
+            var hasError = false;
+            if(validateEmails()) hasError = true;
+            if(validateDates())  hasError = true;
+            if(validateDecimalFields()) hasError = true;
+            if(validateZipFields()) hasError = true;
+            if(hasError){scrollToTop(); return false;}
+
+            var refType = $('.refType:checked').val();
+            saveReferenceState(refType);
+        }
+
+        // rahuls91221 [I-00743]: expand sections on rerender when there is an error
+        function expandSections(message) {
+
+            console.log("message: " + message);
+            if($("span[id$=pageMessage]").text() &&
+               ($('.resProjectReference').is(':visible') ||
+                $('.comProjectReference').is(':visible'))) {
+                // expand section and scroll to top
+                $('.collapse').collapse('show');
+                scrollToTop();
+            }
+
+            // rahuls91221 [24th July 2016 | I-01042]: hiding confirmation message on save
+            if(message) {
+                $('#confirmation-message')
+                    .html(message)
+                    .show();
+                scrollToTop();
+            }
+        }
+
+        // call this to scroll to top of page
+        function scrollToTop() {
+            $("html, body").animate({
+                scrollTop : 0
+            }, "slow");
+        }
+
+        function populateRadioBtn() {
+            var refType = $('.refType:checked').val();
+            if (refType == 'Hyperlink Project') {
+                $('.hyperlink').show();
+                $('.comProjectReference').hide();
+            } else if (refType == 'Company Reference') {
+                $('.comProjectReference').show();
+                $('.hyperlink').hide();
+            } else {
+                $('.comProjectReference').hide();
+                $('.hyperlink').hide();
+            }
+        }
+
+        function calculateTotalSize() {
+            var temp = 0;
+            $('.systemSize').each(function() {
+                var size = $(this).val().replace(/\,/g, '').replace(' ', '');
+                if (typeof(size) != 'undefined' && size != null && size != '' && !isNaN(size)) {
+                    temp += parseFloat(size);
+                }
+            });
+            $('#total').html(temp.toFixed(2));
+        }
+
+    	// Validate all email input fields which are rendered on page. return an error message if an invalid email address found.
+        function validateEmails(){
+            var isInvalidEmail = false;
+            $('.email').each(function() {
+                if($(this).val()!= undefined && $(this).val()!=''){
+                    var isInvalidEmailLocal = validateEmail($(this));
+                    if(isInvalidEmailLocal){
+                        isInvalidEmail = isInvalidEmailLocal;
+                    }
+                }
+            });
+            return isInvalidEmail;
+        }
+    	// Validate all date input fields which are rendered on page. return an error message if an invalid date found
+        function validateDates(){
+            var isInvalidDate = false;
+            $('.date').each(function() {
+                if($(this).val()!= undefined && $(this).val()!=''){
+                    var isInvalidDateLocal = validateDate($(this));
+                    if(isInvalidDateLocal){
+                        isInvalidDate = isInvalidDateLocal;
+                    }
+                }
+            });
+            return isInvalidDate;
+        }
+
+    	// Validate all date input fields which are rendered on page. return an error message if an invalid date found
+        function validateDecimalFields(){
+            var isInvalidNumber = false;
+            $('.decimalValue').each(function() {
+                if($(this).val()!= undefined && $(this).val()!=''){
+                    var isInvalidNumberLocal = validateDecimalNumber($(this));
+                    if(isInvalidNumberLocal){
+                        isInvalidNumber = isInvalidNumberLocal;
+                    }
+                }
+            });
+            return isInvalidNumber;
+        }
+
+    	// Validate all zip input fields which are rendered on page. return an error message if an zip is less then 5 digit found
+        function validateZipFields(){
+            var isInvalidZip = false;
+            $('.zip').each(function() {
+                if($(this).val()!= undefined && $(this).val()!=''){
+                    var isInvalidZipLocal = validateZip($(this));
+                    if(isInvalidZipLocal){
+                        isInvalidZip = isInvalidZipLocal;
+                    }
+                }
+            });
+            return isInvalidZip;
+        }
+
+    	// Allowed only alphabet in input field
+        function isAlphabateOnly(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if((charCode >= 65 && charCode <= 90) || charCode == 8 || charCode == 9 || charCode == 32 || (charCode >= 37 && charCode <= 40)) {
+                return true;
+            }
+            else{
+                evt.preventDefault();
+                return false;
+            }
+        }
+    	// Allowed only number in input field
+        function isNumberOnlyForPrimary(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if(evt.shiftKey){
+                evt.preventDefault();
+                return false;
+            }
+            if((charCode > 47 && charCode < 58) || (charCode >= 96 && charCode <= 105) || charCode == 8 || charCode == 9 || (charCode >= 37 && charCode <= 40)) {
+                return true;
+            }
+            else{
+                evt.preventDefault();
+                return false;
+            }
+        }
+    	// format 10 digit phone number
+        function formatPrimaryPhoneNumber(elem) {
+            //$(elem).parent().find('.errorMsg').remove();
+            var s = $(elem).val();
+            var pattern = /^\d{10}$/;
+            if (pattern.test(s)) {
+                var s2 = (""+s).replace(/\D/g, '');
+                var m = s2.match(/^(\d{3})(\d{3})(\d{4})$/);
+                $(elem).val("(" + m[1] + ") " + m[2] + "-" + m[3]);
+            }//else{
+            //      $(elem).parent().append('<div class="errorMsg"><strong>Error:</strong> Enter a valid 10 digit Phone Number.</div>');
+            // }
+        }
+    	// this method will recieve email input field and verfiy email address and if an invalid email address then add an inline error message
+        function validateEmail(elem){
+        	$(elem).removeClass("error");
+            var isInvalidEmail = false;
+            $(elem).parent().find('.errorMsg').remove();
+            if(!isValidEmailAddress($(elem).val())){
+                $(elem).parent().append('<div class="errorMsg"><strong>Error:</strong> Invalid Email Address.</div>');
+                $(elem).addClass("error");
+                $('#errorMessage').html('You must enter a valid email address.');
+                $('#errorMessage').show();
+                isInvalidEmail = true;
+            }
+            return isInvalidEmail;
+        }
+        // this method will recieve date input field and verfiy date and if an invalid date then add an inline error message
+        function validateDate(elem){
+        	$(elem).removeClass("error");
+            var isInvalidDate = false;
+            $(elem).parent().find('.errorMsg').remove();
+            var today = new Date();
+            var interConnetDate = new Date($(elem).val());
+            if(!isValidateDate($(elem).val())){
+                $(elem).parent().append('<div class="errorMsg"><strong>Error:</strong> Invalid Date.</div>');
+                $(elem).addClass("error");
+                $('#errorMessage').html('You must enter a valid Date.');
+                $('#errorMessage').show();
+                isInvalidDate = true;
+            }else if  (interConnetDate>today){
+                $(elem).parent().append('<div class="errorMsg"><strong>Error:</strong> Interconnection Date can\'t be a date in the future!</div>');
+                $(elem).addClass("error");
+                $('#errorMessage').html('You must enter a valid Date.');
+                $('#errorMessage').show();
+                isInvalidDate = true;
+            }
+            return isInvalidDate;
+        }
+
+    	// this method will recieve number input field and verfiy number and if an invalid number then add an inline error message
+        function validateDecimalNumber(elem){
+        	$(elem).removeClass("error");
+            var isInvalidNummber = false;
+            $(elem).parent().find('.errorMsg').remove();
+            if(!isValidateNumber($(elem).val())){
+                $(elem).parent().append('<div class="errorMsg"><strong>Error:</strong> Invalid Number.</div>');
+                $(elem).addClass("error");
+                $('#errorMessage').html('You must enter a valid Number .');
+                $('#errorMessage').show();
+                isInvalidNummber = true;
+            }
+            return isInvalidNummber;
+        }
+    	// this method will recieve zip input field and verfiy zip and if an invalid zip then add an inline error message
+        function validateZip(elem){
+        	$(elem).removeClass("error");
+            var isInvalidNummber = false;
+            $(elem).parent().find('.errorMsg').remove();
+            if($(elem).val().length<5){
+                $(elem).parent().append('<div class="errorMsg"><strong>Error:</strong> Invalid Zip.</div>');
+                $(elem).addClass("error");
+                $('#errorMessage').html('You must enter a at least 5 digit Zip .');
+                $('#errorMessage').show();
+                isInvalidNummber = true;
+            }
+            return isInvalidNummber;
+        }
+    	function isValidText(text){
+         	var pattern = /^[A-z]+$/;
+            return pattern.test(text);
+        }
+    	// function wich check if number value is decimal
+    	function isValidateNumber(numberValue){
+           numberValue =  numberValue.replace(',','');
+           var pattern =/^\d+(\.\d+)?$/;
+           return pattern.test(numberValue);
+        }
+    	// pattern which check if date is a valid date
+        function isValidateDate(date){
+            var pattern =/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/;
+            return pattern.test(date);
+        }
+    	// pattern which check if email is a valid email
+        function isValidEmailAddress(emailAddress) {
+            var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+            return pattern.test(emailAddress);
+        };
+    /***************************************************** Added by Pankaj for issue I-00817 & I-00769 ends here****************************************************************/
+    </script>
+
+    <!-- rahuls91221 [I-00743]
+    1. document ready code in output panel, would be refreshed from save action function
+    2. This must not be rendered for Residential record
+    -->
+    <apex:outputPanel id="scriptPanel" rendered="{!isOptionBSelected}">
+        <script>
+        $(document).ready(function() {
+
+            jQuery("html").attr("lang", "en");
+
+            var selRefType = '{!serviceProviderApp.Reference_Type__c}';
+            if (typeof(selRefType) != 'undefined' && selRefType != null && selRefType != '') {
+                $('.refType').each(function() {
+                    if (selRefType == $(this).val()) {
+                        $(this).attr('checked', 'checked');
+                    }
+                });
+                populateRadioBtn();
+            }
+            populateRadioBtn();
+            $('.refType').on('change', function() {
+                populateRadioBtn();
+            });
+            $('.systemSize').on('keyup', function() {
+                calculateTotalSize();
+            });
+            calculateTotalSize();
+            $('.phone').each(function() {  //#I-00883 by Pankaj
+                formatPrimaryPhoneNumber($(this)) ;
+            });
+            $('.collapse').collapse('show');
+        });
+        </script>
+    </apex:outputPanel>
+
+</apex:page>

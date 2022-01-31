@@ -1,0 +1,253 @@
+<template>
+
+    <div if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </div>
+    <div class="slds-m-bottom_small">
+            <lightning-layout>
+                <lightning-layout-item size="5">
+                    <lightning-button variant="brand" label="Create Onsite Activity Plan" onclick={handleGenerateAgenda}
+                        class="slds-m-left_small slds-m-bottom_none " disabled={isGenerateAgendaDisabled}></lightning-button>
+                    <lightning-button variant="brand" label="Create New Onsite Activity Item" onclick={handleCreateAgenda}
+                        class="slds-m-left_small slds-m-bottom_none "></lightning-button>
+                </lightning-layout-item>
+                <!--lightning-layout-item size="2"></lightning-layout-item-->
+                <lightning-layout-item size="7">
+                    <lightning-button variant="brand" label="Generate Orientation Agenda" onclick={handleGenerateOrientationAgenda}
+                        class="slds-m-left_small slds-m-bottom_none "></lightning-button>
+                    <lightning-button variant="brand" label="Transfer To Another Program" onclick={handleTransfer}
+                        class="slds-m-left_small slds-m-bottom_none "></lightning-button>
+                    <lightning-button variant="brand" label="Save" onclick={handleSaveData}
+                        class="slds-m-left_small slds-m-bottom_none "></lightning-button>
+                    <lightning-button variant="brand" label="Send For Supervisor Approval" onclick={sendToSupervisor}
+                        class="slds-m-left_small slds-m-bottom_none "></lightning-button>
+                </lightning-layout-item>
+            </lightning-layout>
+    </div>
+    <table aria-multiselectable="true" if:true={isGenerateAgendaDisabled}
+        class="slds-table slds-table_bordered slds-table_resizable-cols slds-table_fixed-layout slds-table_striped slds-table_col-bordered"
+        role="grid" style="width: 100%;">
+        <thead>
+            <tr></tr>
+            <tr class="slds-line-height_reset">
+                <th scope="col" class="slds-text-align_left">
+                    <div class="slds-grid slds-has-flexi-truncate">
+                        <div class="slds-truncate slds-text-body_medium slds-p-around_xx-small">Agenda</div>
+                    </div>
+                </th>
+                <th scope="col" class="slds-text-align_left">
+                    <div class="slds-grid slds-has-flexi-truncate">
+                        <div class="slds-truncate slds-text-body_medium slds-p-around_xx-small">Status</div>
+                    </div>
+                </th>
+                <th scope="col" class="slds-text-align_left">
+                    <div class="slds-grid slds-has-flexi-truncate">
+                        <div class="slds-truncate slds-text-body_medium slds-p-around_xx-small">Follow-up Notes</div>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <template for:each={data} for:item="row">
+                <tr class="slds-hint-parent" key={row.Id}>
+                    <td role="gridcell" style="word-break:break-word;white-space: normal;">
+                        <div class="slds-align_absolute-left">
+                            {row.Name}
+                        </div>
+                    </td>
+                    <td role="gridcell" style="word-break:break-word;white-space: normal;">
+                        <div class="slds-align_absolute-left">
+                            <lightning-combobox label="Status" variant="label-hidden" options={row.statusOptions} value={row.Status__c} data-recid={row.Id} disabled={row.StatusDisabled} onchange={handleStatusChange}></lightning-combobox>
+                        </div>
+                    </td>
+                    <td role="gridcell" style="word-break:break-word;white-space: normal;">
+                        <div class="slds-align_absolute-right">
+                            <lightning-input-rich-text variant="label-hidden" label="Notes" value={row.Follow_up_notes__c} disabled={row.disableNotes} onchange={handleNotesChange} data-recid={row.Id}></lightning-input-rich-text>
+                            <!-- <lightning-textarea variant="label-hidden" label="Notes" value={row.Follow_up_notes__c} onchange={handleNotesChange} data-recid={row.Id}></lightning-textarea> -->
+                        </div>
+                    </td>
+                </tr>
+            </template>
+        </tbody>
+    </table>
+    <div if:false={isGenerateAgendaDisabled}>
+        <div class="slds-box">
+            No Available Onsite Agenda Found. Please Click On Generate Agenda to generate some Onsite Agenda.
+        </div>
+    </div>
+
+    <template if:true={showCreateAgendaModal}>
+        <!-- <lightning-spinner if:true={modalSpinner} size="large"></lightning-spinner> -->
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Modal/Popup Box LWC header here -->
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close"
+                            alternative-text="close"
+                            variant="inverse"
+                            size="small" ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Create New Agenda</h2>
+                </header>
+                <!-- Modal/Popup Box LWC body starts here -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <div>
+                        <lightning-input label="Agenda Name" onchange={handleAgendaNameChange} variant="label-stacked"></lightning-input>
+                        <lightning-input-rich-text variant="label-stacked" label="Notes" onchange={handleAgendaNotesChange} ></lightning-input-rich-text>
+                    </div>
+                </div>
+                <!-- Modal/Popup Box LWC footer starts here -->
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={closeModal} title="Cancel">Cancel</button>
+                    <button class="slds-button slds-button_brand" onclick={submitDetails} title="Create">Create</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <template if:true={showTransferModal}>
+        <!-- <lightning-spinner if:true={modalSpinner} size="large"></lightning-spinner> -->
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Modal/Popup Box LWC header here -->
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeTransferModal}>
+                        <lightning-icon icon-name="utility:close"
+                            alternative-text="close"
+                            variant="inverse"
+                            size="small" ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">Transfer To Program</h2>
+                </header>
+                <!-- Modal/Popup Box LWC body starts here -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+                    <div>
+                        <lightning-checkbox-group name="Select Programs" if:false={showTransferError}
+                              label="Select Programs"
+                              options={checkboxoptions}
+                              value={checkboxvalues}
+                              onchange={handlecheckboxChange}></lightning-checkbox-group>
+                        <div class="slds-box" if:true={showTransferError}>
+                            No Available Onsite Agenda Found. Please Click On Generate Agenda to generate some Onsite Agenda.
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal/Popup Box LWC footer starts here -->
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={closeTransferModal} title="Cancel">Cancel</button>
+                    <button class="slds-button slds-button_brand" onclick={handleTransferAccount} title="Create">Transfer</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <template if:true={showGenerateAgendaModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-05" aria-modal="true" aria-describedby="modal-content-id-5" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideGenerateOrientationAgenda}>
+                        <lightning-icon icon-name="utility:close"
+                            alternative-text="close"
+                            variant="inverse"
+                            size="small" ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="modal-heading-05" class="slds-text-heading_medium slds-hyphenate">Generate Orientation Agenda</h2>
+                </header>
+                <!-- Modal/Popup Box LWC body starts here -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-5">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-size_1-of-1 slds-align_absolute-center"><b>Devereux Advanced Behavioral Health, Inc.</b></div>
+                        <div class="slds-size_1-of-1 slds-align_absolute-center"><b>Devereux Day and Residential Programs</b></div>
+                        <div class="slds-size_1-of-1 slds-align_absolute-center"><b>60 Miles Road, Canton</b></div>
+                        <div class="slds-size_1-of-1 slds-align_absolute-center"><b>Unannounced Visit - August 19, 2019 - 1:00 PM</b></div>
+                        <p class="slds-size_1-of-1 slds-m-top_large"><b>OASES Staff Present</b>: Bridgette Mekkaoui and Karen Brann</p>
+                        <p class="slds-size_1-of-1 slds-m-top_large"><b>Reason for Visit</b>: Concerns raised by EEC/DCF re: program quality, supervision, incidents along with DESE flags on restraint injuries since March 2019 and timely filing of Form 2 incident reports</p>
+                        <p class="slds-size_1-of-1 slds-m-top_large"><b>Notes:</b></p>
+                            <ul>
+                                <li class="slds-m-left_large">• Staffing Ratio 6:1 or 10:1:2</li>
+                                <li class="slds-m-left_large">• MCR completed October 2017 by DDB and MH-K - Findings in the following areas: 2.2,9.1.9.4, 11.4, 11.5, 11.6, rectified via progress reports by November 2018, currently on Full Approval until 8/21/2021</li>
+                                <li class="slds-m-left_large">• Devereux had an approved Reconstruction in September 2018</li>
+                            </ul>
+                        <p class="slds-size_1-of-1 slds-m-top_large"> <b>Schedule for Visit:</b></p>
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                                <tbody>
+                                <tr>
+                                    <td><lightning-input type="checkbox" label="Disabled option" name="input3" checked variant="label-hidden"></lightning-input></td>
+                                    <td>
+                                        Meet with Exec. Dir./Principal (Kerry Ann Goldsmith, Ann Minihane, and/or Shanna Connor)
+                                        <ul class="slds-m-top_small">
+                                            <li class="slds-m-left_large">a. Explain reason for visit</li>
+                                            <li class="slds-m-left_large">
+                                                b. Request following documents:
+                                                <ul>
+                                                    <li class="slds-m-left_large">
+                                                        i. Weekly and Monthly Restraint Review Logs
+                                                    </li>
+                                                    <li class="slds-m-left_large">
+                                                        ii. Student Records: 2 Day, 2 Res
+                                                        <ul>
+                                                            <li class="slds-m-left_large">1. Dylan McGee and Ayden Dugas - Res</li>
+                                                            <li class="slds-m-left_large">2. Sean Aho and Alexander Melendez - Day</li>
+                                                        </ul>
+                                                    </li>
+                                                    <li class="slds-m-left_large slds-wrap">
+                                                        iii. Staff Records: 2 Day, 2 Res (Prefer new since March 2019)
+                                                        <ul>
+                                                            <li class="slds-m-left_large">1. Ariel Brandli, Direct Care for Day and Res</li>
+                                                            <li class="slds-m-left_large">2. Jean Philippe Saint Germain</li>
+                                                        </ul>
+                                                    </li>
+                                                    <li class="slds-m-left_large slds-wrap">
+                                                        <div>iv. Set up Interviews: DC Staff Day, DC Staff Res, Urszula Sporna (Physical Intervention Prevention Coordinator for Day and Res) and Ann Minihane/Shanna Connor (Principal)</div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><lightning-input type="checkbox" label="Disabled option" name="input3" checked variant="label-hidden"></lightning-input></td>
+                                    <td>Tour the program</td>
+                                </tr>
+                                <tr>
+                                    <td><lightning-input type="checkbox" label="Disabled option" name="input3" checked variant="label-hidden"></lightning-input></td>
+                                    <td>Classroom Observation</td>
+                                </tr>
+                                <tr>
+                                    <td><lightning-input type="checkbox" label="Disabled option" name="input3" checked variant="label-hidden"></lightning-input></td>
+                                    <td>Residential Observations</td>
+                                </tr>
+                                <tr>
+                                    <td><lightning-input type="checkbox" label="Disabled option" name="input3" checked variant="label-hidden"></lightning-input></td>
+                                    <td>Interviews</td>
+                                </tr>
+                                <tr>
+                                    <td><lightning-input type="checkbox" label="Disabled option" name="input3" checked variant="label-hidden"></lightning-input></td>
+                                    <td>Exit meeting/Wrap up</td>
+                                </tr>
+                                <template for:each={generateAgendaFor} for:item="row">
+                                    <tr key={row.Id}>
+                                        <td><lightning-input type="checkbox" label="Disabled option" name="input3" variant="label-hidden"></lightning-input></td>
+                                        <td>{row.Name}</td>
+                                    </tr>
+                                </template>
+                                </tbody>
+                            </table>
+                    </div>
+                </div>
+                <!-- Modal/Popup Box LWC footer starts here -->
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={hideGenerateOrientationAgenda} title="Cancel">Cancel</button>
+                    <button class="slds-button slds-button_brand" onclick={sendGenerateOrientationAgenda} title="Create">Save & Email</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

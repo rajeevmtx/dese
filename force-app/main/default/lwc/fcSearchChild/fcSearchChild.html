@@ -1,0 +1,188 @@
+<template>
+    <div class="backdrop" if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </div>
+    </div>
+    <c-fc-side-bar selected-tab="Home" show-footer>
+        <div slot="body">
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size_12-of-12 nh_header-section--white">
+                    <div class="nh_page-header">
+                        Search Childs
+                    </div>
+                    <br/>
+                    <div class="nh_page-subheading">
+                        <!-- <lightning-formatted-rich-text
+                            value="Locate eligible foster parent by location and other characterstics using the fields below.">
+                        </lightning-formatted-rich-text> -->
+                        <p class="slds-p-around_large brief_card card-base">Lorem Ipsum is simply dummy text of the printing and
+                            typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                            when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has
+                            survived not only five centuries, but also the leap into electronic typesetting, remaining
+                            essentially unchanged.
+                        </p>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_12-of-12 nh_search-section slds-p-bottom_small">
+                    <div class="search-section--heading nh_page-subheading slds-p-bottom_small">
+                        Search Criteria
+                    </div>
+                    <div class="slds-grid slds-wrap slds-gutters">
+                        <div class="slds-col slds-size_3-of-12">
+                            <lightning-combobox name="AgeRange" label="Age" value={Role} placeholder="Any" options={AgeRange}
+                                data-name="ageRange" onchange={handleSearchChange}>
+                            </lightning-combobox>
+                        </div>   
+                        <div class="slds-col slds-size_3-of-12">
+                            <lightning-combobox name="gender" label="Gender" value={Role} placeholder="Any"
+                                options={gender} data-name="gender" onchange={handleSearchChange}>
+                            </lightning-combobox>
+                        </div>
+                        <div class="slds-col slds-size_3-of-12">
+                            <lightning-combobox name="MedicalConditions" label="Medical Conditions" value={Role} placeholder="Any"
+                                options={yesnoOptions} data-name="medicalConditions" onchange={handleSearchChange}>
+                            </lightning-combobox>
+                        </div>
+                        <div class="slds-col slds-size_3-of-12">
+                            <lightning-combobox name="SpecialNeeds" label="Special Needs" value={Role} placeholder="Any"
+                                options={yesnoOptions} data-name="specialneeds" onchange={handleSearchChange}>
+                            </lightning-combobox>
+                        </div>                                                              
+                    </div>
+                   
+                    <div class="slds-grid slds-wrap slds-gutters">        
+                        <div class="slds-col slds-size_12-of-12 top_margin--large">
+                            <lightning-button variant="Neutral" type="submit" label="Clear" onclick={handleClear}>
+                            </lightning-button>
+                            <lightning-button variant="Brand" class="slds-m-left_x-small" type="search" label="Search"
+                                onclick={handleSearch}>
+                            </lightning-button>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding-bottom: 5rem;" class="slds-col slds-size_12-of-12 nh_header-section slds-p-bottom_large">
+                    <div class="nh_page-subheading">
+                        Search results
+                    </div>
+                    <template if:true={resultsFound}>
+                    <div class="nh_card top_margin--large">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_12-of-12">
+                                <div class="search-card">
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_3-of-12 section-parts">
+                                            <div class="slds-grid slds-wrap">
+                                                <div class="slds-col slds-size_1-of-1 user--content">
+                                                    <div class="user--name">Harrison Taylor</div>
+                                                    <div class="user--address">Female</div>
+                                                    <div class="user-distance">Age: 9</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-col slds-size_6-of-12 section-parts">
+                                            <div class="nh_grid-container">
+                                                <div class="nh_grid-item">
+                                                    DOB
+                                                    <span class="item-value">28.Jun.2010</span>
+                                                </div>
+                                                <div class="nh_grid-item">
+                                                    Medical Condition
+                                                    <span class="item-value">N/A</span>
+                                                </div>
+                                                <div class="nh_grid-item">
+                                                    Special Needs
+                                                    <span class="item-value">Yes</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-col slds-size_3-of-12 section-parts">
+                                            <div class="nh_grid-container--two">
+                                                <div class="nh_grid-item">
+                                                    Match Percentage
+                                                    <span class="item-value">90%</span>
+                                                </div>
+                                                <div class="nh_grid-item">
+                                                    <template if:true={interestedInChild1}>
+                                                        <button class="slds-button slds-button_brand nh_custom-btn interested-disabled-btn" disabled>
+                                                            Interested
+                                                        </button>
+                                                    </template>
+                                                    <template if:false={interestedInChild1}>
+                                                        <button class="slds-button slds-button_brand nh_custom-btn" onclick={handleInterestInChild1}>
+                                                            Show Interest
+                                                        </button>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nh_card">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_12-of-12">
+                                <div class="search-card">
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_3-of-12 section-parts">
+                                            <div class="slds-grid slds-wrap">
+                                                <div class="slds-col slds-size_1-of-1 user--content">
+                                                    <div class="user--name">Corey Burton
+                                                    </div>
+                                                    <div class="user--address">Male</div>
+                                                    <div class="user-distance">Age: 3</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-col slds-size_6-of-12 section-parts">
+                                            <div class="nh_grid-container">
+                                                <div class="nh_grid-item">
+                                                    DOB
+                                                    <span class="item-value">02.Feb.2017</span>
+                                                </div>
+                                                <div class="nh_grid-item">
+                                                    Medical Condition
+                                                    <span class="item-value">Diabetes</span>
+                                                </div>
+                                                <div class="nh_grid-item">
+                                                    Special Needs
+                                                    <span class="item-value">N/A</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-col slds-size_3-of-12 section-parts">
+                                            <div class="nh_grid-container--two">
+                                                <div class="nh_grid-item">
+                                                    Match Percentage
+                                                    <span class="item-value">90%</span>
+                                                </div>
+                                                <div class="nh_grid-item">
+                                                    <template if:true={interestedInChild2}>
+                                                        <button class="slds-button slds-button_brand nh_custom-btn interested-disabled-btn" disabled>
+                                                            Interested
+                                                        </button>
+                                                    </template>
+                                                    <template if:false={interestedInChild2}>
+                                                        <button class="slds-button slds-button_brand nh_custom-btn" onclick={handleInterestInChild2}>
+                                                            Show Interest
+                                                        </button>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </template>
+                    <template if:false={resultsFound}>
+                        <div class="slds-text-align_center">No results found. Please modify the search criteria.</div>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </c-fc-side-bar>
+</template>

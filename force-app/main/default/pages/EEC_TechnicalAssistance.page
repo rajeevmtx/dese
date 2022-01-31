@@ -1,0 +1,289 @@
+<apex:page controller="EEC_TransactionWizardController" showheader="false" sidebar="false" standardStylesheets="false">
+	<title>EEC</title>
+	<c:EEC_Header id="pageHeader" />
+	<style>
+		.parsley-errors-list {
+			margin-top: -20px;
+			margin-left: 0px;
+			position: relative;
+			width: 100%;
+		}
+		.parsley-error {
+			border: 2px solid #c00;
+		}
+		.md-button.md-raised.md-eec,
+		.md-button.md-raised.md-eec {
+			color: rgb(250, 250, 250);
+			background-color: #853F3F;
+		}
+		.md-button.md-raised.md-eec:hover,
+		.md-button.md-raised.md-eec:hover {
+			color: rgb(250, 250, 250);
+			background-color: #703E3E;
+		}
+		.md-button.md-raised,
+		.md-button.md-raised {
+			background-color: #f7f7f7;
+		}
+		.md-button span {
+			padding: 6px;
+		}
+		.top-level-label {
+			font-weight: 600;
+			margin-right: 15px;
+			line-height: 20px;
+			color: rgba(0, 0, 0, 0.54);
+		}
+		table {
+			border-collapse: separate;
+			border-spacing: 2px;
+		}
+		input[type="radio"],
+		input[type="checkbox"] {
+			margin: 4px 7px 0;
+		}
+		.command-button-container {
+			position: relative;
+			top: -2px;
+		}
+		.commandBtn {
+			margin: -1px 0px -2px;
+		}
+		.transaction-info-row {
+			margin-left: 0px;
+		}
+		.eec-subhead {
+			font-size: 1.2em;
+			font-weight: 600;
+			margin-left: 0px;
+		}
+		.navigation-buttons {
+			overflow: visible;
+		}
+		.pbBody {
+			margin-bottom: 100px;
+		}
+		label {
+			margin-bottom: 15px;
+			margin-left: 0px;
+			margin-top: 5px;
+		}
+		.requiredInput {
+			margin-left: 0px;
+			margin-bottom: 22px;
+		}
+		.desc-panel {
+			margin-left: 15px;
+		}
+		.technical-info-container {
+			margin-bottom: 50px;
+		}
+		.not-visible {
+			display: none;
+		}
+		textarea.form-control {
+			margin-left: 0px;
+			width: 96%;
+		}
+		.variance-list-header-title {
+			color: rgba(0, 0, 0, .87);
+			font-size: 24px !important;
+			margin-top: 20px !important;
+			margin-bottom: 10px !important;
+			font-family: inherit !important;
+			font-weight: 500 !important;
+			line-height: 1.1 !important;
+			font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif !important;
+		}
+		@media only screen and (min-width: 0px) and (max-width: 959px) {
+			.household-form-container {
+				margin: 0 !important;
+				padding: 0 !important;
+			}
+			.navigation-buttons .md-button {
+				width: 98%;
+			}
+			.navigation-buttons md-content {
+				width: 100%;
+			}
+			.add-button-container {
+				padding-right: 0;
+				width: 100%;
+			}
+			.form-control {
+				color: rgba(0, 0, 0, .87);
+			}
+			.daily-routine {
+				margin-bottom: 40px;
+			}
+		}
+		.visibilityHidden {
+			visibility: hidden;
+		}
+	</style>
+	<body ng-app="eecApp">
+		<c:eec_nav_bar id="navBar" rendered="{!loggedUser.UserType == 'PowerPartner' || loggedUser.UserType == 'PowerCustomerSuccess' || loggedUser.UserType == 'CspLitePortal' || loggedUser.UserType == 'CustomerSuccess'}"
+		/>
+		<div class="technical-info-container" layout-wrap="true" layout-lg="row" layout-gt-lg="row" layout="column" layout-padding="true"
+		 layout-margin="true" ng-controller="TransactionController as ctrl">
+			<md-content style="margin-top: 20px;" ng-show="ctrl.checkForMessages()" layout="row" flex="100" layout-align="center center">
+				<md-whiteframe class="md-whiteframe-z2 ng-cloak" layout="column" layout-padding="true" flex="75">
+					<apex:pageMessages id="showmsg"></apex:pageMessages>
+				</md-whiteframe>
+			</md-content>
+			<div class="technical-form-container col-lg-8 col-md-8 col-sm-12" layout="column" layout-padding="true" style="margin-bottom:100px;margin-top: 30px;">
+				<apex:form id="TechnicalAssistanceForm" styleClass="tech-form">
+					<div class="top-header-section">
+						<div class="header-name-section ">
+							<h3 class="md-display-1 header-display-name">{!applicationDisplayName}</h3>
+							<h4 class="step-name">Technical Assistance</h4>
+							<h5 class="base-label trans-number">Application number: {!licenseTransation.Name}</h5>
+						</div>
+					</div>
+					<md-divider class="ng-cloak" layout-align="center center"></md-divider>
+					<!--                 <div class="transaction-info"> -->
+					<!--                   <h3 class="eec-subhead">Transaction Information</h3> -->
+					<!--                   <md-content class="transaction-info-row" layout="row"> -->
+					<!--                     <p class="md-subhead top-level-label">Transaction Type: </p> -->
+					<!--                     <apex:outputText value="{!LicenseRecordTypeLabel}" /> -->
+					<!--                   </md-content> -->
+					<!--                   <md-content class="transaction-info-row" layout="row"> -->
+					<!--                     <p class="md-subhead top-level-label">Transaction Number: </p> -->
+					<!--                     <apex:outputText value="{!licenseTransation.Name}" /> -->
+					<!--                   </md-content> -->
+					<!--                 </div> -->
+					<div class="technical-info-container">
+						<apex:outputPanel styleClass="daily-routine" rendered="{!LicenseRecordTypeName == 'FCC_New_License'}">
+							<h3 class="eec-subhead" flex="95" layout-margin="true">Daily Routine and Activities</h3>
+							<label class="top-level-label">Please describe in detail how you will spend your day with child care children. Your daily routine should include
+								activities for all age groups, meals &amp; snacks, quiet play as well as active play, daily outdoor play and 60 minutes
+								of physical activity. The activities should be child initiated as well as educator initiated. Please note that you
+								will be required to develop curriculum which will be carried out within your daily schedule.
+								<span class="required">*</span>
+							</label>
+							<apex:inputField styleClass="form-control" value="{!licenseTransation.Daily_Routine_and_Activities__c}" html-data-parsley-required="true"
+							 id="DRATA" style="margin-bottom: 30px;" />
+						</apex:outputPanel>
+						<apex:outputPanel rendered="{!(LicenseRecordTypeName=='FCC_New_License' || LicenseRecordTypeName=='FCC_Renewal'|| LicenseRecordTypeName=='FCC_License_Upgrade'|| LicenseRecordTypeName=='Change_of_Address'|| LicenseRecordTypeName=='FCC_Change_Room_Floor_Level' || LicenseRecordTypeName=='FCC_Change_of_Household')
+                                             || ((CONTAINS(LicenseRecordTypeName, 'GSA')) &&
+                                     (CONTAINS(LicenseRecordTypeName, 'New_License') || CONTAINS(LicenseRecordTypeName, 'License_Change') || CONTAINS(LicenseRecordTypeName, 'Move') || CONTAINS(LicenseRecordTypeName, 'Renewal') || CONTAINS(LicenseRecordTypeName, 'Change_in_License') || CONTAINS(LicenseRecordTypeName, 'Change_of_Admin_Authority')))}">
+							<h3 class="eec-subhead" flex="95" layout-margin="true">Technical Assistance</h3>
+							<label class="top-level-label">If you have concerns, questions, or would like information about regulations or policy issues, or other topics that
+								affect your child care, please list below. (For example, information on behavior management, planning activities
+								for mixed-age groups, setting up your environment, reflecting the cultural diversity of the children in your care,
+								etc.) This will assist you in preparing for your renewal process and enable your licensor to bring or send you resource
+								materials, if available.</label>
+							<apex:inputfield styleclass="form-control" value="{!licenseTransation.Technical_Assistance__c}" id="TATA" style="margin-bottom: 30px;"
+							/>
+						</apex:outputPanel>
+						<apex:outputpanel rendered="{!(LicenseRecordTypeName=='FCC_New_License' || LicenseRecordTypeName=='FCC_Renewal'|| LicenseRecordTypeName=='FCC_License_Upgrade'|| LicenseRecordTypeName=='Change_of_Address'|| LicenseRecordTypeName=='FCC_Change_Room_Floor_Level' || LicenseRecordTypeName=='FCC_Change_of_Household' || LicenseRecordTypeName == 'Variance_On_Regulation_Request')
+                                             || ((CONTAINS(LicenseRecordTypeName, 'GSA') || CONTAINS(LicenseRecordTypeName, 'Residential') || CONTAINS(LicenseRecordTypeName, 'Placement')) &&
+                                     (CONTAINS(LicenseRecordTypeName, 'New_License') || CONTAINS(LicenseRecordTypeName, 'License_Change') || CONTAINS(LicenseRecordTypeName, 'Move') || CONTAINS(LicenseRecordTypeName, 'Renewal') || CONTAINS(LicenseRecordTypeName, 'Change_in_License') || CONTAINS(LicenseRecordTypeName, 'Change_of_Admin_Authority')))}">
+							<h3 class="eec-subhead" flex="95" layout-margin="true">Comments</h3>
+							<label class="top-level-label">
+								If you have any special requests or comments associated with this transaction, please list below
+							</label>
+							<apex:inputfield styleclass="form-control" value="{!licenseTransation.Transaction_Special_Requests_Comments__c}" id="TSRCTA"
+							/>
+						</apex:outputpanel>
+					</div>
+					<div class="technical-info-container">
+						<apex:outputpanel rendered="{!(LicenseRecordTypeName=='Change_of_Address'||  LicenseRecordTypeName == 'Variance_On_Regulation_Request')
+                                             || ((CONTAINS(LicenseRecordTypeName, 'GSA') || CONTAINS(LicenseRecordTypeName, 'Residential') || CONTAINS(LicenseRecordTypeName, 'Placement')) &&
+                                     (CONTAINS(LicenseRecordTypeName, 'New_License') || CONTAINS(LicenseRecordTypeName, 'License_Change') || CONTAINS(LicenseRecordTypeName, 'Move') || CONTAINS(LicenseRecordTypeName, 'Renewal') || CONTAINS(LicenseRecordTypeName, 'Change_in_License')))}">
+							<div class="slds">
+								<c:eec_variancelist iseditible="true" varianceinterface="{!ctrlInstance}" />
+							</div>
+						</apex:outputpanel>
+					</div>
+					<md-divider class="ng-cloak" layout-align="center center"></md-divider>
+					<md-content class="navigation-buttons" layout="column" layout-lg="row" layout-align="space-between center" layout-gt-lg="row"
+					 layout-align-sm="center center" layout-align-md="center center">
+						<apex:commandLink status="status" styleClass="md-button md-raised md-button md-default-theme" value="Previous" action="{!SaveAndPreviousTA}"
+						 html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" />
+						<apex:commandLink styleClass="md-button md-raised md-button md-default-theme btn-pullLeft" value="Close" action="{!closeAndreturnToHome}"
+						 html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" />
+						<apex:commandLink status="status" styleClass="md-button md-raised md-eec save-btn btn-pullRight saveButton" onclick="if(!form.validate()){return false;}"
+						 value="Save" action="{!SaveAndNextTA}" html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true">
+							<apex:param name="isSaveOnly" value="true" assignTo="{!isSaveOnly}" />
+						</apex:commandLink>
+						<apex:commandLink status="status" styleClass="md-button md-raised md-eec save-btn" onclick="if(!form.validate()){return false;}" action="{!SaveAndNextTA}"
+						 html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true">
+							<apex:outputText rendered="{!!isSubmitted}">Save and </apex:outputText> Next
+						</apex:commandLink>
+					</md-content>
+					<md-divider class="ng-cloak" layout-align="center center"></md-divider>
+					<!--                 <md-content class="navigation-buttons" layout="column" layout-lg="row" layout-align="space-between center" layout-gt-lg="row" layout-align-sm="center center" layout-align-md="center center">     -->
+					<!--                     <apex:commandLink status="status" styleClass="md-button md-raised"   immediate="true" action="{!CancelTransaction}" value="Cancel {!formattedLicenseRecordTypeLabel} Transaction"  onclick="return confirm('Are you sure to cancel the transaction?');" html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true"/> -->
+					<!--                     <apex:commandLink status="status" styleClass="md-button md-raised" onclick="if(!form.validate()){return false;}"  value="Save and Return to Program" action="{!SaveAndReturnTA}" html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true"/> -->
+					<!--                 </md-content>    -->
+					<apex:actionFunction action="{!SaveAndNextTA}" name="SaveNext" status="status"/>
+					<apex:actionFunction action="{!SaveAndPreviousTA}" name="SavePrevious" oncomplete="addMargin();" status="status">
+						<apex:param name="previousPage" assignTo="{!previousPageName}" value="" />
+					</apex:actionFunction>
+				</apex:form>
+			</div>
+			<eec-wizard btn-progress-color="#fff" class="col-lg-3" flex="30" passed-btn-bg-color="#4CAF50" btn-bg-color="#FAFAFA" active-btn-bg-color="#0288D1"
+			 hide="true" show-gt-md="true">
+				<c:EEC_Navigation current="Technical Assistance" recordTypeDeveloperName="{!LicenseRecordTypeName}" highest="{!highestStepReached}"
+				 providerRecordType="{!licenseTransation.providerRecordTypeDeveloperName__c}">
+				</c:EEC_Navigation>
+			</eec-wizard>
+		</div>
+		<c:eec_site_footer id="siteFooter" />
+		<script>
+			j$(document).ready(function () {
+				var isSubmitted = '{!isSubmitted}';
+				if (isSubmitted == 'true') {
+					j$('.saveButton').addClass('visibilityHidden');
+					jQuery("input[type=radio]").prop('disabled', true);
+					jQuery("input[type=text]").prop('disabled', true);
+					jQuery("textarea").prop('disabled', true);
+					jQuery("selectlist").prop('disabled', true);
+				}
+			});
+			function addMargin() {
+				j$(".required-input").addClass("required-input-with-error");
+			}
+			var form = j$(".tech-form").parsley({
+				errorsWrapper: '<div class="parsley-errors-list"></div>',
+				errorTemplate: '<p class="errorMsg"></p>'
+			});
+			app.controller('TransactionController', ['$scope', '$location', 'Util', function ($scope, $location, Util) {
+				// Instance of controller.
+				var tranCtrl = this;
+				// Controller level variables.
+				tranCtrl.funcId = null;
+				tranCtrl.wizardElements = Util.generateWizardElements("{!licenseRecordTypeName}", "Daily Routine/Tech Assistance");
+				tranCtrl.selected = [];
+				// Function to check for messages available due to errors.
+				tranCtrl.checkForMessages = function () {
+					// TODO: Switch this to use Angular and now jQuery.            
+					var ele = jQuery('[id*="showmsg"]');
+					if (ele.children().length > 0) {
+						return true;
+					}
+					return false;
+				};
+			}]);
+			function doNavigate(previousPage, nextPage) {
+				if (nextPage != '') {
+					if (!form.validate()) {
+						return false;
+					}
+					else {
+						SaveNext();
+					}
+				}
+				else if (previousPage != '') {
+					/* if(!form.validate()){
+					  return false;
+					 }
+					 else{*/
+					SavePrevious(previousPage);
+					//}
+				}
+			}
+		</script>
+	</body>
+</apex:page>

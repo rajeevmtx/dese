@@ -1,0 +1,13 @@
+h1 {
+    font-size: xx-large;
+}
+
+.fc-button-group > .fc-button:not(:last-child) {
+    background: #005CB8;
+}
+.fc-toolbar > * > :not(:first-child) {
+    color: red;
+}
+ h2 {
+    color: red;
+}

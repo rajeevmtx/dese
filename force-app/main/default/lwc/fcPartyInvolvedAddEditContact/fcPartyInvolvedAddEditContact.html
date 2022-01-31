@@ -1,0 +1,83 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_large customlistbox" style="margin-top: 4rem;">
+        <div class="backdrop" if:true={showSpinner}>
+            <div class="spinner">
+                <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+            </div>
+        </div>
+        <div class="slds-modal__container">
+          <header class="slds-modal__header">
+            <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{modalName} Parties Involved</h2>
+            
+            <span if:true={erroMsg}>
+                <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+                    <span class="slds-assistive-text">error</span>
+                    <h2>
+                        {erroMsg}
+                    </h2>
+                    </div>
+            </span>
+            
+          </header>
+          <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+            <div class="app-container slds-grid slds-gutters slds-wrap">
+                <div class="slds-form slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+                    <div class="slds-grid slds-gutter slds-wrap">
+                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                            
+                            <lightning-input type="text" autocomplete="none" label="First Name" pattern="^[a-zA-Z ]*$"
+                                message-when-pattern-mismatch={nameValidation} maxlength=80 required onblur={handleInput}
+                                name="partyFirstName" class="firstName" style="width: 100%;" value={selectedObject.partyFirstName}>
+                            </lightning-input>
+                                
+                        </div>
+                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                            <lightning-input type="text" autocomplete="none" label="Last Name" pattern="^[a-zA-Z ]*$"
+                                message-when-pattern-mismatch={nameValidation} maxlength=80 required onblur={handleInput}
+                                name="partyLastName" class="lastName" style="width: 100%;" value={selectedObject.partyLastName}>
+                            </lightning-input>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-gutter slds-wrap">
+                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                            <lightning-combobox name="partyInvolvedType" label="Party Involved Type" options={partyInvolvedTypeOptions} required
+                                onchange={handleInput} value={selectedObject.partyInvolvedType}>
+                            </lightning-combobox>
+                        </div>
+
+                        <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                            <lightning-combobox name="relationToAV" label="Relation with child" options={relationToAVOptions} required
+                                onchange={handleInput} value={selectedObject.relationToAV}>
+                            </lightning-combobox>
+                        </div>
+
+                        <!-- <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                            <lightning-combobox name="collateralType" label="Collateral Type" options={collateralTypeOptions} required
+                                onchange={handleInput} value={selectedObject.collateralType}>
+                            </lightning-combobox>
+                        </div> -->
+                    </div>
+                    <div class="slds-grid slds-gutter slds-wrap">
+                        <!-- <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                            <lightning-combobox name="relationToAV" label="Relation with child" options={relationToAVOptions} required
+                                onchange={handleInput} value={selectedObject.relationToAV}>
+                            </lightning-combobox>
+                        </div> -->
+
+                        <!-- <div class="slds-col slds-size_1-of-2 slds-large-size_6-of-12">
+                            <lightning-combobox name="resourceType" label="Resource Type" options={resourceTypeOptions} required
+                                onchange={handleInput} value={selectedObject.resourceType}>
+                            </lightning-combobox>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+          </div>
+          <footer class="slds-modal__footer">
+            <lightning-button label="Cancel" class="button-margin" onclick={handleModalClose}></lightning-button>
+            <lightning-button label="Save" variant="brand" onclick={handleSaveRecord}></lightning-button>
+          </footer>
+        </div>
+      </section>
+      <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

@@ -1,0 +1,1242 @@
+<apex:page sidebar="false" controller="PROPOSAL_CORE_Contact_Controller" standardStylesheets="false">
+    <style>
+        .bodyDiv {
+            background: #F5F7FA !important;
+        }
+
+        #validationErrorMessage1 {
+            display: none;
+        }
+
+        #validationErrorMessage2 {
+            display: none;
+        }
+
+        .required {
+            font-weight: bold;
+            color: red;
+        }
+
+        .tinConfirmation {
+            float: right;
+            margin-right: 15%;
+        }
+
+        .font-13 {
+            font-size: 13px;
+            text-align: justify;
+        }
+
+        .hideDiv {
+            display: none;
+        }
+
+        .mt15 {
+            margin-top: -15px;
+        }
+
+        .mb0 {
+            margin-bottom: 0;
+        }
+
+        .w60 {
+            width: 60%;
+        }
+
+        .flex-row .popover {
+            width: 150px;
+        }
+
+        .phoneIconHelp {
+            margin-left: 10px;
+            font-size: 16px;
+            position: absolute;
+            top: 8px;
+            right: 142px;
+        }
+
+        .EINIconHelp {
+            margin-left: 10px;
+            font-size: 16px;
+            position: absolute;
+            top: 8px;
+            right: 40px;
+        }
+
+        .primaryContact {
+            width: 12%;
+            float: left;
+        }
+
+        .primaryIconHelp {
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            display: block;
+        }
+
+        .alternateParty {
+            width: 12%;
+            float: left;
+        }
+
+        .labelClass {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        legend {
+            border-bottom: 0px;
+            margin-bottom: 5px;
+        }
+
+        .mr20 {
+            margin-right: 20px;
+        }
+
+        .bg-white {
+            background-color: #ffffff;
+        }
+
+        .justify-space-between {
+            justify-content: space-between;
+        }
+
+        .help-link {
+            font-size: 14px;
+            color: #1d49cc;
+            padding-top: 2%;
+            margin-left: 50px;
+        }
+
+        .slds-button_outline-brand {
+            border-color: #0d3cc8;
+            color: #0d3cc8;
+        }
+
+        .timeline {
+            border-left: 2px solid #dfe4f2;
+            border-bottom-right-radius: 4px;
+            border-top-right-radius: 4px;
+            margin-left: 12px;
+            letter-spacing: 0;
+            position: relative;
+            position: -webkit-sticky;
+            position: sticky;
+            top: 2rem;
+            line-height: 1.4em;
+            font-size: 14px;
+            padding: 0 25px;
+            list-style: none;
+            text-align: left;
+            counter-reset: li-counter;
+            margin: 3rem 2rem;
+        }
+
+        .timeline .event:after {
+            border: 2px solid #656566;
+            border: 5px solid #f7f7f7;
+            position: absolute;
+            display: block;
+            top: 0;
+            left: -43px;
+            background: #dfe4f2;
+            border-radius: 50%;
+            height: 21px;
+            width: 25px;
+            content: "";
+            top: 5px;
+            top: 10px;
+            text-align: center;
+            content: attr(steplabel);
+            counter-increment: li-counter;
+            color: black;
+            padding-top: 4px;
+        }
+
+        .timeline .event {
+            padding-bottom: 17.5px;
+            position: relative;
+            padding-top: 17.5px;
+            min-width: 200px;
+            cursor: pointer;
+        }
+
+        .timeline .event:after else {
+            border: 2px solid #0f43e0;
+        }
+
+        .timeline .event.completed {
+            color: #0070d2;
+        }
+
+        .timeline .event.completed:after {
+            background: #0070d2;
+            padding-top: 4px;
+            color: white;
+            content: '✓';
+            text-align: center;
+        }
+
+        .timeline .event.active {
+            color: #128ec3;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .timeline .event.active:after {
+            background-color: #479eeb;
+            color: white;
+        }
+
+        .timeline .event:first-of-type {
+            padding-top: 7.5px;
+        }
+
+        .timeline .event:first-of-type:after {
+            top: -2px;
+        }
+
+        .timeline .event:last-of-type {
+            padding-bottom: 0;
+            margin-bottom: 0;
+            border: none;
+        }
+
+        .timeline .event:last-of-type:after {
+            top: auto;
+            top: 10px;
+            bottom: 0;
+        }
+
+        footer {
+            background: #fff;
+            position: relative !important;
+        }
+
+        .card--new {
+            background: #fff;
+            padding: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24);
+            transition: all .3s cubic-bezier(.25, .8, .25, 1);
+            border: none;
+            border-radius: 0;
+            margin: 1rem 2rem;
+        }
+
+        .has-shadow {
+            width: 100%;
+            margin-bottom: 1rem;
+            padding: 2rem;
+            background-color: #fff;
+            box-shadow: 4px 1px 2px 1px rgba(0, 0, 0, .05);
+            text-align: left;
+        }
+    </style>
+
+    <apex:composition template="CORE_APPINTAKE_Template_Page">
+        <apex:define name="body">
+            <div class="has-shadow slds-p-vertical_medium slds-m-bottom_medium heading_header_registration">
+                <c:CORE_StepNav_Component pgName="{!$CurrentPage.Name}" />
+            </div>
+            <div class="container row">
+                <div class="col-md-2">
+                    <ol class="timeline">
+                        <li class="event active" value="0" steplabel="0">Instruction</li>
+                        <li class="event active" value="1" steplabel="1">Proposer Contact Information</li>
+                        <li class="event" value="2" steplabel="2">Private School Information</li>
+                        <li class="event" value="3" steplabel="3">Allocation and Flexing</li>
+                        <li class="event" value="4" steplabel="4">Proposal Documents</li>
+                        <li class="event" value="5" steplabel="5">Authorizd Signature and Certification</li>
+                        <li class="event" value="6" steplabel="6">Proposal Submission</li>
+                    </ol>
+                </div>
+                <div class="col-md-10 card--new">
+                    <div class="page">
+                        <!-- <div class="sub-heading">Application Number:&nbsp;<apex:outputfield value="{!project.Application_Number__c}" /></div> -->
+                        <!-- <c:CORE_StepNav_Component pgName="{!$CurrentPage.Name}"/> -->
+                        <div class="application">
+
+                            <div class="alert-container">
+                                <apex:outputPanel layout="none">
+                                    <div class="alert alert-info">
+                                        <apex:outputText value="{!$Label.Proposal_Contact_Information_Page_Help_Text}" rendered="{!!project.Program_Version__r.NY_Green_Bank_RFP__c}"
+                                            escape="false" />
+                                    </div>
+                                    <div class="alert alert-danger" id="validationErrorMessage2"></div>
+                                </apex:outputPanel>
+                            </div>
+
+                            <div class="row">
+                                &nbsp;
+                            </div>
+
+                            <div class="content content-body">
+                                <apex:outputPanel layout="none" rendered="{!!isReadOnlyApplicationWizard}">
+                                    <a href="javascript:void(0)" onclick="resetSearch();" class="add-button">Add a contact</a>
+                                    <input id="totalContacts" type="hidden" value="{!customerProjectRoleList.size}" />
+                                </apex:outputPanel>
+
+                                <apex:outputPanel id="contactTablePanel">
+                                    <table id="contactTable" class="table table-striped datatable" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th style="display:{!IF(isReadOnlyApplicationWizard,'none','')}">Action</th>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Phone</th>
+                                                <!--<th>Company Name</th>-->
+                                                <th>Primary</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <apex:repeat value="{!customerProjectRoleList}" var="customerProjectRole">
+                                                <tr>
+                                                    <td style="display:{!IF(isReadOnlyApplicationWizard,'none','')}">
+                                                        <apex:outputPanel rendered="{!!isReadOnlyApplicationWizard}">
+                                                            <apex:outputPanel >
+                                                                <a onclick="getCustomerProjectRole('{!customerProjectRole.Id}')" class="actionLink">Edit</a>
+                                                            </apex:outputPanel>
+                                                            <apex:outputPanel >
+                                                                &nbsp;|&nbsp;
+                                                                <a onclick="cloneRole('{!customerProjectRole.Id}')" class="actionLink">Clone</a>
+                                                            </apex:outputPanel>
+                                                            <apex:outputPanel rendered="{!AND(!customerProjectRole.Primary_Customer_Contact__c, project.Status__c == 'Unsubmitted')}">
+                                                                &nbsp;|&nbsp;
+                                                                <a onclick="confirmDelete('{!customerProjectRole.Id}')" class="actionLink">Delete</a>
+                                                            </apex:outputPanel>
+
+                                                        </apex:outputPanel>
+                                                    </td>
+                                                    <td> {!customerProjectRole.FirstName__c} {!customerProjectRole.LastName__c}
+                                                        </td>
+                                                    <td class="contactEmail"> {!customerProjectRole.Email__c} </td>
+                                                    <td> {!customerProjectRole.Phone__c} </td>
+                                                    <!--<td> {!customerProjectRole.Company_Name__c} </td> -->
+                                                    <td> {!If(customerProjectRole.Primary_Customer_Contact__c, 'Yes', 'No')} </td>
+                                                </tr>
+                                            </apex:repeat>
+                                        </tbody>
+                                    </table>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <apex:form id="frm">
+                        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel">
+                            <div class="modal-dialog modal-xl" role="document">
+                                <div class="modal-content">
+                                    <apex:outputPanel id="modalForm">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <h4 class="modal-title" id="editModalLabel">{!IF(selectedCustomerProjectRole == null,'Add a contact','Edit Contact')}</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <apex:pageMessages />
+                                            <div class="alert alert-danger" id="validationErrorMessage1"></div>
+                                            <input type="hidden" value="{!selectedCustomerProjectRole}" class="selectedCustomerProjectRole" />
+
+                                            <div class="row">
+                                                <div class="col-sm-6">
+
+                                                    <apex:outputPanel rendered="{!!project.Program_Version__r.NY_Green_Bank_RFP__c}" styleClass="flex-row">
+                                                        <label for="{!$Component.alternateParty}">Alternate Party</label>
+                                                        <div class="field lg">
+                                                            <apex:inputField value="{!customerProjectRole.Alternate_Party__c}" id="alternateParty" styleClass="form-control alternateParty"
+                                                            />
+                                                        </div>
+                                                    </apex:outputPanel>
+
+                                                    <div class="flex-row">
+                                                        <label for="{!$component.company}">Company Name
+                                                            <span class="required">&nbsp;* </span>
+                                                        </label>
+                                                        <div class="flex-row lg flex-row mb0 w60">
+                                                            <apex:inputField id="company" value="{!customerProjectRole.Company_Name__c}" styleClass="form-control company" html-autocomplete="off"
+                                                                html-maxlength="255" />
+                                                            <apex:outputPanel rendered="{!!project.Program_Version__r.NY_Green_Bank_RFP__c}" layout="none">
+                                                                <span class="icon-help" style="margin-left:10px;font-size:16px;" data-toggle="popover" data-placement="right" data-trigger="hover"
+                                                                    data-content="{!$ObjectType.Project_Role__c.fields.Company_Name__c.InlineHelpText}">
+                                                                </span>
+                                                            </apex:outputPanel>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <apex:outputPanel rendered="{!project.Program_Version__r.NY_Green_Bank_RFP__c}" styleClass="flex-row">
+                                                        <label for="{!$Component.companyTypeSelect2}">Company Type(s)
+                                                            <!-- <span class="required">&nbsp;* </span> -->
+                                                        </label>
+                                                        <!-- Removed Required - Task T-02343 -->
+                                                        <div class="flex-row lg flex-row mb0 w60">
+                                                            <apex:selectList id="companyTypeSelect2" value="{!listOfSelectedCompanyType}" styleClass="companyType select2-tags" multiselect="true">
+                                                                <apex:selectOptions value="{!companyTypeOptionList}" />
+                                                            </apex:selectList>
+
+                                                            <span class="icon-help" style="margin-left:10px;font-size:16px;" data-toggle="popover" data-placement="right" data-trigger="hover"
+                                                                data-content="{!$label.Proposal_Company_Type_Field_Help_Text}">
+                                                            </span>
+                                                        </div>
+                                                        <!-- <div class="field companyTypeField" data-toggle="popover"
+                                                                   data-trigger="hover"
+                                                                   data-placement="right"
+                                                                   data-content="{!$Label.Proposal_Company_Type_Field_Help_Text}">
+                                                    <label class="sr-only" for="company-type">Company Type</label>
+                                                    <apex:selectList id="companyTypeSelect2"
+                                                                     value="{!listOfCompanyType}"
+                                                                     styleClass="companyType select2-tags"
+                                                                     multiselect="true">
+                                                        <apex:selectOptions value="{!companyTypeOptionList}"/>
+                                                    </apex:selectList>
+                                                </div> -->
+
+                                                        <script>
+                                                            initializeSelectTag();
+                                                        </script>
+                                                    </apex:outputPanel>
+
+                                                    <apex:outputPanel rendered="{!project.Program_Version__r.NY_Green_Bank_RFP__c}" styleClass="flex-row">
+                                                        <label for="{!$Component.companyWebsite}">Company Website</label>
+                                                        <div class="field lg">
+                                                            <apex:inputField value="{!customerProjectRole.Company_Website__c}" id="companyWebsite" styleClass="form-control companyWebsite"
+                                                                html-autocomplete="off" html-maxlength="100" />
+                                                        </div>
+                                                    </apex:outputPanel>
+
+                                                    <div class="flex-row">
+                                                        <label for="{!$component.firstName}">First Name
+                                                            <span class="required">&nbsp;* </span>
+                                                        </label>
+                                                        <div class="field lg">
+                                                            <apex:inputField value="{!customerProjectRole.FirstName__c}" id="firstName" styleClass="form-control firstName" html-autocomplete="off"
+                                                                onKeyDown="isAlphabateForNameOnly(event);" html-maxlength="39"
+                                                            />
+                                                        </div>
+                                                        <!-- /.field -->
+                                                    </div>
+
+                                                    <div class="flex-row">
+                                                        <label for="{!$component.lastName}">Last Name
+                                                            <span class="required">&nbsp;* </span>
+                                                        </label>
+                                                        <div class="field lg">
+                                                            <apex:inputField value="{!customerProjectRole.LastName__c}" id="lastName" styleClass="form-control lastName" html-autocomplete="off"
+                                                                onKeyDown="isAlphabateForNameOnly(event);" html-maxlength="40"
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="flex-row">
+                                                        <label for="{!$Component.title}">Title</label>
+                                                        <div class="field lg">
+                                                            <apex:inputField value="{!customerProjectRole.Title__c}" id="title" styleClass="form-control title" html-autocomplete="off"
+                                                                html-maxlength="255" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="flex-row">
+                                                        <label for="{!$component.email}">Email
+                                                            <span class="required">&nbsp;* </span>
+                                                        </label>
+                                                        <div class="field lg">
+                                                            <apex:inputField value="{!customerProjectRole.Email__c}" id="email" styleClass="form-control email" html-autocomplete="off"
+                                                                html-maxlength="255" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="flex-row">
+                                                        <label for="{!$component.phone}">Phone
+                                                            <span class="required">&nbsp;* </span>
+                                                        </label>
+                                                        <div class="field md">
+                                                            <apex:inputField value="{!customerProjectRole.Phone__c}" id="phone" onKeyDown="isNumberOnly(event);" onKeyUp="formatPhoneNumber(event);"
+                                                                styleClass="form-control phone" html-maxlength="10" />
+                                                            <apex:outputPanel rendered="{!!project.Program_Version__r.NY_Green_Bank_RFP__c}" layout="none">
+                                                                <span class="icon-help phoneIconHelp" data-toggle="popover" data-placement="right" data-trigger="hover" data-content="Enter the number only.">
+                                                                </span>
+                                                            </apex:outputPanel>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="flex-row">
+                                                        <label for="{!$component.phone}">Preferred Method of Communication
+                                                            <span class="required">&nbsp;* </span>
+                                                        </label>
+                                                        <div class="field lg">
+                                                            <apex:inputField value="{!customerProjectRole.Preferred_method_of_communication__c }" styleClass="form-control preferredMethod"
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="flex-row">
+                                                        <label for="{!$Component.primaryContact}">Primary Contact</label>
+                                                        <div class="field lg">
+                                                            <apex:inputField value="{!customerProjectRole.Primary_Customer_Contact__c}" id="primaryContact" styleClass="form-control primaryContact"
+                                                            />
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-sm-6">
+
+                                                    <div class="flex-row">
+                                                        <label for="{!$component.street1}">Address 1
+                                                            <span class="required">&nbsp;* </span>
+                                                        </label>
+                                                        <div class="{!IF(project.Program_Version__r.NY_Green_Bank_RFP__c, 'flex-row lg flex-row mb0 w60', 'field lg')}">
+                                                            <apex:inputField value="{!customerProjectRole.Address_1__c}" id="street1" styleClass="form-control street1" html-maxlength="255"
+                                                                html-autocomplete="off" onKeyDown="hasSpecialCharacter(event);"
+                                                            />
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="flex-row">
+                                                        <label for="{!$Component.street2}">Address 2 </label>
+                                                        <div class="field lg">
+                                                            <apex:inputField value="{!customerProjectRole.Address_2__c}" id="street2" styleClass="form-control street2" html-maxlength="255"
+                                                                html-autocomplete="off" onKeyDown="hasSpecialCharacter(event);"
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="flex-row">
+                                                        <label for="{!$component.city}">City
+                                                            <span class="required">&nbsp;* </span>
+                                                        </label>
+                                                        <div class="field lg">
+                                                            <apex:inputField value="{!customerProjectRole.City__c}" id="city" styleClass="form-control city" html-maxlength="120" onKeyDown="isAlphabateOnly(event);"
+                                                                html-autocomplete="off" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="flex-row">
+                                                        <label for="{!$component.state}">State
+                                                            <span class="required">&nbsp;* </span>
+                                                        </label>
+                                                        <div class="field lg">
+                                                            <apex:inputField value="{!customerProjectRole.State__c}" id="state" styleClass="form-control state" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="flex-row">
+                                                        <label for="{!$component.zip}">Zip
+                                                            <span class="required">&nbsp;* </span>
+                                                        </label>
+                                                        <div class="field lg">
+                                                            <apex:inputField value="{!customerProjectRole.Zip__c}" onKeyDown="isNumberOnly(event);" id="zip" styleClass="form-control zip"
+                                                                html-maxlength="5" html-autocomplete="off" />
+                                                        </div>
+                                                    </div>
+
+                                                    <apex:outputPanel rendered="{!!project.Program_Version__r.NY_Green_Bank_RFP__c}" layout="none">
+                                                        <div class="flex-row">
+                                                            <label for="{!$Component.dunsNum}">DUNS Number</label>
+                                                            <div class="flex-row lg flex-row mb0 w60">
+                                                                <apex:inputField value="{!customerProjectRole.DUNS_Number__c}" id="dunsNum" styleClass="form-control role" html-maxlength="20"
+                                                                />
+                                                                <span class="icon-help" style="margin-left:10px;font-size:16px;" data-toggle="popover" data-placement="right" data-trigger="hover"
+                                                                    data-content="{!$ObjectType.Project_Role__c.fields.DUNS_Number__c.InlineHelpText}">
+                                                                </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <fieldset>
+                                                            <div class="flex-row">
+                                                                <span class="labelClass mr20">Tax identification type
+                                                                    <span class="required">&nbsp;* </span>
+                                                                </span>
+                                                                <div class="field lg">
+                                                                    <div class="radio">
+                                                                        <legend>
+                                                                            <label for="ein">
+                                                                                <input type="radio" id="ein" name="tin" onclick="rerenderText('EIN')" value="EIN" />
+                                                                                <span>Employer Identification Number (EIN)</span>
+                                                                            </label>
+                                                                        </legend>
+                                                                    </div>
+                                                                    <div class="radio">
+                                                                        <legend>
+                                                                            <label for="ssn">
+                                                                                <input type="radio" id="ssn" name="tin" onclick="rerenderText('SSN')" value="SSN" />
+                                                                                <span>SSN</span>
+                                                                            </label>
+                                                                        </legend>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                    </apex:outputPanel>
+
+                                                    <div id="einOutputPanel" class="hideDiv">
+                                                        <div class="flex-row">
+                                                            <label for="{!$component.einno}">Employer Identification Number (EIN)
+                                                                <span class="required">&nbsp;* </span>
+                                                            </label>
+                                                            <div class="field lg">
+                                                                <apex:inputField id="einno" value="{!customerProjectRole.Employee_Identification_Number_EIN__c}" styleClass="form-control ein"
+                                                                    onKeyDown="isNumberOnly(event);" onKeyUp="formatTINNumber(this, event);"
+                                                                    html-maxlength="9" />
+                                                                <span class="icon-help EINIconHelp" data-toggle="popover" data-placement="right" data-trigger="hover" data-content="Enter the number only.">
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-row">
+                                                            <span> &nbsp; </span>
+                                                            <div class="field lg font-13 mt15">
+                                                                <!--      <apex:outputText value="{!$Label.EIN}" escape="false"/> -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div id="ssnOutputPanel" class="hideDiv">
+                                                        <div class="flex-row">
+                                                            <span> &nbsp; </span>
+                                                            <div class="field lg font-13 mt15">
+                                                                <!-- <apex:outputText value="{!$Label.SSN}" escape="false"/> -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- <div class="flex-row">
+                                                <label>Company TIN<span class="required">&nbsp;* </span></label>
+                                                <div class="field lg">
+                                                    <apex:inputField value="{!customerProjectRole.Employee_Identification_Number_EIN__c}" styleClass="form-control tin"
+                                                                            onKeyDown="isNumberOnly(event);" onKeyUp="formatTINNumber(this, event);" html-maxlength="9"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="flex-row">
+                                                <label>
+                                                    <apex:inputField value="{!customerProjectRole.Company_TIN_Confirmation__c}" styleClass="tinConfirmation" />
+                                                </label>
+                                                <div class="field lg font-13">
+                                                    <apex:outputText >By checking this box I certify that the TIN number submitted is not a social security number. If your tax id number is your social security number, please leave information blank and contact NYSERDA.</apex:outputText>
+                                                </div>
+                                            </div> -->
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <span id="cancelBtnDiv">
+                                                <button id="cancelBtn" type="button" class="btn-bs btn-default" data-dismiss="modal">Close</button>
+                                            </span>
+                                            <span id="savingBtnDiv">
+                                                <button class="btn-bs btn-default btn-warning" id="savingBtn" disabled="disabled">
+                                                    <span class="glyphicon glyphicon-refresh "></span> Saving Contact...</button>
+                                            </span>
+                                            <span id="saveBtnDiv">
+                                                <button type="button" class="btn-bs btn-primary" id="saveBtn" onclick="startSaveContact(); return false;">Save Changes</button>
+                                            </span>
+                                        </div>
+                                    </apex:outputPanel>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- CONFIRMATION POP UP -->
+                        <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel">
+                            <apex:outputPanel id="confirmationModalPanel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <b>Contact Delete Confirmation ?</b>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <h4 class="modal-title" id="editModalLabelScoring">
+                                                <div style="display:none;">blank</div>
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                Are you sure to delete this Contact ?
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <span id="cancelBtnDiv1">
+                                                <button id="scoringCancelBtn" type="button" class="btn-bs btn-default" data-dismiss="modal">Close</button>
+                                            </span>
+                                            <span id="DeletingBtnDiv">
+                                                <button class="btn-bs btn-default btn-warning" id="savingBtn" disabled="disabled">
+                                                    <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Deleting Contact...
+                                                </button>
+                                            </span>
+                                            <span id="DeleteBtnDiv">
+                                                <button type="button" class="btn-bs btn-primary" id="scoringSaveBtn" onclick="deleteCustomerProjectRoleJS();">Continue</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+                        </div>
+
+                        <apex:actionFunction name="deleteCustomerProjectRole" action="{!deleteCustomerProjectRole}" rerender="frm" immediate="true">
+                            <apex:param value="" name="selectedCustomerProjectRole" assignTo="{!selectedCustomerProjectRole}" />
+                        </apex:actionFunction>
+
+                        <apex:actionFunction name="cloneProjectRole" action="{!cloneProjectRole}" rerender="modalForm" oncomplete="openModal(); return false;"
+                            immediate="true">
+                            <apex:param value="" name="selectedCustomerProjectRole" assignTo="{!selectedCustomerProjectRole}" />
+                        </apex:actionFunction>
+
+                        <apex:actionFunction name="getCustomerProjectRole" action="{!getCustomerProjectRole}" rerender="modalForm, scriptPanel" oncomplete="openModal(); return false;">
+                            <apex:param value="" name="selectedCustomerProjectRole" assignTo="{!selectedCustomerProjectRole}" />
+                        </apex:actionFunction>
+
+                        <apex:actionFunction name="saveCustomerProjectRole" action="{!saveCustomerProjectRole}" rerender="frm, scriptPanel" oncomplete="stopSaveContact(); return false;">
+                            <apex:param value="" name="selectedContactId" assignTo="{!selectedContactId}" />
+                            <apex:param value="" name="taxIdNumber" assignTo="{!taxIdNumber}" />
+                        </apex:actionFunction>
+
+                        <apex:actionFunction name="resetCustomerProjectRole" action="{!resetCustomerProjectRole}" rerender="modalForm" oncomplete="openModal(); return false;"
+                            immediate="true" />
+
+                        <apex:actionFunction name="next" action="{!next}" rerender="frm, scriptPanel" immediate="true" status="status" oncomplete="showMessage();">
+                            <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                        </apex:actionFunction>
+
+                    </apex:form>
+
+                    <!-- <div class="application" id="container1">
+                  <apex:form >
+                    <apex:actionFunction name="previous" action="{!previous}" rerender="application" immediate="true">
+                        <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                    </apex:actionFunction>
+                    <apex:actionFunction name="next" action="{!next}" rerender="application">
+                        <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                    </apex:actionFunction>
+
+                  </apex:form>
+            </div> -->
+
+                    <footer>
+                        <div class="content flex controls sm">
+                            <a href="javascript:void(0)" onclick="previous('{!$CurrentPage.Name}')" class="btn-bs btn-lg btn-blank">Previous</a>
+                            <a href="javascript:void(0)" onclick="nextAction('{!$CurrentPage.Name}')" class="btn-bs btn-lg btn-primary continueBtn">Continue</a>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </apex:define>
+    </apex:composition>
+
+    <c:PROPOSAL_CORE_Due_Date_Passed />
+
+    <apex:outputPanel id="scriptPanel">
+        <script>
+            function openModal() {
+                $('#savingBtnDiv').hide();
+                $('#editModal').modal('show');
+
+                $('.phone').attr('maxlength', '10');
+                //$('.phone').attr('placeholder', '(xxx) xxx-xxxx');
+                //$('[data-toggle="tooltip"]').tooltip();
+                $(document).on('mouseover', '[data-toggle="popover"]', function () { $(this).popover('show'); });
+
+                if ('{!customerProjectRole.Tax_Identification_Type__c}' == 'EIN') {
+                    $('#ein')[0].checked = true;
+                    $('#einOutputPanel').removeClass('hideDiv');
+                    //$('.ein').attr('placeholder','xx-xxxxxxx');
+                    formatTINNumber($('.ein'));
+                } else if ('{!customerProjectRole.Tax_Identification_Type__c}' == 'SSN') {
+                    $('#ssn')[0].checked = true;
+                    $('#ssnOutputPanel').removeClass('hideDiv');
+                }
+            }
+
+            function initializeSelectTag() {
+                $('.select2').select2();
+
+                $(".select2-tags").select2({
+                    tags: false,
+                    width: 'resuolve'
+                });
+
+                if ($('.selectedCustomerProjectRole').val() == null ||
+                    $('.selectedCustomerProjectRole').val() == '') {
+                    $(".select2-tags").select2("val", "");
+                }
+
+                $('.select2-search__field').attr('id', 'company-type');
+
+                $('.select2-search__field, .select2').css('width', '100%');
+            }
+
+            function showMessage() {
+                if ('{!isDueDatePassed}' == 'true' && '{!isExceptionalAccessProvided}' == 'false') { // T-02655
+                    $('#dueDatePassedModal').modal('show');
+                }
+            }
+
+            function stopSaveContact() {
+                $('#savingBtnDiv').hide();
+                $('#savingBtn').hide();
+                $('#saveBtnDiv, #cancelBtnDiv').show();
+                createTable();
+
+                if ('{!isDueDatePassed}' == 'true' || '{!isExceptionalAccessProvided}' == 'false') { // T-02655
+                    $('#validationErrorMessage1').html('<strong>Error!</strong> Sorry, the due date and time passed for this solicitation and we are not able to accept your changes.');
+                    $('#validationErrorMessage1').show();
+                    return false;
+                }
+            }
+        </script>
+    </apex:outputPanel>
+
+    <script>
+        $(document).ready(function () {
+            jQuery("html").attr("lang", "en");
+            createTable();
+            setFavicon();
+        });
+
+        // Related to muliselect picklist option - Company Type
+        $('.companyTypeField').on('mouseover', function () { $(this).popover('show'); });
+        $(document).on('mouseover', '[data-toggle="popover"]', function () { $(this).popover('show'); });
+
+        /* function setFavicon() {
+             var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+             link.type = 'image/x-icon';
+             link.rel = 'shortcut icon';
+             document.getElementsByTagName('head')[0].appendChild(link);
+         } */
+
+        function createTable() {
+            $('#contactTable').DataTable({
+                "order": [],
+                "language": {
+                    "emptyTable": "At least one project contact is required."
+                },
+                "bPaginate": false,
+                "columnDefs": [{
+                    "targets": [0],
+                    "orderable": false,
+                    "searchable": false
+                }]
+            });
+            $('.dataTables_info').addClass('hidden');
+            $('.dataTables_filter').hide();
+        }
+
+        function nextAction(currentPageName) {
+            $('#validationErrorMessage2').hide();
+            if ('{!isPrimaryContactPresent}' == 'false') {
+                if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'false') {
+                    $('#validationErrorMessage2').html('<strong>Error!</strong> At least one Primary Contact is required.');
+                } else {
+                    $('#validationErrorMessage2').html('At least one Primary Contact is required.');
+                }
+
+                $('#validationErrorMessage2').show();
+                return false;
+            }
+            next(currentPageName);
+
+            /*var totalContacts = parseInt($('#totalContacts').val());
+            if(totalContacts == 0) {
+                $('#validationErrorMessage2').html('<strong>Error!</strong> At least one Contact is required.');
+                $('#validationErrorMessage2').show();
+                return false;
+            }
+            next(currentPageName);*/
+        }
+
+        function rerenderText(tin) {
+            console.log(tin);
+            if (tin == 'EIN') {
+                $('#einOutputPanel').removeClass('hideDiv');
+                //$('.ein').attr('placeholder','xx-xxxxxxx');
+                $('#ssnOutputPanel').addClass('hideDiv');
+            } else if (tin == 'SSN') {
+                $('#einOutputPanel').addClass('hideDiv');
+                $('#ssnOutputPanel').removeClass('hideDiv');
+            } else {
+                $('#einOutputPanel').addClass('hideDiv');
+                $('#ssnOutputPanel').addClass('hideDiv');
+            }
+        }
+
+        function resetSearch() {
+            $('.searchBox').val('');
+            $('#hiddenContactId').val('');
+            resetCustomerProjectRole();
+        }
+
+        function isValidEmailAddress(emailAddress) {
+            var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+            return pattern.test(emailAddress);
+        };
+
+        function isValidPhoneNumber(phone) {
+            phone = phone.replace('(', '').replace(')', '').replace(' ', '').replace('-', '');
+            return phone.length == 10;
+        }
+
+        function startSaveContact() {
+            $('#validationErrorMessage1').hide();
+            var company = $('.company').val();
+            if (company == null || company.trim() == '' || company == undefined) {
+                if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'false') {
+                    $('#validationErrorMessage1').html('<strong>Error!</strong> Company Name: You must enter a value.');
+                } else {
+                    $('#validationErrorMessage1').html('Enter a company name.');
+                }
+                $('#validationErrorMessage1').show();
+                return false;
+            }
+
+            // Commented according to Task T-02343
+            /*var companyType = $('.companyType').val();
+            if('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'true' && (companyType == null || companyType == '' || companyType == undefined)){
+                $('#validationErrorMessage1').html('<strong>Error!</strong> Company Type: You must enter a value.');
+                $('#validationErrorMessage1').show();
+                return false;
+            }*/
+
+            var firstName = $('.firstName').val();
+            if (firstName == null || firstName.trim() == '' || firstName == undefined) {
+                if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'false') {
+                    $('#validationErrorMessage1').html('<strong>Error!</strong> First Name: You must enter a value.');
+                } else {
+                    $('#validationErrorMessage1').html('Enter a first name. Valid entries contain letters only, no numbers or special characters.');
+                }
+                $('#validationErrorMessage1').show();
+                return false;
+            }
+
+            var lastName = $('.lastName').val();
+            if (lastName == null || lastName.trim() == '' || lastName == undefined) {
+                if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'false') {
+                    $('#validationErrorMessage1').html('<strong>Error!</strong> Last Name: You must enter a value.');
+                } else {
+                    $('#validationErrorMessage1').html('Enter a last name. Valid entries contain letters only, no numbers or special characters.');
+                }
+                $('#validationErrorMessage1').show();
+                return false;
+            }
+
+            var email = $('.email').val();
+            if (email == null || email.trim() == '' || email == undefined) {
+                if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'false') {
+                    $('#validationErrorMessage1').html('<strong>Error!</strong> Email: You must enter a value.');
+                } else {
+                    $('#validationErrorMessage1').html('Enter a valid email address.');
+                }
+                $('#validationErrorMessage1').show();
+                return false;
+            }
+            if (email != null && email.trim() != '' && isValidEmailAddress(email) === false) {
+                if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'false') {
+                    $('#validationErrorMessage1').html('<strong>Error!</strong> Email: Please enter a valid email address.');
+                } else {
+                    $('#validationErrorMessage1').html('Enter a valid email address.');
+                }
+                $('#validationErrorMessage1').show();
+                return false;
+            }
+
+            var phone = $('.phone').val();
+            if (phone == null || phone.trim() == '' || phone == undefined) {
+                if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'false') {
+                    $('#validationErrorMessage1').html('<strong>Error!</strong> Phone: You must enter a value.');
+                } else {
+                    $('#validationErrorMessage1').html('Enter a valid phone number.');
+                }
+                $('#validationErrorMessage1').show();
+                return false;
+            }
+            if (phone != null && phone.trim() != '' && isValidPhoneNumber(phone) === false) {
+                if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'false') {
+                    $('#validationErrorMessage1').html('<strong>Error!</strong> Phone: Please enter a valid phone number.');
+                } else {
+                    $('#validationErrorMessage1').html('Enter a valid phone number.');
+                }
+                $('#validationErrorMessage1').show();
+                return false;
+            }
+
+            var preferredMethod = $('.preferredMethod').val();
+            if (preferredMethod == null || preferredMethod.trim() == '' || preferredMethod == undefined) {
+                $('#validationErrorMessage1').html('Enter a Preferred Method of Communication.');
+                $('#validationErrorMessage1').show();
+                return false;
+            }
+
+            var street = $('.street1').val();
+            if (street == null || street.trim() == '' || street == undefined) {
+                if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'false') {
+                    $('#validationErrorMessage1').html('<strong>Error!</strong> Address 1: You must enter a value.');
+                } else {
+                    $('#validationErrorMessage1').html('Enter an address.');
+                }
+                $('#validationErrorMessage1').show();
+                return false;
+            }
+
+            var city = $('.city').val();
+            if (city == null || city.trim() == '' || city == undefined) {
+                if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'false') {
+                    $('#validationErrorMessage1').html('<strong>Error!</strong> City: You must enter a value.');
+                } else {
+                    $('#validationErrorMessage1').html('Enter a city. Valid entries contain letters only, no numbers or special characters.');
+                }
+                $('#validationErrorMessage1').show();
+                return false;
+            }
+
+            var state = $('.state').val();
+            if (state == null || state.trim() == '' || state == undefined) {
+                if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'false') {
+                    $('#validationErrorMessage1').html('<strong>Error!</strong> State: You must enter a value.');
+                } else {
+                    $('#validationErrorMessage1').html('Select a state.');
+                }
+                $('#validationErrorMessage1').show();
+                return false;
+            }
+
+            var zip = $('.zip').val();
+            if (zip == null || zip.trim() == '' || zip == undefined) {
+                if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'false') {
+                    $('#validationErrorMessage1').html('<strong>Error!</strong> Zip: You must enter a value.');
+                } else {
+                    $('#validationErrorMessage1').html('Enter a valid zip code.');
+                }
+                $('#validationErrorMessage1').show();
+                return false;
+            }
+
+            if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'false' && !$('#ein')[0].checked && !$('#ssn')[0].checked) {
+                $('#validationErrorMessage1').html('<strong>Error!</strong> Please select Tax Identification Type.');
+                $('#validationErrorMessage1').show();
+                return false;
+            }
+
+            if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'false' && $('#ein')[0].checked && $('.ein').val() == '') {
+                $('#validationErrorMessage1').html('<strong>Error!</strong> Please enter Employee Identification Number.');
+                $('#validationErrorMessage1').show();
+                return false;
+            }
+
+            if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'false' && $('#ein')[0].checked) {
+                var pattern = /^(\d{2})(\-)(\d{7})$/;
+                console.log($('.ein').val());
+                if (!pattern.test($('.ein').val())) {
+                    $('#validationErrorMessage1').html('<strong>Error!</strong> Please enter a valid 9 digit Employee Identification Number.');
+                    $('#validationErrorMessage1').show();
+                    return false;
+                }
+            }
+
+            if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'false' && $('.alternateParty:checked').length > 0 && $('.primaryContact:checked').length > 0) {
+                $('#validationErrorMessage1').html('<strong>Error!</strong> {!$Label.Proposal_Cannot_select_Alternate_Party_and_Primary_Contact}');
+                $('#validationErrorMessage1').show();
+                return false;
+            }
+
+            if ('{!isDueDatePassed}' == 'true' && '{!isExceptionalAccessProvided}' == 'false') { // T-02655
+                $('#validationErrorMessage1').html('<strong>Error!</strong> Sorry, the due date and time passed for this solicitation and we are not able to accept your changes.');
+                $('#validationErrorMessage1').show();
+                return false;
+            }
+
+            /* var tinNumber = $('.tin').val().replace('-','');
+            $('.tin').val(tinNumber); */
+
+            $('#savingBtnDiv').show();
+            $('#savingBtn').show();
+            $('#saveBtnDiv, #cancelBtnDiv').hide();
+
+            if ('{!project.Program_Version__r.NY_Green_Bank_RFP__c}' == 'false') {
+                if ($('#ein')[0].checked) {
+                    tin = 'EIN';
+                } else {
+                    tin = 'SSN';
+                }
+
+                var einNumber = $('.ein').val().replace('-', '');
+                $('.ein').val(einNumber);
+            } else {
+                tin = '';
+            }
+
+            /* tin = 'EIN'; */
+            saveCustomerProjectRole($('#hiddenContactId').val(), tin);
+        }
+
+        function isNumberOnly(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode == 110 || charCode == 189) {
+                return true;
+            }
+
+            if (evt.shiftKey) {
+                evt.preventDefault();
+                return false;
+            }
+
+            if (charCode != 46 && charCode > 31
+                && ((charCode < 48 || charCode > 57) && (charCode < 96 || charCode > 105))) {
+                evt.preventDefault();
+                return false;
+            }
+            return true;
+        }
+
+        function formatPhoneNumber(evt) {
+            var s = $('.phone').val();
+            var pattern = /^\d{10}$/;
+            if (pattern.test(s)) {
+                var s2 = ("" + s).replace(/\D/g, '');
+                var m = s2.match(/^(\d{3})(\d{3})(\d{4})$/);
+                $('.phone').val("(" + m[1] + ") " + m[2] + "-" + m[3]);
+            }
+
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode == 8) {
+                $('.phone').val($('.phone').val().replace('(', '').replace(')', '').replace(' ', '').replace('-', ''));
+            }
+        }
+
+        function isAlphabateOnly(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if ((charCode >= 65 && charCode <= 90) || charCode == 8 || charCode == 9 || charCode == 32 || (charCode >= 37 && charCode <= 40)) {
+                return true;
+            }
+            else {
+                evt.preventDefault();
+                return false;
+            }
+        }
+
+        function isAlphabateForNameOnly(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if ((charCode >= 65 && charCode <= 90) || charCode == 8 || charCode == 9 || charCode == 32 || charCode == 222 || charCode == 109 || (charCode >= 37 && charCode <= 40)) {
+                return true;
+            }
+            else {
+                evt.preventDefault();
+                return false;
+            }
+        }
+
+        function hasSpecialCharacter(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if ((charCode >= 65 && charCode <= 90) || charCode == 8 || charCode == 9 || charCode == 32 || (charCode >= 37 && charCode <= 40)
+                || ((!evt.shiftKey) && charCode >= 48 && charCode <= 57)) {
+                return true;
+            }
+            else {
+                evt.preventDefault();
+                return false;
+            }
+        }
+
+        // format 9 digit TIN number added by TK
+        function formatTINNumber(elem, evt) {
+
+            formatEINCode(elem);
+
+            /*
+    
+                var s = $(elem).val();
+                var pattern = /^\d{9}$/;
+                if (pattern.test(s)) {
+                    var s2 = (""+s).replace(/\D/g, '');
+                    var m = s2.match(/^(\d{2})(\d{7})$/);
+                    $(elem).val( + m[1] + "-" + m[2]);
+                }
+    
+                if(evt != undefined) {
+                    var charCode = (evt.which) ? evt.which : evt.keyCode;
+                    if(charCode == 8) {
+                        $('.ein').val($('.ein').val().replace('-', ''));
+                    }
+                }
+    
+             */
+
+        }
+
+        function formatEINCode(elem) {
+            var s = $(elem).val();
+            var i;
+            var str = '';
+            if (s.length == 9) {
+
+                var pattern = /^\d{9}$/;
+                if (pattern.test(s)) {
+
+                    for (i = 0; i < s.length; i++) {
+
+                        if (i == 2) {
+
+                            str = str.concat('-');
+                            str = str.concat(s[i]);
+                        }
+                        else {
+                            str = str.concat(s[i]);
+                        }
+                    }
+                }
+                $(elem).val(str);
+            }
+        }
+
+
+        function reset() {
+            $('.firstName').val('');
+            $('.lastName').val('');
+            $('.email').val('');
+            $('.phone').val('');
+            $('.company').val('');
+            $('.searchBox').val('');
+            $('.primary').attr('checked', false);
+            $('#resetDiv').hide();
+        }
+
+        var currentRoleId = '';
+        function cloneRole(roleId) {
+            currentRoleId = roleId;
+            cloneProjectRole(roleId);
+        }
+
+        function confirmDelete(projectRoleId) {
+            currentRoleId = projectRoleId;
+            openConfirmationPopup();
+        }
+
+        function openConfirmationPopup() {
+            $('#DeletingBtnDiv').hide();
+            $('#confirmationModal').modal('show');
+        }
+
+        function deleteCustomerProjectRoleJS() {
+            $('#DeletingBtnDiv').show();
+            $('#DeleteBtnDiv, #cancelBtnDiv1').hide();
+
+            deleteCustomerProjectRole(currentRoleId);
+        }
+    </script>
+
+    <style>
+        .dataTables_wrapper table .controls>a:not(:last-of-type):after {
+            content: "";
+        }
+    </style>
+    <c:Grants_Site_Footer />
+</apex:page>

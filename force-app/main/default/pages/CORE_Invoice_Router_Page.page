@@ -1,0 +1,16 @@
+<apex:page tabStyle="Application__tab" sidebar="false" standardController="Project_Invoice__c" extensions="CORE_Invoice_Router_Extension"  action="{!invoiceRedirect}">
+
+  <head>
+      <apex:stylesheet value="{!URLFOR($Resource.NS_Design, 'css/custom-bootstrap.css')}" />
+      <apex:stylesheet value="{!URLFOR($Resource.NS_Design, 'css/main.css')}" />
+  </head>
+
+    <apex:outputPanel id="opMsg" rendered="{!showError}">
+      <div class="alert-container">
+        <div class="alert alert-warning">
+          <strong>{!errorMessage}</strong>
+        </div>
+      </div>
+    </apex:outputPanel>
+
+</apex:page>

@@ -1,0 +1,461 @@
+<apex:page applyHtmlTag="false" applyBodyTag="false" controller="Core_Registration_Controller" showHeader="false" sidebar="false" standardStylesheets="false" >
+  <html lang="en-US">   
+    <head>
+    	<title>Portal Registration</title>
+        <style>
+            #errorMessage{
+                display: none;
+            }
+            
+            .tooltipCss{
+                width: 12%;
+            }
+            
+            .helpIconSpan{
+                margin-right: 90%;
+                padding-top: 1%;
+            }
+            
+            .helpIconBuilderSpan{
+                margin-right: 90%;
+                padding-top: 1%;
+            }
+            
+            .errorMsg {
+                color: red;
+            }
+            .required {
+                font-weight: bold;
+                color: red;
+                font-size: 18px;
+            }
+            
+            .messageCell{
+                background-color: #f2dede;
+                border-color: #ebccd1;
+                color: #a94442;
+                padding: 15px;
+                margin-bottom: 20px;
+                border: 1px solid transparent;
+                border-radius: 0px;
+                padding-top: 1px;
+            }
+            
+            .siteLink{
+                text-decoration: underline;
+            }
+            
+            .messageTable{
+            	width: 100% !important;
+            }
+            .sub-logo{
+				font-size: 15px !important;
+			    color: #000;
+			}
+			.sub-agency-nav{
+		    	background: #EEE;
+    			padding: 12px 0;
+			}
+             .container > .navbar-header{    
+            margin: 12px;
+            margin-right: 0;
+            margin-left: 40px;}
+            .nav.navbar {
+                margin-bottom: 0;
+                border-radius: 0;
+            }
+            .navbar-default.top {
+                border: none;
+                background-color: #115AB1;
+                z-index: 100;
+            }
+        </style>
+        
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        
+        <apex:stylesheet value="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600" />
+        <apex:stylesheet value="{!URLFOR($Resource.NYSUN_Design, 'css/custom-bootstrap.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.NYSUN_Design, 'css/main.css')}" />
+        
+        <!-- Dev only, remove before production-->
+        <apex:stylesheet value="https://i.icomoon.io/public/9bc07b849f/NYSERDA/style.css" />
+    	
+<!--     	<link rel="SHORTCUT ICON" href="{!$Label.NYSERDA_Favicon_Link}" /> -->
+    	
+        <!--REMOVE COMMENT AFTER REVIEW | Manish : moved jQuery up in the header, as it was needed in other pages-->
+        <script src="//code.jquery.com/jquery-2.2.3.min.js"></script>
+        <script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+             
+              ga('create', 'UA-26477206-1', 'auto');
+              ga('send', 'pageview');
+             
+        </script>
+    </head>
+    
+    <body>
+        <c:Grants_Nav_Bar_Mini /> 
+        <c:LoadingOverlay /> 
+       <!-- <apex:outputPanel rendered="{!!isNYGreen}" layout="none">	
+    		<c:NYS_UniversalNav />
+    	</apex:outputPanel> 
+    	
+        <c:LoadingOverlay />    
+        
+        <apex:outputPanel layout="none" rendered="{!!isNYGreen}">
+	        <div class="agency-nav">
+	            <div class="content flex sm">
+	                <div class="logo">NYSERDA</div>
+	            </div>
+	        </div>
+	        <div class="agency-nav sub-agency-nav">
+	            <div class="content flex sm">
+	                <div class="logo sub-logo">PORTAL REGISTRATION</div>
+	            </div>
+	        </div>
+        </apex:outputPanel> --> 
+        
+        <apex:outputPanel rendered="{!OR(AND(program.Name != null, program.Name != ''), (!IsBlank(solicitationId)))}">
+            <div class="page">
+                <apex:form id="frm">
+                    <apex:outputPanel layout="block" id="mainPanel" styleClass="application">
+                        
+                        <div class="alert-container">
+                            <apex:outputPanel rendered="{!AND(!isProcessSuccessful, !sendVarification, !isPortalUserExist)}">
+                                <div class="alert alert-info">
+                                    Register with MTX Grants And Proposals <!-- {!IF(isNYGreen, 'NY Green Bank’s Proposal', 'NYSERDA application')} --> Portal.
+                                </div>
+                            </apex:outputPanel>
+                            
+                            <div class="alert alert-danger" id="errorMessage">
+                            	
+                            </div>
+                            
+                            <apex:pageMessages />
+                            
+                            <apex:outputPanel rendered="{!isPortalUserExist}">
+                                <div class="alert alert-info" id="infoMessage">
+                                    There is already an account associated with this email address. Login with this email address 
+                                    <apex:outputLink styleClass="siteLink" value="{!$Label.CORE_NYSERDA_Portal_URL}login" target="_self" rendered="{!IsBlank(solicitationId)}"> here</apex:outputLink>
+                                    <apex:outputLink styleClass="siteLink" value="{!$Label.CORE_NYSERDA_Portal_URL}CORE_Solicitation_Login_Page?SolicitationId={!solicitationId}" target="_self" rendered="{!!IsBlank(solicitationId)}"> here</apex:outputLink>
+                                </div>
+                            </apex:outputPanel>
+                            
+                            <apex:outputPanel rendered="{!isProcessSuccessful}">
+                                <div class="alert alert-info" id="infoMessage">
+                                    {!$Label.CORE_REGISTRATION_MESSAGE}
+                                </div>
+                            </apex:outputPanel>
+                             
+                            <apex:outputPanel rendered="{!sendVarification}">
+                                <div class="alert alert-info" id="infoMessage">
+                                    {!$Label.CORE_REGISTRATION_EMAIL_VERIFICATION_MESSAGE}
+                                </div>
+                            </apex:outputPanel>
+                        </div>
+                        
+                        <apex:outputPanel rendered="{!AND(!isProcessSuccessful, !sendVarification, !isPortalUserExist)}">
+                            <div class="content content-body">
+                                <div class="box-group">
+                                        <div class="heading">
+                                            Company Information
+                                        </div>
+                                        <div class="content box">
+                                            <div class="flex-row">
+                                                <div class="form-group md">
+                                                    <label for="{!$Component.companyName}">Company Name<span class="required">&nbsp;* </span></label>
+                                                    <apex:inputText id="companyName" value="{!companyName}" styleClass="form-control companyName" />
+                                                </div>
+                                                
+                                                <div class="form-group md">
+                                                    <label for="{!$Component.street}">Address 1<span class="required">&nbsp;* </span></label>
+                                                    <apex:inputField id="street" value="{!projectRole.Address_1__c}" styleClass="form-control street" />
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flex-row">
+                                                <div class="form-group md">
+                                                    <label for="{!$Component.Address2}">Address 2</label>
+                                                    <apex:inputField id="Address2" value="{!projectRole.Address_2__c}" styleClass="form-control" />
+                                                </div>
+                                                
+                                                <div class="form-group md">
+                                                    <label for="{!$Component.city}">City<span class="required">&nbsp;* </span></label>
+                                                    <apex:inputField id="city" value="{!projectRole.City__c}" styleClass="form-control city" />
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flex-row">
+                                                <div class="form-group md">
+                                                    <label for="{!$Component.state}">State<span class="required">&nbsp;* </span></label>
+                                                    <apex:inputField id="state" value="{!projectRole.State__c}" styleClass="form-control state" />
+                                                </div>
+                                                
+                                                <div class="form-group md">
+                                                    <label for="{!$Component.zip}">Zip<span class="required">&nbsp;* </span></label>
+                                                    <apex:inputField id="zip" value="{!projectRole.Zip__c}" html-maxlength="5" styleClass="form-control zip" onKeyDown="isNumberOnlyForPrimary(event);" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="box-group">
+                                        <div class="heading">
+                                            Contact Information
+                                        </div>
+                                        <div class="content box">
+                                            <div class="flex-row">
+                                                <div class="form-group md">
+                                                    <label for="{!$Component.fName}">First Name<span class="required">&nbsp;* </span></label>
+                                                    <apex:inputField id="fName" value="{!projectRole.FirstName__c}" styleClass="form-control fName" />
+                                                </div>
+                                                <div class="form-group md">
+                                                    <label for="{!$Component.lName}">Last Name<span class="required">&nbsp;* </span></label>
+                                                    <apex:inputField id="lName" value="{!projectRole.LastName__c}" styleClass="form-control lName" />
+                                                </div>
+                                            </div>
+                                            <div class="flex-row">
+                                                <div class="form-group md">
+                                                    <label for="{!$Component.title}">Title<span class="required">&nbsp;* </span></label>
+                                                    <apex:inputField id="title" value="{!projectRole.Title__c}" styleClass="form-control title" />
+                                                </div>
+                                                <div class="form-group md">
+                                                    <label for="{!$Component.email}">Email<span class="required">&nbsp;* </span></label>
+                                                    <apex:inputField id="email" value="{!projectRole.Email__c}" styleClass="form-control email" />
+                                                </div>
+                                            </div>
+                                            <div class="flex-row">
+                                                <div class="form-group md">
+                                                    <label for="{!$Component.phone}">Phone<span class="required">&nbsp;* </span></label>
+                                                    <apex:inputField id="phone" value="{!projectRole.Phone__c}" styleClass="form-control phone" onKeyDown="isNumberOnlyForPrimary(event);" onKeyUp="formatPrimaryPhoneNumber();" html-maxlength="10" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <apex:outputPanel layout="none" rendered="{!!IsBlank(solicitationId)}">
+	                                    <div class="box-group">
+	                                        <div class="heading">
+	                                            Password Information
+	                                        </div>
+	                                        <div class="content box">
+	                                            <div class="flex-row">
+	                                                <div class="form-group md">
+	                                                    <label for="{!$Component.password}">Password<span class="required">&nbsp;* </span></label>
+	                                                    <apex:inputSecret id="password" value="{!password}" styleClass="form-control password" />
+	                                                </div>
+	                                                <div class="form-group md">
+	                                                    <label for="{!$Component.confirmPassword}">Confirm Password<span class="required">&nbsp;* </span></label>
+	                                                    <apex:inputSecret id="confirmPassword" styleClass="form-control confirmPassword" />
+	                                                </div>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                              </apex:outputPanel>
+                            </div>
+                           </apex:outputPanel>
+                        </apex:outputPanel>
+                    
+                    <apex:actionFunction name="save" action="{!save}" status="status" rerender="frm, saveBtnPanel" oncomplete="scrollToTop();" />
+                </apex:form>
+            </div>
+            
+            
+                
+           <footer class="footer-nav">
+               <div class="content flex controls sm">
+               	<apex:outputPanel id="saveBtnPanel">
+                	<apex:outputPanel layout="none" rendered="{!AND(!isProcessSuccessful, !sendVarification, !isPortalUserExist)}">
+                   	 <a href="javascript:void(0)" onclick="saveScript();" class="btn-bs btn-lg btn-primary">Create</a>
+                   	</apex:outputPanel>
+                  	</apex:outputPanel>
+               </div>
+           </footer>
+        </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!AND(program.Name == null, program.Name == '', IsBlank(solicitationId))}">
+            <div class="alert-container">
+                <div class="alert alert-info">There is no program/solicitation selected.</div>
+            </div>
+        </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!!isNYGreen}" layout="none">	
+    		<c:NYS_Footer />
+    	</apex:outputPanel>
+    	
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>
+        <script src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+        <script src="//cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js"></script>
+        <script src="//cdn.datatables.net/responsive/2.0.0/js/responsive.bootstrap.min.js"></script>
+        <script src="{!URLFOR($Resource.NYSUN_Design, 'js/main.js')}"></script>
+     </body>
+     
+     <script>
+        function saveScript() {
+            $('#errorMessage').hide();
+            $('#errorMessage').html("");
+            
+            if ($('.companyName').val() == null || $('.companyName').val() == '') {
+                $('#errorMessage').html("You must enter a company name.");
+                $('#errorMessage').show();
+                scrollToTop();
+                return false;
+            }
+            
+            if ($('.street').val() == null || $('.street').val() == ''
+                 ) {
+                $('#errorMessage').html("You must enter a valid address. Valid entries contain letters and numbers only, no special characters.");
+                $('#errorMessage').show();
+                scrollToTop();
+                return false;
+            }
+            
+            if ($('.city').val() == null || $('.city').val() == '' ) {
+                 
+                $('#errorMessage').html("You must enter a city. Valid entries contain letters only, no numbers or special characters.");
+                $('#errorMessage').show();
+                scrollToTop();
+                return false;
+            }
+            
+            if ($('.state').val() == null || $('.state').val() == '') {
+                $('#errorMessage').html("Select a state.");
+                $('#errorMessage').show();
+                scrollToTop();
+                return false;
+            }
+            
+            if ($('.zip').val() == null || $('.zip').val() == '') {
+                
+                $('#errorMessage').html("You must enter a valid zip code. Valid entries contain numbers only.");
+                $('#errorMessage').show();
+                scrollToTop();
+                return false;
+            }
+            
+            if ($('.fName').val() == null || $('.fName').val() == ''){
+                
+                $('#errorMessage').html("You must enter a first name. Valid entries contain letters only, no numbers or special characters.");
+                $('#errorMessage').show();
+                scrollToTop();
+                return false;
+            }            
+            
+            if ($('.lName').val() == null || $('.lName').val() == '' ){
+                
+                $('#errorMessage').html("You must enter a last name. Valid entries contain letters only, no numbers or special characters.");
+                $('#errorMessage').show();
+                scrollToTop();
+                return false;
+            }
+            if ($('.title').val() == null || $('.title').val() == '') {
+                $('#errorMessage').html("You must enter a title.");
+                $('#errorMessage').show();
+                scrollToTop();
+                return false;
+            }
+            if ($('.email').val() == null || $('.email').val() == '') {
+                $('#errorMessage').html("You must enter a valid email address.");
+                $('#errorMessage').show();
+                scrollToTop();
+                return false;
+            }
+            
+            if($('.email').val() != null && $('.email').val() != '' && isValidEmailAddress($('.email').val()) === false){
+                $('#errorMessage').html('You must enter a valid email address.');
+                $('#errorMessage').show();
+                scrollToTop();
+                return false;
+            }
+            
+            if ($('.phone').val() == null || $('.phone').val() == '') {
+                $('#errorMessage').html("You must enter a valid phone number.");
+                $('#errorMessage').show();
+                scrollToTop();
+                return false;
+            }
+            
+            var mobile = $('.phone').val();
+            mobile = mobile.replace(/[^\d]/g, "");
+            var pattern = /^\d{10}$/;
+            if (!pattern.test(mobile)) {
+                $('#errorMessage').html("You must enter a valid phone number.");
+                $('#errorMessage').show();
+                scrollToTop();
+                return false;
+            }
+            
+            if({!!IsBlank(solicitationId)}){
+            	if ($('.password').val() == null || $('.password').val() == '') {
+	                $('#errorMessage').html("You must enter password.");
+	                $('#errorMessage').show();
+	                scrollToTop();
+	                return false;
+	            }
+	            
+	            if ($('.confirmPassword').val() == null || $('.confirmPassword').val() == '') {
+	                $('#errorMessage').html("You must enter confirm password.");
+	                $('#errorMessage').show();
+	                scrollToTop();
+	                return false;
+	            }
+            	
+            	if($('.confirmPassword').val() != $('.password').val()){
+            		$('#errorMessage').html("You must enter the confirm password same as password.");
+	                $('#errorMessage').show();
+	                scrollToTop();
+	                return false;
+            	}
+            }
+            save();
+        }
+        
+        function isNumberOnlyForPrimary(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if(evt.shiftKey){
+                evt.preventDefault();
+                return false;
+            }
+            if((charCode > 47 && charCode < 58) || (charCode >= 96 && charCode <= 105) || charCode == 8 || charCode == 9 || (charCode >= 37 && charCode <= 40)) {                
+                return true;
+            }
+            else{               
+                evt.preventDefault();
+                return false;
+            }
+        }
+        
+        function formatPrimaryPhoneNumber() {
+            var s = $('.phone').val();
+            var pattern = /^\d{10}$/;
+            if (pattern.test(s)) {
+                var s2 = (""+s).replace(/\D/g, '');
+                var m = s2.match(/^(\d{3})(\d{3})(\d{4})$/);
+                $('.phone').val("(" + m[1] + ") " + m[2] + "-" + m[3]);
+            }
+        }
+        
+        // call this to scroll to top of page
+        function scrollToTop() {
+            $("html, body").animate({
+                scrollTop : 0
+            }, "slow");
+        }
+        
+        $('.phone, .email, .zip').bind('paste', function (e) {
+            e.preventDefault();
+        });
+        
+        function isValidEmailAddress(emailAddress) {
+            var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+            return pattern.test(emailAddress);
+        };
+    </script>
+  </html> 
+</apex:page>

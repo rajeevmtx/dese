@@ -1,0 +1,80 @@
+<template>
+    <!-- Spinner -->
+    <template if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+    </template>
+
+    <div class="app-container slds-grid slds-gutters slds-wrap">
+        <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <c-psr-help-text help-text={guardianHelpText}></c-psr-help-text>
+        </div>
+
+        <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <div class="button-container" style="float: right;">
+                <lightning-button variant="brand" label="ADD GUARDIAN" onclick={handleAddGuardian}></lightning-button>
+            </div>
+
+            <!-- Add Guardian Modal here -->
+            <template if:true={showAddGuardianModal}>
+                <c-mtx-add-guardian-modal subject-id={subjectId} guardian-id={guardianId}
+                    onhidemodal={hideAddGuardianModal} onhidemodalwithdata={hideModalAndUpdateData}>
+                </c-mtx-add-guardian-modal>
+            </template>
+
+            <!-- Guardian table here -->
+            <div class="guardian-table">
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Type">Type</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Name">Name</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Primary Cell Number">Primary Cell Number</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Landline Number">Landline Number</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Edit"></div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template if:true={guardianData}>
+                            <template for:each={guardianData} for:item="guardian">
+                                <tr class="slds-hint-parent" key={guardian.Subject__c}>
+                                    <td data-label="Type">
+                                        {guardian.Type__c}
+                                    </td>
+                                    <td data-label="Name">
+                                        {guardian.First_name__c} {guardian.Last_Name__c}
+                                    </td>
+                                    <td data-label="Primary Cell Number">
+                                        {guardian.Primary_Cell_Number__c}
+                                    </td>
+                                    <td data-label="Landline Number">
+                                        {guardian.Landline_Number__c}
+                                    </td>
+                                    <td data-label="Edit">
+                                        <a data-id={guardian.Id} onclick={handleGuardianEdit}>Edit</a>
+                                    </td>
+                                </tr>
+                            </template>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- buttons here -->
+            <div class="buttons slds-m-top_x-large">
+                <lightning-button variant="brand" label="Next" onclick={goNext} class="slds-m-right_medium">
+                </lightning-button>
+                <lightning-button label="Back" onclick={goPrev}></lightning-button>
+            </div>
+        </div>
+    </div>
+</template>

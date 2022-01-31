@@ -1,0 +1,69 @@
+<template>
+  <div class="app-main">
+    <div class="sidebar">
+      <div class="slds-progress slds-progress_vertical">
+        <ol class="slds-progress__list">
+          <li class={step1CSS} data-id="1" onclick={handleStep} style="cursor: pointer;">
+            <span class="slds-icon_container slds-icon-utility-success slds-progress__marker slds-progress__marker_icon"
+              title="Complete">
+              <!-- <svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
+                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#success"></use>
+              </svg> -->
+              <span class="slds-assistive-text">Complete</span>
+              <span>1</span>
+            </span>
+            <div class="slds-progress__item_content slds-grid slds-grid_align-spread">Overview</div>
+          </li>
+          <li class={step2CSS} data-id="2" onclick={handleStep} style="cursor: pointer;">
+            <div class="slds-progress__marker">
+              <span class="slds-assistive-text label=1 ">Active</span>
+              <span>2</span>
+            </div>
+            <div class="slds-progress__item_content slds-grid slds-grid_align-spread">Contact Information</div>
+          </li>
+          <li class={step3CSS} data-id="3" onclick={handleStep} style="cursor: pointer;">
+            <div class="slds-progress__marker"><span>3</span></div>
+            <div class="slds-progress__item_content slds-grid slds-grid_align-spread">Allocations and Flexing</div>
+          </li>
+          <li class={step4CSS} data-id="4" onclick={handleStep} style="cursor: pointer;">
+            <div class="slds-progress__marker"><span>4</span></div>
+            <div class="slds-progress__item_content slds-grid slds-grid_align-spread">Private School Services</div>
+          </li>
+          <li class={step5CSS} data-id="5" onclick={handleStep} style="cursor: pointer;">
+            <div class="slds-progress__marker"><span>5</span></div>
+            <div class="slds-progress__item_content slds-grid slds-grid_align-spread">Districtwide Strategies</div>
+          </li>
+          <li class={step6CSS} data-id="6" onclick={handleStep} style="cursor: pointer;">
+            <div class="slds-progress__marker"><span>6</span></div>
+            <div class="slds-progress__item_content slds-grid slds-grid_align-spread">Title I, Parts A & D</div>
+          </li>
+          <li class={step7CSS} data-id="7" onclick={handleStep} style="cursor: pointer;">
+            <div class="slds-progress__marker"><span>7</span></div>
+            <div class="slds-progress__item_content slds-grid slds-grid_align-spread">Title II, Part A</div>
+          </li>
+          <li class={step8CSS} data-id="8" onclick={handleStep} style="cursor: pointer;">
+            <div class="slds-progress__marker"><span>8</span></div>
+            <div class="slds-progress__item_content slds-grid slds-grid_align-spread">Title III, Part A</div>
+          </li>
+          <li class={step9CSS} data-id="9" onclick={handleStep} style="cursor: pointer;">
+            <div class="slds-progress__marker"><span>9</span></div>
+            <div class="slds-progress__item_content slds-grid slds-grid_align-spread">Title IV, Part A</div>
+          </li>
+          <li class={step10CSS} data-id="10" onclick={handleStep} style="cursor: pointer;">
+            <div class="slds-progress__marker"><span>10</span></div>
+            <div class="slds-progress__item_content slds-grid slds-grid_align-spread">Review</div>
+          </li>
+          <li class={step11CSS} data-id="11" onclick={handleStep} style="cursor: pointer;">
+            <div class="slds-progress__marker"><span>11</span></div>
+            <div class="slds-progress__item_content slds-grid slds-grid_align-spread">Signature</div>
+          </li>
+
+        </ol>
+        <div aria-valuemin="0" aria-valuemax="100" aria-valuenow="25" role="progressbar">
+          <span class="slds-assistive-text">{current}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</template>

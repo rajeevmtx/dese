@@ -1,0 +1,1503 @@
+<apex:page id="page" standardController="Project_Invoice__c" extensions="CORE_Milestone_Invoice_Controller" sidebar="false" tabStyle="Application__tab" docType="html-5.0">
+    <head>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
+
+
+        <!-- local CSS -->
+        <style>
+
+            .disabled{
+            	pointer-events: none;
+            }
+            .alert-container {
+            	margin:0;
+            }
+
+            .alert li{
+            	list-style: none;
+            }
+
+            .project-selector{
+            	margin: 5% 0 ;
+            }
+
+            .project-selector input, .project-selector input:focus{
+	            font-size: 44px;
+	            border: none;
+	            outline: none;
+	            width: 100%;
+            }
+
+            .customerInvoiceCss{
+           	    margin-left: -36px;
+            }
+
+            .actualAmount, .actualInKind, .actualTotal{
+            	text-align: right;
+            }
+
+            .invoiceNotesMessage{
+           	    margin-left: 2% !important;
+			    height: 49px !important;
+			    padding-top: 7px !important;
+            }
+
+            .invoiceNotes{
+            	width: 535px !important;
+            }
+
+            .page-header, h1{
+	            transition: 1s;
+	            -webkit-transition: 1s;
+	            max-width: 100% !important;
+            }
+
+            .nys-inv-card{
+            padding: 20px;
+            min-height: 290px;
+            margin-bottom: 10px;
+            }
+
+            .nys-inv-card.red{
+            background-color: #F5F5F5;
+            box-shadow: 0px 0px 5px #888;
+            transition: 0.1s;
+            -webkit-transition: 0.1s;
+            }
+
+            .nys-inv-card.red:hover{
+            box-shadow: 0px 0px 0px #888;
+            transition: 0.1s;
+            -webkit-transition: 0.1s;
+            }
+
+            .ui-autocomplete-loading {
+            background: white url("/img/loading32.gif") right center no-repeat;
+            }
+
+            dl{
+            margin-left: 0;
+            }
+
+            .dateOnlyInput input{
+            width: inherit;
+            }
+
+            .panel-heading .glyphicon, .panel-heading a{
+            color: #FFF;
+            }
+
+            .cancelBtn{
+            	float: left;
+            }
+
+            .required{
+            display: none;
+            color: red!important;
+            margin-left: 5px;
+            }
+
+            .has-error .required{
+            display:inline;
+            }
+
+            #paymentMessage{
+            	margin-left: 2%;
+            }
+
+            .paymentMessageText{
+            	vertical-align: -webkit-baseline-middle;
+            }
+
+            .invoice .misc .item .name{
+            width: 180px;
+            font-weight: 600;
+            padding: 4px 0;
+            margin-right: 10px;
+            }
+
+            .invoice .item .name{
+            width: 140px;
+            }
+
+            .invoice .misc .item .result input{
+            display: inline;
+            }
+
+            .invoice .misc .section-body{
+            padding : 0 15px;
+            display: block;
+            }
+
+            .invoice .invoice-detail > div.edit{
+            width: 100%;
+            }
+
+            .notes textarea{
+            height:auto!important;
+            }
+
+            .signature{
+            margin-left: 3.2%;
+            margin-top: 2%;
+            }
+            .removePadding {
+            padding: 0 0px !important;
+            }
+            #editBtn{margin-left: 29%;}
+
+            #errorTextCustom{display: none;}
+
+            tfoot.table-footer{
+            background-color: #eee;
+            border: 1px solid #ccc;
+            }
+            .textAreaStyle {
+                resize: none;
+                width: 100%;
+                height: 110%;
+            }
+            .requiredPO{
+                font-weight: bold;
+                color: red;
+            }
+
+            #errorMessage2, #errorMessage3, #errorAmountMismatch, .directLaborDocMissing{
+                display: none;
+            }
+            .retainagePanel {
+            	margin-top:25px;
+            }
+
+            .invoiceTbl thead tr th{
+            	vertical-align: top;
+            }
+
+            .marginLft{
+            	margin-left: 8%;
+            }
+
+            .content{
+            	margin-left: 0px !important;
+            }
+            .mt20 {
+            	margin-top: 20px;
+            }
+        </style>
+
+    </head>
+    <apex:composition template="CORE_APPINTAKE_Template_Page">
+        <apex:define name="body">
+            <div class="page invoice">
+                <div id="projectTitleContainer" class="page-header {!IF(isNew && ISBLANK(project.Name),'project-selector','')}">
+                    <div class="content flex sm">
+                        <h1>
+                            <apex:outputField value="{!invoice.Project__c}" rendered="{!invoice.Project__c != null}"/>
+                        </h1>
+                    </div>
+                </div>
+                <div class="application">
+                    <div class="alert-container">
+                        <div id="errorText" class="alert alert-danger hidden">
+                            {!$Label.Clean_Transportation_Required_fields_missing_msg}
+                        </div>
+                        <div id="errorText2" class="alert alert-danger hidden">
+                            {!$Label.Clean_Transportation_No_Budget_left}
+                        </div>
+
+                        <apex:messages styleClass="alert alert alert-danger"/>
+                        <apex:outputPanel layout="none" rendered="{!NOT(isInvoicingAllowed)}">
+                            <center>
+                                <h1 class="lead mt20">
+                                    {!pageErrorMessage}
+                                </h1>
+                            </center>
+                        </apex:outputPanel>
+                        <apex:outputPanel layout="none" rendered="{!($CurrentPage.parameters.issubmit == '1')}">
+                            <div class="alert alert-info">
+                                {!$Label.Clean_Transportation_Invoice_Submission}
+                            </div>
+                        </apex:outputPanel>
+
+                        <apex:outputPanel layout="none" rendered="{!OR($CurrentPage.parameters.invoiceStatus == 'Approved',
+                                                                       $CurrentPage.parameters.invoiceStatus == 'Rejected')}">
+                            <div class="alert alert-info">
+                                Invoice has been {!$CurrentPage.parameters.invoiceStatus}.
+                            </div>
+                        </apex:outputPanel>
+
+                        <div id="errorMessage2" class="alert alert-danger">
+                            {!$Label.Clean_Transportation_Distribution_Amount_Validation_Message}
+                        </div>
+
+                        <div id="errorMessage3" class="alert alert-danger">
+                            {!$Label.Clean_Transportation_Distribution_Required_Message}
+                        </div>
+                    </div>
+                    <div class="content content-body">
+                        <apex:form rendered="{!isInvoicingAllowed}">
+                            <div id="dataContainer" class="{!IF(isNew && ISBLANK(project.Name),'hidden','')}">
+                                <div class="invoice-detail">
+                                    <apex:outputPanel layout="block" id="addressPanel" styleClass="address {!IF(isEdit,'edit','')}">
+                                        <div class="head">
+                                            <div class="title">Billing Address</div><!-- /.title -->
+                                        </div><!-- /.head -->
+                                        <apex:outputPanel layout="block" styleClass="body">
+                                            <address>
+                                                <div><apex:outputField value="{!invoice.Company_Name__c}"/>
+                                                </div>
+                                                <div><apex:outputField value="{!invoice.Contact_Name__c}"/>
+                                                </div>
+                                                <div><apex:outputField value="{!invoice.Street__c}"/>
+                                                </div>
+                                                <div><apex:outputText value="{!invoice.City__c}, {!invoice.State__c} {!invoice.Zip__c}"/>
+                                                </div>
+                                            </address>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+
+                                    <apex:outputPanel layout="block" id="summaryPanel" styleClass="summary {!IF(isEdit,'edit','')}">
+                                        <div class="head">
+                                            <div class="title">Invoice Summary</div><!-- /.title -->
+                                        </div><!-- /.head -->
+
+                                        <apex:outputPanel layout="block" styleClass="body" rendered="{!NOT(isEdit)}">
+                                            <div class="item">
+                                                <div class="name">Invoice #:</div>
+                                                <div class="result">
+                                                    <apex:outputField styleClass="form-control" value="{!invoice.Name}"/>
+                                                </div>
+                                            </div><!-- /.item -->
+                                            <div class="item">
+                                                <div class="name">Invoice Date:</div>
+                                                <div class="result">
+                                                    <apex:outputField value="{!invoice.Invoice_Date__c}"/>
+                                                </div>
+                                            </div><!-- /.item -->
+                                            <div class="item">
+                                                <div class="name">Invoice Status:</div>
+                                                <div class="result">
+                                                    <apex:outputField value="{!invoice.Status__c}"/>
+                                                </div>
+                                            </div><!-- /.item -->
+                                            <div class="item">
+                                                <div class="name">Project Contract:</div>
+                                                <div class="result">
+                                                    <apex:outputText value="{!neisContractId}"/>
+                                                </div>
+                                            </div><!-- /.item -->
+                                            <apex:outputPanel rendered="{!project.Program_Version__r.Invoice_Type__c != 'Voucher'}">
+	                                            <div class="item summary">
+	                                                <div class="name">Purchase Order <span class="requiredPO">* </span></div>
+	                                                <div class="result">
+	                                                    <apex:outputField value="{!invoice.Project_Purchase_Order__r.NEIS_PO_ID__c}" rendered="{!invoice.Id != null}"/>
+	                                                    <apex:selectList disabled="{!purchaseOrderList.size == 2}" value="{!invoice.Project_Purchase_Order__c}" size="1" multiselect="false" styleClass="purchaseOrder requesting-field form-control select2"
+	                                                                                                            onchange="getProjectFunding();" rendered="{!AND(invoice.Id == null)}">
+	                                                        <apex:selectOptions value="{!purchaseOrderList}" />
+	                                                    </apex:selectList>
+	                                                </div>
+	                                            </div>
+                                            </apex:outputPanel>
+                                            <div class="item summary">
+                                                <div class="name">Final Payment:</div>
+                                                <div class="result">
+                                                    <apex:outputField value="{!invoice.Final_Payment__c}" rendered="{!OR(invoice.Id != null, (invoice.Id == null && !isPortalUser))}"/>
+                                                    <apex:inputField value="{!invoice.Final_Payment__c}" rendered="{!AND(invoice.Id == null, isPortalUser)}"/>
+                                                </div>
+                                            </div>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel layout="block" styleClass="body" rendered="{!isEdit}">
+                                            <div class="item">
+                                                <div class="name">Invoice #:</div>
+                                                <div class="result">
+                                                    <apex:inputText styleClass="form-control" value="{!invoice.Name}" disabled="true"/>
+                                                </div>
+                                            </div>
+                                            <div class="item date">
+                                                <div class="name">Invoice Date:</div>
+                                                <div class="result">
+                                                    <apex:outputField value="{!invoice.Invoice_Date__c}"/>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="name">Project Contract:</div>
+                                                <div class="result">
+                                                    <apex:outputText value="{!neisContractId}"/>
+                                                </div>
+                                            </div><!-- /.item -->
+                                            <apex:outputPanel rendered="{!project.Program_Version__r.Invoice_Type__c != 'Voucher'}">
+	                                            <div class="item summary">
+	                                                <div class="name">Purchase Order <span class="requiredPO">* </span></div>
+	                                                <div class="result">
+	                                                    <apex:selectList disabled="{!purchaseOrderList.size == 2}" value="{!invoice.Project_Purchase_Order__c}" onchange="getProjectFunding();" size="1" multiselect="false" styleClass="purchaseOrder requesting-field form-control select2">
+	                                                        <apex:selectOptions value="{!purchaseOrderList}" />
+	                                                    </apex:selectList>
+	                                                </div>
+	                                            </div>
+                                            </apex:outputPanel>
+                                            <div class="item summary">
+                                                <div class="name">Final Payment:</div>
+                                                <div class="result">
+                                                    <apex:inputField value="{!invoice.Final_Payment__c}" />
+                                                </div>
+                                            </div>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+
+                                    <apex:outputPanel id="totalAmountPanel" layout="block" styleClass="total">
+                                        <div class="head">
+                                            <div class="title">Amount Due</div><!-- /.title -->
+                                        </div><!-- /.head -->
+                                        <div class="result"><apex:outputText id="totalAmountField" value="{!invoice.Total_Amount_Due__c}"/></div>
+
+                                        <apex:outputPanel layout="block" rendered="{!invoice.Total_Retainage_Amount__c!= null && invoice.Total_Retainage_Amount__c > 0}" styleClass="retainagePanel">
+                                        	<div class="head">
+                                            	<div class="title">Total Retainage Amount</div>
+                                            </div>
+	                                        <div>
+	                                        	<apex:outputField id="totalRetainageAmountField" value="{!invoice.Total_Retainage_Amount__c}"/>
+	                                       	</div>
+                                    	</apex:outputPanel>
+                                    </apex:outputPanel>
+                                </div><!-- /.invoice-detail -->
+
+                                <hr class="page-divide" />
+                                <apex:outputPanel id="milestoneTable">
+                                        <apex:outputPanel layout="none" rendered="{!listOfMilestones.size > 0}">
+                                            <apex:outputPanel layout="block" styleClass="box-group" >
+                                                <div class="section-head">
+                                                    <div class="title">Invoice Lines</div>
+                                                </div>
+                                                <div class="section-body">
+                                                    <table class="table table-responsive table-striped table-default invoiceTbl">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="min-width:280px"></th>
+                                                                <th>Total ORG<br/>Budget</th>
+                                                                <apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}"><th>Total Cost Share</th></apex:outputPanel>
+                                                                <th>Billed to Date</th>
+                                                                <apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}"><th>Billed to Date -<br/>Cost Share</th></apex:outputPanel>
+                                                                <th>Remaining<br/>Budget</th>
+                                                                <apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}"><th>Remaining<br/>Cost Share</th></apex:outputPanel>
+                                                                <apex:outputPanel layout="none" rendered="{!AND(invoice.Project_Purchase_Order__c != null, !isPortalUser, listOfMilestones.size > 0, listOfMilestones[0].projectInvoiceLines.size > 0, listOfMilestones[0].projectInvoiceLines[0].distributions.size > 0)}">
+                                                                    <th colspan="{!If(AND(invoice.Project_Purchase_Order__c != null, !isPortalUser, listOfMilestones.size > 0, listOfMilestones[0].projectInvoiceLines.size > 0), listOfMilestones[0].projectInvoiceLines[0].distributions.size, 0)}">Funding Source</th>
+                                                                </apex:outputPanel>
+                                                                <th>ORG Invoice</th>
+                                                                <apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}"><th>Cost Share</th></apex:outputPanel>
+                                                            </tr>
+                                                            <apex:outputPanel layout="none" rendered="{!AND(invoice.Project_Purchase_Order__c != null, !isPortalUser, listOfMilestones.size > 0, listOfMilestones[0].projectInvoiceLines.size > 0)}">
+                                                            	<tr>
+                                                            		<th style="min-width:280px"></th>
+	                                                                <th></th>
+	                                                                <apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}"><th></th></apex:outputPanel>
+	                                                                <th></th>
+	                                                                <apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}"><th></th></apex:outputPanel>
+	                                                                <th></th>
+	                                                                <apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}"><th></th></apex:outputPanel>
+                                                                    <apex:repeat value="{!listOfMilestones[0].projectInvoiceLines[0].distributions}" var="distribution">
+                                                                        <th style="min-width: 80px;" title="{!distribution.title}"><apex:outputText value="{!distribution.header}" escape="false" /><br/><br/>{!distribution.fund}</th>
+                                                                    </apex:repeat>
+                                                                    <th></th>
+                                                                	<apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}"><th></th></apex:outputPanel>
+                                                            	</tr>
+                                                           </apex:outputPanel>
+                                                        </thead>
+                                                        <tbody>
+                                                            <apex:variable value="{!0}" var="milestoneCount"/>
+                                                            <apex:repeat value="{!listOfMilestones}" var="tempMilestone" rendered="{!AND(NOT(isEdit),NOT(isNEW))}">
+                                                            	<tr class="sm">
+	                                                            	<th>{!tempMilestone.parentMilestone.Name}</th>
+	                                                            	<th>
+	                                                            		<apex:outputPanel layout="none" rendered="{!tempMilestone.parentMilestone.Enable_Task_Limit__c}">
+	                                                                      	<apex:outputField value="{!tempMilestone.parentMilestone.NYSERDA_Cost__c}" />
+	                                                                    </apex:outputPanel>
+
+	                                                                    <apex:outputPanel layout="none" rendered="{!AND((!tempMilestone.parentMilestone.Enable_Task_Limit__c),
+	                                                                    												project.Program_Version__r.Enable_Milestone_Quantity__c)}">
+	                                                                      	<apex:outputField value="{!tempMilestone.parentMilestone.Total_NYSERDA_Payment__c}" />
+	                                                                    </apex:outputPanel>
+
+	                                                                    <apex:outputPanel layout="none" rendered="{!AND((!tempMilestone.parentMilestone.Enable_Task_Limit__c),
+	                                                                    												(!project.Program_Version__r.Enable_Milestone_Quantity__c))}">
+	                                                                      	<apex:outputField value="{!tempMilestone.parentMilestone.Incentive_Amount__c}" />
+	                                                                    </apex:outputPanel>
+	                                                            	</th>
+	                                                            	<apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}"><th><apex:outputField value="{!tempMilestone.parentMilestone.Cost_Share__c}" /></th></apex:outputPanel>
+	                                                            	<th><apex:outputField value="{!tempMilestone.parentMilestone.Billed_To_Date__c}" /></th>
+	                                                            	<apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}"><th><apex:outputField value="{!tempMilestone.parentMilestone.Billed_To_Date_Cost_Share__c}" /></th></apex:outputPanel>
+	                                                            	<th><apex:outputField value="{!tempMilestone.parentMilestone.Remaining_Budget__c}" /></th>
+	                                                            	<apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}"><th><apex:outputField value="{!tempMilestone.parentMilestone.Remaining_Budget_Cost_Share__c}" /></th></apex:outputPanel>
+	                                                            	<apex:outputPanel layout="none" rendered="{!AND(invoice.Project_Purchase_Order__c != null, !isPortalUser, listOfMilestones.size > 0, listOfMilestones[0].projectInvoiceLines.size > 0)}">
+	                                                                   <apex:repeat value="{!listOfMilestones[0].projectInvoiceLines[0].distributions}" var="distribution">
+	                                                                        <th></th>
+	                                                                    </apex:repeat>
+	                                                                </apex:outputPanel>
+	                                                            	<th></th>
+	                                                            	<apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}"><th></th></apex:outputPanel>
+	                                                            </tr>
+
+	                                                            <tr>
+	                                                            	<th></th>
+	                                                            	<td>Milestone Rate</td>
+	                                                            	<apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}"><th></th></apex:outputPanel>
+	                                                            	<td style="opacity: {!If((!project.Program_Version__r.Enable_Milestone_Quantity__c), '0', '1')}">Quantity</td>
+	                                                            	<apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}"><th></th></apex:outputPanel>
+	                                                            	<th></th>
+	                                                            	<apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}"><th></th></apex:outputPanel>
+	                                                            	<apex:outputPanel layout="none" rendered="{!AND(invoice.Project_Purchase_Order__c != null, !isPortalUser, listOfMilestones.size > 0, listOfMilestones[0].projectInvoiceLines.size > 0)}">
+	                                                                   <apex:repeat value="{!listOfMilestones[0].projectInvoiceLines[0].distributions}" var="distribution">
+	                                                                        <th></th>
+	                                                                    </apex:repeat>
+	                                                                </apex:outputPanel>
+	                                                            	<td>Total</td>
+	                                                            	<apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}"><th></th></apex:outputPanel>
+	                                                            </tr>
+
+	                                                            <apex:repeat value="{!tempMilestone.projectInvoiceLines}" var="projectInvoiceLine">
+	                                                                <tr class="budget-row">
+	                                                                    <td>
+	                                                                        <apex:outputText value="{!projectInvoiceLine.invoiceLineItem.Milestone__r.Name}"/>
+	                                                                    </td>
+	                                                                    <td class="fill">
+	                                                                        <apex:outputField value="{!projectInvoiceLine.invoiceLineItem.Milestone__r.Incentive_Amount__c }"/>
+	                                                                    </td>
+	                                                                    <apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}">
+		                                                                    <td>
+		                                                                        <apex:outputField value="{!projectInvoiceLine.invoiceLineItem.Milestone__r.Cost_Share__c}"/>
+		                                                                    </td>
+		                                                                </apex:outputPanel>
+	                                                                    <td class="fill" style="opacity: {!If((!project.Program_Version__r.Enable_Milestone_Quantity__c), '0', '1')}">
+	                                                                        <apex:outputField value="{!projectInvoiceLine.invoiceLineItem.Quantity__c}"/>
+	                                                                    </td>
+	                                                                    <apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}">
+		                                                                    <td>
+		                                                                        <apex:outputField value="{!projectInvoiceLine.invoiceLineItem.Milestone__r.Billed_To_Date_Cost_Share__c}"/>
+		                                                                    </td>
+		                                                                </apex:outputPanel>
+
+	                                                                    <td class="fill remaining-budget-field" style="opacity: 0">
+	                                                                        <apex:outputField value="{!projectInvoiceLine.invoiceLineItem.Milestone__r.Remaining_Budget__c }"/>
+	                                                                    </td>
+
+	                                                                    <apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}">
+		                                                                    <td class="remaining-budget-cost-share-field">
+		                                                                        <apex:outputField value="{!projectInvoiceLine.invoiceLineItem.Milestone__r.Remaining_Budget_Cost_Share__c}"/>
+		                                                                    </td>
+		                                                                </apex:outputPanel>
+
+	                                                                    <apex:outputPanel layout="none" rendered="{!AND(invoice.Project_Purchase_Order__c != null, !isPortalUser)}">
+	                                                                        <apex:variable value="{!0}" var="temp"/>
+	                                                                        <apex:repeat value="{!projectInvoiceLine.distributions}" var="distribution">
+	                                                                            <td class="{!If(MOD(temp, 2) == 0, 'fill', '')} distAmountSpan distAmount{!milestoneCount}" distRow="{!milestoneCount}">
+	                                                                                <apex:outputField value="{!distribution.distribution.Amount__c}" />
+	                                                                            </td>
+	                                                                            <apex:variable value="{!temp + 1}" var="temp"/>
+	                                                                        </apex:repeat>
+	                                                                    </apex:outputPanel>
+
+	                                                                    <td class="fill amount-field amount-field{!milestoneCount}">
+	                                                                        <apex:outputText value="${!projectInvoiceLine.invoiceLineItem.Amount__c}"/>
+	                                                                    </td>
+
+	                                                                    <apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}">
+		                                                                    <td class="amount-cost-share-field amount-cost-share-field{!milestoneCount}">
+		                                                                        <span><apex:outputText value="${!projectInvoiceLine.invoiceLineItem.Amount_Cost_Share__c}"/></span>
+		                                                                        <br/>
+	                                                                            <a style="display: {!If(projectInvoiceLine.invoiceLineItem.Id <> null, '', 'none')}" onclick="fetchCostShareClassification(true, '{!projectInvoiceLine.invoiceLineItem.Id}');">cost share details</a>
+		                                                                    </td>
+																		</apex:outputPanel>
+
+	                                                                    <td class="remaining-budget-actual hidden">
+	                                                                        <apex:outputField value="{!projectInvoiceLine.invoiceLineItem.Milestone__r.Remaining_Budget_Cost_Share__c}"/>
+	                                                                    </td>
+
+	                                                                    <apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}">
+		                                                                    <td class="remaining-budget-cost-share-actual hidden">
+		                                                                        <apex:outputField value="{!projectInvoiceLine.invoiceLineItem.Milestone__r.Remaining_Budget_Cost_Share__c}"/>
+		                                                                    </td>
+		                                                                </apex:outputPanel>
+	                                                                </tr>
+	                                                                <apex:variable value="{!milestoneCount + 1}" var="milestoneCount"/>
+	                                                             </apex:repeat>
+                                                            </apex:repeat>
+                                                            <apex:repeat value="{!listOfMilestones}" var="tempMilestone"  rendered="{!OR(isEdit,isNew)}">
+                                                            	<tr class="sm">
+	                                                            	<th>{!tempMilestone.parentMilestone.Name}</th>
+	                                                            	<th>
+	                                                            		<apex:outputPanel layout="none" rendered="{!tempMilestone.parentMilestone.Enable_Task_Limit__c}">
+	                                                                      	<apex:outputField value="{!tempMilestone.parentMilestone.NYSERDA_Cost__c}" />
+	                                                                    </apex:outputPanel>
+
+	                                                                    <apex:outputPanel layout="none" rendered="{!AND((!tempMilestone.parentMilestone.Enable_Task_Limit__c),
+	                                                                    												project.Program_Version__r.Enable_Milestone_Quantity__c)}">
+	                                                                      	<apex:outputField value="{!tempMilestone.parentMilestone.Total_NYSERDA_Payment__c}" />
+	                                                                    </apex:outputPanel>
+
+	                                                                    <apex:outputPanel layout="none" rendered="{!AND((!tempMilestone.parentMilestone.Enable_Task_Limit__c),
+	                                                                    												(!project.Program_Version__r.Enable_Milestone_Quantity__c))}">
+	                                                                      	<apex:outputField value="{!tempMilestone.parentMilestone.Incentive_Amount__c}" />
+	                                                                    </apex:outputPanel>
+	                                                            	</th>
+	                                                            	<apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}"><th><apex:outputField value="{!tempMilestone.parentMilestone.Cost_Share__c}" /></th></apex:outputPanel>
+	                                                            	<th><apex:outputField value="{!tempMilestone.parentMilestone.Billed_To_Date__c}" /></th>
+	                                                            	<apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}"><th><apex:outputField value="{!tempMilestone.parentMilestone.Billed_To_Date_Cost_Share__c}" /></th></apex:outputPanel>
+	                                                            	<th><apex:outputField value="{!tempMilestone.parentMilestone.Remaining_Budget__c}" /></th>
+	                                                            	<apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}"><th><apex:outputField value="{!tempMilestone.parentMilestone.Remaining_Budget_Cost_Share__c}" /></th></apex:outputPanel>
+	                                                            	<apex:outputPanel layout="none" rendered="{!AND(invoice.Project_Purchase_Order__c != null, !isPortalUser, listOfMilestones.size > 0, listOfMilestones[0].projectInvoiceLines.size > 0)}">
+	                                                                    <apex:repeat value="{!listOfMilestones[0].projectInvoiceLines[0].distributions}" var="distribution">
+	                                                                        <th></th>
+	                                                                    </apex:repeat>
+	                                                                </apex:outputPanel>
+	                                                            	<th></th>
+	                                                            	<apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}"><th></th></apex:outputPanel>
+	                                                            </tr>
+
+	                                                            <tr>
+	                                                            	<th></th>
+	                                                            	<td>Milestone Rate</td>
+	                                                            	<apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}"><th></th></apex:outputPanel>
+	                                                            	<td style="opacity: {!If((!project.Program_Version__r.Enable_Milestone_Quantity__c), '0', '1')}">Quantity</td>
+	                                                            	<apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}"><th></th></apex:outputPanel>
+	                                                            	<th></th>
+	                                                            	<apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}"><th></th></apex:outputPanel>
+	                                                            	<apex:outputPanel layout="none" rendered="{!AND(invoice.Project_Purchase_Order__c != null, !isPortalUser, listOfMilestones.size > 0, listOfMilestones[0].projectInvoiceLines.size > 0)}">
+	                                                                   <apex:repeat value="{!listOfMilestones[0].projectInvoiceLines[0].distributions}" var="distribution">
+	                                                                        <th></th>
+	                                                                    </apex:repeat>
+	                                                                </apex:outputPanel>
+	                                                            	<td>Total</td>
+	                                                            	<apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}"><th></th></apex:outputPanel>
+	                                                            </tr>
+
+	                                                            <apex:repeat value="{!tempMilestone.projectInvoiceLines}" var="projectInvoiceLine">
+	                                                                <tr class="budget-row">
+	                                                                    <td>
+	                                                                        <apex:outputText value="{!mapOfIdAndMilestone[projectInvoiceLine.invoiceLineItem.Milestone__c].Name}"></apex:outputText>
+	                                                                    </td>
+
+	                                                                    <td class="fill nyserdaBudget{!projectInvoiceLine.invoiceLineItem.Milestone__c}">
+	                                                                        <apex:outputField value="{!mapOfIdAndMilestone[projectInvoiceLine.invoiceLineItem.Milestone__c].Incentive_Amount__c }"/>
+	                                                                    </td>
+
+	                                                                    <apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}">
+		                                                                    <td>
+		                                                                        <apex:outputField value="{!mapOfIdAndMilestone[projectInvoiceLine.invoiceLineItem.Milestone__c].Cost_Share__c}"/>
+		                                                                    </td>
+		                                                                </apex:outputPanel>
+
+	                                                                    <td class="fill" style="opacity: {!If((!project.Program_Version__r.Enable_Milestone_Quantity__c), '0', '1')}">
+	                                                                        <apex:selectList style="width: 105%;" value="{!projectInvoiceLine.invoiceLineItem.Quantity__c}" onchange="setNYSERDAAmount('{!projectInvoiceLine.invoiceLineItem.Milestone__c}', this.value); return false;" size="1" multiselect="false" styleClass="form-control nyserda-share-quantity">
+						                                                        <apex:selectOptions value="{!projectInvoiceLine.availableQuantities}" />
+						                                                    </apex:selectList>
+	                                                                    </td>
+
+	                                                                    <apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}">
+		                                                                    <td>
+		                                                                        <apex:outputField value="{!mapOfIdAndMilestone[projectInvoiceLine.invoiceLineItem.Milestone__c].Billed_To_Date_Cost_Share__c}"/>
+		                                                                    </td>
+		                                                                </apex:outputPanel>
+
+	                                                                    <td class="fill remaining-budget-field" style="opacity: 0">
+	                                                                        <apex:outputField value="{!mapOfIdAndMilestone[projectInvoiceLine.invoiceLineItem.Milestone__c].Remaining_Budget__c }"/>
+	                                                                    </td>
+
+	                                                                    <apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}">
+		                                                                    <td class="remaining-budget-cost-share-field">
+		                                                                        <apex:outputField value="{!mapOfIdAndMilestone[projectInvoiceLine.invoiceLineItem.Milestone__c].Remaining_Budget_Cost_Share__c}"/>
+		                                                                    </td>
+	                                                                    </apex:outputPanel>
+
+	                                                                    <apex:outputPanel layout="none" rendered="{!AND(invoice.Project_Purchase_Order__c != null, !isPortalUser)}">
+	                                                                        <apex:variable value="{!0}" var="temp"/>
+	                                                                        <apex:repeat value="{!projectInvoiceLine.distributions}" var="distribution">
+	                                                                            <td class="{!If(MOD(temp, 2) == 0, 'fill', '')}">
+	                                                                                <apex:inputField value="{!distribution.distribution.Amount__c}" styleClass="form-control distAmount {!If(projectInvoiceLine.distributions.size == 1, 'disable', '')}" />
+	                                                                            </td>
+	                                                                            <apex:variable value="{!temp + 1}" var="temp"/>
+	                                                                        </apex:repeat>
+	                                                                    </apex:outputPanel>
+
+	                                                                    <td class="fill" width="120">
+	                                                                        <span class="remaining-budget-actual hidden">
+	                                                                            <apex:outputField value="{!mapOfIdAndMilestone[projectInvoiceLine.invoiceLineItem.Milestone__c].Remaining_Budget__c}"/>
+	                                                                        </span>
+	                                                                        <apex:inputField value="{!projectInvoiceLine.invoiceLineItem.Amount__c}" styleClass="form-control sm amount-field amount-field{!projectInvoiceLine.invoiceLineItem.Milestone__c} disable" onkeyup="calculateAmount()"/>
+	                                                                    </td>
+
+	                                                                    <apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}">
+		                                                                    <td width="120">
+		                                                                        <span class="remaining-budget-cost-share-actual hidden">
+		                                                                            <apex:outputField value="{!mapOfIdAndMilestone[projectInvoiceLine.invoiceLineItem.Milestone__c].Remaining_Budget_Cost_Share__c}"/>
+		                                                                        </span>
+		                                                                        <apex:inputField value="{!projectInvoiceLine.invoiceLineItem.Amount_Cost_Share__c}" styleClass="form-control sm amount-cost-share-field"/>
+		                                                                    		<a style="display: {!If(projectInvoiceLine.invoiceLineItem.Id <> null, '', 'none')}" onclick="fetchCostShareClassification(false, '{!projectInvoiceLine.invoiceLineItem.Id}');">cost share details</a>
+		                                                                    </td>
+		                                                                </apex:outputPanel>
+	                                                                </tr>
+	                                                                <apex:variable value="{!milestoneCount + 1}" var="milestoneCount"/>
+	                                                             </apex:repeat>
+                                                            </apex:repeat>
+                                                        </tbody>
+                                                        <tfoot class="table-footer">
+                                                            <tr>
+                                                            	<apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}">
+                                                            		<th colspan="{!If(AND(invoice.Project_Purchase_Order__c != null, !isPortalUser, listOfMilestones.size > 0, listOfMilestones[0].projectInvoiceLines.size > 0), listOfMilestones[0].projectInvoiceLines[0].distributions.size + 7, 7)}">Total</th>
+                                                            	</apex:outputPanel>
+
+                                                            	<apex:outputPanel layout="none" rendered="{!!project.Program_Version__r.Enable_Cost_Share__c}">
+                                                            		<th colspan="{!If(AND(invoice.Project_Purchase_Order__c != null, !isPortalUser, listOfMilestones.size > 0, listOfMilestones[0].projectInvoiceLines.size > 0), listOfMilestones[0].projectInvoiceLines[0].distributions.size + 4, 4)}">Total</th>
+                                                            	</apex:outputPanel>
+
+                                                                <th class="fill">
+                                                                    <div id="amount_total"></div>
+                                                                </th>
+
+                                                                <apex:outputPanel layout="none" rendered="{!project.Program_Version__r.Enable_Cost_Share__c}">
+	                                                                <th>
+	                                                                    <div id="cost_share_total"></div>
+	                                                                </th>
+	                                                            </apex:outputPanel>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+
+                                                </div><!-- /.section-body -->
+                                            </apex:outputPanel>
+                                            <apex:outputPanel styleClass="box-group misc" layout="block" >
+                                                <div class="section-head">
+                                                    <div class="title">Description</div>
+                                                </div><!-- /.section-head -->
+                                                <div class="section-body">
+                                                    <div class="item">
+                                                        <div class="name">
+                                                        	Payment Message
+                                                        </div>
+
+                                                        <div class="result">
+                                                            <apex:inputField styleClass="form-control paymentMessageText" value="{!invoice.Purchase_Order__c}" rendered="{!OR(isEdit,isNew)}" />
+                                                            <apex:outputField styleClass="paymentMessageText" value="{!invoice.Purchase_Order__c}" rendered="{!AND(NOT(isEdit),NOT(isNEW))}" />
+                                                        </div>
+
+                                                        <div class="alert alert-info" id="paymentMessage">
+							                                The information provided in this field will be provided in the payment remittance.
+							                            </div>
+                                                    </div>
+                                                    <div class="item notes">
+                                                        <div class="name">Invoice Notes</div>
+                                                        <div class="result">
+                                                            <apex:inputTextarea value="{!invoice.Invoice_Notes__c}" styleClass="form-control invoiceNotes" rows="2" disabled="{!AND(NOT(isEdit),NOT(isNEW))}"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </apex:outputPanel>
+                                            <apex:outputPanel styleClass="box-group" rendered="{!NOT(isNew) && NOT(isEdit)}" id="documentPanel1">
+                                                <apex:actionRegion >
+                                                    <apex:outputPanel layout="block" styleClass="attachments">
+                                                        <apex:outputPanel layout="block" rendered="{!NOT(isEdit)}">
+                                                            <div class="section-head">
+                                                                <div class="title">Supporting Documents</div>
+                                                                <apex:outputPanel styleClass="pull-right" rendered="{!AND(!isPortalUser, invoice.Status__c != 'Paid')}">
+                                                                    <apex:outputPanel layout="none" rendered="{!!isEditMode}">
+                                                                        <apex:outputPanel layout="none" rendered="{!invoice.Status__c != 'Approved'}">
+                                                                            <a href="javascript:void(0)" class="btn-bs btn-link" onclick="setEditMode();">Edit</a>
+                                                                        </apex:outputPanel>
+                                                                        <apex:outputPanel layout="none" rendered="{!isRejectedDocumentPresent}">
+                                                                            <a href="javascript:void(0)"  class="btn-bs btn-link sendEmailBtn" onclick="openCustomEmailPage();">Request for Information</a>
+                                                                        </apex:outputPanel>
+                                                                    </apex:outputPanel>
+
+                                                                    <apex:outputPanel rendered="{!isEditMode}">
+                                                                        <a href="javascript:void(0)" class="btn-bs btn-link" onclick="saveProjectDocuments();">Save</a>
+                                                                        <a href="javascript:void(0)" class="btn-bs btn-link" onclick="cancelChangesOfApprovalProcess();">Cancel</a>
+                                                                    </apex:outputPanel>
+                                                                </apex:outputPanel>
+                                                            </div>
+                                                            <div class="section-body">
+                                                                <table class="table table-responsive table-striped table-default">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Document Name</th>
+                                                                            <th>File Name</th>
+                                                                            <th>Upload Date</th>
+                                                                            <th class="small">Action</th>
+                                                                            <th>Status</th>
+                                                                            <th>Notes</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <apex:repeat value="{!mapOfIdAndDeliverables}" var="dId">
+                                                                            <apex:outputPanel layout="none" rendered="{!mapOfIdAndDeliverables[dId].Project_Documents__r.size > 0}">
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        <apex:outputText value="{!mapOfIdAndDeliverables[dId].Name}"/>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <apex:outputText value="{!mapOfIdAndDocuments[mapOfIdAndDeliverables[dId].Project_Documents__r[0].Id].Attachments[0].Name}"/>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <apex:outputField value="{!mapOfIdAndDeliverables[dId].Project_Documents__r[0].CreatedDate}"/>
+                                                                                    </td>
+                                                                                    <td class="action">
+                                                                                        <a target="_blank" href="/servlet/servlet.FileDownload?file={!mapOfIdAndDocuments[mapOfIdAndDeliverables[dId].Project_Documents__r[0].Id].Attachments[0].Id}">View</a>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <apex:outputPanel layout="none" rendered="{!!isPortalUser}">
+                                                                                            <apex:outputPanel layout="none" rendered="{!isEditMode}">
+                                                                                                <apex:selectRadio value="{!mapOfIdAndDeliverables[dId].Project_Documents__r[0].Status__c}" style="margin-left: -30px;">
+                                                                                                    <apex:selectOptions value="{!status}"/>
+                                                                                                </apex:selectRadio>
+                                                                                            </apex:outputPanel>
+                                                                                            <apex:outputPanel layout="none" rendered="{!!isEditMode}">
+                                                                                                <apex:outputText value="{!mapOfIdAndDeliverables[dId].Project_Documents__r[0].Status__c}" />
+                                                                                            </apex:outputPanel>
+                                                                                        </apex:outputPanel>
+
+                                                                                        <apex:outputPanel layout="none" rendered="{!isPortalUser}">
+                                                                                            <apex:outputText value="{!mapOfIdAndDeliverables[dId].Project_Documents__r[0].Status__c}"/>
+                                                                                        </apex:outputPanel>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <apex:outputPanel layout="none" rendered="{!!isPortalUser}">
+                                                                                            <apex:outputPanel layout="none" rendered="{!isEditMode}">
+                                                                                                <apex:inputTextarea value="{!mapOfIdAndDeliverables[dId].Project_Documents__r[0].Notes__c}" styleClass="textAreaStyle"/>
+                                                                                            </apex:outputPanel>
+
+                                                                                            <apex:outputPanel layout="none" rendered="{!!isEditMode}">
+                                                                                                {!mapOfIdAndDeliverables[dId].Project_Documents__r[0].Notes__c}
+                                                                                            </apex:outputPanel>
+                                                                                        </apex:outputPanel>
+
+                                                                                        <apex:outputPanel layout="none" rendered="{!isPortalUser}">
+                                                                                            {!mapOfIdAndDeliverables[dId].Project_Documents__r[0].Notes__c}
+                                                                                        </apex:outputPanel>
+
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </apex:outputPanel>
+                                                                            <apex:outputPanel layout="none" rendered="{!mapOfIdAndDeliverables[dId].Project_Documents__r.size == 0 && isPortalUser}">
+                                                                                <tr class="warning">
+                                                                                    <td><apex:outputText value="{!mapOfIdAndDeliverables[dId].Name}"/></td>
+                                                                                    <td>
+                                                                                        Visit the
+                                                                                        <apex:actionRegion >
+                                                                                            <apex:commandLink action="{!goToDocumentsPage}">Manage Documents</apex:commandLink>
+                                                                                        </apex:actionRegion>
+                                                                                        page to add this file.
+                                                                                    </td>
+                                                                                    <td>-</td>
+                                                                                    <td>-</td>
+                                                                                </tr>
+                                                                            </apex:outputPanel>
+                                                                        </apex:repeat>
+                                                                    </tbody>
+                                                                    <tfoot>
+                                                                        <tr>
+                                                                            <td colspan="4">
+                                                                                <apex:actionRegion >
+                                                                                    <apex:commandLink styleClass="folder-button" action="{!goToDocumentsPage}"  rendered="{!isPortalUser}">Manage Documents</apex:commandLink>
+                                                                                </apex:actionRegion>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tfoot>
+                                                                </table>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                    </apex:outputPanel>
+                                                </apex:actionRegion>
+                                            </apex:outputPanel>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel layout="none" rendered="{!listOfMilestones.size == 0}">
+                                            {!$Label.Clean_Transportation_There_are_no_approved_milestones_to_invoice}
+                                        </apex:outputPanel>
+
+                                    <script>
+                                        $('.disable').attr('disabled', 'disabled');
+                                      	try{
+                                      		var tblWidth = parseInt($('.invoiceTbl').css('width')) + 85;
+											$('.page.invoice').css('width', tblWidth + 'px');
+
+											$(".distAmount").on("change",function() {
+									        	$(this).val(formatNumber(getAmount($(this).val())));
+									        });
+
+											$(".amount-field").on("change",function() {
+									            $(this).val(formatNumber(getAmount($(this).val())));
+											});
+                                      	}catch(err){}
+                                    </script>
+                                </apex:outputPanel>
+
+                            </div>
+                            <apex:actionFunction name="continueBudgetToInvoice" action="{!goToTaskInvoiceView}"/>
+                            <apex:actionFunction name="saveBudgetViewAction" action="{!saveBudgetView}"/>
+                            <apex:actionFunction name="backToBudgetView" action="{!goToTaskBudgetView}"/>
+                            <apex:actionFunction name="cancelChanges" action="{!cancelChanges}"  immediate="true"/>
+                            <apex:actionFunction name="cancelChangesBudget" action="{!cancelChangesBudget}"  immediate="true"/>
+                            <apex:actionFunction name="saveInvoiceAction" action="{!saveInvoiceRecord}"/>
+                            <apex:actionRegion >
+                                <apex:actionFunction name="editAll" action="{!editAll}" immediate="true"/>
+                                <apex:actionFunction name="editAllBudgetView" action="{!editAllBudgetView}" immediate="true"/>
+                                <apex:actionFunction name="submitAction" action="{!submitForReview}" immediate="true"/>
+                            </apex:actionRegion>
+
+                            <apex:actionFunction name="fetchCostShareClassification"  immediate="true" action="{!fetchCostShareClassification}" status="status" rerender="modalForm2" oncomplete="enterCostShareClassification(); return false;">
+		                    	<apex:param value="" name="isReadOnlyMode" assignTo="{!isReadOnlyMode}" />
+		                    	<apex:param value="" name="selectedInvoiceLine" assignTo="{!selectedInvoiceLine}" />
+		                    </apex:actionFunction>
+
+		                    <apex:actionFunction name="addNewClassification"  immediate="true" action="{!addNewClassification}" status="status1" rerender="modalForm2" />
+
+		                    <apex:actionFunction name="removeClassification" action="{!removeClassification}" status="status1" rerender="modalForm2" immediate="true">
+		                    	<apex:param value="" name="selectedClassificationIndex" assignTo="{!selectedClassificationIndex}" />
+		                    </apex:actionFunction>
+
+                            <apex:actionFunction name="saveProjectDocuments" action="{!setStatusOfProjectDocuments}" rerender="documentPanel, documentPanel1, footerPanel" status="status">
+                            </apex:actionFunction>
+
+                            <apex:actionFunction name="setEditMode" action="{!setEditMode}" rerender="documentPanel, documentPanel1, footerPanel, tablePanel" status="status">
+                            </apex:actionFunction>
+
+                            <apex:actionFunction name="setInvoiceStatus" action="{!setInvoiceStatus}" rerender="documentPanel, documentPanel1, footerPanel, securityErrorMsg" status="status" onComplete="openInvoiceRejectedCustomEmailPage();">
+                                <apex:param name="invoiceStatus" assignTo="{!invoiceStatus}" value=""/>
+                            </apex:actionFunction>
+
+                            <apex:actionFunction name="cancelChangesOfApprovalProcess" action="{!cancelChangesOfApprovalProcess}" rerender="documentPanel,  documentPanel1" status="status">
+                            </apex:actionFunction>
+
+                            <apex:actionFunction name="getProjectFundingAction" action="{!getProjectFunding}" rerender="milestoneTable" oncomplete="roundOffAmount();" status="status" />
+
+                        	<apex:actionFunction name="saveCostSharingClassification" action="{!saveCostSharingClassification}" status="status1" rerender="modalForm2" />
+
+			                <!-- Cost Share Classification POP UP -->
+			                <div class="modal fade" id="costShareClassificationPopUp" role="dialog">
+			                    <div class="modal-dialog modal-lg">
+			                        <div class="modal-content">
+			                        	<apex:actionStatus id="status1">
+									        <apex:facet name="start">
+									          <div class="sk-folding-cube">
+									            <div class="sk-cube1 sk-cube"></div>
+									            <div class="sk-cube2 sk-cube"></div>
+									            <div class="sk-cube4 sk-cube"></div>
+									            <div class="sk-cube3 sk-cube"></div>
+									          </div>
+									          <div class="loading-overlay"></div>
+									        </apex:facet>
+									      </apex:actionStatus>
+
+			                            <apex:outputPanel id="modalForm2">
+			                                <div class="modal-header">
+			                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+			                                    <h4 class="modal-title">Enter Cost Share Classification</h4>
+			                                </div>
+			                                <div class="modal-body">
+			                                    <apex:outputPanel rendered="{!isError}">
+				                                	<div class="alert alert-danger">
+							                            {!$Label.Clean_Transportation_Invoice_Cost_Share_Validation_Message}
+							                        </div>
+						                        </apex:outputPanel>
+
+			                                    <apex:variable value="{!0}" var="classificationIndex" />
+			                                    <table class="table table-responsive table-striped table-default invoiceTbl">
+				                                     <thead>
+														<tr>
+															<th style="width: 25%">Entity Name</th>
+															<th>Cash ($)</th>
+															<th>In-Kind ($)</th>
+															<th>Total ($)</th>
+															<apex:outputPanel layout="none"
+																rendered="{!!isReadOnlyMode}">
+																<th style="width: 5%">Remove</th>
+															</apex:outputPanel>
+														</tr>
+													</thead>
+
+													<tbody>
+													    <apex:repeat value="{!selectedClassifications}" var="classification">
+													    	<tr>
+																<td>
+																	<apex:outputField value="{!classification.Name}" styleClass="form-control lg" rendered="{!classification.Classifications__c <> null}"/>
+																	<apex:inputField required="true" value="{!classification.Name}" styleClass="form-control lg" rendered="{!classification.Classifications__c == null}"/>
+																</td>
+																<td><apex:inputField value="{!classification.Actual_Cash_Amount__c}" styleClass="form-control md actualAmount actualAmount{!classificationIndex}"/></td>
+																<td><apex:inputField value="{!classification.Actual_In_Kind_Amount__c}" styleClass="form-control md actualInKind actualInKind{!classificationIndex}"/></td>
+																<td><apex:inputField value="{!classification.Actual_Total__c}" styleClass="form-control md actualTotal actualTotal{!classificationIndex}" /></td>
+
+																<apex:outputPanel layout="none" rendered="{!!isReadOnlyMode}">
+																	<td>
+																		<apex:outputPanel layout="none" rendered="{!(isCurrentUserPM || (classification.Classifications__c == null))}">
+																			<a style="cursor: pointer" onclick="removeClassification('{!classificationIndex}'); return false;"><img src="/img/func_icons/remove12_on.gif" title="Remove"/></a>
+																		</apex:outputPanel>
+																	</td>
+																</apex:outputPanel>
+
+																<apex:variable value="{!classificationIndex + 1}" var="classificationIndex" />
+															</tr>
+													    </apex:repeat>
+													</tbody>
+
+													<tfoot>
+														<tr>
+															<th><apex:outputPanel layout="none" rendered="{!!isReadOnlyMode}"><a style="cursor: pointer; color: #0075CB;" onclick="addNewClassification(); return false;">Add New Entity</a></apex:outputPanel></th>
+															<th><span style="float: right;">$<span id="totalCashAmount"></span></span></th>
+															<th><span style="float: right;">$<span id="totalInKindAmount"></span></span></th>
+															<th><span style="float: right;">$<span id="totalAmount"></span></span></th>
+															<apex:outputPanel layout="none" rendered="{!!isReadOnlyMode}"><th></th></apex:outputPanel>
+														</tr>
+													</tfoot>
+												</table>
+			                                </div>
+			                                <apex:outputPanel layout="none" rendered="{!!isReadOnlyMode}">
+				                                <div class="modal-footer">
+				                                    <div class="row">
+				                                        <span id="cancelBtnDiv">
+				                                            <button type="button" class="btn-bs btn-primary" onclick="saveCostSharingClassification();">Save</button>
+				                                            <button type="button" class="btn-bs btn-default cancelBtn" data-dismiss="modal">Cancel</button>
+				                                        </span>
+				                                    </div>
+				                                </div>
+				                            </apex:outputPanel>
+
+			                                <script>
+			                                	$('.actualAmount, .actualInKind').on('change, keyup', function(){
+			                                		calculateTotalCostShare();
+			                                	});
+
+			                                	calculateTotalCostShare();
+
+			                                	function calculateTotalCostShare(){
+			                                		var tempLength = {!selectedClassifications.size};
+
+			                                		var tempTotal = 0;
+			                                		var totalCashAmount = 0;
+			                                		var totalInKindAmount = 0;
+
+			                                		for(var i=0; i<tempLength; i++){
+			                                			var temp = 0;
+
+			                                			if($('.actualAmount' + i).val() != null &&
+			                                			   $('.actualAmount' + i).val() != '' &&
+			                                			   typeof($('.actualAmount' + i).val()) != 'undefined' &&
+			                                			   !isNaN($('.actualAmount' + i).val().replace('$','').replace(',',''))){
+
+			                                				temp += parseFloat($('.actualAmount' + i).val().replace('$','').replace(',',''));
+
+			                                				totalCashAmount += parseFloat($('.actualAmount' + i).val().replace('$','').replace(',',''));
+			                                			}
+
+			                                			if($('.actualInKind' + i).val() != null &&
+			                                			   $('.actualInKind' + i).val() != '' &&
+			                                			   typeof($('.actualInKind' + i).val()) != 'undefined' &&
+			                                			   !isNaN($('.actualInKind' + i).val().replace('$','').replace(',',''))){
+
+			                                				temp += parseFloat($('.actualInKind' + i).val().replace('$','').replace(',',''));
+
+			                                				totalInKindAmount += parseFloat($('.actualInKind' + i).val().replace('$','').replace(',',''));
+			                                			}
+
+			                                			tempTotal += temp;
+
+			                                			$('.actualTotal' + i).val(formatNumber(temp.toFixed(2)));
+			                                		}
+
+			                                		$('#totalAmount').text(formatNumber(tempTotal.toFixed(2)));
+			                                		$('#totalCashAmount').text(formatNumber(totalCashAmount.toFixed(2)));
+			                                		$('#totalInKindAmount').text(formatNumber(totalInKindAmount.toFixed(2)));
+			                                	}
+
+			                                	$('.actualTotal').attr('disabled', 'disabled');
+
+			                                	if({!isReadOnlyMode}){
+			                                		$('#costShareClassificationPopUp input').attr('disabled', 'disabled');
+			                                	}
+
+			                                	if({!isSaved}){
+			                                		$('#costShareClassificationPopUp').modal('toggle');
+			                                	}
+
+			                                	function formatStringIntoNumber(number) {
+										            if(number != null && number != undefined && number != '') {
+										                if(typeof(number) == 'string') {
+										                    number = number.replace(new RegExp(',', 'g'), '');
+										                    number = parseFloat(number);
+										                }
+										            }
+										            return number;
+										        }
+
+			                                	function formatNumber(number, decimalPoint) {
+											         if(number != null && number != undefined && number != '') {
+											             if(typeof(number) == 'string') {
+											                 number = formatStringIntoNumber(number);
+											             }
+											             if(typeof(number) == 'number') {
+											                 if(decimalPoint == undefined) {
+											                     number = number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+											                 } else {
+											                     if(decimalPoint == 0) {
+											                         number = number.toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+											                         number = number.substring(0, number.length - 2);
+											                     }
+											                 }
+											             }
+											         }
+											         return number;
+											     }
+			                                </script>
+			                            </apex:outputPanel>
+			                        </div>
+			                    </div>
+			                </div>
+                        </apex:form>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <apex:outputPanel id="footerPanel">
+                <footer>
+                    <div class="content flex controls">
+                        <apex:outputPanel layout="none" rendered="{!isEdit && isInvoicingAllowed && NOT(isBudgetView)}">
+                            <a href="javascript:cancelChanges()" class="btn-bs btn-blank btn-lg left">Cancel</a>
+                        </apex:outputPanel>
+                        <apex:outputPanel layout="none" rendered="{!isEdit && isInvoicingAllowed && isBudgetView}">
+                            <a href="javascript:cancelChangesBudget()" class="btn-bs btn-blank btn-lg left">Cancel</a>
+                        </apex:outputPanel>
+                        <apex:outputPanel layout="none" rendered="{!NOT(isEdit)}">
+                            <a href="/{!project.Id}" class="btn-bs btn-blank btn-lg left">Go Back</a>
+                        </apex:outputPanel>
+
+                        <apex:outputPanel layout="none" rendered="{!(NOT(isLocked) || Not(isPortalUser)) && isInvoicingAllowed}">
+                            <apex:outputPanel layout="none" rendered="{!NOT(isBudgetView)}">
+                                <apex:outputPanel layout="none" rendered="{!isNew || isEdit}">
+                                    <apex:outputPanel layout="none" rendered="{!AND(NOT(isBudgetView),listOfMilestones.size > 0)}">
+                                        <a id="saveBtn" href="javascript:saveInvoice()" class="btn-bs btn-lg btn-primary">Save</a>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+
+                        <apex:outputPanel layout="none" rendered="{!(NOT(isLocked) || Not(isPortalUser)) && isInvoicingAllowed}">
+                            <apex:outputPanel layout="none" rendered="{!isBudgetView}">
+                                <apex:outputPanel layout="none" rendered="{!isNew || isEdit}">
+                                    <a id="saveBtn" href="javascript:saveBudgetView()" class="btn-bs btn-lg btn-primary">Save</a>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+
+                        <apex:outputPanel layout="none" rendered="{!((NOT(isLocked) && isInvoicingAllowed && NOT(isBudgetView) && NOT(isNew) && NOT(isEdit) && (invoice.Status__c == 'Draft' || invoice.Status__c == 'Pending Program Review'))
+                                                                    || (NOT(isBudgetView) && isInvoicingAllowed && Not(isPortalUser) && NOT(isNew) && NOT(isEdit) && (invoice.Status__c == 'Draft' || invoice.Status__c == 'Pending Program Review')))}">
+                              <a id="editBtn" href="javascript:editAll()" class="btn-bs btn-lg btn-default marginLft">Edit</a>
+                        </apex:outputPanel>
+
+                        <apex:outputPanel layout="none" rendered="{!((NOT(isLocked) && isInvoicingAllowed && isBudgetView && NOT(isNew) && NOT(isEdit) && (invoice.Status__c == 'Draft' || invoice.Status__c == 'Pending Program Review'))
+                                                                    || (isBudgetView && isInvoicingAllowed && Not(isPortalUser) && NOT(isNew) && NOT(isEdit) && (invoice.Status__c == 'Draft' || invoice.Status__c == 'Pending Program Review')))}">
+                              <a id="editBtn" href="javascript:editAllBudgetView()" class="btn-bs btn-lg btn-default">Edit</a>
+                        </apex:outputPanel>
+
+                        <apex:outputPanel layout="none" rendered="{!NOT(isLocked) && isInvoicingAllowed}">
+                            <apex:outputPanel layout="none" rendered="{!NOT(isBudgetView)}">
+                                <apex:outputPanel layout="none" rendered="{!NOT(isNew) && NOT(isEdit)}">
+                                    <a id="submitBtn" href="javascript:submit()" class="btn-bs btn-primary btn-lg">Submit</a>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                            <apex:outputPanel layout="none" rendered="{!isBudgetView && Not(isNew) && Not(isEdit)}">
+                                <a id="continueBtn" href="javascript:continueBudgetToInvoice()" class="btn-bs btn-lg btn-primary">Continue</a>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+
+                        <apex:outputPanel layout="none" rendered="{!isLocked && isBudgetView && Not(isEdit) && Not(isNew)}">
+                            <a id="continueBtn" href="javascript:continueBudgetToInvoice()" class="btn-bs btn-lg btn-primary">Continue</a>
+                        </apex:outputPanel>
+
+                        <apex:outputPanel layout="none" rendered="{!AND(isLocked, isInvoicingAllowed, invoice.Status__c != 'Approved', invoice.Status__c != 'Rejected', NOT(isNew), NOT(isEdit), !isEditMode, !isPortalUser, !isBudgetView)}">
+                            <apex:outputPanel rendered="{!invoice.Status__c == 'Pending Program Review'}">
+                                <a id="submitBtn" href="javascript:void(0)" onclick="openConfirmPopup('Rejected', 'Reject')" class="btn-bs btn-default btn-lg mr10 marginLft">Reject</a>
+                            </apex:outputPanel>
+
+                            <apex:outputPanel rendered="{!AND(isAllDeliverablesApproved, invoice.Status__c == 'Pending Program Review')}">
+                                <a id="submitBtn" href="javascript:void(0)" onclick="openConfirmPopup('Approved', 'Approve')" class="btn-bs btn-lg btn-primary marginLft">Approve</a>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+
+                    </div>
+                </footer>
+
+                <!-- CONFIRMATION POP UP -->
+                <div class="modal fade" id="confirmationPopUp" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <apex:outputPanel id="modalForm1">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">CONFIRM</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="confirmMessage" style="text-align: justify;">
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="row">
+                                        <span id="cancelBtnDiv">
+                                            <button id="okBtn" type="button" class="btn-bs btn-primary" onclick="confirmButtonAction();" data-dismiss="modal">OK</button>
+                                            <button id="cancelBtn" type="button" class="btn-bs btn-default" data-dismiss="modal">Cancel</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+                        </div>
+                    </div>
+                </div>
+
+            </apex:outputPanel>
+        </apex:define>
+    </apex:composition>
+
+    <script>
+	function setNYSERDAAmount(milestoneId, quantity){
+    	var nyserdaBudget = getAmount($('.nyserdaBudget' + milestoneId).text());
+    	var totalInvoiceAmount = parseFloat(nyserdaBudget) * parseFloat(quantity);
+
+    	$('.amount-field' + milestoneId).val(formatNumber(totalInvoiceAmount));
+    }
+
+    function openCustomEmailPage() {
+        window.open('/apex/CustomEmail_Page?ProjectId={!project.Id}&IsMoreInfoRequired=true&InvoiceId={!$CurrentPage.parameters.id}', '_blank');
+    }
+
+    function openInvoiceRejectedCustomEmailPage() {
+        window.open('/apex/CustomEmail_Page?ProjectId={!project.Id}&IsInvoiceRejected=true&InvoiceId={!$CurrentPage.parameters.id}', '_self');
+    }
+
+    function enterCostShareClassification(){
+    	$('#costShareClassificationPopUp').modal();
+    }
+
+    function submit(){
+    	submitAction();
+    }
+
+    $(function(){
+        manageUI();
+        calculateAmount();
+
+        $(".distAmount").on("change",function() {
+        	$(this).val($(this).val());
+        });
+
+        $(".amount-field").on("change",function() {
+            $(this).val(formatNumber(getAmount($(this).val())));
+            updateTotalAmountValues();
+        });
+
+        $(".amount-cost-share-field").on("change",function(){
+            var remainingAmount = getAmount($(this).parents('tr.budget-row').find(".remaining-budget-cost-share-actual span").text());
+            var thisAmount = getAmount($(this).val());
+            if(remainingAmount >= thisAmount){
+                $(this).parents('tr.budget-row').find("td.remaining-budget-cost-share-field span").text('$'+(remainingAmount - thisAmount));
+                $("#errorText2").addClass('hidden');
+            }else{
+                $(this).parents('tr.budget-row').find("td.remaining-budget-cost-share-field span").text('$0');
+                //$(this).val(remainingAmount);
+                //$("#errorText2").removeClass('hidden');
+            }
+            updateTotalAmountValues();
+        });
+
+        $(".nyserda-share-quantity").on("change",function(){
+            var remainingAmount = getAmount($(this).parents('tr.budget-row').find(".remaining-budget-cost-share-actual span").text());
+            var thisAmount = getAmount($(this).val());
+            if(remainingAmount >= thisAmount){
+                $(this).parents('tr.budget-row').find("td.remaining-budget-cost-share-field span").text('$'+(remainingAmount - thisAmount));
+                $("#errorText2").addClass('hidden');
+            }else{
+                $(this).parents('tr.budget-row').find("td.remaining-budget-cost-share-field span").text('$0');
+                //$(this).val(remainingAmount);
+                //$("#errorText2").removeClass('hidden');
+            }
+            updateTotalAmountValues();
+        });
+
+        $(".amount-field").trigger("change");
+        $(".amount-cost-share-field").trigger("change");
+    });
+
+    $(document).ready(function(){
+        $('.disable').attr('disabled', 'disabled');
+        var tblWidth = parseInt($('.invoiceTbl').css('width')) + 85;
+        if(tblWidth != 185) {
+            $('.page.invoice').css('width', tblWidth + 'px');
+        }
+        roundOffAmount();
+        formatAmounts();
+    });
+
+    function updateTotalAmountValues(){
+        var totalAmount = 0;
+        var totalCostShare = 0;
+        $(".amount-field").each(function(){
+            if({!isNew|| isEdit || invoice.Status__c == 'Draft'}){
+                if(!isNaN(getAmount($(this).val())) && getAmount($(this).val()) != 0){
+                    totalAmount += getAmount($(this).val());
+                }else if(!isNaN(getAmount($(this).text())) && getAmount($(this).text()) != 0){
+                    totalAmount += getAmount($(this).text());
+                }
+            }else if(!isNaN(getAmount($(this).text())) && getAmount($(this).text()) != 0){
+               totalAmount += getAmount($(this).text());
+            }
+        });
+
+        $(".amount-cost-share-field").each(function(){
+
+            if({!isNew|| isEdit || invoice.Status__c == 'Draft'}){
+                if(!isNaN(getAmount($(this).val())) && getAmount($(this).val()) != 0){
+                    totalCostShare += getAmount($(this).val());
+                }else if(!isNaN(getAmount($(this).text())) && getAmount($(this).text()) != 0){
+                    totalCostShare += getAmount($(this).text());
+                }
+            }else if(!isNaN(getAmount($(this).text())) && getAmount($(this).text()) != 0){
+                totalCostShare += getAmount($(this).text());
+            }
+        });
+
+        if(!isNaN(totalAmount)){
+            $("#amount_total").text('$'+formatNumber(totalAmount));
+        }
+
+        if(!isNaN(totalCostShare)){
+            $("#cost_share_total").text('$'+formatNumber(totalCostShare));
+        }
+
+        calculateAmount();
+
+    }
+
+    function manageUI(){
+        $('[data-toggle="popover"]').popover();
+        removeRepeatedMilestones();
+        $('.select2').select2();
+    }
+
+    function removeRepeatedMilestones(){
+        var selectedMst = [];
+        $(".mst-select").each(function(){
+            selectedMst.push($(this).val());
+        });
+
+        $(".mst-select :not(option:selected)").each(function(){
+            if(selectedMst.indexOf($(this).attr('value')) >= 0){
+                $(this).remove();
+            }
+        });
+    }
+
+    function saveBudgetView(){
+    	var hasMissingFields = false;
+        $(".requesting-field").each(function(){
+            if($(this).val() == '' || $(this).val() == null){
+                $(this).closest('.result').addClass('has-error');
+                hasMissingFields = true;
+            }else{
+                $(this).closest('.result').removeClass('has-error');
+            }
+        });
+        if(hasMissingFields == false){
+            $("#errorText").addClass('hidden');
+
+            saveBudgetViewAction();
+        }else{
+            $("#errorText").removeClass('hidden');
+        }
+    }
+
+    function saveInvoice(){
+        var hasMissingFields = false;
+        $(".requesting-field").each(function(){
+            if($(this).val() == '' || $(this).val() == null){
+                $(this).closest('.result').addClass('has-error');
+                hasMissingFields = true;
+            }else{
+                $(this).closest('.result').removeClass('has-error');
+            }
+        });
+        if(hasMissingFields == false){
+            $("#errorText").addClass('hidden');
+
+            saveInvoiceAction();
+        }else{
+            $("#errorText").removeClass('hidden');
+        }
+    }
+
+    function calculateAmount(){
+        if({!isNew|| isEdit}){
+        	var totalAmountText = $("[id$=totalAmountField]").text();
+	        var totalAmount = 0;
+	        $('.amount-field').each(function(){
+	            if(getAmount($(this).val()) != '' && getAmount($(this).val()) != null
+	               && !isNaN(getAmount($(this).val()))){
+	            	totalAmount += parseFloat(getAmount($(this).val()));
+	            }
+	        });
+	        $("[id$=totalAmountField]").text('$'+formatNumber(parseFloat(Math.round(totalAmount * 100) / 100).toFixed(2)));
+        }else{
+        	var totalAmountText = $("[id$=totalAmountField]").text();
+	        var totalAmount = 0;
+	        $('.amount-field').each(function(){
+	            if(getAmount($(this).text()) != '' && getAmount($(this).text()) != null
+	               && !isNaN(getAmount($(this).text()))){
+	           		 totalAmount += parseFloat(getAmount($(this).text()));
+	           	}
+	        });
+	        $("[id$=totalAmountField]").text('$'+formatNumber(parseFloat(Math.round(totalAmount * 100) / 100).toFixed(2)));
+        }
+    }
+
+    function amountMismatchCheck(currentTotalAmount){
+    	$('#errorAmountMismatch').hide();
+    	$('#submitBtn').removeAttr('disabled');
+
+    	if({!!isBudgetView} && currentTotalAmount != parseFloat('{!nyserdaIncentiveAmount}')){
+    		$('#errorAmountMismatch').show();
+    		$('#submitBtn').attr('disabled', 'disabled');
+    	}
+    }
+
+    function getAmount(amtToCheck){
+        var amt = 0;
+        if(amtToCheck != ''){
+            amt = amtToCheck.replace('$', '').replace(/\,/g, '').replace(' ', '');
+        }
+
+        if(!isNaN(parseFloat(amt))){
+        	return parseFloat(amt);
+        }else{
+        	return parseFloat(0);
+        }
+    }
+
+    var invoiceStatus;
+    function openConfirmPopup(status, alertStatusText) {
+        $('#confirmationPopUp').modal({
+            backdrop : 'static',
+            keyboard : false
+        });
+        $('#confirmMessage').html('Are you sure you want to <b>' + alertStatusText + '</b> the Invoice?');
+        invoiceStatus = status;
+    }
+
+    function confirmButtonAction() {
+        if(invoiceStatus == 'Approved'){
+             var isBlankAmount = false;
+
+             var totalAmountMap = {};
+
+             var count = 0;
+
+             $('.distAmountSpan').each(function(index){
+
+                 var distRow = $(this).attr('distRow');
+
+                 if(typeof(totalAmountMap[distRow]) == 'undefined' ||
+                    totalAmountMap[distRow] == null ||
+                    totalAmountMap[distRow] == ''){
+
+                    totalAmountMap[distRow] = 0;
+                 }
+
+                 var tempTotal = parseFloat($('.amount-field' + distRow).text().replace('$', '').replace(/\,/g, '').replace(' ', ''));
+
+                 if(typeof($(this).text()) == 'undefined' ||
+                    $(this).text() == null ||
+                    $(this).text().trim() == ''){
+
+                    if((!isNaN(tempTotal)) && typeof(tempTotal) != 'undefined' && tempTotal > 0){
+                    	isBlankAmount = true;
+                    }
+
+                 }else{
+
+                    var temp = $(this).text().replace('$', '').replace(/\,/g, '').replace(' ', '');
+
+                    if(isNaN(temp) && (!isNaN(tempTotal)) && typeof(tempTotal) != 'undefined' && tempTotal > 0){
+                        isBlankAmount = true;
+                    }else{
+                        totalAmountMap[distRow] += parseFloat(temp);
+                    }
+                 }
+
+                 count += 1;
+             });
+
+             if(isBlankAmount){
+                $('#errorMessage3').show();
+                return false;
+             }
+
+             var isErr = false;
+
+             for(i=0; i<count; i++){
+                if(totalAmountMap[i]){
+                    var totalAmt = 0;
+
+                    if(typeof($('.amount-field' + i).text()) != 'undefined' &&
+                       $('.amount-field' + i).text() != null &&
+                       $('.amount-field' + i).text().trim() != '' &&
+                       !isNaN($('.amount-field' + i).text().trim().replace('$', '').replace(/\,/g, '').replace(' ', ''))){
+                        totalAmt += parseFloat($('.amount-field' + i).text().trim().replace('$', '').replace(/\,/g, '').replace(' ', ''))
+                    }
+
+                     if(totalAmountMap[i] != totalAmt){
+                        isErr = true;
+                     }
+                }
+             }
+
+             if(isErr){
+                $('#errorMessage2').show();
+                return false;
+             }
+        }
+
+        setInvoiceStatus(invoiceStatus);
+    }
+
+    function getProjectFunding(){
+        if('{!!isPortalUser}'){
+            getProjectFundingAction();
+        }
+    }
+
+    function roundOffAmount(){
+    	$('.amount-field').each(function(){$(this).val(getAmount($(this).val()))});
+
+    	$('.distAmount').each(function(){$(this).val(getAmount($(this).val()))});
+    }
+
+    function formatAmounts(){
+        if({!NOT(isNew || isEdit)}){
+        	$('.amount-field').each(function(){$(this).text('$' + formatNumber(getAmount($(this).text())))});
+
+	    	$('.distAmount').each(function(){$(this).text('$' + formatNumber(getAmount($(this).text())))});
+
+	    	$('.amount-cost-share-field span').each(function(){$(this).text('$' + formatNumber(getAmount($(this).text())))});
+        }else{
+        	$('.amount-field').each(function(){$(this).val(formatNumber(getAmount($(this).val())))});
+
+	    	$('.distAmount').each(function(){$(this).val(formatNumber(getAmount($(this).val())))});
+
+	    	$('.amount-cost-share-field').each(function(){$(this).val(formatNumber(getAmount($(this).val())))});
+        }
+
+        $('.remaining-budget-field').each(function(){$(this).text('$' + formatNumber(getAmount($(this).text())))});
+
+	    $('.remaining-budget-cost-share-field').each(function(){$(this).text('$' + formatNumber(getAmount($(this).text())))});
+
+	    $('#nyserdaIncentiveAmountSpan').each(function(){$(this).text('$' + formatNumber(getAmount($(this).text())))});
+
+	    $('#costIncentiveAmountSpan').each(function(){$(this).text('$' + formatNumber(getAmount($(this).text())))});
+    }
+    </script>
+
+</apex:page>

@@ -1,0 +1,457 @@
+<template>
+    <div class="backdrop" if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </div>
+    </div>
+
+    <c-dese-dashboard-duo-sidebar selected-tab="Home" show-footer>
+        <div slot="body">
+            <div class="pageTextCenter">
+                <span>
+                    <h2>Massachusetts Department of Elementary & Secondary Education</h2>
+                </span>
+                <hr class="headerbottom">
+            </div>
+            <!-- <p class="slds-p-around_large brief_card_heading card-base_heading">Welcome to the DESE, Monitoring and
+                Grant Management Program portal. We strongly encourage you to use this Portal to manage your
+                interactions with DESE. This will be the most effective and efficient way for information to get to and
+                from DESE.
+            </p><br>
+            <p class="slds-p-around_large brief_card_heading_red card-base_heading">DESE is deferring fees for the
+                fiscal year FY2021. If you are submitting a self-assessment application, you do not need to mail any
+                payment at this time.
+            </p><br>
+            <p class="slds-p-around_large brief_card_heading_blue card-base_heading">To report a positive COVID-19 test
+                of a child, staff member, classroom educator please use the DPH COVID Positive Reporting Form.
+            </p><br> -->
+            <!-- <div class="slds-p-around_large brief_card card-base">
+                    <ul class="slds-list--vertical slds-has-dividers--bottom-space bulletlist">
+                        <li class="slds-list__item">To find an existing entity in our database, <a
+                                href="/s/search-entity">search here</a>.</li>
+                        <li class="slds-list__item" if:false={showStatus}>All entities that have registered with the Lt.
+                            Governor’s Office must <a href="/s/questionorrequest?value=requestAccess"> click here</a> to
+                            request access to their registration information and entity portal.</li>
+                        <li class="slds-list__item">For all new boundary actions, please <a
+                                onclick={redirectToBoundaryAction} data-modal="boundaryActions">see here</a>. To find an
+                            existing boundary certification/action, search “Find an Entity” or <a
+                                href="https://demosite.utah.gov/gov-entity/boundary-certifications-by-year/"
+                                target="_blank">visit here</a>.</li>
+                        <li class="slds-list__item" if:true={showStatus}>Please direct any questions <a
+                                onclick={handleQuestionRequestAccess}>here</a> or contact the Lt. Governor’s Office.
+                        </li>
+                        <li class="slds-list__item" if:false={showStatus}>Please direct any questions <a
+                                href="/s/questionorrequest?value=question">here</a> or contact the Lt. Governor’s
+                            Office.</li>
+                    </ul>
+                </div><br> -->
+            <!-- <div if:true={showStatus} style="padding: 1rem 0rem 2rem 0rem">
+                    <div style="background-color:cadetblue; color:#fff; margin-top:1rem">
+                        <span>
+                            <lightning-icon icon-name="standard:picklist_type" style="margin: 0rem 1.5rem">
+                            </lightning-icon>
+                        </span><span style="font-size: 1.3rem">MY ENTITY INFORMATION</span>
+                    </div>
+                     <c-utah-entity-information-card></c-utah-entity-information-card>
+            </div> -->
+
+            <!-- VM Testing -->
+            <!--<div style="background-color:grey; color:#fff; margin-top:1rem">
+                    <span>
+                        <lightning-icon icon-name="standard:picklist_type" style="margin: 0rem 1.5rem">
+                        </lightning-icon>
+                    </span><span style="font-size: 1.3rem">MY PERMITS</span>
+                </div>
+                <template for:each={mapData} for:item="mapKey">
+                    
+                    <div class="slds-grid slds-wrap" key={mapKey.key}>
+                        <div class={createdButtonClass} >
+                            <button class={var8} name="" onclick={openTab} data-state={mapKey.key}>
+                                    <div class="slds-grid slds-gutters tablinks">
+                                        <div class="slds-col slds-size_4-of-12">
+                                            <lightning-icon icon-name="utility:note">
+                                            </lightning-icon>
+                                        </div>
+
+                                        <div class="slds-col slds-size_8-of-12 text_style_left">
+                                            <p class="tab_title">{mapKey.key}</p>
+                                            <p class="tab_desc">{mapKey.value} {mapKey.key}</p>
+                                        </div>
+                                    </div>
+                                </button>
+                        </div>
+                    </div>
+                </template>-->
+                <!-- <c-program-information-dashboard></c-program-information-dashboard> -->
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col slds-grid statuscard">
+                    <div class="slds-col slds-size_1-of-3 approveddarken ">
+                        <span class="custom_icon">
+                            <svg aria-hidden="true" focusable="false" data-prefix="fas"
+                                data-icon="arrow-alt-circle-left"
+                                class="svg-inline--fa fa-arrow-alt-circle-left fa-w-16" role="img"
+                                viewBox="0 0 512 512">
+                                <path fill="currentColor"
+                                    d="M256 504C119 504 8 393 8 256S119 8 256 8s248 111 248 248-111 248-248 248zm116-292H256v-70.9c0-10.7-13-16.1-20.5-8.5L121.2 247.5c-4.7 4.7-4.7 12.2 0 16.9l114.3 114.9c7.6 7.6 20.5 2.2 20.5-8.5V300h116c6.6 0 12-5.4 12-12v-64c0-6.6-5.4-12-12-12z">
+                                </path>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="slds-col slds-size_2-of-3 approved">
+                        <div class="card-content">
+                            <div class="row">
+                                <h3 class="card-stats-number">1</h3>
+                                <p class="card-stats-heading">Action Items Past Due</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-grid statuscard">
+                    <div class="slds-col slds-size_1-of-3 submitteddarken">
+                        <span class="custom_icon">
+                            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="clipboard-list"
+                                class="svg-inline--fa fa-clipboard-list fa-w-12" role="img" viewBox="0 0 384 512">
+                                <path fill="currentColor"
+                                    d="M336 64h-80c0-35.3-28.7-64-64-64s-64 28.7-64 64H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h288c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48zM96 424c-13.3 0-24-10.7-24-24s10.7-24 24-24 24 10.7 24 24-10.7 24-24 24zm0-96c-13.3 0-24-10.7-24-24s10.7-24 24-24 24 10.7 24 24-10.7 24-24 24zm0-96c-13.3 0-24-10.7-24-24s10.7-24 24-24 24 10.7 24 24-10.7 24-24 24zm96-192c13.3 0 24 10.7 24 24s-10.7 24-24 24-24-10.7-24-24 10.7-24 24-24zm128 368c0 4.4-3.6 8-8 8H168c-4.4 0-8-3.6-8-8v-16c0-4.4 3.6-8 8-8h144c4.4 0 8 3.6 8 8v16zm0-96c0 4.4-3.6 8-8 8H168c-4.4 0-8-3.6-8-8v-16c0-4.4 3.6-8 8-8h144c4.4 0 8 3.6 8 8v16zm0-96c0 4.4-3.6 8-8 8H168c-4.4 0-8-3.6-8-8v-16c0-4.4 3.6-8 8-8h144c4.4 0 8 3.6 8 8v16z">
+                                </path>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="slds-col slds-size_2-of-3 submitted">
+                        <div class="card-content">
+                            <div class="row">
+                                <h3 class="card-stats-number">2</h3>
+                                <p class="card-stats-heading">Action Items Due</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-grid statuscard">
+                    <div class="slds-col slds-size_1-of-3 draftdarken">
+                        <span class="custom_icon">
+                            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tasks"
+                                class="svg-inline--fa fa-tasks fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 512 512">
+                                <path fill="currentColor"
+                                    d="M139.61 35.5a12 12 0 0 0-17 0L58.93 98.81l-22.7-22.12a12 12 0 0 0-17 0L3.53 92.41a12 12 0 0 0 0 17l47.59 47.4a12.78 12.78 0 0 0 17.61 0l15.59-15.62L156.52 69a12.09 12.09 0 0 0 .09-17zm0 159.19a12 12 0 0 0-17 0l-63.68 63.72-22.7-22.1a12 12 0 0 0-17 0L3.53 252a12 12 0 0 0 0 17L51 316.5a12.77 12.77 0 0 0 17.6 0l15.7-15.69 72.2-72.22a12 12 0 0 0 .09-16.9zM64 368c-26.49 0-48.59 21.5-48.59 48S37.53 464 64 464a48 48 0 0 0 0-96zm432 16H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-320H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 160H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z">
+                                </path>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="slds-col slds-size_2-of-3 draft">
+                        <div class="card-content">
+                            <div class="row">
+                                <h3 class="card-stats-number">5</h3>
+                                <p class="card-stats-heading">Days Remaining for<br />On-site Review</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <article class=" slds-grid slds-gutters">
+                <div
+                    class="slds-card slds-card__body slds-card__body_inner slds-text-color_default slds-text-align_left slds-p-around--large  slds-p-bottom--none card-action-item-heading slds-col slds-size_1-of-2 slds-card--right">
+                    <div class="slds-text-heading_medium">
+                        Action items
+                    </div>
+                    <div class="slds-gutters_medium">
+                        <div class="slds-grid slds-m-top_x-small">
+                            <div
+                                class="slds-col slds-m-bottom_xx-small slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_8-of-12">
+                                <small class="dim">TITLE</small>
+                            </div>
+                            <div
+                                class="slds-col slds-m-bottom_xx-small slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_4-of-12">
+                                <small class="dim slds-float_right">DUE DATE</small>
+                            </div>
+                        </div>
+                        <div class="slds-grid bordered">
+                            <div
+                                class="slds-col slds-p-top_x-small slds-p-bottom_x-small slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_8-of-12">
+                                <p>Please upload your Emergency medical treatment Annual Consent</p>
+                            </div>
+                            <div
+                                class="slds-col slds-p-top_x-small slds-p-bottom_x-small slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_4-of-12 slds-float_right">
+                                <small class="dim slds-float_right">09/18/2020</small>
+                            </div>
+                        </div>
+                        <div class="slds-grid bordered">
+                            <div
+                                class="slds-col slds-p-top_x-small slds-p-bottom_x-small slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_8-of-12">
+                                <p>Please respond to Department of Elementary and Secondary Education Findings for
+                                    Devereux Day Program</p>
+                            </div>
+                            <div
+                                class="slds-col slds-p-top_x-small slds-p-bottom_x-small slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_4-of-12 slds-float_right">
+                                <small class="dim slds-float_right">09/20/2020</small>
+                            </div>
+                        </div>
+                        <div class="slds-grid bordered">
+                            <div
+                                class="slds-col slds-p-top_x-small slds-p-bottom_x-small slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_8-of-12">
+                                <p>Provide notification to the Department through a Form 1 for a 20% decrease in the
+                                    enrollment of students based on recently approved DESE staffing plan.</p>
+                            </div>
+                            <div
+                                class="slds-col slds-p-top_x-small slds-p-bottom_x-small slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_4-of-12 slds-float_right">
+                                <small class="dim slds-float_right">09/24/2020</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-text-align_center slds-m-top--medium slds-m-bottom--large ">
+                        <a><strong>View all &#187;</strong></a>
+                    </div>
+                </div>
+                <div
+                    class="slds-card slds-card__body slds-card__body_inner card-action-item-heading slds-col slds-size_1-of-2 slds-card--left">
+                    <div class="most_complex--grid">
+                        <p class="center-text--grid">Programm Review Cycle</p>
+                        <div class="most_complex--grid_item">Agencies are trained on changes to the system and
+                            monitoring criteria (STARTING POINT)</div>
+                        <div>&#8594;</div>
+                        <div class="most_complex--grid_item most_complex--grid_item-active">Agency submits
+                            Self-Assessment</div>
+                        <div>&#8594;</div>
+                        <div class="most_complex--grid_item">OASES Chairperson conducts preliminary review of health and
+                            safety criteria</div>
+                        <div>&#8594;</div>
+                        <div class="most_complex--grid_item">OASES Chairperson conducts Desk Review</div>
+
+                        <div>&#8593;</div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div>&#8595;</div>
+
+                        <div class="most_complex--grid_item">If there were findings, OASES conducts unannounced visit to
+                            School</div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div class="most_complex--grid_item">OASES Chairperson develops onsite plan</div>
+
+                        <div>&#8593;</div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div>&#8595;</div>
+
+                        <div class="most_complex--grid_item">Progress Reports Submitted by School and Approved by Cases
+                        </div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div class="most_complex--grid_item">OASES Chairperson Receives Approval of the onsite plan from
+                            the Supervisor</div>
+
+                        <div>&#8593;</div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div>&#8595;</div>
+
+
+                        <div class="most_complex--grid_item">Corrective Action Plan Submitted by School and Approved by
+                            OASES</div>
+                        <div>&#8592;</div>
+                        <div class="most_complex--grid_item">Program or Mid-cycle Review drafted (needs approval from
+                            Supervisor and Manager)</div>
+                        <div>&#8592;</div>
+                        <div class="most_complex--grid_item">Onsite Review</div>
+                        <div>&#8592;</div>
+                        <div class="most_complex--grid_item">Orientation with OASES team and Agency/School Leader</div>
+                    </div>
+                </div>
+            </article> -->
+            <div if:true={showStatus} class="tab slds-m-around_large">
+                <div class="permits_header">
+                    <span>
+                        <lightning-icon icon-name="standard:picklist_type" class="permits_icon">
+                        </lightning-icon>
+                    </span>
+                    <span style="font-size: 1.2rem">Grants Application</span>
+                    <!-- <span style="font-size: 1.2rem">{Portal_Dashboard_Application_Component_Header_Help_Text}</span> -->
+                </div>
+                <div class="slds-grid slds-wrap">
+                    <div class={createdButtonClass}>
+                        <button class={var1} name="" onclick={openTab} data-state="Draft">
+                            <div class="slds-grid slds-gutters tablinks">
+                                <div class="slds-col slds-size_4-of-12">
+                                    <lightning-icon icon-name="utility:note" class="icon-orange">
+                                    </lightning-icon>
+                                </div>
+
+                                <div class="slds-col slds-size_8-of-12 text_style_left">
+                                    <p class="tab_title">Created</p>
+                                    <p class="tab_desc">{createdStatus} Draft</p>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                    <div class={submittedButtonClass}>
+                        <button class={var2} onclick={openTab} data-state="Submitted">
+                            <div class="slds-grid slds-gutters tablinks">
+                                <div class="slds-col slds-size_4-of-12">
+                                    <lightning-icon icon-name="utility:package_org">
+                                    </lightning-icon>
+                                </div>
+                                <div class="slds-col slds-size_8-of-12 text_style_left">
+                                    <p class="tab_title">Submitted</p>
+                                    <p class="tab_desc">{submittedStatus} Submitted</p>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                    <div class={underReviewButtonClass}>
+                        <button class={var3} onclick={openTab} data-state="underReview">
+                            <div class="slds-grid slds-gutters tablinks">
+                                <div class="slds-col slds-size_4-of-12">
+                                    <lightning-icon icon-name="utility:spinner">
+                                    </lightning-icon>
+                                </div>
+                                <div class="slds-col slds-size_8-of-12 text_style_left">
+                                    <p class="tab_title">In Progress</p>
+                                    <p class="tab_desc">{underReviewStatus} Under Review</p>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                    <div class={approvedButtonClass}>
+                        <button class={var4} onclick={openTab} data-state="Approved">
+                            <div class="slds-grid slds-gutters tablinks">
+                                <div class="slds-col slds-size_4-of-12">
+                                    <lightning-icon icon-name="utility:success">
+                                    </lightning-icon>
+                                </div>
+                                <div class="slds-col slds-size_8-of-12 text_style_left">
+                                    <p class="tab_title">Approved</p>
+                                    <p class="tab_desc">{approvedStatus} Approved</p>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                    <div class={completedButtonClass}>
+                        <button class={var5} onclick={openTab} data-state="Completed">
+                            <div class="slds-grid slds-gutters tablinks">
+                                <div class="slds-col slds-size_4-of-12">
+                                    <lightning-icon icon-name="utility:success">
+                                    </lightning-icon>
+                                </div>
+                                <div class="slds-col slds-size_8-of-12 text_style_left">
+                                    <p class="tab_title">Completed</p>
+                                    <p class="tab_desc">{completedStatus} complete</p>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                    <!-- <div class={pendingButtonClass}>
+                        <button class={var6} onclick={openTab} data-state="Pending">
+                            <div class="slds-grid slds-gutters tablinks">
+                                <div class="slds-col slds-size_4-of-12">
+                                    <lightning-icon icon-name="utility:warning">
+                                    </lightning-icon>
+                                </div>
+                                <div class="slds-col slds-size_8-of-12 text_style_left">
+                                    <p class="tab_title">Pending Approval</p>
+                                    <p class="tab_desc">{pendingStatus} Pending</p>
+                                </div>
+                            </div>
+                        </button>
+                    </div> -->
+                </div>
+                <!--<div class={deficientButtonClass}>
+                            <button class={var5} onclick={openTab} data-state="Approved">
+                                <div class="slds-grid slds-gutters tablinks">
+                                    <div class="slds-col slds-size_4-of-12">
+                                        <lightning-icon icon-name="utility:warning">
+                                        </lightning-icon>
+                                    </div>
+                                    <div class="slds-col slds-size_8-of-12 text_style_left">
+                                        <p class="tab_title">Approved Permits</p>
+                                        <p class="tab_desc">{deficiencystatus} Approved Permits</p>
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>-->
+
+            </div>
+
+            <!-- <div id="Login" class="tabcontent">
+                <div class="form-group">
+                    <label for="emailAddress"> Email Address </label>
+                    <input type="email" class="form-control" id="emailAddress" aria-describedby="emailAddress"
+                        placeholder="user@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="Password">
+                </div>
+            </div> -->
+
+            <!-- <div id="Register" class="tabcontent">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="firstname" aria-describedby="firstname"
+                        placeholder="First Name">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="lastname" aria-describedby="lastname"
+                        placeholder="Last Name">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="paddress" aria-describedby="physicalAddress"
+                        placeholder="Address">
+                </div>
+                <div class="form-group">
+                    <input type="date" class="form-control" id="birthday" aria-describedby="birthday">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="contactinfo" aria-describedby="contactinformation"
+                        placeholder="Contact Information">
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-control" id="regemailAddress" aria-describedby="emailAddress"
+                        placeholder="Email Address">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" id="regpassword" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" id="con-password" placeholder="Confirm Password">
+                </div>
+
+            </div> -->
+            <div if:true={showStatus}>
+                <template if:true={draft}>
+                    <c-dese-status-card status="Draft"></c-dese-status-card>
+                </template>
+                <template if:true={submitted}>
+                    <c-dese-status-card status="Submitted"></c-dese-status-card>
+                </template>
+                <template if:true={underReview}>
+                    <c-dese-status-card status="Under Review"></c-dese-status-card>
+                </template>
+                <template if:true={approved}>
+                    <c-dese-status-card status="Approved"></c-dese-status-card>
+                </template>
+                <template if:true={completed}>
+                    <c-dese-status-card status="Completed"></c-dese-status-card>
+                </template>
+                <template if:true={pending}>
+                    <c-dese-status-card status="Pending Approval"></c-dese-status-card>
+                </template>
+            </div>
+            <div class="bottom_spacing"> </div>
+        </div>
+    </c-dese-dashboard-duo-sidebar>
+</template>

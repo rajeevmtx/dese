@@ -1,0 +1,84 @@
+/* New Header */
+.intake-header .nav div{
+    color: #fff!important
+  }
+  
+
+  .blueColor{
+    background:#14558F!important;
+  }
+  .languageSelect button,   .languageSelect  .slds-combobox__input{
+    background: none!important;
+    --sds-c-icon-color-foreground-default: #fff;
+  }
+  
+  .blueColor {
+    --sds-c-icon-color-foreground-default: #fff!important
+  }
+  
+ .date__format .lightning-formatted-date-time {
+    color:#14558F!important
+ }
+
+.intake-header .header-info{
+    background:#F3F6F9!important;
+    color:#14558F!important;
+    position: fixed;
+    width: 100vw;
+    font-size: 16px;
+    z-index: 1;
+    padding: 2rem 8rem;
+  
+  }
+  
+.intake-header .info__main, .intake-header .info__sub{
+    color:#14558F!important
+  }
+
+  .info__main{
+    font-weight: bold;
+font-size: 24px;
+line-height: 33px;
+  }
+
+  .userLogin{
+    background: none!important;
+    --sds-c-icon-color-foreground-default: #fff!important;
+  }
+
+  .dateFormate{
+    color:#14558F!important;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 24px;
+  }
+ .intake-header .slds-combobox__input{
+    background: none!important;
+  }
+
+  .notification{
+    --sds-c-icon-color-foreground-default: #fff!important;
+    position:relative;
+  }
+
+  .notification span{
+    --sds-c-icon-color-foreground-default: #fff!important;
+    position: absolute;
+    top: 8px;
+    right: -1px;
+    width: 8px;
+    height: 8px;
+    background: green;
+    border-radius: 100px;
+
+  }
+
+  .date__dueD{
+    font-size: 1.6rem;
+    color: #14558F!important;
+    font-weight: normal;
+  }
+
+  .date{
+    text-align: right;
+  }

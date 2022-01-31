@@ -1,0 +1,151 @@
+<apex:page showHeader="false" sidebar="false" controller="CORE_CONAPP_Application_Controller"  standardStylesheets="false" title="Submission Confirmation">
+      <style>
+        .heading-link {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .content {
+          font-size: 18px;
+        }
+
+        .step-nav{
+          display: none;
+        }
+
+		.box{
+			margin-bottom: 40px;
+		}
+    </style>
+
+    <apex:composition template="CORE_CONAPP_Template_Page">
+        <apex:define name="body">
+            <div class="page">
+                <c:CORE_StepNav_Component pgName="{!$CurrentPage.Name}"/>
+                <apex:form id="frm">
+                    <div class="application">
+                        <div class="alert-container">
+                            <apex:pageMessages />
+
+                            <apex:outputText rendered="{!if(isSubmit && (!isRTEMApp ) && isDisplayDefaultSubmissionMsg, true, false)}">
+                                <div class="alert alert-success" style="font-size:18px">
+                                    Your application has been submitted successfully.
+                                </div>
+                            </apex:outputText>
+                            <apex:outputText rendered="{!if(isSubmit && (isRTEMApp ), true, false)}">
+                                <div class="alert alert-success" style="font-size:18px">
+                                    Your application has been submitted successfully. Your application number is {!serviceProviderApp.Name}.
+                                </div>
+                            </apex:outputText>
+                            <apex:outputText rendered="{!AND(!isSubmit, serviceProviderApp.Status__c != 'Unsubmitted')}">
+                                <div class="alert alert-success" style="font-size:15px">
+                                    Application current status: {!serviceProviderApp.Status__c}
+                                </div>
+                            </apex:outputText>
+                        </div>
+ 
+                        <div class="content content-body">
+
+		                    <div class="application-status">
+		                        <div class="box">
+		                            <div class="title">
+		                                <apex:outputPanel rendered="{!!isSubmit}">
+		                                    <apex:outputPanel layout="none" rendered="{!isRTEMApp}">
+		                                    	Click the submit button to complete this application.
+
+
+		                                    </apex:outputPanel>
+
+		                                    <apex:outputPanel layout="none" rendered="{!AND(!isRTEMApp,!isGSHPApp)}">
+		                                    	Please click on submit button below to complete this application.
+		                                    </apex:outputPanel>
+
+		                                    <apex:outputPanel layout="none" rendered="{!isGSHPApp}">
+		                                    		{!submissionConfirmationMessage}
+		                                    </apex:outputPanel>
+
+		                                </apex:outputPanel>
+		                            </div>
+									<div class="body">
+		                                <apex:outputPanel rendered="{!isSubmit && isDisplayDefaultSubmissionMsg && !isGSHPApp}">{!submissionConfirmationMessage}</apex:outputPanel>
+<!-- 		                                <apex:outputPanel rendered="{!isSubmit && isZEVApp && !isDisplayDefaultSubmissionMsg}"> -->
+<!-- 		                                	<apex:outputText escape="false" value="{!$Label.Innovation_ZEV_Charge_NY_Submission_Msg}"/> -->
+<!-- 		                               	</apex:outputPanel> -->
+		                            </div>
+		                        </div>
+		                    </div>
+		                    <!-- end replace me -->
+
+		                </div>
+		            </div>
+		            <apex:outputPanel rendered="{!!isSubmit}">
+		                <apex:actionFunction name="previous" action="{!previous}" rerender="frm">
+		                    <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+		                </apex:actionFunction>
+
+		                <apex:actionFunction name="submit" action="{!submitApplication}" rerender="frm">
+		                    <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+		                </apex:actionFunction>
+
+			            <footer class="footer-nav">
+			                <div class="content flex controls sm">
+			                    <a role="button" href="javascript:previous('CORE_CONAPP_Submission_Page')" class="btn-bs btn-lg btn-blank">Previous</a>
+			                    <a role="button" href="javascript:submit('CORE_CONAPP_Submission_Page')" class="btn-bs btn-lg btn-primary">Submit</a>
+			                </div>
+			            </footer>
+			        </apex:outputPanel>
+
+			        <apex:outputPanel rendered="{!if(isSubmit && isRTEMInternalUser, true, false)}">
+			            <apex:actionFunction name="previous" action="{!previous}" rerender="frm">
+		                    <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+		                </apex:actionFunction>
+
+			            <footer class="footer-nav">
+			                <div class="content flex controls sm">
+			                    <a role="button" href="javascript:previous('CORE_CONAPP_Submission_Page')" class="btn-bs btn-lg btn-blank">Previous</a>
+			                </div>
+			            </footer>
+			        </apex:outputPanel>
+
+			        <apex:actionFunction name="redirectToStart" action="{!redirectToStart}" rerender="frm" />
+
+			         <script>
+
+				        $(document).ready(function(){
+
+				        jQuery("html").attr("lang", "en");
+
+				            if('{!isRTEMApp}' == 'true'){
+				            	$('.sub-logo').html('VENDOR APPLICATION');
+				            }
+
+				            if('{!isSubmit}' != 'true'){
+
+				            	$('.step-nav').css('display', 'inherit');
+				            }else{
+				            	if (typeof history.pushState === "function") {
+							        history.pushState("dummy", null, null);
+							        window.onpopstate = function () {
+							            history.pushState('newdummy', null, null);
+							        };
+							    }
+							    else {
+							        var ignoreHashChange = true;
+							        window.onhashchange = function () {
+							            if (!ignoreHashChange) {
+							                ignoreHashChange = true;
+							                window.location.hash = Math.random();
+							            }
+							            else {
+							                ignoreHashChange = false;
+							            }
+							        };
+							    }
+				            }
+				        });
+				    </script>
+			    </apex:form>
+            </div>
+        </apex:define>
+    </apex:composition>
+</apex:page>

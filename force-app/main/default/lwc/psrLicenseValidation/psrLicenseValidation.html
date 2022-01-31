@@ -1,0 +1,23 @@
+<template>
+  <div if:true={appId} class="card-div">
+    <lightning-record-edit-form
+      record-id={appId}
+      object-api-name={objectApiName}
+      onsuccess={handleSuccess}
+    >
+      <lightning-input-field
+        field-name="License_Type__c"
+        disabled={disabledFields}
+      >
+      </lightning-input-field>
+      <lightning-input-field
+        onchange={checkLicenseNo}
+        name="License__c"
+        field-name="License__c"
+        class="input-check"
+        disabled={disabledFields}
+      >
+      </lightning-input-field>
+    </lightning-record-edit-form>
+  </div>
+</template>

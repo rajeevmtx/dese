@@ -1,0 +1,355 @@
+<template>
+    <lightning-card>
+        <div class="narrative-content daseTitle4">
+            <h1 class="header slds-m-bottom_medium" if:false={readOnly}>
+                Title IV, Part A
+            </h1>
+            <div class="tabset">
+                <lightning-tabset active-tab-value="1">
+                    <lightning-tab label="Part A Narrative" value="1">
+                        <!-- <c-dese-title-part-ad-narrative></c-dese-title-part-ad-narrative> -->
+                        <div class="subheader slds-m-top_large">
+                            8.1.1 Student Support and Academic Enrichment (Fund Code 309)
+                        </div>
+                        <div class="table-header slds-m-top_small slds-m-bottom_small">
+                            <div class="small-header">All Title IV Districts</div>
+                            <div class="resource-icon">
+                                <img src={notebook} />
+                                <div class="resources">
+                                    Resources
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" program-purpose slds-box slds-m-bottom_medium">
+                            <h3 class="heading slds-m-bottom_medium">Program Purpose</h3>
+
+                            <ul class="program-purpose__data list">
+                                <li>To increase student achievement consistent with challenging state standards.</li>
+                                <li>To improve the quality and effectiveness of teachers, principals, and other school
+                                    leaders.</li>
+                                <li> To increase the number of teachers, principals, and other school leaders who are
+                                    effective in improving student academic achievement in schools.</li>
+                                <li>Provide low-income and minority students greater access to effective teachers,
+                                    principals and other school leaders.</li>
+                            </ul>
+                        </div>
+                        <!-- <div class="narrative-box slds-m-top_x-large">
+                            <div class="describe-head slds-m-bottom_large">
+                                <div class="note_header">
+                                    Program Purpose
+                                </div>
+                                <div class="box-header-medium">
+                                    <ol>
+                                        <li>To increase student achievement consistent with challenging state standards.
+                                        </li>
+                                        <li>To improve the quality and effectiveness of teachers, principals, and other
+                                            school leaders.</li>
+                                        <li>To increase the number of teachers, principals, and other school leaders who
+                                            are
+                                            effective in improving student academic achievement in schools.</li>
+                                        <li>Provide low-income and minority students greater access to effective
+                                            teachers,
+                                            principals and other school leaders.</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div> -->
+                        <p class="paragraph">
+                            Describe those activities listed in Step 5 that will be funded in whole or in part with
+                            Title IV, Part A funds.
+                        </p>
+                        <div class="narrative-box">
+                            <div class="box-header-small">
+                                Initiative Name/Short Title
+                            </div>
+                            <div class="box-header-medium slds-m-bottom_large">
+                                Sample title text here
+                            </div>
+                            <div class="box-header-small">
+                                Strategies/Activities
+                            </div>
+                            <div class="box-header-medium slds-m-bottom_large">
+                                Risus molestie amet, amet, at. Ac posuere nec proin sagittis. Nascetur eget ac risus
+                                amet, est aliquam. Duis nunc vitae, in ultricies aliquam adipiscing arcu posuere.
+                            </div>
+                            <div class="box-header-small">
+                                Briefly describe specific activities funded by Title II based on assessment of needs:
+                            </div>
+                            <div class="describe-box slds-m-bottom_large">
+                                <div class="slds-form-element">
+                                    <div class="slds-form-element__control">
+                                        <textarea id="textarea-id-01" placeholder="Describe Here" class="slds-textarea"
+                                            disabled={readOnly}></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-header-small">
+                                What data prompted this activity? <i>(Select all that apply) </i>
+                            </div>
+                            <div class="sample-box slds-m-bottom_large">
+                                <lightning-input type="text" variant="label-hidden" placeholder=""
+                                    label="Enter some text" disabled={readOnly}>
+                                </lightning-input>
+                            </div>
+                            <div class="multiselect">
+                                <lightning-input type="text" variant="label-hidden" placeholder="Selected sample text 1"
+                                    label="Enter some text" disabled={readOnly}></lightning-input><span class="close">
+                                    <lightning-icon icon-name="utility:close" alternative-text="close" title="Error">
+                                    </lightning-icon>
+                                </span>
+
+                                <lightning-input type="text" variant="label-hidden" placeholder="abc"
+                                    label="Enter some text" disabled={readOnly}></lightning-input><span class="closed">
+                                    <lightning-icon icon-name="utility:close" alternative-text="close" title="Error">
+                                    </lightning-icon>
+                                </span>
+                            </div>
+                            <div class="box-header-small">
+                                What data will you use to determine progress and attainment of goals?
+                                <i>(Select all that apply) </i>
+                            </div>
+                            <div class="sample-box slds-m-bottom_large">
+                                <lightning-input type="text" variant="label-hidden" placeholder=""
+                                    label="Enter some text" disabled={readOnly}>
+                                </lightning-input>
+                            </div>
+                            <div class="multiselect">
+                                <lightning-input type="text" variant="label-hidden" placeholder="Selected sample text 1"
+                                    label="Enter some text" disabled={readOnly}></lightning-input><span class="close">
+                                    <lightning-icon icon-name="utility:close" alternative-text="close" title="Error">
+                                    </lightning-icon>
+                                </span>
+
+                                <lightning-input type="text" variant="label-hidden" placeholder="other"
+                                    label="Enter some text" disabled={readOnly}></lightning-input><span class="closed">
+                                    <lightning-icon icon-name="utility:close" alternative-text="close" title="Error">
+                                    </lightning-icon>
+                                </span>
+                            </div>
+                            <div class="box-header-medium ">
+                                Specify “Other”
+                            </div>
+                            <div class="describe-box">
+                                <div class="slds-form-element">
+                                    <div class="slds-form-element__control">
+                                        <textarea id="textarea-id-02" placeholder="Describe Here" class="slds-textarea"
+                                            disabled={readOnly}></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="narrative-box slds-m-top_x-large">
+                            <div class="describe-head slds-m-bottom_large">
+                                <div class="describe-headings">
+                                    <div class="box-header-small">
+                                        Initiative Name/Short Title
+                                    </div>
+                                    <div class="box-header-medium">
+                                        Sample title text here
+                                    </div>
+                                </div>
+                                <div class="describe-btn">
+                                    <lightning-button variant="brand-outline" label="Describe"
+                                        title="Primary action with lighter look" onclick={handleClick}
+                                        class="slds-m-left_x-small button__white"></lightning-button>
+                                </div>
+                            </div>
+                            <div class="box-header-small">
+                                Strategies/Activities
+                            </div>
+                            <div class="box-header-medium">
+                                Risus molestie amet, amet, at. Ac posuere nec proin sagittis. Nascetur eget ac risus
+                                amet, est aliquam. Duis nunc vitae, in ultricies aliquam adipiscing arcu posuere.
+                            </div>
+                        </div>
+                        <div class="narrative-box slds-m-top_x-large">
+                            <div class="describe-head slds-m-bottom_large">
+                                <div class="describe-headings">
+                                    <div class="box-header-small">
+                                        Initiative Name/Short Title
+                                    </div>
+                                    <div class="box-header-medium">
+                                        Sample title text here
+                                    </div>
+                                </div>
+                                <div class="describe-btn">
+                                    <lightning-button variant="brand-outline" label="Describe"
+                                        title="Primary action with lighter look" onclick={handleClick}
+                                        class="slds-m-left_x-small button__white"></lightning-button>
+                                </div>
+                            </div>
+                            <div class="box-header-small">
+                                Strategies/Activities
+                            </div>
+                            <div class="box-header-medium">
+                                Risus molestie amet, amet, at. Ac posuere nec proin sagittis. Nascetur eget ac risus
+                                amet, est aliquam. Duis nunc vitae, in ultricies aliquam adipiscing arcu posuere.
+                            </div>
+                        </div>
+                        <p>&nbsp;</p>
+                        <!--done till here -->
+                        <div class="line slds-m-bottom_xx-large slds-m-top_xx-large"></div>
+                        <div class="subheader slds-m-top_large">
+                            8.1.2 Allocation of title IVA funds
+                        </div>
+                        <div class="table-header slds-m-top_small slds-m-bottom_small">
+                            <div class="small-header">Only for districts with $30,000 in Title IV A funds</div>
+                        </div>
+                        <div class=" instructions-section slds-box slds-m-bottom_medium">
+                            <h3 class="instructions slds-m-bottom_medium">Instructions</h3>
+                            <ol class="instructions__data list slds-list_ordered">
+                                District reservations are amounts set aside prior to allocating funds to schools.
+                                Allowable
+                                reservations include:
+                                <li>Equitable participation for private school students. Once the district completes the
+                                    Private Schools worksheet and column 3b on the School Funding worksheet, the private
+                                    school
+                                    allocation will automatically populate </li><span if:true={readMore}>
+                                    <li>Equitable participation for private school students. Once the district completes
+                                        the
+                                        Private Schools worksheet and column 3b on the School Funding worksheet, the
+                                        private
+                                        school
+                                        allocation will automatically populate </li>
+                                </span>
+                                <lightning-button variant="brand" label={clickedButtonLabel} title="READ MORE"
+                                    onclick={handleClick} class="readmore"></lightning-button>
+                            </ol>
+                        </div>
+                        <div class="headless-table slds-m-top_xx-large">
+                            <table
+                                class="slds-table slds-table_cell-buffer slds-table_header-hidden slds-table_bordered"
+                                aria-label="Example headless table of Opportunities">
+                                <tbody>
+                                    <tr class="slds-hint-parent blue-row">
+                                        <td data-label="">
+                                            <div class="slds-truncate" title="Cloudhub"> Amount available for Title IVA
+                                                spending (after flexing) </div>
+                                        </td>
+                                        <td data-label="Close Date">
+                                            <div class="input-box blur-row">
+                                                <lightning-input type="text" variant="label-hidden" placeholder="$1"
+                                                    label="Enter some text" disabled={readOnly}></lightning-input>
+                                                <div class="slds-truncate" title="Cloudhub">0.8%</div>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent blue-row">
+                                        <td data-label="">
+                                            <div class="slds-truncate" title="Cloudhub"> Family engagement (at least 1%
+                                                required for districts with allocations of $500,000 or greater) </div>
+                                        </td>
+                                        <td data-label="Close Date">
+                                            <div class="input-box blur-row">
+                                                <lightning-input type="text" variant="label-hidden" placeholder="$1"
+                                                    label="Enter some text" disabled={readOnly}></lightning-input>
+                                                <div class="slds-truncate" title="Cloudhub">0.8%</div>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <td data-label="">
+                                            <div class="slds-truncate" title="Cloudhub">District Administration</div>
+                                        </td>
+                                        <td data-label="Close Date">
+                                            <div class="input-box">
+                                                <lightning-input type="text" variant="label-hidden" placeholder="$1"
+                                                    label="Enter some text" disabled={readOnly}></lightning-input>
+                                                <div class="slds-truncate" title="Cloudhub">0.8%</div>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <td data-label="">
+                                            <div class="slds-truncate" title="Cloudhub">Access to Well-Rounded Education
+                                            </div>
+                                        </td>
+                                        <td data-label="Close Date">
+                                            <div class="input-box">
+                                                <lightning-input type="text" variant="label-hidden" placeholder="$1"
+                                                    label="Enter some text" disabled={readOnly}></lightning-input>
+                                                <div class="slds-truncate" title="Cloudhub">0.8%</div>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <td data-label="">
+                                            <div class="slds-truncate" title="Cloudhub">Safe and Healthy Schools</div>
+                                        </td>
+                                        <td data-label="Close Date">
+                                            <div class="input-box">
+                                                <lightning-input type="text" variant="label-hidden" placeholder="$1"
+                                                    label="Enter some text" disabled={readOnly}></lightning-input>
+                                                <div class="slds-truncate" title="Cloudhub">0.8%</div>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <td data-label="">
+                                            <div class="slds-truncate" title="Cloudhub">Effective Use of Technology
+                                            </div>
+                                        </td>
+                                        <td data-label="Close Date">
+                                            <div class="input-box">
+                                                <lightning-input type="text" variant="label-hidden" placeholder="$1"
+                                                    label="Enter some text" disabled={readOnly}></lightning-input>
+                                                <div class="slds-truncate" title="Cloudhub">0.8%</div>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <td data-label="">
+                                            <div class="slds-truncate" title="Cloudhub">Effective Use of Technology:
+                                                Infrastructure</div>
+                                        </td>
+                                        <td data-label="Close Date">
+                                            <div class="input-box">
+                                                <lightning-input type="text" variant="label-hidden" placeholder="$1"
+                                                    label="Enter some text" disabled={readOnly}></lightning-input>
+                                                <div class="slds-truncate" title="Cloudhub">0.8%</div>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                    <tr class="slds-hint-parent blue-row">
+                                        <td data-label="">
+                                            <div class="slds-truncate" title="Cloudhub"> </div>
+                                        </td>
+                                        <td data-label="Close Date">
+                                            <div class="input-box ">
+                                                <lightning-input type="text" variant="label-hidden" placeholder="$1"
+                                                    label="Enter some text" disabled={readOnly}></lightning-input>
+                                                <div class="slds-truncate " title="Cloudhub">0.8%</div>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </lightning-tab>
+                    <lightning-tab label="Part B Budget" value="2">
+                        <c-dese_title4_budget read-only={readOnly} project-id={projectId}></c-dese_title4_budget>
+                    </lightning-tab>
+                </lightning-tabset>
+            </div>
+
+        </div>
+
+
+        <div slot="footer" if:false={readOnly}>
+            <div class="button">
+                <lightning-button variant="brand-outline" label="Back" title="Primary action with lighter look"
+                    onclick={handlePrev} class="slds-m-left_x-small button__white"></lightning-button>
+                <lightning-button variant="brand" label="Next" title="Primary action" onclick={handleNext}
+                    class="slds-m-left_x-small"></lightning-button>
+            </div>
+        </div>
+    </lightning-card>
+</template>

@@ -1,0 +1,54 @@
+<template>
+    <lightning-card>
+    <div class="container">
+        <h1 class="header slds-m-bottom_xx-large">
+            <!-- Review and Signature -->
+            Review
+        </h1>
+        <div class="accordionContainer">
+            <lightning-accordion class="example-accordion"
+                         onsectiontoggle={handleToggleSection}
+                         active-section-name="A">
+
+                <lightning-accordion-section name="A" label="Overview">
+                    <c-dese_overview read-only={readOnlyValue}></c-dese_overview>
+                </lightning-accordion-section>
+                <lightning-accordion-section name="B" label="Contact Information">
+                    <c-dese_contact_information project-id={projectId} read-only={readOnlyValue}></c-dese_contact_information>
+                </lightning-accordion-section>
+                <lightning-accordion-section name="C" label="Allocations and Flexing">
+                    <c-dese_allocation project-id={projectId} read-only={readOnlyValue}></c-dese_allocation>
+                </lightning-accordion-section>
+                <lightning-accordion-section name="D" label="Private School Services">
+                    <c-dese_private_school_services project-id={projectId} read-only={readOnlyValue}></c-dese_private_school_services>
+                </lightning-accordion-section>
+                <lightning-accordion-section name="E" label="Districtwide Strategies">
+                    <c-dese_districtwide_startegies project-id={projectId} read-only={readOnlyValue}></c-dese_districtwide_startegies>
+                </lightning-accordion-section>
+                <lightning-accordion-section name="F" label="Title I, Parts A & D">
+                    <c-dese_title_narrative project-id={projectId} read-only={readOnlyValue}></c-dese_title_narrative>
+                </lightning-accordion-section>
+                <lightning-accordion-section name="G" label="Title II, Part A">
+                    <c-dese_title2_narrative project-id={projectId} read-only={readOnlyValue}></c-dese_title2_narrative>
+                </lightning-accordion-section>
+                <lightning-accordion-section name="H" label="Title III, Part A">
+                    <c-dese_title3_narrative project-id={projectId} read-only={readOnlyValue}></c-dese_title3_narrative>
+                </lightning-accordion-section>
+                <lightning-accordion-section name="I" label="Title IV, Part A">
+                    <c-dese_title4_narrative project-id={projectId} read-only={readOnlyValue}></c-dese_title4_narrative>
+                </lightning-accordion-section>
+                <!-- <lightning-accordion-section name="J" label="Review and Signature"></lightning-accordion-section> -->
+            </lightning-accordion>
+        </div>
+        
+    </div>
+    <div slot="footer">
+        <div class="button">
+            <lightning-button variant="brand-outline" label="Back" title="Primary action with lighter look"
+                onclick={handlePrev} class="slds-m-left_x-small button__white"></lightning-button>
+            <lightning-button variant="brand" label="Next" title="Primary action" onclick={handleNext}
+                class="slds-m-left_x-small"></lightning-button>
+        </div>
+    </div>
+</lightning-card>
+</template>

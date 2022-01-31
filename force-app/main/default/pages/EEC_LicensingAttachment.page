@@ -1,0 +1,1024 @@
+<apex:page controller="EEC_LicensingAttachmentController" docType="HTML-5.0" showheader="false" sidebar="false" action="{!doGetDocuments}"
+    standardStylesheets="false">
+    <title>EEC</title>
+    <c:EEC_Header id="pageHeader" /> 
+    <style>
+        table.table td.action-col,
+        table.table th.action-col {
+            text-align: center;
+        }
+        table.table tr td:first-child,
+        table.table tr th:first-child {
+            padding-left: 15px;
+        }
+        html {
+            background: white !important;
+            color: #16325c !important;
+            -webkit-tap-highlight-color: transparent !important;
+        }
+        body {
+            background: transparent !important;
+        }
+        .button-container {
+            margin-top: 21px;
+            padding-left: 5px;
+        }
+        .bPageBlock .requiredInput .requiredBlock {
+            background-color: #c00;
+            position: absolute;
+            left: -4px;
+            width: 3px;
+            top: 1px;
+            bottom: 1px;
+            top: 20px;
+            display: none;
+        }
+        .requiredInput2 {
+            margin-left: 0;
+        }
+        .requiredInput1 {
+            margin-left: 0;
+        }
+        .requiredInput,
+        md-input-container span {
+            -webkit-flex: 1 1 auto;
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+            -webkit-order: 2;
+            -ms-flex-order: 2;
+            order: 2;
+            display: block;
+            background: 0 0;
+            padding: 2px 2px 1px;
+            border-width: 0 0 1px;
+            line-height: 26px;
+            -ms-flex-preferred-size: 26px;
+            border-radius: 0;
+        }
+        .sr-item-row {
+            cursor: pointer;
+            padding: 10px;
+        }
+        .sr-item-row:hover {
+            background: rgba(225, 225, 225, 0.8);
+            cursor: pointer;
+        }
+        .top-level-label {
+            font-weight: 600;
+            margin-right: 3px;
+            line-height: 20px;
+            color: rgba(0, 0, 0, 0.54);
+            margin-bottom: 1px;
+        }
+        .inner-label {
+            color: black;
+            font-weight: normal;
+            line-height: initial;
+            white-space: nowrap;
+        }
+        .bPageBlock .requiredInput .requiredBlock {
+            background-color: #c00;
+            position: absolute;
+            left: -4px;
+            width: 3px;
+            top: 1px;
+            bottom: 1px;
+            top: 20px;
+            display: none;
+        }
+        .parsley-errors-list {
+            width: 50%;
+        }
+        .parsley-error {
+            border: 2px solid #c00;
+        }
+        .my_error_container {
+            position: absolute;
+            bottom: 90px;
+            width: 50%;
+        }
+        .errorMsg {
+            color: #d74c3b;
+        }
+        .message[class*='error'] {
+            background-color: #eee;
+            padding: 0 20px 10px;
+            margin-bottom: 25px;
+            border-radius: 3px;
+            -webkit-box-shadow: 0 0 5px 0 rgba(204, 0, 0, 0.4);
+            -moz-box-shadow: 0 0 5px 0 rgba(204, 0, 0, 0.4);
+            box-shadow: 0 0 5px 0 rgba(204, 0, 0, 0.4);
+        }
+        .message[class*='error'] .messageTable {
+            width: 100%;
+        }
+        .message[class*='error'] .messageText {
+            border-bottom: 1px solid grey;
+            height: 30px;
+        }
+        .transprovider-info-container {
+            margin-bottom: 120px;
+        }
+        md-input-container {
+            padding-top: 15px;
+        }
+        .md-title {
+            margin-bottom: 0px;
+        }
+        md-input-container .input-label {
+            /*top: -50px;*/
+        }
+        md-input-container .input-label-date-picklist {
+            top: -25px;
+        }
+        .base-info {
+            margin-top: 10px;
+        }
+        .input-label {
+            color: rgba(0, 0, 0, 0.54);
+        }
+        .base-info md-content {
+            margin-bottom: 20px;
+        }
+        .provider-checkbox {
+            margin-top: -25px;
+            margin-left: -5px;
+            overflow: visible;
+        }
+        .radio-group .parsley-errors-list {
+            margin-top: 20px;
+            margin-left: -50px;
+            position: absolute;
+            width: 50%;
+        }
+        .radio-group .parsley-error {
+            border: 0;
+        }
+        .new-address-live-at-address {
+            margin-top: 29px;
+        }
+        md-input-container:not(.md-input-invalid).md-input-has-value label {
+            transform: translate3d(0, 6px, 0) scale(1);
+        }
+        /* @see Angular Material - Input */
+        .requiredInput,
+        md-input-container span {
+            -webkit-flex: 1 1 auto;
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+            -webkit-order: 2;
+            -ms-flex-order: 2;
+            order: 2;
+            display: block;
+            background: 0 0;
+            padding: 2px 2px 1px;
+            border-width: 0 0 1px;
+            line-height: 26px;
+            -ms-flex-preferred-size: 26px;
+            border-radius: 0;
+        }
+        .requiredInput2 {
+            margin-left: 0;
+        }
+        .other-checkbox {
+            padding-top: 20px;
+        }
+        input[type="radio"] {
+            margin: 4px 7px 0;
+        }
+        .radio-group label {
+            font-weight: normal;
+        }
+        .commandBtn {
+            -webkit-appearance: none;
+            border: none;
+            box-shadow: none;
+            background: none;
+            text-transform: uppercase;
+            font-weight: 500;
+            font-size: 14px;
+            font-style: inherit;
+            font-variant: inherit;
+            font-family: inherit;
+            outline: none;
+            letter-spacing: 0.01em;
+            margin: 3px 0;
+            white-space: normal;
+        }
+        input[type="text"] {
+            width: 70%;
+            margin-bottom: 10px;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+        textarea.form-control {
+            width: 70%;
+            margin-bottom: 15px;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+        input[type="checkbox"] {
+            height: 15px;
+            display: inline;
+            box-shadow: none;
+            margin: 4px 7px 0;
+        }
+        .navigation-buttons .md-button label {
+            white-space: normal;
+        }
+        .base-label {
+            color: rgba(0, 0, 0, 0.54);
+        }
+        .md-input-has-value {}
+        md-input-container .md-input,
+        md-input-container input {
+            max-width: 200px;
+        }
+        .readonly-input {
+            border-bottom: none;
+            cursor: not-allowed;
+        }
+        .read-only-input {
+            cursor: not-allowed;
+            background: rgba(0, 0, 0, 0.54);
+        }
+        /* TODO: Remove this and use md-select with new Validation. */
+        select {
+            background: none;
+            border: none;
+            border-bottom: 1px solid #ddd;
+        }
+        .errorMsg {
+            color: red;
+        }
+        .requiredInput1 {
+            margin-left: 0;
+        }
+        .city-outputfield {
+            outline: none;
+            text-decoration: none;
+        }
+        .top-level-label {
+            font-weight: 600;
+            margin-right: 5px;
+            line-height: 20px;
+            color: rgba(0, 0, 0, 0.54);
+        }
+        @media only screen and (min-width: 0px) and (max-width: 959px) {
+            .navigation-buttons .md-button {
+                width: 100%;
+            }
+            .navigation-buttons md-content {
+                width: 100%;
+            }
+            md-input-container input {
+                max-width: none;
+            }
+        }
+        .base-info {
+            margin-bottom: 20px;
+        }
+        /*New Style*/
+        .transaction-info-row {
+            margin-left: 0;
+        }
+        .reasonErrorMessage {
+            display: none;
+        }
+        .visible {
+            display: block;
+        }
+        .card-row-item {
+            margin-top: 15px;
+        }
+        .slds-item {
+            margin-top: 15px;
+        }
+        .table {
+            font-size: 13px;
+            margin-bottom: 0;
+        }
+        .table thead {
+            background-color: #EDEDED;
+            font-size: 14px;
+            font-weight: 400;
+            text-transform: capitalize;
+        }
+        .table button {
+            margin: 0;
+        }
+        .add-button {
+            color: #703E3E;
+            text-transform: uppercase;
+            font-size: 13px;
+        }
+        .panel-body.table-content {
+            padding: 0;
+        }
+        #cancelBtn {
+            border: 1px solid grey;
+        }
+        .marginTopExtra {
+            margin-top: -2.6%;
+        }
+        .mdDivider {
+            border-top-width: 2px;
+        }
+        .alert-warning {
+            color: #E60000;
+        }
+        .btn-pullLeft {
+            right: 30% !important;
+        }
+        .wizard {
+            margin-bottom: 5%;
+        }
+        .wrapper {
+            margin-top: 0px !important;
+            margin-bottom: 0px !important;
+        }
+        .emailProvider {
+            margin-top: 5px;
+        }
+        .glyphicon {
+            color: #337ab7 !important;
+        }
+        .visibilityHidden {
+            display: none !important;
+        }
+        .srOnly {
+            display: none;
+        }
+        .transprovider-info-container {
+            margin-bottom: 0px!important
+        }
+    </style>
+    <c:eec_styleoverrides />
+    <body ng-app="eecApp">
+        <c:eec_nav_bar id="navBar" providerId="{!providerid}" accountName="{!accountName}" rendered="{!loggedUser.UserType == 'PowerPartner' || loggedUser.UserType == 'PowerCustomerSuccess' || loggedUser.UserType == 'CspLitePortal' || loggedUser.UserType == 'CustomerSuccess'}"
+        />
+        <apex:messages id="showmsg" styleClass="error-container" style="color: #FF0000; font-weight: bold;" />
+        <div class="technical-form-container" layout-wrap="true" layout-lg="row" layout-gt-lg="row" layout="row" layout-padding="true"
+            layout-margin="true" style="margin-top: 30px;">
+            <apex:form html-ng-app="eecApp" id="idForm" style="margin-bottom: 100px;" styleClass="col-lg-8 col-md-8 col-sm-12">
+                <apex:actionFunction name="updateDocuments" action="{!doGetDocuments}" rerender="idForm" status="status"/>
+                <apex:actionFunction name="updateComments" action="{!doUpdateComments}" reRender="none" status="status">
+                    <apex:param name="trandocId" value="" />
+                    <apex:param name="trandocComments" value="" />
+                </apex:actionFunction>
+                <apex:actionFunction name="updateSentByMail" action="{!doUpdateSentByMail}" reRender="none" status="status">
+                    <apex:param name="trandocId" value="" />
+                    <apex:param name="trandocSentByMail" value="" />
+                </apex:actionFunction>
+                <apex:outputPanel rendered="{!isDocumentExpired && providerRecordType !='FCC' && providerRecordType !='FCC_Assistant'}">
+                    <div class="alert alert-warning" id="errorMessage">
+                        <b> Alert!</b> We are excited to release the document library feature that allows programs to upload
+                        documents in the portal. Whether you are approaching your renewal or in between renewal - it is useful
+                        for us to have digital copy of all your documents. Please
+                        <a href="/EEC_DocumentLibrary">click
+                            <span class="srOnly">Accessibility Fix</span>
+                        </a> here to manage your documents. Please note that this may impact your application process.
+                    </div>
+                </apex:outputPanel>
+                <div class="top-header-section">
+                    <div class="header-name-section ">
+                        <h2 class="h1Hidden">Accessibility Fix</h2>
+                        <!-- Accessibility Fix -->
+                        <h3 class="md-display-1 header-display-name">{!applicationDisplayName}</h3>
+                        <h4 class="step-name">Attachments</h4>
+                        <h5 class="base-label trans-number">Application number: {!licenseTransaction.Name}</h5>
+                    </div>
+                </div>
+                <md-divider layout-align="center center"></md-divider>
+                <br/>
+                <apex:outputPanel rendered="{!  providerRecordType =='Adoption_Agency' 
+                                              || providerRecordType =='Foster_Care_Agency' 
+                                              || providerRecordType =='Group_Care' 
+                                              || providerRecordType =='Temporary_Shelter'
+                                              || providerRecordType =='Large_Group'
+                                              || providerRecordType =='Small_Group'}">
+                    <div class="alert alert-info">
+                        Please consult your Document library and update all documents and policies relevant to this transaction.
+                    </div>
+                </apex:outputPanel>
+                <apex:outputPanel id="idRequiredPanel">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" onclick="togglePanel(this)">
+                            <span class="glyphicon glyphicon-resize-full pull-right"></span>
+                            <span style="display:none" class="glyphicon glyphicon-resize-small pull-right"></span>
+                            <h3 class="md-title" flex="100" style="margin-top: 0px;">
+                                <apex:outputText styleClass="input-label" value="Required Attachments" />
+                                <!-- Accessibility fix -->
+                            </h3>
+                            (Required during application submission)
+                        </div>
+                        <div class="panel-body table-content">
+                            <div class="scrollable-y">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Type</th>
+                                            <!--                                             <th>Files</th> -->
+                                            <th>Review Status</th>
+                                            <th class="action-col">View/Update</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <apex:repeat value="{!listRequiredDocument}" var="rm">
+                                            <tr>
+                                                <td>
+                                                    <span id="chev{!rm.transctionDocument.Document__r.id}" class="glyphicon glyphicon-chevron-down"> </span>
+                                                    <a role="button" data-toggle="collapse" class="deliverable-expand collapsed " href="#document{!rm.transctionDocument.Document__r.id}"
+                                                        aria-expanded="false" onclick="togglevent('chev{!rm.transctionDocument.Document__r.id}');"
+                                                        aria-controls="document{!rm.transctionDocument.Document__r.id}">
+                                                        <apex:outputPanel rendered="{!NOT(ISBLANK(rm.transctionDocument.Document_Type__r.Name))}">
+                                                            <apex:outputText value="{!rm.transctionDocument.Document_Type__r.Name}" />
+                                                            <!-- <img onclick="window.open('/apex/EEC_Description?id={!rm.transctionDocument.Document__c}&transactiondocId={!rm.transctionDocument.Id}&transactionId={!licenseTransaction.Id}&type=R','_blank','width=900, height=600');return false;"
+                                                            style="display:{!if(rm.transctionDocument.Document_Type__r.Description__c != null && rm.transctionDocument.Document_Type__r.Description__c != '','','none')}"
+                                                            src="/img/alohaSkin/help_orange.png"
+                                                            title="Click to view description."/> -->
+                                                            <img onclick="showDescription('{!JSENCODE(rm.transctionDocument.Document_Type__r.Description__c)}')" style="display:{!if(rm.transctionDocument.Document_Type__r.Description__c != null && rm.transctionDocument.Document_Type__r.Description__c != '','','none')}"
+                                                                src="/img/alohaSkin/help_orange.png" title="Click to view description."
+                                                            />
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!ISBLANK(rm.transctionDocument.Document_Type__r.Name)}">
+                                                            <apex:outputText value="{!rm.transctionDocument.Transaction_Document_Name__c}" />
+                                                        </apex:outputPanel>
+                                                        <span class="visibilityHidden"> Documents </span>
+                                                    </a>
+                                                </td>
+                                                <!--                                                 <td> -->
+                                                <!--                                                    <apex:outputPanel rendered="{!rm.listOfS3Files != null}"> -->
+                                                <!--                                                        <apex:repeat value="{!rm.listOfS3Files}" var="s3F"> -->
+                                                <!--                                                            {!s3F} -->
+                                                <!--                                                         </apex:repeat> -->
+                                                <!--                                                     </apex:outputPanel> -->
+                                                <!--                                                 </td> -->
+                                                <td>
+                                                    <apex:outputText value="{!rm.transctionDocument.Status__c}" />
+                                                </td>
+                                                <td class="action-col">
+                                                    <div style="display:{!if(rm.displayProvider == true && rm.transctionDocument.Document_Level__c == 'Umbrella','block','none')}">
+                                                        <p>
+                                                            <apex:commandLink value="Use Document From Provider instead" styleClass="md-button md-raised md-eec" html-layout-padding="true"
+                                                                rerender="idRequiredPanel" style="font-size: 12px;font-weight: bold;"
+                                                                action="{!UpdateDocument}" html-role="button" status="status">
+                                                                <apex:param value="{!rm.transctionDocument.Id}" name="docId" />
+                                                                <apex:param value="Provider" name="commandType" />
+                                                            </apex:commandLink>
+                                                        </p>
+                                                    </div>
+                                                    <div style="display:{!if(rm.transctionDocument.Document_Level__c == 'Provider' && rm.transctionDocument.Document__r.Provider__r.Umbrella_Members__c != null && rm.displayUmbrella == true,'block','none')}">
+                                                        <p>
+                                                            <apex:commandLink value="Use Document From Umbrella instead" styleClass="md-button md-raised md-eec" html-layout-padding="true"
+                                                                rerender="idRequiredPanel" style="font-size: 12px;font-weight: bold;"
+                                                                action="{!UpdateDocument}" html-role="button" status="status">
+                                                                <apex:param value="{!rm.transctionDocument.Id}" name="docId" />
+                                                                <apex:param value="Umbrella" name="commandType" />
+                                                            </apex:commandLink>
+                                                        </p>
+                                                    </div>
+                                                    <div style="display:{!if(rm.transctionDocument.Document_Level__c == 'Provider' && rm.transctionDocument.Document__r.Valid_From__c == null,'block','none')}">
+                                                        <p>
+                                                            <a title="Attach Document(s)" onclick="window.open('/apex/EEC_AttachmentSelection?id={!rm.transctionDocument.Document__c}&transactiondocId={!rm.transctionDocument.Id}&transactionId={!licenseTransaction.Id}&type=R','_blank','width=1100, height=600');return false;">
+                                                                <span class="glyphicon glyphicon-paperclip"></span>
+                                                            </a>
+                                                        </p>
+                                                    </div>
+                                                    <div style="display:{!if(rm.transctionDocument.Document_Level__c == 'Umbrella' && rm.transctionDocument.Document__r.Valid_From__c != null,'block','none')}">
+                                                        <p>
+                                                            <a title="View Document(s)" onclick="window.open('/apex/EEC_AttachmentSelection?id={!rm.transctionDocument.Document__c}&transactiondocId={!rm.transctionDocument.Id}&transactionId={!licenseTransaction.Id}&type=R','_blank','width=1100, height=600');return false;">
+                                                                <span class="glyphicon glyphicon-paperclip"></span>
+                                                            </a>
+                                                        </p>
+                                                    </div>
+                                                    <div style="display:{!if(rm.transctionDocument.Document_Level__c == 'Provider' && rm.transctionDocument.Document__r.Valid_From__c != null,'block','none')}">
+                                                        <p>
+                                                            <a title="View and Upload Document(s)" onclick="window.open('/apex/EEC_AttachmentSelection?id={!rm.transctionDocument.Document__c}&transactiondocId={!rm.transctionDocument.Id}&transactionId={!licenseTransaction.Id}&type=R','_blank','width=1100, height=600');return false;">
+                                                                <span class="glyphicon glyphicon-paperclip"></span>
+                                                            </a>
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="8" class="reset">
+                                                    <div class="collapse" id="document{!rm.transctionDocument.Document__r.id}">
+                                                        <div class="wrapper">
+                                                            <div class="flex-row two-col flex-start deliverable-details">
+                                                                <div>
+                                                                    <span>Communications:</span>
+                                                                    <div class="field">
+                                                                        <apex:outputPanel layout="block" styleclass="flex-row">
+                                                                            <table id="tasktable" class="table table-condensed table-striped table-default upper table-bordered">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>Subject</th>
+                                                                                        <th>Message</th>
+                                                                                        <th>Activity Date</th>
+                                                                                        <th>Created By</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <apex:repeat value="{!rm.taskList}" var="tsk">
+                                                                                        <tr>
+                                                                                            <td>{!tsk.subject} </td>
+                                                                                            <td>
+                                                                                                <a type="button" data-toggle="modal" data-target="#myModal{!tsk.id}">View Message</a>
+                                                                                                <!-- Modal -->
+                                                                                                <div class="modal fade" id="myModal{!tsk.id}" role="dialog">
+                                                                                                    <div class="modal-dialog">
+                                                                                                        <!-- Modal content-->
+                                                                                                        <div class="modal-content">
+                                                                                                            <div class="modal-header">
+                                                                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                                                                <h4 class="modal-title">Message</h4>
+                                                                                                            </div>
+                                                                                                            <div class="modal-body">
+                                                                                                                <apex:outputText escape="false" value="{!tsk.Description}" />
+                                                                                                            </div>
+                                                                                                            <div class="modal-footer">
+                                                                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <apex:outputField value="{!tsk.createddate}"
+                                                                                                /> </td>
+                                                                                            <td>
+                                                                                                <apex:outputField value="{!tsk.createdby.name}"
+                                                                                                /> </td>
+                                                                                        </tr>
+                                                                                    </apex:repeat>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </apex:outputPanel>
+                                                                    </div>
+                                                                    <!-- /.field -->
+                                                                    <a class="btn btn-bs btn-primary emailProvider " target="_top" href="/apex/EEC_CustomEmailPage?docId={!rm.transctionDocument.Document__r.id}&ltId={!rm.transctionDocument.Licensing_Transaction__c}&url={!urlvalue}&type='P'">Email EEC</a>
+                                                                </div>
+                                                            </div>
+                                                            <!-- /.flex-row -->
+                                                        </div>
+                                                        <!-- /.wrapper -->
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </apex:repeat>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </apex:outputPanel>
+                <apex:outputPanel id="idOptionalPanel">
+                    <div class="panel panel-default" style="display:{!if(AND(listOptionalDocument != NULL, listOptionalDocument.size>0), 'block', 'none')}">
+                        <div class="panel-heading" onclick="togglePanel(this)">
+                            <span class="glyphicon glyphicon-resize-full pull-right"></span>
+                            <span style="display:none" class="glyphicon glyphicon-resize-small pull-right"></span>
+                            <h3 class="md-title" flex="100" style="margin-top: 0px;">
+                                <apex:outputtext styleClass="input-label" value="Additional Attachments" />
+                                <!-- Accessibility fix -->
+                            </h3>
+                            (Required in order to process the transaction but can be uploaded anytime prior to granting license)
+                        </div>
+                        <div class="panel-body table-content">
+                            <div class="scrollable-y">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Type</th>
+                                            <th>Review Status</th>
+                                            <th class="action-col">View/Update</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <apex:repeat value="{!listOptionalDocument}" var="rm">
+                                            <tr>
+                                                <td>
+                                                    <span id="chev{!rm.transctionDocument.Document__r.id}" class="glyphicon glyphicon-chevron-down"> </span>
+                                                    <a role="button" data-toggle="collapse" class="deliverable-expand collapsed" href="#document{!rm.transctionDocument.Document__r.id}"
+                                                        aria-expanded="false" onclick="togglevent('chev{!rm.transctionDocument.Document__r.id}');"
+                                                        aria-controls="document{!rm.transctionDocument.Document__r.id}">
+                                                        <apex:outputPanel rendered="{!NOT(ISBLANK(rm.transctionDocument.Document_Type__r.Name))}">
+                                                            <apex:outputText value="{!rm.transctionDocument.Document_Type__r.Name}" />
+                                                            <!-- <img
+                                                        onclick="window.open('/apex/EEC_Description?id={!rm.transctionDocument.Document__c}&transactiondocId={!rm.transctionDocument.Id}&transactionId={!licenseTransaction.Id}&type=R','_blank','width=900, height=600');return false;"
+                                                        style="display:{!if(rm.transctionDocument.Document_Type__r.Description__c != null && rm.transctionDocument.Document_Type__r.Description__c != '','','none')}"
+                                                        src="/img/alohaSkin/help_orange.png"
+                                                        title="Click to view description."/> -->
+                                                            <img onclick="showDescription('{!JSENCODE(rm.transctionDocument.Document_Type__r.Description__c)}')" style="display:{!if(rm.transctionDocument.Document_Type__r.Description__c != null && rm.transctionDocument.Document_Type__r.Description__c != '','','none')}"
+                                                                src="/img/alohaSkin/help_orange.png" title="Click to view description."
+                                                            />
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!ISBLANK(rm.transctionDocument.Document_Type__r.Name)}">
+                                                            <apex:outputText value="{!rm.transctionDocument.Transaction_Document_Name__c}" />
+                                                        </apex:outputPanel>
+                                                        <span class="visibilityHidden"> Documents </span>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <apex:outputText value="{!rm.transctionDocument.Status__c}" />
+                                                </td>
+                                                <td class="action-col">
+                                                    <div style="display:{!if(rm.transctionDocument.Document__r.Valid_From__c == null,'block','none')}">
+                                                        <p>
+                                                            <a title="Add Attachment(s)" onclick="window.open('/apex/EEC_AttachmentSelection?id={!rm.transctionDocument.Document__c}&transactiondocId={!rm.transctionDocument.Id}&transactionId={!licenseTransaction.Id}&type=O','_blank','width=1100, height=600');return false;">
+                                                                <span class="glyphicon glyphicon-paperclip"></span>
+                                                            </a>
+                                                        </p>
+                                                    </div>
+                                                    <div style="display:{!if(rm.transctionDocument.Document__r.Valid_From__c != null,'block','none')}">
+                                                        <p>
+                                                            <a title="View and Upload Document(s)" onclick="window.open('/apex/EEC_AttachmentSelection?id={!rm.transctionDocument.Document__c}&transactiondocId={!rm.transctionDocument.Id}&transactionId={!licenseTransaction.Id}&type=O','_blank','width=1100, height=600');return false;">
+                                                                <span class="glyphicon glyphicon-paperclip"></span>
+                                                            </a>
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="8" class="reset">
+                                                    <div class="collapse" id="document{!rm.transctionDocument.Document__r.id}">
+                                                        <div class="wrapper">
+                                                            <div class="flex-row two-col flex-start deliverable-details">
+                                                                <div>
+                                                                    <span>Communications:</span>
+                                                                    <div class="field">
+                                                                        <apex:outputPanel layout="block" styleclass="flex-row">
+                                                                            <table id="tasktable" class="table table-condensed table-striped table-default upper table-bordered">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>Subject</th>
+                                                                                        <th>Message</th>
+                                                                                        <th>Activity Date</th>
+                                                                                        <th>Created By</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <apex:repeat value="{!rm.taskList}" var="tsk">
+                                                                                        <tr>
+                                                                                            <td>{!tsk.subject} </td>
+                                                                                            <td>
+                                                                                                <a type="button" data-toggle="modal" data-target="#myModal{!tsk.id}">View Message</a>
+                                                                                                <!-- Modal -->
+                                                                                                <div class="modal fade" id="myModal{!tsk.id}" role="dialog">
+                                                                                                    <div class="modal-dialog">
+                                                                                                        <!-- Modal content-->
+                                                                                                        <div class="modal-content">
+                                                                                                            <div class="modal-header">
+                                                                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                                                                <h4 class="modal-title">Message</h4>
+                                                                                                            </div>
+                                                                                                            <div class="modal-body">
+                                                                                                                <apex:outputText escape="false" value="{!tsk.Description}" />
+                                                                                                            </div>
+                                                                                                            <div class="modal-footer">
+                                                                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <apex:outputField value="{!tsk.createddate}"
+                                                                                                /> </td>
+                                                                                            <td>
+                                                                                                <apex:outputField value="{!tsk.createdby.name}"
+                                                                                                /> </td>
+                                                                                        </tr>
+                                                                                    </apex:repeat>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </apex:outputPanel>
+                                                                    </div>
+                                                                    <!-- /.field -->
+                                                                    <a class="btn btn-bs btn-primary emailProvider " target="_top" href="/apex/EEC_CustomEmailPage?docId={!rm.transctionDocument.Document__r.id}&ltId={!rm.transctionDocument.Licensing_Transaction__c}&url={!urlvalue}&type='P'">Email EEC</a>
+                                                                </div>
+                                                            </div>
+                                                            <!-- /.flex-row -->
+                                                        </div>
+                                                        <!-- /.wrapper -->
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </apex:repeat>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </apex:outputPanel>
+                <apex:outputPanel id="idIndividualPanel">
+                    <div class="panel panel-default" style="display:{!if(AND(listIndividualDocument != NULL, listIndividualDocument.size>0), 'block', 'none')}">
+                        <div class="panel-heading" onclick="togglePanel(this)">
+                            <span class="glyphicon glyphicon-resize-full pull-right"></span>
+                            <span style="display:none" class="glyphicon glyphicon-resize-small pull-right"></span>
+                            <h3 class="md-title" flex="100" style="margin-top: 0px;">
+                                <apex:outputtext styleClass="input-label" value="Individual Related Required Documents" />
+                            </h3>
+                        </div>
+                        <div class="panel-body table-content">
+                            <div class="scrollable-y">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Individual</th>
+                                            <th>Role</th>
+                                            <th>Type</th>
+                                            <th>Mandatory / Optional</th>
+                                            <th>Review Status</th>
+                                            <th class="action-col">View/Update</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <apex:repeat value="{!listIndividualDocument}" var="rm">
+                                            <tr>
+                                                <td>
+                                                    <apex:outputText value="{!rm.transctionDocument.Document__r.Contact_Role__r.Contact__r.FirstName + ' ' + rm.transctionDocument.Document__r.Contact_Role__r.Contact__r.LastName}"
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <apex:outputText value="{!rm.transctionDocument.Document__r.Contact_Role__r.Role__c}" />
+                                                </td>
+                                                <td>
+                                                    <apex:outputText value="{!rm.transctionDocument.Document_Type__r.Name}" />
+                                                    <!-- <img
+                                                        onclick="window.open('/apex/EEC_Description?id={!rm.transctionDocument.Document__c}&transactiondocId={!rm.transctionDocument.Id}&transactionId={!licenseTransaction.Id}&type=R','_blank','width=900, height=600');return false;"
+                                                        style="display:{!if(rm.transctionDocument.Document_Type__r.Description__c != null && rm.transctionDocument.Document_Type__r.Description__c != '','','none')}"
+                                                        src="/img/alohaSkin/help_orange.png"
+                                                        title="Click to view description."/> -->
+                                                    <img onclick="showDescription('{!JSENCODE(rm.transctionDocument.Document_Type__r.Description__c)}')" style="display:{!if(rm.transctionDocument.Document_Type__r.Description__c != null && rm.transctionDocument.Document_Type__r.Description__c != '','','none')}"
+                                                        src="/img/alohaSkin/help_orange.png" title="Click to view description."
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <apex:outputText value="{!rm.mandatory}" />
+                                                </td>
+                                                <td>
+                                                    <apex:outputText value="{!rm.transctionDocument.Status__c}" />
+                                                </td>
+                                                <td class="action-col">
+                                                    <div style="display:{!if(rm.transctionDocument.Document__r.Valid_From__c == null,'block','none')}">
+                                                        <p>
+                                                            <a title="Add Attachment(s)" onclick="window.open('/apex/EEC_AttachmentSelection?id={!rm.transctionDocument.Document__c}&transactiondocId={!rm.transctionDocument.Id}&transactionId={!licenseTransaction.Id}&type=I','_blank','width=1100, height=600');return false;">
+                                                                <span class="glyphicon glyphicon-paperclip"></span>
+                                                            </a>
+                                                        </p>
+                                                    </div>
+                                                    <div style="display:{!if(rm.transctionDocument.Document__r.Valid_From__c != null,'block','none')}">
+                                                        <p>
+                                                            <a title="View and Upload Document(s)" onclick="window.open('/apex/EEC_AttachmentSelection?id={!rm.transctionDocument.Document__c}&transactiondocId={!rm.transctionDocument.Id}&transactionId={!licenseTransaction.Id}&type=I','_blank','width=1100, height=600');return false;">
+                                                                <span class="glyphicon glyphicon-paperclip"></span>
+                                                            </a>
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </apex:repeat>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </apex:outputPanel>
+                <apex:outputPanel id="idVariancePanel">
+                    <div style="overflow: visible;display:{!if(mapVarianceDocument != NULL, 'block', 'none')}">
+                        <apex:repeat id="varianceAttachment" value="{!mapVarianceDocument}" var="rm" rendered="{!mapVarianceDocument != NULL}">
+                            <div class="panel panel-default ">
+                                <div class="panel-heading" onclick="togglePanel(this)">
+                                    <span class="glyphicon glyphicon-resize-full pull-right"></span>
+                                    <span style="display:none" class="glyphicon glyphicon-resize-small pull-right"></span>
+                                    <h3 class="md-title" flex="100" style="margin-top: 0px;">
+                                        <apex:outputLabel styleClass="input-label" value="Variance on {!mapVarianceIds[rm]} Related Documents" />
+                                    </h3>
+                                </div>
+                                <div class="panel-body table-content" style="display:{!if(mapVarianceDocument[rm] != NULL, 'block','none')}">
+                                    <div class="scrollable-y">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Variance Regulation Article</th>
+                                                    <th>Name</th>
+                                                    <th>File Name</th>
+                                                    <th>Review Status</th>
+                                                    <!-- <th class="action-col">Delete</th>  -->
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <apex:repeat value="{!mapVarianceDocument[rm]}" var="article">
+                                                    <tr>
+                                                        <td>
+                                                            <apex:outputText value="{!article.transctionDocument.Variance_on_Regulation__r.Associated_Regulation__r.Regulation_Number__c}"
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <apex:outputText value="{!article.transctionDocument.Name}" />
+                                                        </td>
+                                                        <td>
+                                                            <apex:outputText value="{!article.s3FileName}" />
+                                                        </td>
+                                                        <td>
+                                                            <apex:outputText value="{!article.transctionDocument.Status__c}" />
+                                                        </td>
+                                                        <!-- 
+                                                        <td class="action-col">
+                                                            <apex:commandlink action="{!delAttachment}" immediate="true" reRender="idVariancePanel">
+                                                                <apex:param value="{!article.s3FileId}" name="index"/>
+                                                                <apex:param value="{!article.transctionDocument.Id}" name="tranDocId"/>
+                                                                <span class="glyphicon glyphicon-trash"/>
+                                                            </apex:commandlink>
+                                                        </td>
+                                                        -->
+                                                    </tr>
+                                                </apex:repeat>
+                                                <tr>
+                                                    <td colspan="7">
+                                                        <button type="button" class="btn btn-link add-button" onclick="window.open('/apex/EEC_AttachmentSelection?varianceid={!rm}&transactionId={!licenseTransaction.Id}&type=V','_blank','width=1100, height=600');return false;">
+                                                            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add an Attachment
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </apex:repeat>
+                    </div>
+                </apex:outputPanel>
+                <apex:outputPanel id="idAdditionalPanel" rendered="{!providerRecordType =='FCC' || providerRecordType =='FCC_Assistant'}">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" onclick="togglePanel(this)">
+                            <span class="glyphicon glyphicon-resize-full pull-right"></span>
+                            <span style="display:none" class="glyphicon glyphicon-resize-small pull-right"></span>
+                            <h3 class="md-title" flex="100" style="margin-top: 0px;">
+                                <apex:outputtext styleClass="input-label" value="Optional Attachments" />
+                                <!-- Accessibility fix -->
+                            </h3>
+                        </div>
+                        <div class="panel-body table-content">
+                            <div class="scrollable-y">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>File Name</th>
+                                            <th>Review Status</th>
+                                            <th>View</th>
+                                            <!--                                            <th class="action-col">Delete</th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <apex:repeat value="{!listAdditionalDocument}" var="rm">
+                                            <tr>
+                                                <td>
+                                                    <apex:outputText value="{!rm.transctionDocument.Transaction_Document_Name__c}" />
+                                                </td>
+                                                <td>
+                                                    <apex:outputText value="{!rm.s3FileName}" />
+                                                </td>
+                                                <td>
+                                                    <apex:outputText value="{!rm.transctionDocument.Status__c}" />
+                                                </td>
+                                                <td class="action-col">
+                                                    <p>
+                                                        <a title="View and Upload Document(s)" onclick="window.open('/apex/EEC_AttachmentSelection?id={!rm.transctionDocument.Document__c}&transactiondocId={!rm.transctionDocument.Id}&transactionId={!licenseTransaction.Id}&type=A','_blank','width=1100, height=600');return false;">
+                                                            <span class="glyphicon glyphicon-paperclip"></span>
+                                                        </a>
+                                                    </p>
+                                                </td>
+                                                <!--                                                <td class="action-col"> -->
+                                                <!--                                                    <apex:commandlink action="{!delAttachment}" immediate="true" reRender="idAdditionalPanel"> -->
+                                                <!--                                                        <apex:param value="{!rm.s3FileId}" name="index"/> -->
+                                                <!--                                                        <apex:param value="{!rm.transctionDocument.Id}" name="tranDocId"/> -->
+                                                <!--                                                         <span class="glyphicon glyphicon-trash"/> -->
+                                                <!--                                                    </apex:commandlink> -->
+                                                <!--                                                </td> -->
+                                            </tr>
+                                        </apex:repeat>
+                                        <tr>
+                                            <td colspan="6">
+                                                <button type="button" class="btn btn-link add-button" onclick="window.open('/apex/EEC_AttachmentSelection?transactionId={!licenseTransaction.Id}&type=A','_blank','width=1100, height=600');return false;">
+                                                    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add an Attachment
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </apex:outputPanel>
+                <div class="modal fade" id="description-div" tabindex="-1" role="dialog" aria-labelledby="editModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <apex:outputPanel id="modalForm">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h4 class="modal-title" id="editModalLabel">Description</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="flex-row">
+                                        <div class="field lg desc-modal-body">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <span id="cancelBtnDiv">
+                                        <button id="cancelBtn" type="button" class="btn-bs btn-default md-button md-raised" data-dismiss="modal">Close</button>
+                                    </span>
+                                </div>
+                            </apex:outputPanel>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <md-divider layout-align="center center" class="mdDivider"></md-divider>
+                <br/>
+                <md-content class="navigation-buttons marginTopExtra" layout="column" layout-lg="row" layout-align="space-between center"
+                    layout-gt-lg="row" layout-align-sm="center center" layout-align-md="center center">
+                    <apex:commandLink value="Previous" styleClass="md-button md-raised md-button md-default-theme" html-layout-padding="true"
+                        immediate="true" style="font-size: 12px;font-weight: bold;margin-left:18px" action="{!SaveAndPreviousAttachment}"
+                        html-role="button" status="status"/>
+                    <apex:commandLink styleClass="md-button md-raised md-button md-default-theme btn-pullLeft" value="Close" action="{!closeAndreturnToHome}"
+                        html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" status="status"/>
+                    <!--                    <apex:commandLink value="Save" styleClass="md-button md-raised md-eec save-btn btn-pullRight" status="status" html-layout-padding="true" immediate="true" style="font-size: 12px;font-weight: bold;" action="{!SaveAndNextAttachment}" html-role="button"> -->
+                    <!--                            <apex:param name="isSaveOnly" value="true" assignTo="{!isSaveOnly}"/> -->
+                    <!--                    </apex:commandLink> -->
+                    <apex:commandLink value="Next" styleClass="md-button md-raised md-eec save-btn" html-layout-padding="true" immediate="true"
+                        style="font-size: 12px;font-weight: bold;" action="{!SaveAndNextAttachment}" html-role="button" />
+                </md-content>
+                <md-divider layout-align="center center"></md-divider>
+                <br/>
+                <!--                <md-content class="navigation-buttons" layout="column" layout-lg="row" layout-align="space-between center" layout-gt-lg="row" layout-align-sm="center center" layout-align-md="center center"> -->
+                <!--                    <apex:commandButton status="status" value="Cancel {!formattedLicenseRecordTypeLabel} Transaction" -->
+                <!--                        immediate="true" -->
+                <!--                        action="{!CancelTransaction}" -->
+                <!--                        onclick="return confirm('Are you sure to cancel the transaction?');return false;" -->
+                <!--                        styleClass="md-button md-raised" -->
+                <!--                        style="background: rgb(250,250,250);margin-left:18px"/> -->
+                <!--                    <apex:commandLink status="status" value="Save and Return to Provider" styleClass="md-button md-raised" html-layout-padding="true" immediate="true" action="{!SaveAndReturnAttachment}" html-role="button"/> -->
+                <!--                </md-content> -->
+                <apex:actionFunction action="{!SaveAndNextAttachment}" name="SaveNext" status="status"/>
+                <apex:actionFunction action="{!SaveAndPreviousAttachment}" name="SavePrevious" oncomplete="addMargin();" status="status">
+                    <apex:param name="previousPage" assignTo="{!previousPageName}" value="" />
+                </apex:actionFunction>
+                <!--                <div class="panel panel-default"> -->
+                <!--                    <div class="panel-heading" onclick="togglePanel(this)"> -->
+                <!--                        <span class="glyphicon glyphicon-resize-full pull-right"></span> -->
+                <!--                         <span style="display:none" class="glyphicon glyphicon-resize-small pull-right"></span> -->
+                <!--                         <h3 class="md-title" flex="100" style="margin-top: 0px;"> -->
+                <!--                            <apex:outputLabel styleClass="input-label" value="Helpful Instructions"/> -->
+                <!--                        </h3> -->
+                <!--                    </div> -->
+                <!--                    <div class="panel-body"> -->
+                <!--                        <apex:outputLabel escape="false" value="{!informationText}"></apex:outputLabel> -->
+                <!--                    </div> -->
+                <!--                </div> -->
+            </apex:form>
+            <eec-wizard btn-progress-color="#fff" class="col-lg-3" flex="30" passed-btn-bg-color="#4CAF50" btn-bg-color="#FAFAFA" active-btn-bg-color="#0288D1"
+                hide="true" show-gt-md="true">
+                <c:EEC_Navigation current="Attachments" recordTypeDeveloperName="{!licenseTransaction.RecordType.DeveloperName}" highest="{!highestStepReached}"
+                    providerRecordType="{!licenseTransaction.Provider__r.RecordType.DeveloperName}"></c:EEC_Navigation>
+            </eec-wizard>
+        </div>
+        <c:eec_site_footer id="siteFooter" /> 
+        <script>
+            function addMargin() {
+                j$(".required-input").addClass("required-input-with-error");
+            }
+            window.closeModal = function () {
+                updateDocuments();
+            };
+            function doNavigate(previousPage, nextPage) {
+                if (nextPage != '') {
+                    SaveNext();
+                } else if (previousPage != '') {
+                    SavePrevious(previousPage);
+                }
+            }
+            function showDescription(desc) {
+                j$('.desc-modal-body').html(desc);
+                j$('#description-div').modal('show');
+            }
+            function togglePanel(el) {
+                jQuery(el).siblings('.panel-body').slideToggle();
+                jQuery(el).find(".glyphicon").toggle();
+            }
+            function togglevent(id) {
+                if (j$('#' + id).hasClass('glyphicon-chevron-up')) {
+                    j$('#' + id).addClass('glyphicon-chevron-down');
+                    j$('#' + id).removeClass('glyphicon-chevron-up');
+                } else {
+                    j$('#' + id).addClass('glyphicon-chevron-up');
+                    j$('#' + id).removeClass('glyphicon-chevron-down');
+                }
+            }
+        </script>
+    </body>
+</apex:page>

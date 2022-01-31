@@ -1,0 +1,67 @@
+<template>
+    <div class="backdrop" if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </div>
+    </div>
+    <c-psr-sidebar selected-tab="Request Permit Type" show-footer>
+        <div slot="body">
+            <div class="tab slds-m-around_large">
+                <div class="has-shadow slds-p-vertical_medium slds-m-bottom_x-large bg-white"
+                    style="margin-bottom: 0px;">
+                    <div class="container d-flex justify-space-between">
+                        <div class="d-flex justify-space-between">
+                            <h4 class="header-pane-title">My Work Orders</h4>
+                        </div>
+                    </div>
+                </div>
+                <c-psr-help-text help-text={Portal_Work_Order_Help_Text}></c-psr-help-text>
+                <div class="slds-grid slds-wrap woTable">
+                    <table style="margin-top: 20px;" class="slds-table">
+                        <tr class="table_header_brand">
+                            <td><b>Permit Number</b></td>
+                            <td><b>WO NUMBER</b></td>
+                            <td><b>Type</b></td>
+                            <td><b>Status</b></td>
+                            <td><b>Inspection</b></td>
+                            <td><b>Created Date</b></td>
+                            <td><b>Action</b></td>
+                        </tr>
+                        <template for:each={workOrders} for:item="item">
+                            <tr key={item.Id}>
+                                <td>
+                                    {item.Application__r.Name}
+                                </td>
+                                <td>
+                                    <a onclick={openApplication} data-application-id={item.Application__r.Id}>
+                                        {item.Name}
+                                    </a>
+                                </td>
+                                <td>{item.Work_Order_Type__c}</td>
+                                <td>{item.Status__c}</td>
+                                <td>
+                                    <a data-id={item.Id} onclick={handleInspectionModal}>View Detail</a>
+                                </td>
+                                <td>
+                                    <lightning-formatted-date-time value={item.CreatedDate} time-zone="UTC">
+                                    </lightning-formatted-date-time>
+                                </td>
+                                <td>
+                                    <lightning-button variant="brand-outline" label="Edit" onclick={editWorkOrder}
+                                        data-work-order-id={item.Id} class="slds-m-left_x-small side_margin">
+                                    </lightning-button>
+                                    <lightning-button variant="brand" label="Discussion" onclick={openChatter}
+                                        data-work-order-id={item.Id} class="slds-m-left_x-small"></lightning-button>
+                                </td>
+                            </tr>
+                        </template>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </c-psr-sidebar>
+    <c-psr-inspection-detail-modal if:true={isShowInspectionModal} work-id={workOrderId} onclosemodal={handleCloseModal}></c-psr-inspection-detail-modal>
+    <c-psr-work-order if:true={isEditModalOpel} onclose={closeModal} work-order-id={workOrderId}></c-psr-work-order>
+    <c-psr-chatter-window if:true={isChatterModalOpen} onclose={closeModal} record-id={workOrderId}
+        heading-label="Collaborative Discussion"></c-psr-chatter-window>
+</template>

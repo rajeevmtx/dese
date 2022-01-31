@@ -1,0 +1,40 @@
+<template>
+    <div class="timetable">
+        <div class="week-names">
+            <div>monday</div>
+            <div>tuesday</div>
+            <div>wednesday</div>
+            <div>thursday</div>
+            <div>friday</div>
+        </div>
+        <div class="time-interval">
+            <div>8:00 - 10:00</div>
+            <div>10:00 - 12:00</div>
+            <div>12:00 - 14:00</div>
+            <div>14:00 - 16:00</div>
+            <div>16:00 - 18:00</div>
+            <div>18:00 - 20:00</div>
+        </div>
+
+        <div class="content">
+            <template for:each={slotWrappers} for:item='slotWrapper'>
+                <template for:each={slotWrapper.slotData} for:item='slotObj'>
+                    <div key={slotObj.uniqueId}>
+                        <template if:true={slotObj.isAvailable}>
+                            <div class="accent-orange-gradient">
+                            </div>
+                        </template>
+                        <template if:false={slotObj.isAvailable}>
+                            <div class="accent-pink-gradient">
+                            </div>
+                        </template>
+                    </div>
+                </template>
+                <br key={slotWrapper.uId}/>
+            </template>
+        </div>
+
+
+
+    </div>
+</template>

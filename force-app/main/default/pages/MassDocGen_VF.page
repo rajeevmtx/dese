@@ -1,0 +1,6 @@
+<apex:page lightningStylesheets="true" standardController="Appointment__c" extensions="MassDocGen_apex" recordSetVar="appoints" action="{!bumpCases}" >
+    <apex:pageMessages />
+     <apex:form >
+             <apex:commandButton action="{!clicktocontinue}" title="Click to continue" value="Click to Continue"/>
+         </apex:form>   
+</apex:page>

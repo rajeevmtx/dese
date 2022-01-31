@@ -1,0 +1,67 @@
+.license-card{
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    border: none;
+    border-radius: 0;
+    margin-bottom: 1rem;
+}
+
+.license-card:hover {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+.card-title{
+    background: #d9e9fb;
+    padding: 1rem .75rem;
+    color: black;
+    margin: -0.75rem -0.75rem 1rem -0.75rem;
+}
+.license-card:hover .card-title{
+    background: linear-gradient(to left, #64A4F0, #115AB1);
+    color: white;
+}
+.license_button{
+    border-radius: 0;
+    margin: 1rem -.75rem -.75rem -.75rem;
+    width: -webkit-fill-available;
+    border: 0;
+    border-top: 1px solid #d9e9fb;
+    color: #115AB1;
+    padding: .5rem;
+    font-weight: 800;
+}
+.license_button:hover{
+    background-color: #f0f7ff;
+    color: #115AB1;
+}
+.license_button_disable {
+    background: #f3f3f3;
+    color: #b1b1b1 !important;
+    cursor: default;
+    padding: .5rem;
+    font-weight: 800;
+    margin: 1rem -.75rem -.75rem -.75rem;
+    width: -webkit-fill-available;
+    border-top: 1px solid #d9e9fb;
+}
+.license_button_disable:hover {
+    background: #f3f3f3 !important;
+    color: #b1b1b1 !important;
+    cursor: default;
+}
+svg{
+    width: 5%;
+    margin-right: .5rem;
+    margin-top: -.3rem;
+}
+.icon_title{
+    width: 3% !important; 
+}
+.slds-p-bottom_large{
+    padding-bottom: .5rem !important;
+}
+.slds-m-bottom_x-large{
+    margin-bottom: 0rem !important;
+}
+h4.header-pane-title.slds-m-left_medium {
+    color:#14558F;
+}

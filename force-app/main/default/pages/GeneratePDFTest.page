@@ -1,0 +1,19 @@
+<apex:page controller="QueryFormulaField" showHeader="false" sidebar="false" cache="false" standardstylesheets="false" applyHtmlTag="false" renderAs="{!renderr}">
+    <html>
+    	<body>
+            <p>
+                Id: {!selectedAccount.Id}
+                QR: {!selectedAccount.QR_Code__c}
+                <apex:outputText escape="false" value="{!selectedAccount.QR_Code__c}"></apex:outputText>
+                image: {!brandImage}
+                <apex:image id="theImage" value="{!brandImage}"/>
+                <img src="http://api.qrserver.com/v1/create-qr-code/?data=a2X3F000000N6Dm" height="42" width="42"/>
+                 renderrr: {!renderr}
+            </p>
+            <div><img  src="http://chart.apis.google.com/chart?cht=p3&chd=t:60,40&chs=250x100&chl=Hello|World" /> </div>
+            <img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUA
+    AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+        9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot" />
+        </body>
+    </html>
+</apex:page>

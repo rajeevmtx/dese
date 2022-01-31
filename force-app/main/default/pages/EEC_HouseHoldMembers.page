@@ -1,0 +1,867 @@
+<apex:page controller="EEC_HouseholdMembersController" standardStylesheets="false" showheader="false" sidebar="false">
+    <title>EEC : Transaction - Household Members</title>
+    <c:EEC_Header id="pageHeader" />
+    <style>
+        a.md-button.md-raised.md-eec, 
+        .md-button.md-raised.md-eec {
+            color: rgb(250, 250, 250);
+            background-color: #853F3F;
+        }
+        md-divider {
+            border-top-color: rgba(0, 0, 0, 0.12) !important;
+        }
+        a.md-button.md-raised.md-eec:hover,
+        .md-button.md-raised.md-eec:hover {
+            color: rgb(250, 250, 250);
+            background-color: #703E3E;
+        }
+        a.md-button.md-raised,
+        .md-button.md-raised {
+            background-color: #f7f7f7;
+        }
+        .household-info-container {
+            margin-bottom: 9rem;
+        }
+        .top-level-label {
+            font-weight: 600;
+            margin-right: 15px;
+            line-height: 20px;
+            color: rgba(0, 0, 0, 0.54);
+        }
+        .commandBtn {
+            -webkit-appearance: none;
+            border: none;
+            box-shadow: none;
+            background: none;
+            text-transform: uppercase;
+            font-weight: 500;
+            font-size: 14px;
+            font-style: inherit;
+            font-variant: inherit;
+            font-family: inherit;
+            outline: none;
+            letter-spacing: .01em;
+            white-space: normal;
+            margin: 0;
+        }
+        a.md-button span {
+            padding: 6px;
+        }
+        .transaction-info {
+            margin-top: 10px;
+        }
+        .add-button-container {
+            padding-right: 42px;
+        }
+        .command-button-container {
+            position: relative;
+            top: -2px;
+        }
+        .transaction-info-row {
+            margin-left: 20px;
+        }
+        .eec-subhead {
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+        .navigation-buttons {
+            overflow: visible;
+        }
+        .error-msg {
+            color: rgb(244, 67, 54);
+            -webkit-font-smoothing: antialiased;
+            font-size: 12px;
+            line-height: 24px;
+        }
+        label {
+            color: rgba(0, 0, 0, 0.54);
+            font-size: 14px;
+        }
+        .form-group {
+            padding-left: 5px;
+        }
+        @media only screen and (min-width: 0px) and (max-width: 959px) {
+            .navigation-buttons .md-button {
+                width: 98%;
+            }
+            .navigation-buttons md-content {
+                width: 100%;
+            }
+            .add-button-container {
+                padding-right: 0;
+                width: 100%;
+            }
+        }
+        .content-body {
+            width: 100%;
+            margin: 25px 0px 50px 0px;
+        }
+        .transacAction {
+            align-items: center;
+            text-transform: uppercase;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        #errorMsg {
+            display: none;
+        }
+        #errorMsg1 {
+            display: none;
+        }
+        .modal-xl {
+            width: 97%;
+        }
+        thead {
+            background-color: white !important;
+        }
+        .table {
+            margin-top: 25px !important;
+            border-left: 0px !important;
+            border-right: 0px !important;
+        }
+        .role {
+            height:  !important;
+        }
+        .datePicker {
+            position: fixed;
+            z-index: 10001;
+            width: 250px;
+            height: auto;
+        }
+        .row {
+            margin-top: 10px;
+        }
+        .nextBtnDisable {
+            pointer-events: none;
+        }
+        .hideDiv {
+            display: none;
+        }
+        .modal-sm {
+            width: 50% !important;
+        }
+        .visibilityHidden {
+            visibility: hidden;
+        }
+        .displayNone {
+            display: none;
+        }
+        .householdmembers {
+            font-weight: 600;
+            line-height: 20px;
+            margin-top: -17px;
+            color: rgba(0, 0, 0, 0.54);
+        }
+        .renderEndDate {
+            display: none;
+        }
+        .checkBox-flex-row {
+            margin-top: 12px;
+            margin-bottom: 12px;
+        }
+    </style>
+    <script>
+        j$(function () {
+            j$(".datepicker").datepicker({
+                dateFormat: 'mm-dd-yy'
+            });
+        });
+    </script>
+    <c:eec_nav_bar id="navBar" providerId="{!licenseTransation.Provider__c}" accountName="{!licenseTransation.Provider__r.Name}"
+        rendered="{!loggedUser.UserType == 'PowerPartner' || loggedUser.UserType == 'PowerCustomerSuccess' 
+        || loggedUser.UserType == 'CspLitePortal' || loggedUser.UserType == 'CustomerSuccess'}" />
+    <div class="household-info-container" layout-wrap="true" layout-lg="row" layout-gt-lg="row" layout="row"
+        layout-padding="true" layout-margin="true">
+        <apex:form styleClass="col-lg-8 col-md-8 col-sm-12">
+            <apex:pageMessages id="showmsg"/>
+            <div class="top-header-section">
+                <h3 class="md-display-1 header-display-name">{!applicationDisplayName}</h3>
+                <h4 class="step-name">Household Members</h4>
+                <h5 class="base-label trans-number">Application number: {!licenseTransation.Name}</h5>
+            </div>
+            <h3 class="eec-subhead" flex="95" layout-margin="true">Household Members and Individuals regularly on the premises </h3>
+            <apex:outputPanel rendered="{!licenseTransation.transactionRecordTypeDeveloperName__c != 'Change_of_Address'}">
+                <!--     <p class="md-subhead top-level-label" style="width:100%;margin-bottom: 10px;margin-top: 5px;">Please list (by clicking on "Add") every person living in your household including foster children whether or not they are home during child care hours. Additionally, please list any individuals who are regularly on the premises.(required if 15 years or older)</p> -->
+            </apex:outputPanel>
+            <div class="alert alert-info" id="infomessage">
+                <ul>
+                    <li>Please list (by clicking on “Add”) every person living in your household
+                        including foster children whether or not they are home during child care hours.
+                        Additionally please list any individuals who are regularly on the premises
+                        (required if 15 years or older).</li>
+                    <li>Please review all of the fields for each Household Member, including Name, Role,
+                        BRC Role, Email, and Effective date.</li>
+                    <li>If any of the data needs to be corrected, click the Edit link to the left of the
+                        individual’s information.</li>
+                    <li>If a listed person is no longer a part of your household, please click the Edit
+                        link next to their information, remove the checkmark from the “Currently Active”
+                        checkbox, and enter a Term date (the date they moved out of your household).
+                    </li>
+                    <li>
+                        <b>
+                            <span>
+                                You may correct or update the name of a contact by clicking the Edit link. However, please DO NOT change the name of a contact to another person’s name. <Br/>
+                                Doing so may delay the processing of your application. If you need to add a new contact, please use the “Add a Contact” link on this page.
+                            </span>      
+                        </b>
+                    </li>
+                    <apex:outputPanel rendered="{!licenseTransation.transactionRecordTypeDeveloperName__c == 'Background_Record_Check'}" layout="none">
+                        <li>
+                            Please check off the “Send BRC” check box for the contact(s) for whom you are requesting a BRC form.
+                        </li>
+                    </apex:outputPanel>
+                </ul>
+            </div>
+            <apex:outputPanel rendered="{!licenseTransation.transactionRecordTypeDeveloperName__c == 'Change_of_Address'}">
+                <p class="md-subhead top-level-label"
+                    style="width:100%;margin-left: 8px;margin-bottom: 10px;margin-top: 5px;">Please
+                    review and update the below household members to be accurate</p>
+            </apex:outputPanel>
+            <apex:outputPanel layout="block" id="mainPanel" styleClass="content content-body">
+                <apex:outputPanel rendered="{!!isSubmitted}">
+                    <!-- <a href="javascript:void(0)" onclick="resetMember('')" class="add-button">Add patent</a>-->
+                    <a href="javascript:resetMember();" class="add-button transacAction">
+                        <span class="glyphicon glyphicon-plus-sign" /> Add household Members or Regularly on the Premises
+                    </a>
+                </apex:outputPanel>
+                <div class="alert alert-danger" id="errorMsg1"></div>
+                <table id="contactTable" class="table table-striped datatable" cellspacing="0"
+                    width="100%">
+                    <thead>
+                        <tr>
+                            <th>Action</th>
+                            <apex:outputPanel rendered="{!licenseTransation.transactionRecordTypeDeveloperName__c == 'Background_Record_Check'}" layout="none">
+                                <th>Send BRC Form</th>
+                            </apex:outputPanel>
+                            <th>Role</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Effective Date</th>
+                            <th>Term Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <apex:variable var="count" value="{!0}" />
+                        <apex:repeat value="{!transactionContactList}" var="transContact">
+                            <tr>
+                                <td>
+                                    <apex:outputPanel rendered="{!!isSubmitted}">
+                                        <a href="javascript:void(0);"
+                                            onclick="getTransactionContactMember('{!transContact.transactionContact.Id}');">Edit
+                                            <span class="srOnly">Accessibility Fix</span>
+                                        </a>
+                                        <!--<apex:outputPanel rendered="{! IF(transContact.transactionContact.Contact__c == null,true,false )}">
+                                            | <a href="javascript:void(1);"
+                                                onclick="confirmDelete('{!transContact.transactionContact.Id}')"
+                                                class="actionLink">Delete</a>
+                                        </apex:outputPanel> -->
+                                    </apex:outputPanel>
+                                </td>
+                                <apex:outputPanel rendered="{!licenseTransation.transactionRecordTypeDeveloperName__c == 'Background_Record_Check'}" layout="none">
+                                    <td>
+                                        <apex:inputCheckbox value="{!transContact.needBrcForm}" disabled="{!IF(licenseTransation.Status__c == 'Submitted',true,false)}">
+                                            <apex:actionSupport action="{!updateTransactionContactBrcValue}" event="onchange" rerender="mainPanel" status="status">
+                                                <apex:param value="{!count}" name="transactionIndex" />
+                                            </apex:actionsupport>
+                                        </apex:inputCheckbox>
+                                    </td>
+                                </apex:outputPanel> 
+                                <td>{!transContact.transactionContact.Role__c}</td>
+                                <td>{!transContact.transactionContact.First_Name__c} {!transContact.transactionContact.Last_Name__c}</td>
+                                <td class="emailContact">{!transContact.transactionContact.Email__c}</td>
+                                <td>
+                                    <apex:outputText value="{0, date, MM/dd/yy}">
+                                        <apex:param value="{!transContact.transactionContact.Start_Date__c}" />
+                                    </apex:outputText>
+                                </td>
+                                <td>
+                                    <apex:outputText value="{0, date, MM/dd/yy}">
+                                        <apex:param value="{!transContact.transactionContact.End_Date__c}" />
+                                    </apex:outputText>
+                                </td>
+                            </tr>
+                            <apex:variable value="{!count+1}" var="count" />
+                        </apex:repeat>
+                    </tbody>
+                </table>
+                <!-- Add/Edit Product Pop Up -->
+                <apex:outputPanel id="productPopupPanel">
+                    <div class="modal fade" id="editModal" role="dialog" data-backdrop="static"
+                        data-keyboard="false">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                                <apex:outputPanel id="modalForm">
+                                    <div class="modal-header"> 
+                                        <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <h4 class="modal-title" id="editModalLabel">
+                                            {!IF(selectedTransactionContactId == null,'Add
+                                            Contact','Edit Contact')}</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <apex:pageMessages />
+                                        <div class="alert alert-danger" id="errorMsg"></div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="flex-row">
+                                                    <label for="{!$component.county}">Role<span
+                                                            class="required">&nbsp;* </span></label>
+                                                    <div class="field">
+                                                        <apex:inputField value="{!transactionContactRec.Role__c}" styleClass="form-control role"/>
+                                                        <span class="icon-help"
+                                                            data-toggle="popover" data-placement="right"
+                                                            data-trigger="hover"
+                                                            data-content="{!$ObjectType.Transaction_Contact__c.fields.Role__c.InlineHelpText}">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="flex-row">
+                                                    <label for="{!$component.dob}">Date Of Birth<span
+                                                            class="required">&nbsp;* </span></label>
+                                                    <div class="field">
+                                                        <apex:inputField value="{!transactionContactRec.Date_of_Birth__c}"
+                                                            html-data-provide="datepicker" id="dob"
+                                                            styleClass="form-control dob" />
+                                                        <span class="icon-help"
+                                                            data-toggle="popover" data-placement="right"
+                                                            data-trigger="hover"
+                                                            data-content="{!$ObjectType.Transaction_Contact__c.fields.Date_of_Birth__c.InlineHelpText}">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="flex-row">
+                                                    <label for="{!$component.firstName}">First Name<span
+                                                            class="required">&nbsp;* </span></label>
+                                                    <div class="field">
+                                                        <apex:inputField value="{!transactionContactRec.First_Name__c}"
+                                                            id="firstName"
+                                                            styleClass="form-control firstName" />
+                                                        <span class="icon-help"
+                                                            data-toggle="popover" data-placement="right"
+                                                            data-trigger="hover"
+                                                            data-content="{!$ObjectType.Transaction_Contact__c.fields.First_Name__c.InlineHelpText}">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="flex-row">
+                                                    <label for="{!$component.email}">Email (Enter parent
+                                                        or guardian's email if this person is under 18
+                                                        years of age)<apex:outputPanel rendered="{!!isProviderWithoutEmail}"><span
+                                                                class="required">&nbsp;* </span>
+                                                        </apex:outputPanel></label>
+                                                    <div class="field">
+                                                        <apex:inputField value="{!transactionContactRec.Email__c}"
+                                                            id="email"
+                                                            styleClass="form-control email" />
+                                                        <span class="icon-help"
+                                                            data-toggle="popover" data-placement="right"
+                                                            data-trigger="hover"
+                                                            data-content="{!$ObjectType.Transaction_Contact__c.fields.Email__c.InlineHelpText}">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="flex-row">
+                                                    <label for="{!$component.lastName}">Last Name<span
+                                                            class="required">&nbsp;* </span></label>
+                                                    <div class="field">
+                                                        <apex:inputField value="{!transactionContactRec.Last_Name__c}"
+                                                            id="lastName"
+                                                            styleClass="form-control lastName" />
+                                                        <span class="icon-help"
+                                                            data-toggle="popover" data-placement="right"
+                                                            data-trigger="hover"
+                                                            data-content="{!$ObjectType.Transaction_Contact__c.fields.Last_Name__c.InlineHelpText}">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="flex-row">
+                                                    <label for="{!$component.middleInitial}">Middle
+                                                        Initial</label>
+                                                    <div class="field">
+                                                        <apex:inputField value="{!transactionContactRec.Middle_Initial__c}"
+                                                            id="middleInitial"
+                                                            styleClass="form-control middleInitial" />
+                                                        <span class="icon-help"
+                                                            data-toggle="popover" data-placement="right"
+                                                            data-trigger="hover"
+                                                            data-content="{!$ObjectType.Transaction_Contact__c.fields.Middle_Initial__c.InlineHelpText}">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="flex-row">
+                                                    <label
+                                                        for="{!$component.relToProvider}">Relationship
+                                                        to Household Member or Regularly on Premise<span
+                                                            class="required">&nbsp;* </span></label>
+                                                    <div class="field">
+                                                        <apex:inputField value="{!transactionContactRec.Relationship_to_Provider__c}"
+                                                            id="relToProvider"
+                                                            styleClass="form-control relToProvider" />
+                                                        <span class="icon-help"
+                                                            data-toggle="popover" data-placement="right"
+                                                            data-trigger="hover"
+                                                            data-content="{!$ObjectType.Transaction_Contact__c.fields.Relationship_to_Provider__c.InlineHelpText}">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="flex-row">
+                                                    <label for="{!$component.hour}">Average Number of
+                                                        Hours Home During Child Care Day (24 hrs max)
+                                                        <span class="required">&nbsp;* </span></label>
+                                                    <div class="field">
+                                                        <apex:inputField value="{!transactionContactRec.Number_of_Hours_Home_During_Child_Care__c}"
+                                                            onKeyDown="isNumberOnly(event);"
+                                                            html-maxlength="2" id="hour"
+                                                            styleClass="form-control hour" />
+                                                        <span class="icon-help"
+                                                            data-toggle="popover" data-placement="right"
+                                                            data-trigger="hover"
+                                                            data-content="{!$ObjectType.Transaction_Contact__c.fields.Number_of_Hours_Home_During_Child_Care__c.InlineHelpText}">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="alert alert-info"
+                                                style="width:98%;margin-left:15px;">
+                                                <strong>Note!</strong> The purpose of the effective and
+                                                term date fields is to capture when this individual
+                                                became a household member or person regularly on the
+                                                premises. If this person is still an active household
+                                                member or person regularly on the premises, keep the
+                                                checkbox checked. If you uncheck the checkbox, you are
+                                                stating that this person is no longer a household member
+                                                or person regularly on the premises. As a result, the
+                                                background record check (BRC) consent form notification
+                                                will no longer be sent for this person.
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="flex-row">
+                                                    <label for="{!$component.startDate}">Effective
+                                                        Date<span class="required">&nbsp;*
+                                                        </span></label>
+                                                    <a data-toggle="tooltip" data-placement="top"
+                                                        class="BlackStyle"
+                                                        title="This field captures the date since this person is active in this location."
+                                                        data-html="true">
+                                                        <i class="fa fa-question-circle"></i>
+                                                    </a>
+                                                    <div class="field">
+                                                        <apex:inputField value="{!transactionContactRec.Start_Date__c}"
+                                                            html-data-provide="datepicker"
+                                                            id="startDate"
+                                                            styleClass="form-control startDate" />
+                                                        <span class="icon-help"
+                                                            data-toggle="popover" data-placement="right"
+                                                            data-trigger="hover"
+                                                            data-content="{!$ObjectType.Transaction_Contact__c.fields.Start_Date__c.InlineHelpText}">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 ">
+                                                <div class="flex-row">
+                                                    <div class="renderEndDate">
+                                                        <label for="{!$component.endDate}">Term
+                                                            Date</label>
+                                                        <a data-toggle="tooltip" data-placement="top"
+                                                            class="BlackStyle"
+                                                            title="If you fill out this field, it indicates that this person is no longer a household member or person regularly on the premises, as of the date indicated. This person will no longer receive BRC consent forms."
+                                                            data-html="true">
+                                                            <i class="fa fa-question-circle"></i>
+                                                        </a>
+                                                        <div class="field">
+                                                            <apex:inputField value="{!transactionContactRec.End_Date__c}"
+                                                                html-data-provide="datepicker"
+                                                                id="endDate"
+                                                                styleClass="form-control endDate" />
+                                                            <span class="icon-help"
+                                                                data-toggle="popover"
+                                                                data-placement="right"
+                                                                data-trigger="hover"
+                                                                data-content="{!$ObjectType.Transaction_Contact__c.fields.End_Date__c.InlineHelpText}">
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="flex-row checkBox-flex-row">
+                                                    <apex:inputCheckbox styleClass="houseHoldOnPremise"
+                                                        onChange="houseHoldMemberInPremise();"
+                                                        value="{!isHouseHoldMemberOrRegularlyOnPremise}" />
+                                                    <label for="{!$component.startDate}">Current
+                                                        Household or Regularly On Premise</label>
+                                                    <a data-toggle="tooltip" data-placement="top"
+                                                        class="BlackStyle"
+                                                        title="Check this box if this individual is a current household member or person regularly on the premises."
+                                                        data-html="true">
+                                                        <i class="fa fa-question-circle"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 renderEndDate">
+                                                <span class="required">If you fill out this field, it
+                                                    indicates that this person is no longer a household
+                                                    member or person regularly on the premises and will
+                                                    no longer receive BRC consent forms.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <span id="cancelBtnDiv">
+                                            <button id="cancelBtn" type="button" role="button"
+                                                class="md-button md-raised md-button md-default-theme"
+                                                data-dismiss="modal">Close</button>
+                                        </span>
+                                        <span id="savingBtnDiv">
+                                            <button
+                                                class="md-button md-raised md-button md-default-theme"
+                                                id="savingBtn" role="button" disabled="disabled"><span
+                                                    class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+                                                Saving...</button>
+                                        </span>
+                                        <span id="saveBtnDiv">
+                                            <button type="button"
+                                                class="md-button md-raised md-eec save-btn"
+                                                role="button" id="saveBtn"
+                                                onclick="validateFields('{!transactionContactRec.Id}'); return false;">Save
+                                                Changes</button>
+                                        </span>
+                                    </div>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                    </div>
+                </apex:outputPanel>
+                <!-- END : Product Popup -->
+                <!-- CONFIRMATION POP UP -->
+                <div class="modal fade" id="confirmationPopUp" role="dialog">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <apex:outputPanel id="modalForm1">
+                                <div class="modal-header">
+                                    <button type="button" class="close"
+                                        data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">CONFIRM</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="confirmMessage" class="justifyText">
+                                    </div>
+                                    <br />
+                                    <!--                                 <div class="form-group"> -->
+                                    <!--                                     <label for="statusNote">Enter a reason:</label> -->
+                                    <!--                                     <input type="text" id="statusNote" class="form-control" name="statusNote" maxlength="100"/> -->
+                                    <!--                                 </div> -->
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="row">
+                                        <span id="cancelBtnDiv">
+                                            <button id="okBtn" type="button" role="button"
+                                                class="md-button md-raised md-eec save-btn"
+                                                onclick="confirmButtonAction();"
+                                                data-dismiss="modal">OK</button>
+                                            <button id="cancelBtn" type="button" role="button"
+                                                class="md-button md-raised md-button md-default-theme"
+                                                data-dismiss="modal">Cancel</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <apex:inputCheckbox id="check1"
+                        value="{!licenseTransation.Household_Attestation__c}"
+                        onclick="enableAgreeBtn(this);"/>
+                    <apex:outputlabel for="{!$Component.check1}"
+                        styleclass="householdmembers"
+                        value="I have reviewed the household members and the individuals regularly on premises and agree that they are accurate.">
+                    </apex:outputlabel>
+                </div>
+            </apex:outputPanel>
+            <apex:actionFunction name="SaveAndNextHH" action="{!SaveAndNextHH}" status="status"/>
+            <apex:actionFunction name="saveAndReturnToPage" action="{!SaveAndNextHH}" rerender="showmsg" status="status">
+                <apex:param name="isSaveOnly" value="true" assignTo="{!isSaveOnly}" />
+            </apex:actionFunction>
+            <apex:actionFunction name="SaveAndPreviousHH" action="{!SaveAndPreviousHH}" status="status"/>
+            <apex:actionFunction name="resetMember" action="{!resetMember}" rerender="modalForm" status="status"
+                onComplete="openTransContactPopup();">
+                <apex:param value="" name="selectedTransactionContactId"
+                    assignTo="{!selectedTransactionContactId}" />
+            </apex:actionFunction>
+            <apex:actionFunction name="getTransactionContactMember" action="{!getTransactionContactMember}"
+                rerender="modalForm" status="status" onComplete="openTransContactPopup();ChangeTitle();">
+                <apex:param value="" name="selectedTransactionContactId"
+                    assignTo="{!selectedTransactionContactId}" />
+            </apex:actionFunction>
+            <apex:actionFunction name="saveTransactionContact" action="{!saveTransactionContact}"
+                rerender="modalForm" status="status">
+            </apex:actionFunction>
+            <apex:actionFunction name="deleteTransactionContact" action="{!deleteTransactionContact}"
+                rerender="frm" status="status" oncomplete="return false;" immediate="true">
+                <apex:param value="" name="selectedTransactionContactId"
+                    assignTo="{!selectedTransactionContactId}" />
+            </apex:actionFunction>
+            <md-divider layout-align="center center"></md-divider>
+            <div class="navigation-buttons" layout="column" layout-lg="row" layout-align="space-between center"
+                layout-gt-lg="row" layout-align-sm="center center" layout-align-md="center center">
+                <apex:commandLink value="Previous" styleClass="md-button md-raised md-button md-default-theme"
+                    html-layout-padding="true" html-flex-order-sm="2" html-flex-order-md="2"
+                    html-md-button="true" action="{!SaveAndPreviousHH}" status="status"/>
+                <apex:commandLink styleClass="md-button md-raised md-button md-default-theme btn-pullLeft"
+                    value="Close" action="{!closeAndreturnToHome}" html-layout-padding="true"
+                    html-flex-order-sm="1" html-flex-order-md="1" html-md-button="true" status="status"/>
+                <apex:commandLink value="Save"
+                    styleClass="md-button md-raised md-eec save-btn btn-pullRight saveButton"
+                    html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1"
+                    html-md-button="true" action="{!SaveAndNextHH}" status="status">
+                    <apex:param value="true" assignTo="{!isSaveOnly}" />
+                </apex:commandLink>
+                <apex:commandLink styleClass="md-button md-raised nextBtn disableButton"
+                    html-layout-padding="true" html-flex-order-sm="1" html-flex-order-md="1"
+                    html-md-button="true" onclick="valdateContactRoles();return false;" status="status">
+                    <apex:outputText rendered="{!!isSubmitted}">Save and</apex:outputText> Next
+                </apex:commandLink>
+            </div>
+            <md-divider layout-align="center center"></md-divider>
+            <apex:actionFunction action="{!SaveAndNextHH}" name="SaveNext" status="status"/>
+            <apex:actionFunction action="{!SaveAndPreviousHH}" name="SavePrevious" oncomplete="addMargin();" status="status">
+                <apex:param name="previousPage" assignTo="{!previousPageName}" value="" />
+            </apex:actionFunction>
+        </apex:form>
+        <eec-wizard btn-progress-color="#fff" class="col-lg-3" passed-btn-bg-color="#4CAF50" btn-bg-color="#FAFAFA"
+            active-btn-bg-color="#0288D1" flex="18" hide="true" show-gt-md="true">
+            <c:EEC_Navigation current="Household Members" recordTypeDeveloperName="{!licenseTransation.transactionRecordTypeDeveloperName__c}"
+                highest="{!licenseTransation.Highest_Reached_Step__c}" providerRecordType="{!licenseTransation.providerRecordTypeDeveloperName__c}">
+            </c:EEC_Navigation>
+        </eec-wizard>
+    </div>
+    <c:eec_site_footer id="siteFooter" />
+    <script>
+        j$(document).ready(function () {
+            var currentTransContactId = '';
+            if ('{!licenseTransation.Household_Attestation__c}' == 'true') {
+                j$('.nextBtn').attr("disabled", false);
+                j$('.nextBtn').removeClass("disableButton");
+                j$('.nextBtn').removeClass("nextBtnDisable");
+                j$('.nextBtn').addClass("enableButton");
+            } else {
+                j$('.nextBtn').attr("disabled", true);
+                j$('.nextBtn').addClass("nextBtnDisable");
+                j$('.nextBtn').addClass("disableButton");
+            }
+            var isSubmitted = '{!isSubmitted}';
+            if (isSubmitted == 'true') {
+                j$('.saveButton').addClass('visibilityHidden');
+            }
+        });
+        function enableAgreeBtn(checkbox) {
+            if (checkbox.checked) {
+                j$('.nextBtn').attr("disabled", false);
+                j$('.nextBtn').removeClass("disableButton");
+                j$('.nextBtn').removeClass("nextBtnDisable");
+                j$('.nextBtn').addClass("enableButton");
+            } else {
+                j$('.nextBtn').attr("disabled", true);
+                j$('.nextBtn').addClass("nextBtnDisable");
+                j$('.nextBtn').removeClass("enableButton");
+                j$('.nextBtn').addClass("disableButton");
+            }
+        }
+        function addMargin() {
+            j$(".required-input").addClass("required-input-with-error");
+        }
+        function openTransContactPopup() {
+            j$('#savingBtnDiv').hide();
+            j$('#editModal').modal('show');
+            j$(document).on('mouseover', '[data-toggle="popover"]', function () {
+                $(this).popover('show');
+            });
+            houseHoldMemberInPremise();
+        }
+        function validateFields(transactionContactId) {
+            var role = j$('.role').val();
+            if (role == null || role == '' || role == undefined) {
+                j$('#errorMsg').html('<strong>Error!</strong> Role: You must select a value.');
+                j$('#errorMsg').show();
+                return false;
+            }
+            var dob = j$('.dob').val();
+            if (dob == null || dob == '' || dob == undefined) {
+                j$('#errorMsg').html('<strong>Error!</strong> Date Of Birth: You must enter a value.');
+                j$('#errorMsg').show();
+                return false;
+            }
+            var firstName = j$('.firstName').val();
+            if (firstName == null || firstName == '' || firstName == undefined) {
+                j$('#errorMsg').html('<strong>Error!</strong> First Name: You must enter a value.');
+                j$('#errorMsg').show();
+                return false;
+            }
+            var email = j$('.email').val();
+            var isProviderHasNoEmail = '{!isProviderWithoutEmail}';
+            if (isProviderHasNoEmail == 'false') {
+                if (email == null || email == '' || email == undefined) {
+                    j$('#errorMsg').html('<strong>Error!</strong> Email: You must enter a value.');
+                    j$('#errorMsg').show();
+                    return false;
+                }
+            }
+            if (email != null && email != '' && isValidEmailAddress(email) == false) {
+                j$('#errorMsg').html('<strong>Error!</strong> Email: Please enter a valid email address.');
+                j$('#errorMsg').show();
+                return false;
+            }
+            var lastName = j$('.lastName').val();
+            if (lastName == null || lastName == '' || lastName == undefined) {
+                j$('#errorMsg').html('<strong>Error!</strong> Last Name: You must enter a value.');
+                j$('#errorMsg').show();
+                return false;
+            }
+            var startDate = j$('.startDate').val();
+            if (startDate == null || startDate == '' || startDate == undefined) {
+                j$('#errorMsg').html('<strong>Error!</strong> Effective Date: You must enter a value.');
+                j$('#errorMsg').show();
+                return false;
+            }
+            var relToProvider = j$('.relToProvider').val();
+            if (relToProvider == null || relToProvider == '' || relToProvider == undefined) {
+                j$('#errorMsg').html('<strong>Error!</strong> Relationship To Provider: You must enter a value.');
+                j$('#errorMsg').show();
+                return false;
+            }
+            var hour = j$('.hour').val();
+            if (hour == null || hour == '' || hour == undefined) {
+                j$('#errorMsg').html(
+                    '<strong>Error!</strong> Average Number of Hours Home During Child Care Day: You must enter a value.'
+                    );
+                j$('#errorMsg').show();
+                return false;
+            } 
+            var mainContactsIdArray = JSON.parse('{!numberOfMainContactsString}');
+            if (mainContactsIdArray.length >= 1 
+                    && mainContactsIdArray.includes(transactionContactId) == false 
+                    && role != null && role != '' && role != undefined && role.includes('Licensee')) {
+                j$('#errorMsg').html('<strong>Error!</strong> You are only allowed to add one Licensee. Please select a different role.');
+                j$('#errorMsg').show();
+                return false;
+            }
+            j$('#savingBtnDiv').show();
+            j$('#savingBtn').show();
+            j$('#saveBtnDiv, #cancelBtnDiv').hide();
+            saveTransactionContact();
+        }
+        function confirmDelete(contactId) {
+            j$('#confirmationPopUp').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+            j$('#confirmMessage').html('Are you sure you want to delete the contact?');
+            currentTransContactId = contactId;
+        }
+        function confirmButtonAction() {
+            deleteTransactionContact(currentTransContactId);
+        }
+        function houseHoldMemberInPremise() {
+            var isHouseholfmemberOnPremise = j$('.houseHoldOnPremise').prop('checked');
+            var enddate = j$('.endDate').val();
+            if (isHouseholfmemberOnPremise == false || (enddate != null && enddate != '')) {
+                j$('.renderEndDate').show();
+            } else {
+                j$('.renderEndDate').hide();
+            }
+        }
+        function ChangeTitle() {
+            j$('.modal-title').text('Edit Contact');
+        }
+        function isNumberOnly(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (evt.shiftKey) {
+                evt.preventDefault();
+                return false;
+            }
+            if ((charCode > 47 && charCode < 58) || (charCode >= 96 && charCode <= 105) || charCode == 8 ||
+                charCode == 9 || (charCode >= 37 && charCode <= 40)) {
+                return true;
+            } else {
+                evt.preventDefault();
+                return false;
+            } 
+        }
+        function isValidEmailAddress(emailAddress) {
+            var pattern =
+                /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+            return pattern.test(emailAddress);
+        }
+        function valdateContactRoles() {
+            var emailAddress = j$('.emailContact');
+            var mainContactsIdArray = JSON.parse('{!numberOfMainContactsString}');
+            if (mainContactsIdArray.length < 1) {
+                j$('#errorMsg1').html('<strong>Error!</strong> You must assign Licensee role to at least one contact record.');
+                j$('#errorMsg1').show();
+                return false;
+            } else if (mainContactsIdArray.length > 1) {
+                j$('#errorMsg1').html(
+                    '<strong>Error!</strong> You are only allowed to add one Licensee. Please select a different role.'
+                    );
+                j$('#errorMsg1').show();
+                return false;
+            } else if(checkEmail(emailAddress)){
+                j$('#errorMsg1').html(
+                    '<strong>Error!</strong> Please make sure that each contact have a valid email address.'
+                );
+                j$('#errorMsg1').show();
+                j$("html, body").animate({
+                    scrollTop: 0
+                }, 600);
+                return false;
+            }  else {
+                SaveNext();
+            }
+        }
+        function checkEmail(tdArray) {
+            var flag = false;
+            for(var i=0;i<tdArray.length;i++) {
+                if(tdArray[i].innerHTML.trim() == '' || tdArray[i].innerHTML.trim() == undefined || tdArray[i].innerHTML.trim() == null ) {
+                    flag = true;
+                    break;
+                }
+            }
+            return flag;
+        }
+        function doNavigate(previousPage, nextPage) {
+            if (nextPage != '') {
+                valdateContactRoles();
+            } else if (previousPage != '') {
+                SavePrevious(previousPage);
+            }
+        }
+    </script>
+</apex:page>

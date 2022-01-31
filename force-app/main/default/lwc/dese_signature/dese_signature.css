@@ -1,0 +1,19 @@
+.dese_signature,.footer{
+        font-size: 1.6rem;
+        /* padding: 4rem 8rem; */
+}
+
+.slds-tabs_default__nav li{
+        padding: 10px!important;
+}
+
+.tabset li{
+        padding: 10px!important;
+}
+.inputField input{
+        padding: 10px 16px!important;
+        border-radius: 4px!important;
+}
+.inputLabel label{
+        font-size: 1.6rem!important;
+}

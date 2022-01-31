@@ -1,0 +1,294 @@
+<template>
+    <c-allocation-instructions></c-allocation-instructions>
+    <div class="subheader slds-m-top_large">
+        6.2.1 - Enter district reservations as appropriate
+    </div>
+    <div class="headless-table slds-m-top_xx-large">
+        <table class="slds-table slds-table_cell-buffer slds-table_header-hidden slds-table_bordered"
+            aria-label="Example headless table of Opportunities">
+            <tbody>
+                <tr class="slds-hint-parent">
+                    <td data-label="">
+                        <div class="slds-truncate" title="Cloudhub">Equitable participation for
+                            private school students</div>
+                    </td>
+                    <td data-label="Close Date">
+                        <div class="input-box">
+                            <lightning-input data-id="r1" type="number" step="1" formatter="currency" name="value1"
+                                variant="label-hidden" value={value1} onchange={genericHandler} placeholder="$1"
+                                disabled={readOnly}>
+                            </lightning-input>
+                            <div class="slds-truncate" title="Cloudhub">{r1}%</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="">
+                        <div class="slds-truncate" title="Cloudhub">Family engagement (at least 1%
+                            required for districts with allocations of $500,000 or greater)</div>
+                    </td>
+                    <td data-label="Close Date">
+                        <div class="input-box">
+                            <lightning-input data-id="r2" type="number" step="1" formatter="currency" name="value2"
+                                variant="label-hidden" value={value2} onchange={genericHandler} placeholder="$1"
+                                disabled={readOnly}>
+                            </lightning-input>
+                            <div class="slds-truncate" title="Cloudhub">{r2}%</div>
+                        </div>
+                    </td>
+
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="">
+                        <div class="slds-truncate" title="Cloudhub">Services for locally operated
+                            institutions for neglected or delinquent children and youth </div>
+                    </td>
+                    <td data-label="Close Date">
+                        <div class="input-box">
+                            <lightning-input data-id="r3" type="number" step="1" formatter="currency" name="value3"
+                                variant="label-hidden" value={value3} onchange={genericHandler} placeholder="$1"
+                                disabled={readOnly}>
+                            </lightning-input>
+                            <div class="slds-truncate" title="Cloudhub">{r3}%</div>
+                        </div>
+                    </td>
+
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="">
+                        <div class="slds-truncate" title="Cloudhub">Administrative services </div>
+                    </td>
+                    <td data-label="Close Date">
+                        <div class="input-box">
+                            <lightning-input data-id="r4" type="number" step="1" formatter="currency" name="value4"
+                                variant="label-hidden" value={value4} onchange={genericHandler} placeholder="$1"
+                                disabled={readOnly}>
+                            </lightning-input>
+                            <div class="slds-truncate" title="Cloudhub">{r4}%</div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr class="slds-hint-parent">
+                    <td data-label="">
+                        <div class="slds-truncate" title="Cloudhub">Services for homeless students
+                        </div>
+                    </td>
+                    <td data-label="Close Date">
+                        <div class="input-box">
+                            <lightning-input data-id="r5" type="number" step="1" formatter="currency" name="value5"
+                                variant="label-hidden" value={value5} onchange={genericHandler} placeholder="$1"
+                                disabled={readOnly}>
+                            </lightning-input>
+                            <div class="slds-truncate" title="Cloudhub">{r5}%</div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr class="slds-hint-parent blue-row">
+                    <td data-label="">
+                        <div class="slds-truncate" title="Cloudhub"> District enrollment: homeless
+                            students (Spring 2019): </div>
+                    </td>
+                </tr>
+
+                <tr class="slds-hint-parent">
+                    <td data-label="">
+                        <div class="slds-truncate" title="Cloudhub">Foster care transportation
+                        </div>
+                    </td>
+                    <td data-label="Close Date">
+                        <div class="input-box">
+                            <lightning-input data-id="r6" type="number" step="1" formatter="currency" name="value6"
+                                variant="label-hidden" value={value6} onchange={genericHandler} placeholder="$1"
+                                disabled={readOnly}>
+                            </lightning-input>
+                            <div class="slds-truncate" title="Cloudhub">{r6}%</div>
+                        </div>
+                    </td>
+
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="">
+                        <div class="slds-truncate" title="Cloudhub">Indirect costs </div>
+                    </td>
+                    <td data-label="Close Date">
+                        <div class="input-box">
+                            <lightning-input data-id="r7" type="number" step="1" formatter="currency" name="value7"
+                                variant="label-hidden" value={value7} onchange={genericHandler} placeholder="$1"
+                                disabled={readOnly}>
+                            </lightning-input>
+                            <div class="slds-truncate" title="Cloudhub">{r7}%</div>
+                        </div>
+                    </td>
+
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="">
+                        <div class="slds-truncate" title="Cloudhub">MTRS</div>
+                    </td>
+                    <td data-label="Close Date">
+                        <div class="input-box">
+                            <lightning-input data-id="r8" type="number" step="1" formatter="currency" name="value8"
+                                variant="label-hidden" value={value8} onchange={genericHandler} placeholder="$1"
+                                disabled={readOnly}>
+                            </lightning-input>
+                            <div class="slds-truncate" title="Cloudhub">{r8}%</div>
+                        </div>
+                    </td>
+
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="">
+                        <div class="slds-truncate" title="Cloudhub">Other </div>
+                    </td>
+                    <td data-label="Close Date">
+                        <div class="input-box">
+                            <lightning-input data-id="r9" type="number" step="1" formatter="currency" name="value9"
+                                variant="label-hidden" value={value9} onchange={genericHandler} placeholder="$1"
+                                disabled={readOnly}>
+                            </lightning-input>
+                            <div class="slds-truncate" title="Cloudhub">{r9}%</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent blue-row">
+                    <td data-label="">
+                        <div class="slds-truncate" title="Cloudhub"> TOTAL reservation </div>
+                    </td>
+                    <td data-label="Close Date">
+                        <div class="input-box blue-row">
+                            <div class="slds-truncate " title="Cloudhub">${totalsum}</div>
+                            <div class="slds-truncate " title="Cloudhub">{totalpercent}%</div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr class="slds-hint-parent">
+                    <td data-label="">
+                        <div class="slds-truncate" title="Cloudhub"> </div>
+                    </td>
+                    <td data-label="Close Date">
+
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="">
+                        <div class="slds-truncate" title="Cloudhub">Balance Remaining for school allocations:</div>
+                    </td>
+                    <td data-label="Close Date">
+                        <div class="input-box">
+                            <div class="slds-truncate " title="Cloudhub">${balanceR}</div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="paragraph slds-m-top_x-large">
+        Please describe any non-Title-I services that the district is providing to students who are homeless to meet
+        assessed needs:
+    </div>
+    <div class="describe-box">
+        <div class="slds-form-element">
+            <div class="slds-form-element__control">
+                <!-- <textarea id="textarea-id-02" placeholder="Describe Here"
+                    class="slds-textarea"></textarea> -->
+                <lightning-textarea name="Title1AssessmentNeeds" placeholder="Describe Here"
+                    value={Title1AssessmentNeeds} onchange={handledataChange} disabled={readOnly}>
+                </lightning-textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="subheader slds-m-top_large">
+        6.2.2 Confirm minimum per-pupil amount for school allocations
+    </div>
+
+    <div class="headless-table slds-m-top_xx-large">
+        <table class="slds-table slds-table_cell-buffer slds-table_header-hidden slds-table_bordered"
+            aria-label="Example headless table of Opportunities">
+            <tbody>
+                <tr class="slds-hint-parent">
+                    <td data-label="">
+                        <div class="slds-truncate" title="Cloudhub">Total number of children from low-income families
+                            districtwide</div>
+                    </td>
+                    <td data-label="Close Date">
+                        <div class="input-box">
+                            <lightning-input data-id="t2R1" type="number" step="1" formatter="currency" name="t2Value1"
+                                variant="label-hidden" value={t2Value1} onchange={genericHandler} placeholder="$1"
+                                disabled={readOnly}>
+                            </lightning-input>
+                            <div class="slds-truncate" title="Cloudhub"></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="">
+                        <div class="slds-truncate" title="Cloudhub">Minimum per pupil amount for districts serving any
+                            school below 35% poverty </div>
+                    </td>
+                    <td data-label="Close Date">
+                        <div class="input-box">
+                            <lightning-input data-id="t2R2" type="number" step="1" formatter="currency" name="t2Value2"
+                                variant="label-hidden" value={t2Value2} onchange={genericHandler} placeholder="$1"
+                                disabled={readOnly}>
+                            </lightning-input>
+                            <div class="slds-truncate" title="Cloudhub"></div>
+                        </div>
+                    </td>
+
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="">
+                        <div class="slds-truncate" title="Cloudhub">Minimum per pupil amount for districts serving only
+                            schools at/above 35% poverty</div>
+                    </td>
+                    <td data-label="Close Date">
+                        <div class="input-box">
+                            <lightning-input data-id="t2R3" type="number" step="1" formatter="currency" name="t2Value3"
+                                variant="label-hidden" value={t2Value3} onchange={genericHandler} placeholder="$1"
+                                disabled={readOnly}>
+                            </lightning-input>
+                            <div class="slds-truncate" title="Cloudhub"></div>
+                        </div>
+                    </td>
+
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td data-label="">
+                        <div class="slds-truncate" title="Cloudhub">Districts serving only schools at/above 35% poverty
+                        </div>
+                    </td>
+                    <td data-label="Close Date">
+                        <div class="input-box">
+                            <lightning-input data-id="t2R4" type="number" step="1" formatter="currency" name="t2Value4"
+                                variant="label-hidden" value={t2Value4} onchange={genericHandler} placeholder="$1"
+                                disabled={readOnly}>
+                            </lightning-input>
+                            <div class="slds-truncate" title="Cloudhub"></div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="paragraph slds-m-top_x-large">
+        District-determined amount was selected, please describe method below
+    </div>
+    <div class="describe-box">
+        <div class="slds-form-element">
+            <div class="slds-form-element__control">
+                <!-- <textarea id="textarea-id-03" placeholder="Describe Here"
+                    class="slds-textarea"></textarea> -->
+                <lightning-textarea name="Title1Districtdetermined" placeholder="Describe Here"
+                    value={Title1Districtdetermined} onchange={handledataChange} disabled={readOnly}>
+                </lightning-textarea>
+            </div>
+        </div>
+    </div>
+
+</template>

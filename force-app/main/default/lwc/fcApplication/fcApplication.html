@@ -1,0 +1,236 @@
+<template>
+    
+    <!-- Spinner -->
+    <div class="backdrop" if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </div>
+    </div>
+
+    <!-- Heading -->
+    <div class="has-shadow slds-p-vertical_medium slds-m-bottom_medium heading_header_registration">
+        <div class="container d-flex justify-space-between">
+            <h6>New Foster Care Application</h6>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="app-container slds-grid slds-gutters slds-wrap" if:true={showForm}>
+            
+            <div class="app-sidebar slds-col slds-size_1-of-1 slds-large-size_3-of-12">
+                <!-- Flow Steps -->
+                <c-fc-application-sidebar current-step={currentStep} original-step={originalStep} is-multiple-applicant={isMultipleApplicant}></c-fc-application-sidebar>
+            </div>
+
+            <div class="app-content slds-size_1-of-1 slds-large-size_9-of-12 slds-m-bottom_large">
+                
+                <!-- Step 1: -->
+                <div if:true={showApplicantInfo}>
+                    <c-fc-applicant-info application-id={applicationId}></c-fc-applicant-info>
+
+                    <div class="controls slds-m-top_medium">
+                        <template if:true={showBackButtonOnInfo}>
+                            <lightning-button label="Back" class="slds-m-right_medium" onclick={previousApplicantInfo}>
+                            </lightning-button>
+                        </template>
+                        <lightning-button variant="brand" type="submit" label="Save & Continue"
+                            onclick={navigateApplicantInfo}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                <!-- Step 2: -->
+                <div if:true={showApplicantInfoEmployment}>
+                    <c-fc-applicant-info-employment application-id={applicationId}></c-fc-applicant-info-employment>
+                    
+                    <div class="controls slds-m-top_medium">
+                        <lightning-button label="Back" class="slds-m-right_medium" onclick={previousApplicantEmployment}>
+                        </lightning-button>
+                        <lightning-button variant="brand" type="submit" label="Save & Continue"
+                            onclick={navigateApplicantEmployment}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div if:true={showApplicantFinancial}>
+                    <!-- <c-fc-applicant-info-employment application-id={applicationId}></c-fc-applicant-info-employment> -->
+                    <c-fc-financial-info application-id={applicationId}></c-fc-financial-info>
+                    
+                    <div class="controls slds-m-top_medium">
+                        <lightning-button label="Back" class="slds-m-right_medium" onclick={previousApplicantFinancial}>
+                        </lightning-button>
+                        <lightning-button variant="brand" type="submit" label="Save & Continue"
+                            onclick={navigateApplicantFinancial}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                <!-- Step 5: -->
+                <div if:true={showApplicantRelationship}>
+                    <!-- <c-fc-applicant-info-employment application-id={applicationId}></c-fc-applicant-info-employment> -->
+                    <c-fc-applicant-relationship application-id={applicationId}></c-fc-applicant-relationship>
+                    
+                    <div class="controls slds-m-top_medium">
+                        <lightning-button label="Back" class="slds-m-right_medium" onclick={previousApplicantRelationship}>
+                        </lightning-button>
+                        <lightning-button variant="brand" type="submit" label="Save & Continue"
+                            onclick={navigateApplicantRelationship}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                <!-- Step 6: -->
+                <div if:true={showHouseholdInfoHomeContactInfo}>
+                    <c-fc-household-info-home-contact-info application-id={applicationId}></c-fc-household-info-home-contact-info>
+                    
+                    <div class="controls slds-m-top_medium">
+                        <lightning-button label="Back" class="slds-m-right_medium" onclick={previousHouseholdInfoHomeContactInfo}>
+                        </lightning-button>
+                        <lightning-button variant="brand" type="submit" label="Save & Continue"
+                            onclick={navigateHouseholdInfoHomeContactInfo}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                <!-- Step 7: -->
+                <div if:true={showHouseholdInfoHomeInfo}>
+                    <c-fc-household-info-home-info application-id={applicationId}></c-fc-household-info-home-info>
+                    
+                    <div class="controls slds-m-top_medium">
+                        <lightning-button label="Back" class="slds-m-right_medium" onclick={previousHouseholdInfoHomeInfo}>
+                        </lightning-button>
+                        <lightning-button variant="brand" type="submit" label="Save & Continue"
+                            onclick={navigateHouseholdInfoHomeInfo}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                <!-- Step 8: -->
+                <div if:true={showHouseholdInfoHomeMinorChildren}>
+                    <c-fc-household-info-home-minor-children application-id={applicationId}></c-fc-household-info-home-minor-children>
+                    
+                    <div class="controls slds-m-top_medium">
+                        <lightning-button label="Back" class="slds-m-right_medium" onclick={previousHouseholdInfoHomeMinorChildren}>
+                        </lightning-button>
+                        <lightning-button variant="brand" type="submit" label="Save & Continue"
+                            onclick={navigateHouseholdInfoHomeMinorChildren}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                <!-- Step 9: -->
+                <div if:true={showHouseholdInfoHomeAdult}>
+                    <c-fc-household-info-home-adult application-id={applicationId}></c-fc-household-info-home-adult>
+                    
+                    <div class="controls slds-m-top_medium">
+                        <lightning-button label="Back" class="slds-m-right_medium" onclick={previousHouseholdInfoHomeAdult}>
+                        </lightning-button>
+                        <lightning-button variant="brand" type="submit" label="Save & Continue"
+                            onclick={navigateHouseholdInfoHomeAdult}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                <!-- Step 10: -->
+                <div if:true={showFosterInfoAgency}>
+                    <c-fc-foster-info-agency application-id={applicationId}></c-fc-foster-info-agency>
+                    
+                    <div class="controls slds-m-top_medium">
+                        <lightning-button label="Back" class="slds-m-right_medium" onclick={previousFosterInfoAgency}>
+                        </lightning-button>
+                        <lightning-button variant="brand" type="submit" label="Save & Continue"
+                            onclick={navigateFosterInfoAgency}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                <!-- Step 11: -->
+                <div if:true={showFosterInfoApplicantHistory}>
+                    <c-fc-foster-info-applicant-history application-id={applicationId}></c-fc-foster-info-applicant-history>
+                    
+                    <div class="controls slds-m-top_medium">
+                        <lightning-button label="Back" class="slds-m-right_medium" onclick={previousFosterInfoApplicantHistory}>
+                        </lightning-button>
+                        <lightning-button variant="brand" type="submit" label="Save & Continue"
+                            onclick={navigateFosterInfoApplicantHistory}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                <!-- Step 13: -->
+                <div if:true={showFosterInfoChildDesired}>
+                    <c-fc-foster-info-child-desired application-id={applicationId}></c-fc-foster-info-child-desired>
+                    
+                    <div class="controls slds-m-top_medium">
+                        <lightning-button label="Back" class="slds-m-right_medium" onclick={previousFosterInfoChildDesired}>
+                        </lightning-button>
+                        <lightning-button variant="brand" type="submit" label="Save & Continue"
+                            onclick={navigateFosterInfoChildDesired}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                <!-- Step 16: -->
+                <div if:true={showReferences}>
+                    <!-- <c-fc-foster-info-child-desired application-id={applicationId}></c-fc-foster-info-child-desired> -->
+                    <c-fc-references application-id={applicationId}></c-fc-references>
+
+                    <div class="controls slds-m-top_medium">
+                        <lightning-button label="Back" class="slds-m-right_medium" onclick={previousReferences}>
+                        </lightning-button>
+                        <lightning-button variant="brand" type="submit" label="Save & Continue"
+                            onclick={navigateReferences}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                <!-- Step 17: -->
+                <div if:true={showBackgroundConsent}>
+                    <c-fc-background-check application-id={applicationId}></c-fc-background-check>
+                    <!-- <c-fc-foster-info-child-desired application-id={applicationId}></c-fc-foster-info-child-desired> -->
+                    
+                    <div class="controls slds-m-top_medium">
+                        <lightning-button label="Back" class="slds-m-right_medium" onclick={previousBackgroundConsent}>
+                        </lightning-button>
+                        <lightning-button variant="brand" type="submit" label="Save & Continue"
+                            onclick={navigateBackgroundConsent}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                <!-- Step 18: -->
+                <div if:true={showDocuments}>
+                    <!-- <c-fc-foster-info-child-desired application-id={applicationId}></c-fc-foster-info-child-desired> -->
+                    <c-fc-documents application-id={applicationId}></c-fc-documents>
+                    
+                    <div class="controls slds-m-top_medium">
+                        <lightning-button label="Back" class="slds-m-right_medium" onclick={previousDocuments}>
+                        </lightning-button>
+                        <lightning-button variant="brand" type="submit" label="Save & Continue"
+                            onclick={navigateDocuments}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                <!-- Step 19: -->
+                <div if:true={showReviewAndSubmit}>
+                    <!-- <c-fc-foster-info-child-desired application-id={applicationId}></c-fc-foster-info-child-desired> -->
+                    <c-fc-submission application-id={applicationId}></c-fc-submission>
+                    
+                    <div class="controls slds-m-top_medium">
+                        <lightning-button label="Back" class="slds-m-right_medium" onclick={previousReviewAndSubmit}>
+                        </lightning-button>
+                        <lightning-button variant="brand" type="submit" label="Submit Application"
+                            onclick={navigateReviewAndSubmit}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+            </div>
+            
+        </div>
+    </div>
+
+</template>

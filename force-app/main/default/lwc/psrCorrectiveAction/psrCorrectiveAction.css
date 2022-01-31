@@ -1,0 +1,12 @@
+.slds-table th,
+.slds-table td {
+    white-space: normal !important;
+}
+
+.slds-tabs_default {
+    width: -webkit-fill-available !important;
+}
+
+.slds-textarea {
+    height: -webkit-fill-available;
+}

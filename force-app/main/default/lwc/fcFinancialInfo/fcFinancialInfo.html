@@ -1,0 +1,100 @@
+<template>
+
+    <div class="page-header">
+        <h1 class="page-title">FINANCIAL INFORMATION</h1>
+    </div>
+    <div class="app-container slds-grid slds-gutters slds-wrap">
+    <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+        <c-fc-intake-form-help-text help-text={helpTextVerification}></c-fc-intake-form-help-text>
+    </div> 
+    <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+        <b>MONTHLY INCOME</b>
+    </div>
+    <div class="page-header slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+        <p> Please capture all your monthly income. Please enter a value as zero (0) for any categories that do not apply to you.</p>
+    </div>
+    
+        <div class="slds-form slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="number" autocomplete="none" label="GROSS INCOME" formatter="currency" step="0.01"
+                         name="grossincome" value={dataObj.grossincome} onchange={handleInput} style="width: 100%;" required>
+                    </lightning-input>
+                </div>
+            </div>
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="number" autocomplete="none" label="NET INCOME" formatter="currency" step="0.01"
+                        name="netincome" value={dataObj.netincome}  onchange={handleInput} style="width: 100%;" required>
+                    </lightning-input>
+                </div>
+            </div>
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="number" autocomplete="none" label="Social Security" formatter="currency" step="0.01"
+                        name="socialsecurity" value={dataObj.socialsecurity}   onchange={handleInput} style="width: 100%;" required>
+                    </lightning-input>
+                </div>
+            </div>
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="number" autocomplete="none" label="PENSION" formatter="currency" step="0.01"
+                        name="pension"  value={dataObj.pension} onchange={handleInput} style="width: 100%;" required>
+                    </lightning-input>
+                </div>
+            </div>
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="number" autocomplete="none" label="UNEMPLOYMENT"  name="unemployment" formatter="currency" step="0.01"
+                    value={dataObj.unemployment} style="width: 100%;" onchange={handleInput} required>
+                    </lightning-input>
+                </div>
+            </div>
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="number" autocomplete="none" label="TANF" name="tanf" formatter="currency" step="0.01"
+                    value={dataObj.tanf}   onchange={handleInput} style="width: 100%;" required>
+                    </lightning-input>
+                </div>
+            </div>
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="number" autocomplete="none" label="APTD" formatter="currency" name="aptd" step="0.01"
+                    value={dataObj.aptd}    onchange={handleInput} style="width: 100%;" required>
+                    </lightning-input>
+                </div>
+            </div>
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="number" autocomplete="none" label="FOOD STAMPS"  name="foodstamps" formatter="currency" step="0.01"
+                    value={dataObj.foodstamps}    onchange={handleInput} style="width: 100%;" required>
+                    </lightning-input>
+                </div>
+            </div>
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="number" autocomplete="none" label="FUEL ASSISTANCE"  name="fuelassistance" formatter="currency" step="0.01"
+                    value={dataObj.fuelassistance}    onchange={handleInput} style="width: 100%;" required>
+                    </lightning-input>
+                </div>
+            </div>
+
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="number" autocomplete="none" label="OTHER INCOME?"  name="otherincome" formatter="currency" step="0.01"
+                    value={dataObj.otherincome}    onchange={handleInput} style="width: 100%;" required>
+                    </lightning-input>
+                </div>
+            </div>
+            
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="number" autocomplete="none" label="TOTAL INCOME"  name="totalincome" formatter="currency" step="0.01"
+                    value={dataObj.totalincome}   onchange={handleInput}   style="width: 100%;" disabled=True required> 
+                    </lightning-input>
+                </div>
+            </div>
+            </div>
+        </div>
+</template>

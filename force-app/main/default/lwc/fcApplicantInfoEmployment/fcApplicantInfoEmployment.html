@@ -1,0 +1,30 @@
+<template>
+    <div class="page-header">
+        <h1 class="page-title">Applicant Employment</h1>
+    </div>
+    <div class="app-container slds-grid slds-gutters slds-wrap">
+    <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+        <c-fc-intake-form-help-text help-text={helpTextVerification}></c-fc-intake-form-help-text>
+    </div> 
+    <div class="slds-form slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+
+        <lightning-radio-group name="radioGroup"
+        label="Employment Status"
+        options={optionsForEmployment}
+        value={value}
+        required
+        onchange={handleChange}
+        type="radio"></lightning-radio-group>
+        <template if:true={showEmploymentInfo}>
+            <div >
+                <lightning-input type="text" label="Name of employer" placeholder="" required></lightning-input> 
+                <lightning-input type="text" label="Address of employer" placeholder="" required></lightning-input>      
+                <lightning-input type="tel" label="Work phone number" placeholder="" required></lightning-input>        
+                <lightning-input type="text" label="Occupation" placeholder="" required></lightning-input>        
+                <lightning-input type="number" label="Annual income" placeholder=""  formatter="currency" step="0.01" required></lightning-input>        
+            </div>
+        </template>
+</div>
+    </div>
+
+</template>

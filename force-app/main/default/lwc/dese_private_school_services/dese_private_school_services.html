@@ -1,0 +1,530 @@
+<template>
+    <lightning-card>
+        <div class="privateschool-content privateSchoolServices">
+            <h1 class="header slds-m-bottom_medium" if:false={readOnly}>
+                Non-Profit Private School Services
+            </h1>
+            <p class="paragraph slds-m-bottom_xx-large">
+                ESSA requires the equitable participation of students and educators in private, non-profit schools for
+                federally funded programs and services. The public school district is required to have "timely and
+                meaningful consultation" with private school officials regarding the participation of private school
+                students and educators <span if:true={readMore}>
+                    ESSA requires the equitable participation of students and educators in private, non-profit schools for
+                federally funded programs and services. The public school district is required to have "timely and
+                meaningful consultation" with private school officials regarding the participation of private school
+                students and educators
+                </span>
+                <lightning-button variant="brand" label={clickedButtonLabel} title="READ MORE" onclick={handleClick}
+                class="readmore"></lightning-button>
+            </p>
+            <div class="subheader slds-m-bottom_x-large">
+                4.1 Schedule A Enrollment Data
+            </div>
+            <div class="table-header slds-m-bottom_small">
+                <div class="small-header">Schedule A Lead Districts Only</div>
+                <div class="resource-icon">
+                    <img src={notebook} />
+                    <div class="resources">
+                        Resources
+                    </div>
+                </div>
+            </div>
+            <div class="schedule-table">
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered"
+                    aria-label="Example default base table of Opportunities">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title=""></div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Title II, Part A">Title II, Part A</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Title III, Part A">Title III, Part A</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Title IV, Part A">Title IV, Part A</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="slds-hint-parent">
+                            <th data-label="" scope="row">
+                                <div class="slds-truncate" title="Are you lead agent for a Schedule A Consortium?">
+                                    <b>Are you lead agent for a Schedule A Consortium?</b>
+                                </div>
+                            </th>
+                            <td data-label="Title II, Part A">
+                                <div class="combobox">
+                                    <lightning-combobox name="progress" label="Status" variant="label-hidden"
+                                        data-id="istitle2Consortium" value={istitle2Consortium} placeholder="Select"
+                                        options={options} onchange={handleChange} disabled={readOnly}>
+                                    </lightning-combobox>
+                                </div>
+
+                            </td>
+                            <td data-label="Title III, Part A">
+                                <div class="combobox">
+                                    <lightning-combobox name="progress" label="Status" variant="label-hidden"
+                                        data-id="istitle3Consortium" value={istitle3Consortium} placeholder="Select"
+                                        options={options} onchange={handleChange} disabled={readOnly}>
+                                    </lightning-combobox>
+                                </div>
+                            </td>
+                            <td data-label="Title IV, Part A">
+                                <div class="combobox">
+                                    <lightning-combobox name="progress" label="Status" variant="label-hidden"
+                                        data-id="istitle4Consortium" value={istitle4Consortium} placeholder="Select"
+                                        options={options} onchange={handleChange} disabled={readOnly}>
+                                    </lightning-combobox>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent">
+                            <th data-label="" scope="row">
+                                <div class="slds-truncate" title="Total Consortium Enrollment (Use March 2019 data)">
+                                    Total Consortium Enrollment (Use March 2019 data)
+                                </div>
+                            </th>
+                            <td data-label="Title II, Part A">
+                                <div class="slds-truncate" title="">
+                                    <lightning-input type="number" step="0" formatter="currency"
+                                        value={title2Consortium} data-id="title2Consortium" onchange={genericHandler}
+                                        disabled={readOnly}></lightning-input>
+                                </div>
+                            </td>
+                            <td data-label="Title III, Part A">
+                                <div class="slds-truncate" title=""></div>
+                            </td>
+                            <td data-label="Title IV, Part A">
+                                <div class="slds-truncate" title="">
+                                    <lightning-input type="number" step="0" formatter="currency"
+                                        value={title4Consortium} data-id="title4Consortium" onchange={genericHandler}
+                                        disabled={readOnly}></lightning-input>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent">
+                            <th data-label="" scope="row">
+                                <div class="slds-truncate" title="Total Consortium EL Enrollment (Use March 2019 data)">
+                                    Total Consortium EL Enrollment (Use March 2019 data)
+                                </div>
+                            </th>
+                            <td data-label="Title II, Part A">
+                                <div class="slds-truncate" title=""></div>
+                            </td>
+                            <td data-label="Title III, Part A">
+                                <div class="slds-truncate" title="">
+                                    <lightning-input type="number" step="0" formatter="currency"
+                                        value={title3Consortium} data-id="title3Consortium" onchange={genericHandler}
+                                        disabled={readOnly}></lightning-input>
+                                </div>
+                            </td>
+                            <td data-label="Title IV, Part A">
+                                <div class="slds-truncate" title=""></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="line slds-m-bottom_xx-large slds-m-top_xx-large"></div>
+            <div class="subheader slds-m-bottom_x-large">
+                4.2 Direct Administrative Expenses
+            </div>
+            <div class="small-header slds-m-bottom_small">Title II, III, IV Districts</div>
+            <div class="paragraph slds-m-bottom_medium">Fill in the amount that the district will reserve for
+                administrative expenses for Titles II, Part A, III, Part A and/or Title IV, Part A. The remainder of the
+                grid will populate automatically once you have completed all steps of this worksheet.</div>
+            <div class="expenses-table">
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered"
+                    aria-label="Example default base table of Opportunities">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title=""></div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Title I, Part A">Title I, Part A</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Title II, Part A">Title II, Part A</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Title III, Part A">Title III, Part A</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Title IV, Part A">Title IV, Part A</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="slds-hint-parent">
+                            <td data-label="" scope="row">
+                                <div class="" title="">
+                                    Provide total funding being used for district's direct administrative expenses
+                                </div>
+                            </td>
+                            <td data-label="Title I, Part A">
+                                <div class="slds-truncate" title=""></div>
+                            </td>
+                            <td data-label="Title II, Part A">
+                                <div class="slds-truncate" title="">
+                                    <lightning-input step="0" formatter="currency" type="number" value={title2dae}
+                                        data-id="title2dae" onchange={genericHandler} disabled={readOnly}>
+                                    </lightning-input>
+                                </div>
+                            </td>
+                            <td data-label="Title III, Part A">
+                                <div class="slds-truncate" title="">
+                                    <lightning-input step="0" formatter="currency" type="number" value={title3dae}
+                                        data-id="title3dae" onchange={genericHandler} disabled={readOnly}>
+                                    </lightning-input>
+                                </div>
+                            </td>
+                            <td data-label="Title IV, Part A">
+                                <div class="slds-truncate" title="">
+                                    <lightning-input step="0" formatter="currency" type="number" value={title4dae}
+                                        data-id="title4dae" onchange={genericHandler} disabled={readOnly}>
+                                    </lightning-input>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent">
+                            <td data-label="" scope="row">
+                                <div class="" title="">
+                                    Total district funds per program after any flexing between programs and minus
+                                    the amount reserved for program administration for Titles IIA III & IVA.
+                                </div>
+                            </td>
+                            <td data-label="Title I, Part A">
+                                <div class="slds-truncate" title="$122"><template
+                                        if:true={postflex1}>${postflex1}</template></div>
+                            </td>
+                            <td data-label="Title II, Part A">
+                                <div class="slds-truncate" title="$0"><template
+                                        if:true={postflex1}>${postflex2}</template></div>
+                            </td>
+                            <td data-label="TTitle III, Part A">
+                                <div class="slds-truncate" title="$0"><template
+                                        if:true={postflex1}>${postflex3}</template></div>
+                            </td>
+                            <td data-label="Title IV, Part A">
+                                <div class="slds-truncate" title="$0"><template
+                                        if:true={postflex1}>${postflex4}</template></div>
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent">
+                            <td data-label="" scope="row">
+                                <div class="" title="">
+                                    Total amount that must be reserved for equitable services. See below for allocations
+                                    for each private school.
+                                </div>
+                            </td>
+                            <td data-label="Title I, Part A">
+                                <div class="slds-truncate" title=""><template if:true={actual1}>${actual1}</template>
+                                </div>
+                            </td>
+                            <td data-label="Title II, Part A">
+                                <div class="slds-truncate" title=""><template if:true={actual2}>${actual2}</template>
+                                </div>
+                            </td>
+                            <td data-label="Title III, Part A">
+                                <div class="slds-truncate" title=""><template if:true={actual3}>${actual3}</template>
+                                </div>
+                            </td>
+                            <td data-label="Title IV, Part A">
+                                <div class="slds-truncate" title=""><template if:true={actual3}>${actual4}</template>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br/>    <br/>
+            <lightning-radio-group name="radioGroup"
+                label="Do any district resident students attending private schools live in Title I school attendance areas?"
+                options={options} value={value} type="radio" onchange={handleToggleChange} disabled={readOnly}>
+            </lightning-radio-group>
+            <br/>
+            <div class="line slds-m-bottom_xx-large slds-m-top_xx-large"></div>
+            <template if:true={isValue}>
+                <div class="subheader slds-m-bottom_x-large slds-m-top_x-large">
+                    4.3 List Private Schools
+                </div>
+                <div class="small-header slds-m-bottom_small">All Title I Districts</div>
+                <div class="paragraph slds-m-bottom_medium">List all private schools with enrolled students who reside
+                    in a
+                    Title I-served school attendance area in your district</div>
+                    <c-allocation-instructions></c-allocation-instructions>
+                <!-- <div class="accordion-header slds-m-top_xx-large">
+                <div class="item">School name</div>
+                <div class="item">Amount/Low Income Student</div>
+                <div class="item">Allocation for Services</div>
+                <div class="item">Action</div>
+            </div> -->
+            <br/>
+                <div class="privateschool-accordion ">
+                    <!-- <lightning-accordion class="example-accordion" onsectiontoggle={handleToggleSection}
+                    active-section-name="A">
+                    <lightning-accordion-section name="A" label="">
+                        <div class="accordion-content">
+                            <div class="accordion-info">
+                                <div class="info-item">School Name Sample Text 1</div>
+                                <div class="info-item">0</div>
+                                <div class="info-item">$122</div>
+                                <div class="info-item">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                        alternative-text="Utility new_direct_message " title="Image"></lightning-icon>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">Private School Participate in Title I</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">A</div>
+                                    <div class="body">Grades Served</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">1</div>
+                                    <div class="body">Number of children who reside in Title I-served attendance area
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">12</div>
+                                    <div class="body">Number of children who are low-income using methodology described
+                                        below</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">123</div>
+                                    <div class="body">Estimated number of children who will participate in the Title I
+                                        Program</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">0</div>
+                                    <div class="body">Amount Per Low Income Student based on Title I Allocation</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$ 122</div>
+                                    <div class="body">Allocation Per School for Services</div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </lightning-accordion-section>
+
+                    <lightning-accordion-section name="B" label="School Name Sample Text 2">
+                        <div class="accordion-content">
+                            <div class="grid">
+                                <div class="grid-item">
+                                    <div class="head">Yes</div>
+                                    <div class="body">Private School Participate in Title I</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">A</div>
+                                    <div class="body">Grades Served</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">1</div>
+                                    <div class="body">Number of children who reside in Title I-served attendance area
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">12</div>
+                                    <div class="body">Number of children who are low-income using methodology described
+                                        below</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">123</div>
+                                    <div class="body">Estimated number of children who will participate in the Title I
+                                        Program</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">0</div>
+                                    <div class="body">Amount Per Low Income Student based on Title I Allocation</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">$ 122</div>
+                                    <div class="body">Allocation Per School for Services</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </lightning-accordion-section>
+                    <div class="total slds-m-top_medium slds-m-bottom_medium">
+                        <div>Total</div>
+                        <div>123</div>
+                        <div>123</div>
+                        <div>$1234</div>
+                    </div>
+
+
+                </lightning-accordion> -->
+                    <div class="expenses-table accordion-table" if:true={hasSchools}>
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered"
+                            aria-label="Example default base table of Opportunities">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="School name">School name</div>
+                                    </th>
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Amount / Low Income Student">Amount / Low
+                                            Income
+                                            Student</div>
+                                    </th>
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Allocation for Services">Allocation for
+                                            Services
+                                        </div>
+                                    </th>
+                                    <th class="" scope="col">
+                                        <div class="slds-truncate" title="Action">Action</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={schools} for:item="school">
+                                    <tr key={school.Id} class="slds-hint-parent">
+                                        <td data-label="" scope="row">
+                                            <div class="" title="">
+                                                {school.PSS_School_Name__c}
+                                            </div>
+                                        </td>
+                                        <td data-label="Title I, Part A">
+                                            <div class="slds-truncate" title=""><template
+                                                if:true={school.PSS_Amount_per_Low_Income_Student__c}>${school.PSS_Amount_per_Low_Income_Student__c}</template>
+                                            </div>
+                                        </td>
+                                        <td data-label="Title II, Part A">
+                                            <div class="slds-truncate" title=""><template
+                                                    if:true={school.Allocation_per_School_for_Service__c}>${school.Allocation_per_School_for_Service__c}</template>
+                                            </div>
+                                        </td>
+                                        <td data-label="Title III, Part A">
+                                            <lightning-icon icon-name="utility:new_direct_message"
+                                                class="slds-p-right_medium"
+                                                alternative-text="Utility new_direct_message " title="Image">
+                                            </lightning-icon>
+                                            <span class="slds-p-left_medium ">
+                                                <lightning-button-icon icon-name="utility:preview"
+                                                    alternative-text="Settings" title="Settings">
+                                                </lightning-button-icon>
+                                                
+                                            </span>
+                                            <span class="slds-p-left_medium ">
+                                                <lightning-icon icon-name="utility:delete" alternative-text="delete" title="delete"></lightning-icon>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <c-modal-window school-id={schoolId} read-only={readOnly} project-id={projectId}
+                        onfetch={fetchSchools}></c-modal-window>
+                </div>
+                <br/>
+                <!-- <div class="line slds-m-bottom_xx-large slds-m-top_xx-large"></div> -->
+            </template>
+            <template if:false={isValue}>
+                <div class="subheader slds-m-bottom_x-large">
+                    4.4 Equitable Services
+                </div>
+                <div class="small-header slds-m-bottom_small">All Title I Districts with eligible private school
+                    students
+                </div>
+                <div class="equitable-table">
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered"
+                        aria-label="Example default base table of Opportunities">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title=""></div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="Title I, Part A">Title I, Part A</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="slds-hint-parent">
+                                <td data-label="" scope="row">
+                                    <div class="" title="">
+                                        Has the district contacted all private schools (located within or beyond
+                                        district
+                                        boundaries) that enroll Title I eligible students and has evidence of such
+                                        outreach
+                                        on file.
+                                    </div>
+                                </td>
+                                <td data-label="Title I, Part A">
+                                    <div class="combobox">
+                                        <lightning-combobox name="progress" label="Status" variant="label-hidden"
+                                            data-id="contactedAll" value={contactedAll} placeholder="Select"
+                                            options={options} onchange={handleChange} disabled={readOnly}>
+                                        </lightning-combobox>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="question-box slds-m-bottom_medium slds-m-top_medium">
+                    <div class="question">
+                        How was low income status determined for private school students?
+                    </div>
+                    <div class="combobox box">
+                        <lightning-combobox name="progress" label="Status" variant="label-hidden" value={determineLow}
+                            data-id="determineLow" placeholder="Sample Selected Text" options={serviceProvidedOptions}
+                            onchange={handleChange} disabled={readOnly}>
+                        </lightning-combobox>
+
+                    </div>
+                </div>
+                <div class="question-box slds-m-bottom_medium slds-m-top_medium">
+                    <div class="question">
+                        What Title I services will be provided to participating private school students, their teachers,
+                        and
+                        their parents?
+                    </div>
+                    <div class="combobox box">
+                        <lightning-combobox name="progress" label="Status" variant="label-hidden"
+                            value={serviceProvided} data-id="serviceProvided" placeholder="Sample Selected Text"
+                            options={serviceProvidedOptions} onchange={handleChange} disabled={readOnly}>
+                        </lightning-combobox>
+
+                    </div>
+                </div>
+                <div class="question-box slds-m-bottom_xx-large slds-m-top_medium">
+                    <div class="question">
+                        How will the district assess the impact of services it delivers to private schools?
+                    </div>
+                    <div class="combobox box">
+                        <lightning-combobox name="progress" label="Status" variant="label-hidden"
+                            value={impactOfService} data-id="impactOfService" placeholder="Sample Selected Text"
+                            options={impactOfServiceOptions} onchange={handleChange} disabled={readOnly}>
+                        </lightning-combobox>
+
+                    </div>
+                </div>
+            </template>
+
+        </div>
+        <!-- <div class="line slds-m-bottom_xx-large slds-m-top_xx-large"></div> -->
+        <div slot="footer" if:false={readOnly}>
+            <div class="button">
+                <lightning-button variant="brand-outline" label="Back" title="Primary action with lighter look"
+                    onclick={handlePrev} class="slds-m-left_x-small button__white"></lightning-button>
+                <lightning-button variant="brand" label="Next" title="Primary action" onclick={handleNext}
+                    class="slds-m-left_x-small"></lightning-button>
+            </div>
+        </div>
+    </lightning-card>
+
+
+</template>

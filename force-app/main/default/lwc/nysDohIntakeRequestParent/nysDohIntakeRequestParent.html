@@ -1,0 +1,248 @@
+<!--
+ - Created by hardikranjan on 22/03/20.
+ -->
+
+<!-- Nys Doh Intake Request Parent -->
+<template>
+
+    <!-- Spinner component -->
+    <div if:true={showSpinner}>
+        <div class="backdrop">
+            <div class="spinner">
+                <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+            </div>
+        </div>
+    </div>
+
+    <template if:false={internalUse}>
+        <div class="has-shadow slds-p-vertical_medium slds-m-bottom_medium heading_header_registration">
+            <div class="container d-flex justify-space-between">
+                <h1 class="section-title" style="margin-bottom:0">Scheduling Test Center</h1>
+            </div>
+        </div>
+    </template>
+
+
+    <div class="container">
+        <div class="app-container">
+            <template if:false={isShowFlowTerminateMessage}>
+                <template if:false={isThankYouPage}>
+                    <!-- Left Panel -->
+                    <div class="app-sidebar">
+                        <c-nysdoh-steps-component is-community={isCommunity}
+                            is-show-scheduling-option={isShowSchedulingOption} is-points-calculated={isPointsCalculated}
+                            current-step={currentStep} original-step={originalStep}>
+                        </c-nysdoh-steps-component>
+                    </div>
+
+                    <!-- Right Panel -->
+                    <div class="app-content">
+                        <div style="color:red;" if:true={errorMsg}>{errorMsg}</div>
+
+                        <!-- Step 1: Instructions -->
+                        <div class={isInstructionsPage}>
+                            <c-nyc-doh-intake-request-instructions></c-nyc-doh-intake-request-instructions>
+
+                            <div class="controls slds-m-top_medium">
+                                <lightning-button class="slds-m-left_medium slds-float_right" variant="brand"
+                                    label="Next" onclick={goToQuestionsPage}>
+                                </lightning-button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Questions -->
+                        <div class={isQuestionsPage}>
+                            <c-nys-doh-questionaire-page></c-nys-doh-questionaire-page>
+
+                            <div class="controls slds-m-top_medium">
+                                <lightning-button if:true={isCommunity} variant="neutral" label="Back"
+                                    onclick={goToInstructionsPage}>
+                                </lightning-button>
+
+                                <lightning-button class="slds-m-left_medium slds-float_right" variant="brand"
+                                    label="Next" onclick={goToContactDetailPage}>
+                                </lightning-button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Contact Details -->
+                        <div class={isContactDetailPage}>
+                            <c-nysdoh-demographics></c-nysdoh-demographics>
+
+                            <div class="controls slds-m-top_medium">
+                                <lightning-button variant="neutral" label="Back" onclick={goToQuestionsPage}>
+                                </lightning-button>
+
+                                <lightning-button class="slds-m-left_medium slds-float_right" variant="brand"
+                                    label="Next" onclick={goToAckPage}>
+                                </lightning-button>
+
+                                <!-- If community then always show Next button -->
+                                <!-- <template if:true={isCommunity}>
+                                <lightning-button class="slds-m-left_medium slds-float_right" variant="brand"
+                                    label="Next" onclick={goToAckPage}>
+                                </lightning-button>
+                            </template> -->
+
+                                <!-- Internal -->
+                                <!-- If internal then always show next button if scheduling is required otherwise show save button -->
+                                <!-- <template if:false={isCommunity}>
+                                <lightning-button class="slds-m-left_medium slds-float_right" variant="brand"
+                                    label="Next" onclick={goToAckPage} if:true={isShowSchedulingOption}>
+                                </lightning-button>
+
+                                <lightning-button class="slds-m-left_medium slds-float_right" variant="brand"
+                                    label="Save" onclick={saveAllData} if:false={isShowSchedulingOption}>
+                                </lightning-button>
+                            </template> -->
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Acknowledgement & Submission -->
+                        <div class={isAckPage}>
+                            <!-- Comuunity & Internal -->
+                            <c-nys-doh-acknoledgment-page-external is-community={isCommunity}>
+                            </c-nys-doh-acknoledgment-page-external>
+
+                            <!-- For Internal -->
+                            <!-- <c-nys-doh-acknoledgment-page if:false={isCommunity}
+                            is-show-scheduling-option={isShowSchedulingOption}></c-nys-doh-acknoledgment-page> -->
+
+                            <div class="controls slds-m-top_medium">
+                                <lightning-button variant="neutral" label="Back" onclick={goToContactDetailPage}>
+                                </lightning-button>
+
+                                <lightning-button class="slds-m-left_medium slds-float_right" variant="brand"
+                                    label="Save" onclick={saveAllData}>
+                                </lightning-button>
+                            </div>
+                        </div>
+
+                    </div>
+                </template>
+            </template>
+
+
+            <!-- Thank You Page -->
+            <template if:true={isThankYouPage}>
+                <!-- For the Community -->
+                <div class="app-container" style="margin-top:1.5rem;" if:true={isCommunity}>
+                    <div class="container">
+                        <div class="alert" style="max-width: 100%;width: 100%;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+                                <g class="nc-icon-wrapper">
+                                    <path fill="#72C472"
+                                        d="M24,47C11.31738,47,1,36.68213,1,24S11.31738,1,24,1s23,10.31787,23,23S36.68262,47,24,47z">
+                                    </path>
+                                    <polygon fill="#FFFFFF"
+                                        points="20,34.82861 9.17188,24 12,21.17139 20,29.17139 36,13.17139 38.82812,16 ">
+                                    </polygon>
+                                </g>
+                            </svg>
+                            <div class="text">
+                                <h1>{NYS_DOH_External_Thank_You}</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Internal One -->
+                <div class="app-container" style="margin-top:1.5rem;width: 100%;" if:false={isCommunity}>
+                    <div class="container">
+                        <div class="alert" style="max-width: 100%;width: 100%;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+                                <g class="nc-icon-wrapper">
+                                    <path fill="#72C472"
+                                        d="M24,47C11.31738,47,1,36.68213,1,24S11.31738,1,24,1s23,10.31787,23,23S36.68262,47,24,47z">
+                                    </path>
+                                    <polygon fill="#FFFFFF"
+                                        points="20,34.82861 9.17188,24 12,21.17139 20,29.17139 36,13.17139 38.82812,16 ">
+                                    </polygon>
+                                </g>
+                            </svg>
+                            <div class="text">
+                                <h1 style="color:cornflowerblue;cursor:pointer;" onclick={goBack}>Screen Another Individual</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Flow Break Handling -->
+            <template if:true={isShowFlowTerminateMessage}>
+                <!-- Community One -->
+                <div class="app-container" style="margin-top:1.5rem;" if:true={isCommunity}>
+                    <div class="container">
+                        <div class="alert" style="max-width: 100%;width: 100%;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+                                <g class="nc-icon-wrapper">
+                                    <path fill="#72C472"
+                                        d="M24,47C11.31738,47,1,36.68213,1,24S11.31738,1,24,1s23,10.31787,23,23S36.68262,47,24,47z">
+                                    </path>
+                                    <polygon fill="#FFFFFF"
+                                        points="20,34.82861 9.17188,24 12,21.17139 20,29.17139 36,13.17139 38.82812,16 ">
+                                    </polygon>
+                                </g>
+                            </svg>
+                            <div class="text">
+                                <div>
+                                    Thank you for requesting a COVID-19 test through New York State. New York State is
+                                    prioritizing
+                                    testing for health care workers, those working within nursing homes and individuals
+                                    that are close
+                                    contacts of a positive COVID-19 case and based on available testing locations. If
+                                    you begin to
+                                    experience symptoms, such as cough, fever and runny nose, please contact your health
+                                    care provider.
+                                    For more information go the DOH website <a
+                                        href="https://ny.gov/coronavirus">ny.gov/coronavirus</a>
+                                </div>
+
+                                <div if:true={isShowFlowBreakMsg_1}>
+                                    Please review the following guidance based on the information you have provided:
+                                    <ul>
+                                        <li>Self quarantine for 14 days</li>
+                                        <li>Monitor for symptoms of temperature for 14 days</li>
+                                        <li>No testing unless symptoms</li>
+                                    </ul>
+                                </div>
+
+                                <div if:true={isShowFlowBreakMsg_2}>
+                                    Please review the following guidance based on the information you have provided:
+                                    <ul>
+                                        <li>Traditional precautions</li>
+                                        <li>Social isolation if possible</li>
+                                        <li>Gather medications for 30 days</li>
+                                        <li>Gather food and needed supplies for extended period</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Internal One -->
+                <div class="app-container" style="margin-top:1.5rem;width: 100%;" if:false={isCommunity}>
+                    <div class="container">
+                        <div class="alert" style="max-width: 100%;width: 100%;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+                                <g class="nc-icon-wrapper">
+                                    <path fill="#72C472"
+                                        d="M24,47C11.31738,47,1,36.68213,1,24S11.31738,1,24,1s23,10.31787,23,23S36.68262,47,24,47z">
+                                    </path>
+                                    <polygon fill="#FFFFFF"
+                                        points="20,34.82861 9.17188,24 12,21.17139 20,29.17139 36,13.17139 38.82812,16 ">
+                                    </polygon>
+                                </g>
+                            </svg>
+                            <div class="text">
+                                <h1 style="color:cornflowerblue;cursor:pointer;" onclick={goBack}>Screen Another Individual</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+    </div>
+</template>

@@ -1,0 +1,599 @@
+<apex:page standardController="BudgetDetail__c" extensions="CORE_Budget_Detail_Controller" docType="html-5.0" sidebar="false">
+    <apex:form id="form">
+        <apex:composition template="CORE_TemplateBlank">
+            <apex:define name="body">
+                <style>
+                    input.error {
+                        background-color: pink;
+                        border: 1px dashed red;
+                        color: white
+                    }
+                    .controls {
+                    	display: inherit;
+                    }
+                    .title {
+						padding-right:10px
+                    }
+
+                    .approveBudget{
+                    	margin-left: 5px;
+                    }
+                </style>
+
+                <apex:actionstatus id="actStatusId">
+                    <apex:facet name="start">
+                        <div class="sk-folding-cube">
+                            <div class="sk-cube1 sk-cube"></div>
+                            <div class="sk-cube2 sk-cube"></div>
+                            <div class="sk-cube4 sk-cube"></div>
+                            <div class="sk-cube3 sk-cube"></div>
+                        </div>
+                        <div class="loading-overlay"></div>
+                    </apex:facet>
+                </apex:actionstatus>
+
+                <div class="page ns-invoice">
+                    <div class="page-header">
+                        <apex:outputPanel rendered="{!budgetDetail.Status__c = 'Cancelled'}" layout="block" styleClass="status-row">
+                            <div class="alert alert-danger" role="alert"><strong>Budget Cancelled</strong></div>
+                        </apex:outputPanel>
+                        <div class="content flex sm">
+                            <div class="title">
+                                <h2>
+                                    {!project.name} -&nbsp;
+                                    <apex:outputfield value="{!budgetDetail.name}"/>
+                                    - Budget Detail
+                                </h2>
+                                <apex:commandLink action="{!URLFOR($Action.project__c.view, projectid)}" value="Return to Project" styleclass="back-button save" />
+                            </div>
+
+                            <div class="controls">
+                                <!-- <apex:commandLink action="{!URLFOR($Action.project__c.view, projectid)}" value="Return to Project" styleclass="btn-bs btn-lg btn-default save" /> -->
+
+
+                                <apex:outputPanel layout="none" rendered="{!isedit}">
+                                    <a href="javascript:changeMode()" class="btn-bs btn-lg btn-default save">Cancel</a>
+                                </apex:outputPanel>
+
+                                <apex:outputPanel layout="none" rendered="{!and(profileAccess,!isedit)}">
+                                    <apex:outputPanel layout="none" rendered="{!and(profileAccess,!isedit,statusAccess)}">
+                                        <a href="#" onclick="changeMode()" class="btn-bs btn-lg btn-default save">Edit</a>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+
+                                <apex:actionFunction name="approveBudgetAction" action="{!approveBudget}" status="actStatusId" rerender="form" oncomplete="window.location.reload();" />
+                                <apex:commandButton rendered="{!and(profileAccess,!isedit,showNewVersion)}" value="New Version" action="{!createVersion}" styleclass="btn-bs btn-lg btn-default save" />
+                                <apex:commandButton rendered="{!AND(showApprovedButton,!isedit)}" value="Approve Budget" onclick="approveBudgetScript(); return false;" styleclass="btn-bs btn-lg btn-default save approveBudget" />
+                                <apex:outputPanel layout="none" rendered="{!isedit}">
+                                    <a href="javascript:validationController()" class="btn-bs btn-lg btn-primary save">Save</a>
+                                </apex:outputPanel>
+                                <apex:outputPanel layout="none" rendered="{!AND(!isedit, profileAccess, iscontractor)}">
+                                    <a href="javascript:void(0);" onclick="submitForApproval();" class="btn-bs btn-lg btn-primary submit">Submit</a>
+                                </apex:outputPanel>
+
+                                <script>
+                                	function approveBudgetScript(){
+                                		$('#confirmationPopUp').modal({
+								            backdrop : 'static',
+								            keyboard : false
+								        });
+                                	}
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content content-body" style="margin-top:20px">
+                        <div class="budget-summary">
+                            <c:core_budget_left_navigation_component />
+                            <div class="body">
+                                <apex:pageMessages />
+
+                                <div class="box-group m-t status-box">
+                                    <!-- <div class="heading">Budget Status</div> -->
+                                    <div class="flex-row grp-heading">
+                                        <div class="flex-33">{!$objectType.BudgetDetail__c.Fields.Status__c.label}</div>
+                                        <div class="flex-66">{!$objectType.BudgetDetail__c.fields.StatusNotes__c.label}</div>
+                                    </div>
+                                    <div class="content box reset">
+                                        <div class="flex-row li-group">
+                                            <div class="flex-33">
+                                            	<div style="display:none;"><label for="{!$Component.status}">Status</label></div> <!-- Accessibility Issues -->
+                                                <apex:inputField value="{!budgetdetail.Status__c}" id="status" styleClass="form-control" rendered="{!AND(isedit,showApprovedButton)}" />
+                                             	<div style="display:none;"><label for="{!$Component.statusNotes}">Status Notes</label></div> <!-- Accessibility Issues -->
+                                                <apex:outputField value="{!budgetdetail.Status__c}" id="statusNotes" styleClass="form-control" rendered="{!OR(!isedit, !showApprovedButton)}" />
+                                            </div>
+                                            <div class="flex-66">
+                                            	<div style="display:none;"><label for="{!$Component.statusNotes1}">Status Notes</label></div> <!-- Accessibility Issues -->
+                                                <apex:inputField value="{!budgetdetail.StatusNotes__c}" id="statusNotes1" styleClass="form-control" rendered="{!AND(isedit,showApprovedButton)}" />
+                                            	<div style="display:none;"><label for="{!$Component.statusNotes2}">Status Notes</label></div> <!-- Accessibility Issues -->
+                                                <apex:outputField value="{!budgetdetail.StatusNotes__c}" id="statusNotes2" styleClass="form-control" rendered="{!OR(!isedit, !showApprovedButton)}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <apex:variable var="j" value="{!0}" />
+                                <apex:repeat value="{!liBudgetCategory}" var="budget">
+                                    <apex:variable var="j" value="{!j+1}" />
+                                    <div class="box-group">
+                                        <div class="heading">{!j}.&nbsp;{!budget.budgetdetail.name}</div>
+                                        <div class="flex-row grp-heading">
+                                            <div class="flex-30">Cost Element</div>
+                                            <div class="flex-15 {!if(budget.budgetdetail.RateBase__c,'','hide')}">{!$objecttype.BudgetCategoryLine__c.fields.Rate_Percent__c.label}</div>
+                                            <div class="flex-15 {!if(budget.budgetdetail.RateBase__c,'','hide')}">{!$objecttype.BudgetCategoryLine__c.fields.Base__c.label}</div>
+                                            <div class="flex-15 {!if(budget.budgetdetail.HoursRate__c,'','hide')}">{!$objecttype.BudgetCategoryLine__c.fields.Rate__c.label}</div>
+                                            <div class="flex-15 {!if(budget.budgetdetail.HoursRate__c,'','hide')}">{!$objecttype.BudgetCategoryLine__c.fields.Hours__c.label}</div>
+                                            <div class="flex-15 {!if(budget.budgetdetail.RateElement__c,'','hide')}">{!$objecttype.BudgetCategoryLine__c.fields.Rate_Percent__c.label}</div>
+                                            <div class="flex-15 {!if(budget.budgetdetail.RateElement__c,'','hide')}">{!$objecttype.BudgetCategoryLine__c.fields.Element_s__c.label}</div>
+                                            <div class="flex-40 ml-a">
+                                                <div class="flex-row">
+                                                    <div class="flex-33">Total Cost</div>
+                                                    <div class="flex-33">ORG Cost</div>
+                                                    <div class="flex-33">Cost Share</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="content box reset cost-section-header">
+                                            <apex:variable var="i" value="{!0}" />
+                                            <apex:repeat value="{!budget.budgetCategoryLine}" var="line">
+                                                <apex:variable var="i" value="{!i+1}" />
+                                                <div class="flex-row li-group condensed">
+                                                    <apex:outputPanel layout="block" styleclass="flex-{!budget.widthSize} title-column" style="display: inherit;">
+                                            			<div style="display:none;"><label for="{!$Component.lname}">Line Name</label></div> <!-- Accessibility Issues -->
+                                                        <apex:inputField styleClass="form-control md" id="lname" style="display: inline-block;" value="{!line.name}" rendered="{!isedit}"></apex:inputField>
+                                                        <apex:outputPanel rendered="{!!isedit}" styleClass="result">
+                                                            <apex:outputText value="{!line.name}" />
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!isedit}" layout="none">
+                                                            <a class="btn-notes" title="{!line.notes__c}" data-toggle="modal" onclick="updateNotesInitialize('{!j}','{!budget.budgetdetail.id}',{!i});"><span class="icon-note_add"></span></a>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!!isedit}" layout="none">
+                                                            <a class="btn-notes popper" data-toggle="popover" data-content="{!line.notes__c}" data-trigger="hover" data-placement="right"><span class="icon-sticky-note-o"></span></a>
+                                                        	<script>
+                                                        		try{
+                                                        			$("[data-toggle=popover]").popover();
+                                                        		}catch(errr){}
+                                                        	</script>
+                                                        </apex:outputPanel>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel layout="none" rendered="{!budget.budgetdetail.RateBase__c}">
+                                                        <div class="flex-15 ">
+                                                            <div style="display:none;"><label for="{!$Component.rPS}">Rate Percent Base</label></div> <!-- Accessibility Issues -->
+                                                            <apex:inputField styleClass="form-control sm {!i}{!j}rateBase" id="rPS" value="{!line.RatePercentBase__c}" rendered="{!isedit}" onchange="populateLabourCost('{!i}{!j}totalCost','{!i}{!j}Base','{!i}{!j}rateBase')" />
+                                                            <apex:outputField value="{!line.RatePercentBase__c}" rendered="{!!isedit}" styleClass="result" />
+                                                        </div>
+                                                        <div class="flex-15 ">
+                                                            <div style="display:none;"><label for="{!$Component.base}"> Base</label></div> <!-- Accessibility Issues -->
+                                                            <apex:inputField styleClass="form-control sm {!i}{!j}Base base-field {!If(budget.budgetdetail.name == 'Labor Overhead', 'baseRateLaborOverheader', '')}" value="{!line.Base__c}" id="base" rendered="{!isedit}" onclick="$(this).val($('populateOnLabor').val())" onchange="populateLabourCost('{!i}{!j}totalCost','{!i}{!j}Base','{!i}{!j}rateBase')" />
+                                                            <apex:outputText value="${0,number,###,###,##0}" rendered="{!!isedit}" styleClass="result" >
+                                                                <apex:param value="{!line.Base__c}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel layout="none" rendered="{!budget.budgetdetail.HoursRate__c}">
+                                                        <div class="flex-15 ">
+                                                            <div style="display:none;"><label for="{!$Component.rate}">Rate</label></div> <!-- Accessibility Issues -->
+                                                            <apex:inputField styleClass="form-control sm {!i}{!j}rate rate" id="rate" value="{!line.Rate__c}" rendered="{!isedit}" onchange="populateTotalcost('{!i}{!j}totalCost','{!i}{!j}hoursRate','{!i}{!j}rate')" />
+                                                            <apex:outputText value="${0,number,###,###,##0}" rendered="{!!isedit}" styleClass="result" >
+                                                                <apex:param value="{!line.Rate__c}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                        <div class="flex-15 ">
+                                                            <div style="display:none;"><label for="{!$Component.hours}">Hours</label></div> <!-- Accessibility Issues -->
+                                                            <apex:inputField styleClass="form-control sm {!i}{!j}hoursRate" id="hours" value="{!line.Hours__c}" rendered="{!isedit}" onchange="populateTotalcost('{!i}{!j}totalCost','{!i}{!j}hoursRate','{!i}{!j}rate')" />
+                                                            <apex:outputField value="{!line.Hours__c}" rendered="{!!isedit}" styleClass="result" />
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel layout="none" rendered="{!budget.budgetdetail.RateElement__c}">
+                                                        <div class="flex-15 ">
+                                                            <div style="display:none;"><label for="{!$Component.rPercent}"> Rate Percent</label></div> <!-- Accessibility Issues -->
+                                                            <apex:inputField styleClass="form-control sm {!i}{!j}ratePercent" id="rPercent" value="{!line.Rate_Percent__c}" rendered="{!isedit}" />
+                                                            <apex:outputField value="{!line.Rate_Percent__c}" rendered="{!!isedit}" styleClass="result" />
+                                                        </div>
+                                                        <div class="flex-15 ">
+                                                            <div style="display:none;"><label for="{!$Component.element}">Element</label></div> <!-- Accessibility Issues -->
+                                                            <apex:inputField styleClass="form-control sm {!i}{!j}element" id="element" value="{!line.Element_s__c}" rendered="{!isedit}" />
+                                                            <apex:outputField value="{!line.Element_s__c}" rendered="{!!isedit}" styleClass="result" />
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                    <div class="flex-40">
+                                                        <div class="flex-row cost-section">
+                                                            <div class="flex-33">
+                                                                <div class="result">
+                                                            		<div style="display:none;"><label for="{!$Component.totalCost}">Total Cost</label></div> <!-- Accessibility Issues -->
+                                                                    <apex:inputField styleClass="form-control sm {!i}{!j}totalCost totalCost {!If(budget.budgetdetail.name == 'Direct Labor', 'totalCostLabor', '')}" id="totalCost" value="{!line.Total_Cost__c}" rendered="{!isedit}" />
+                                                                    <apex:outputField value="{!line.Total_Cost__c}" rendered="{!!isedit}" styleClass="result" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="flex-33">
+                                                                <div class="result">
+                                                            		<div style="display:none;"><label for="{!$Component.NYC}">NYC</label></div> <!-- Accessibility Issues -->
+                                                                    <apex:inputField styleClass="form-control sm {!i}{!j}nyCost nyCost" value="{!line.NYSERDACost__c}" id="NYC" rendered="{!isedit}" />
+                                                                    <apex:outputField value="{!line.NYSERDACost__c}" rendered="{!!isedit}" styleClass="result" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="flex-33">
+                                                                <div class="result">
+                                                                    <div style="display:none;"><label for="{!$Component.costShare}">Cost Share</label></div> <!-- Accessibility Issues -->
+                                                                    <apex:inputField styleClass="form-control sm {!i}{!j}costShare costShare" value="{!line.CostShare__c}" id="costShare" rendered="{!isedit}" />
+                                                                    <apex:outputField value="{!line.CostShare__c}" rendered="{!!isedit}" styleClass="result" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="delete-column">
+                                                        <apex:outputPanel rendered="{!isedit}">
+                                                            <a href="javascript:void(0)" class="btn-bs btn-reset icon-highlight_remove"
+                                                                            onclick="deleteItems('{!line.Id}','{!budget.budgetdetail.id}',{!i}, '{!budget.budgetdetail.name}');"><span style="display:none">Remove</span></a> <!-- Accessibility fix -->
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                </div>
+                                            </apex:repeat>
+                                            <div class="flex-row li-foot">
+                                                <div class="flex-60">
+                                                    <apex:outputPanel rendered="{!AND(budget.budgetdetail.name =='Direct Labor',isedit)}">
+                                                       <apex:inputCheckbox id="checkB" styleClass="includesFullyLoadedRate" onclick="disableAddLineitemOVerhead('{!budget.budgetdetail.id}');"
+                                                       			value="{!budget.budgetdetail.Includes_Fully_Loaded_Rate__c}" label="Includes fully loaded rate." />&nbsp;
+                                                       <label for="{!$Component.checkB}">Includes fully loaded rate.</label>
+                                                    </apex:outputPanel>
+                                                </div>
+                                            </div>
+                                            <div class="flex-row li-foot">
+                                                <div class="flex-60">Total {!budget.budgetdetail.name}</div>
+                                                <div class="flex-40">
+                                                    <div class="flex-row">
+                                                        <div class="flex-33">
+                                                            <div class="result totalCost-total {!IF(budget.budgetdetail.name ='Direct Labor','populateOnLabor','')}">
+                                                                <apex:outputField value="{!budget.budgetdetail.TotalCost__c}" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-33">
+                                                            <div class="result nyCost-total">
+                                                                <apex:outputField value="{!budget.budgetdetail.TotalNYSERDACost__c}" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-33">
+                                                            <div class="result costShare-total">
+                                                                <apex:outputField value="{!budget.budgetdetail.TotalCostShare__c}" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <apex:outputPanel rendered="{!isedit}" layout="block" styleClass="box-footer">
+                                            <apex:variable var="nameHeader" value="{!SUBSTITUTE(budget.budgetdetail.name,' ','')}" />
+                                            <a href="javascript:void(0)" onclick="addLineItemsAction('{!budget.budgetdetail.id}', '{!budget.budgetdetail.name}');" class="add-button {!nameHeader}">Add New Line</a>
+                                        </apex:outputPanel>
+                                    </div>
+                                </apex:repeat>
+                                <div class="box-group">
+                                    <div class="content box reset total-box">
+                                        <div class="flex-row li-group condensed">
+                                            <div class="flex-60">Total Estimated Project Cost</div>
+                                            <div class="flex-40">
+                                                <div class="flex-row">
+                                                    <div class="flex-33 totalCost-grand-total">
+                                                        <apex:outputField value="{!pageDisplayBudgetDetail.Total_EstimatedTotal_Cost__c}" />
+                                                    </div>
+                                                    <div class="flex-33 nyCost-grand-total">
+                                                        <apex:outputField value="{!pageDisplayBudgetDetail.Total_Estimated_NYSERDA_Cost__c}" />
+                                                    </div>
+                                                    <div class="flex-33 costShare-grand-total">
+                                                        <apex:outputField value="{!pageDisplayBudgetDetail.Total_Estimated_CostSharecost__c}" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <apex:actionFunction name="addLineItems" action="{!initializeNewrow}" status="actStatusId" rerender="form" onComplete="onAddButtonClickAction('{!headerName}'); triggerChange();">
+                                    <apex:param name="newItem" value="" assignTo="{!masterID}"></apex:param>
+                                    <apex:param name="rowCount" value="" assignTo="{!headerName}"></apex:param>
+                                </apex:actionFunction>
+                                <apex:actionFunction name="deleteItems" action="{!deleteItems}" status="actStatusId" rerender="form" onComplete="onDelButtonClickAction('{!headerName}'); triggerChange();">
+                                    <apex:param name="itemDelete" value="" assignTo="{!deleteItemID}"></apex:param>
+                                    <apex:param name="itemmssterDel" value="" assignTo="{!masterID}"></apex:param>
+                                    <apex:param name="rowCountDel" value="" assignTo="{!rowCount}"></apex:param>
+                                    <apex:param name="rowCount" value="" assignTo="{!headerName}"></apex:param>
+                                </apex:actionFunction>
+                                <apex:actionFunction name="updateNotesInitialize" action="{!updateNotesInitialize}" status="actStatusId" rerender="form" oncomplete="$('#myModal').modal('show');">
+                                    <apex:param name="itemDelete" value="" assignTo="{!deleteItemID}"></apex:param>
+                                    <apex:param name="itemmsster" value="" assignTo="{!masterID}"></apex:param>
+                                    <apex:param name="rowCount" value="" assignTo="{!rowCount}"></apex:param>
+                                </apex:actionFunction>
+                                <apex:actionFunction name="updateNotes" action="{!updateNotes}" status="actStatusId" rerender="form" />
+                                <apex:actionFunction name="changeMode" action="{!changeMode}" status="actStatusId" rerender="form" />
+                                <apex:actionFunction name="updateCategoeyLine" action="{!updateCategoeyLine}" status="actStatusId" rerender="form" />
+                                <apex:actionFunction name="submitForApproval" action="{!pendingReviewBudget}" status="actStatusId" rerender="form" />
+
+
+                            </div>
+                        </div><!-- /.budget-summary -->
+                    </div><!-- /.content content-body -->
+                </div><!-- /.page -->
+                <footer class="controls">
+                    <div class="content flex controls sm">
+                        <div>
+                            <apex:outputPanel layout="none"  rendered="false">
+                                <a  href="#" onclick="changeMode()" class="btn-bs btn-lg btn-default save">Cancel</a>
+                            </apex:outputPanel>
+                        </div>
+                        <div>
+                            <apex:outputPanel layout="none" id="cancelBtn" rendered="{!isedit}">
+                                <a  href="#" onclick="changeMode()" class="btn-bs btn-lg btn-default save">Cancel</a>
+                            </apex:outputPanel>
+                            <apex:outputPanel layout="none" id="editBtn" rendered="{!and(profileAccess,!isedit)}">
+                                <apex:outputPanel layout="none" rendered="{!and(profileAccess,!isedit,statusAccess)}">
+                                    <a href="#" onclick="changeMode()" class="btn-bs btn-lg btn-default save">Edit</a>
+                                </apex:outputPanel>
+
+                                <apex:commandButton rendered="{!and(profileAccess,!isedit,showNewVersion)}" value="New Version" action="{!createVersion}" styleclass="btn-bs btn-lg btn-default save" />
+                            </apex:outputPanel>
+                            <apex:outputPanel layout="none" id="saveBtn" rendered="{!isedit}">
+                                <a href="#" onclick="validationController();" class="btn-bs btn-lg btn-primary save">Save</a>
+                            </apex:outputPanel>
+                        </div>
+                    </div>
+                </footer>
+                <div id="myModal" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">—</button>
+                                <h4 class="modal-title">Notes</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <div style="display:none;"><label for="{!$Component.inputComment}">Input Comment</label></div> <!-- Accessibility Issues -->
+                                    <apex:inputField value="{!edititem.Notes__c}" styleclass="form-control" id="inputComment" />
+                                </div>
+                            </div>
+                            <div class="modal-footer" style="    text-align: left;">
+                                <button type="button" class="btn-bs btn-primary" data-dismiss="modal" onclick="updateNotes();">Save</button>
+                                <button type="button" class="btn-bs btn-default" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONFIRMATION POP UP -->
+	            <div class="modal fade" id="confirmationPopUp" role="dialog">
+	                <div class="modal-dialog modal-lg">
+	                    <div class="modal-content">
+	                        <apex:outputPanel id="modalForm1">
+	                            <div class="modal-body">
+	                                <div id="confirmMessage" style="text-align: justify;">
+	                                	Are you sure you want to approve this budget?
+	                                </div>
+	                            </div>
+	                            <div class="modal-footer">
+	                                <div class="row">
+	                                    <span id="cancelBtnDiv">
+	                                        <button id="okBtn" type="button" class="btn-bs btn-primary" onclick="approveBudgetAction();" data-dismiss="modal">OK</button>
+	                                        <button id="cancelBtn" type="button" class="btn-bs btn-default" data-dismiss="modal">Cancel</button>
+	                                    </span>
+	                                </div>
+	                            </div>
+	                        </apex:outputPanel>
+	                    </div>
+	                </div>
+	            </div>
+            </apex:define>
+        </apex:composition>
+        <c:treenavscript />
+        <script>
+            function disableAddLineitemOVerhead(budgetDetailId) {
+               /* if($('.includesFullyLoadedRate:checked').length > 0) {
+                	$(".LaborOverhead").removeAttr('onclick');
+                } else {
+                	$('.LaborOverhead').attr('onclick', "addLineItems('" + budgetDetailId + "', 'Labor Overhead')");
+                }*/
+            }
+            $(function() {
+                setCostValueUpdateTrigger();
+                //setLaborBaseValue();
+                //$(".totalCost").trigger("change");
+            });
+        </script>
+    </apex:form>
+    <script>
+        $(document).ready(function() {
+        	jQuery("html").attr("lang", "en");
+            $('.DirectLabor').click(function(){
+                alert('clicked me');
+                setBaseRateForLaborOverhead();
+            });
+            //disableAddLineitemOVerhead();
+        });
+
+        function triggerChange() {
+            $(".totalCost").trigger("change");
+            setCostValueUpdateTrigger();
+        }
+
+        function addLineItemsAction(budgetDetailId, budgetDetailName) {
+        	if(!(budgetDetailName == 'Labor Overhead' && $('.includesFullyLoadedRate:checked').length > 0)) {
+        		addLineItems(budgetDetailId, budgetDetailName);
+        	} else {
+        		console.log('Stop adding lines');
+        	}
+        }
+
+        function stringTonumber(string) {
+            if (string == null || string == "")
+                return 0;
+            var NumberValue = string.replace(/\,/g, '').replace('$', '');;
+            var numReturn = parseFloat(NumberValue);
+            return numReturn;
+        }
+
+        function onAddButtonClickAction(headerName) {
+            if(headerName == 'Labor Overhead') {
+                console.log('clicked me');
+                setBaseRateForLaborOverhead();
+            }
+        }
+
+        function onDelButtonClickAction(headerName) {
+            if(headerName == 'Direct Labor') {
+                console.log('Del clicked me');
+                setBaseRateForLaborOverhead();
+            }
+        }
+
+        function setBaseRateForLaborOverhead() {
+            var totalCost = calculateTotalCostForDirectLabor();
+            console.log('Total Cost ->>> ');
+            console.log(totalCost);
+
+            var baseRateLineItemsFromLabor = $('.baseRateLaborOverheader');
+            for(var i = 0; i < baseRateLineItemsFromLabor.length; i++) {
+                if(baseRateLineItemsFromLabor.eq(i).val() == null || baseRateLineItemsFromLabor.eq(i).val() == undefined || baseRateLineItemsFromLabor.eq(i).val() == '') {
+                    baseRateLineItemsFromLabor.eq(i).val(totalCost);
+                }
+            }
+        }
+
+        function calculateTotalCostForDirectLabor() {
+            var allLineItemsFromLabor = $('.totalCostLabor');
+            var totalCost = 0;
+            for(var i = 0; i < allLineItemsFromLabor.length; i++) {
+                if(allLineItemsFromLabor.eq(i).val() != undefined && allLineItemsFromLabor.eq(i).val() != '') {
+                    totalCost += formatStringIntoNumber(allLineItemsFromLabor.eq(i).val());
+                }
+            }
+            return totalCost;
+        }
+
+        function formatStringIntoNumber(number) {
+	        if(number != null && number != undefined && number != '') {
+	            if(typeof(number) == 'string') {
+	                number = number.replace(new RegExp(',', 'g'), '');
+	                number = parseFloat(number);
+	            }
+	        }
+	        return number;
+	    }
+
+        function validationController() {
+            var costsharearray = $(".costShare");
+            var nycostarray = $(".nyCost");
+            var totalCostarray = $(".totalCost");
+            var test = false;
+            for (i = 0; i < totalCostarray.length; i++) {
+                var costshareVal = stringTonumber(costsharearray[i].value);
+                var nycostVal = stringTonumber(nycostarray[i].value);
+                var totalCostVal = stringTonumber(totalCostarray[i].value);
+                if (totalCostVal != costshareVal + nycostVal) {
+                    $(totalCostarray[i]).addClass('error');
+                    test = true;
+                } else
+                    $(totalCostarray[i]).removeClass('error');
+            }
+            if (test)
+                return false;
+            else
+                updateCategoeyLine();
+        }
+
+        function populateTotalcost(setTotalCOst, hours, rate) {
+            var hoursVal = stringTonumber($("." + hours).val());
+            var rateVal = stringTonumber($("." + rate).val());
+            if (hoursVal != null && rateVal != null)
+                $("." + setTotalCOst).val((hoursVal * rateVal).toFixed(0)).trigger("change");
+
+        }
+
+        function populateLabourCost(setTotalCOst, hours, rate) {
+            var hoursVal = stringTonumber($("." + hours).val());
+            var rateVal = stringTonumber($("." + rate).val());
+            if (hoursVal != null && rateVal != null)
+                $("." + setTotalCOst).val(((hoursVal * rateVal) / 100).toFixed(0)).trigger("change");
+        }
+
+        function setCostValueUpdateTrigger() {
+            $(".totalCost, .nyCost").on("change", function() {
+                updateCostValues($(this));
+            });
+        }
+
+        function updateCostValues($elem) {
+            var totalCostVal = 0;
+            var nyserdaCostVal = 0;
+            var costShareVal = 0;
+
+            var totalCost_TotalVal = 0;
+            var nyserdaCost_TotalVal = 0;
+            var costShare_TotalVal = 0;
+
+            var totalCost_GrandTotalVal = 0;
+            var nyserdaCost_GrandTotalVal = 0;
+            var costShare_GrandTotalVal = 0;
+
+            isTotalCostChange = false;
+            if ($elem.hasClass("totalCost")) {
+                isTotalCostChange = true;
+                totalCostVal = stringTonumber($elem.val());
+                nyserdaCostVal = stringTonumber($elem.parents(".cost-section").find(".nyCost").val());
+            } else if ($elem.hasClass("nyCost")) {
+                totalCostVal = stringTonumber($elem.parents(".cost-section").find(".totalCost").val());
+                nyserdaCostVal = stringTonumber($elem.val());
+            }
+            if (totalCostVal >= nyserdaCostVal) {
+                costShareVal = totalCostVal - nyserdaCostVal;
+            } else {
+                if (isTotalCostChange)
+                    $elem.parents(".cost-section").find(".nyCost").val('0');
+                else
+                    $elem.val('0');
+
+                costShareVal = totalCostVal;
+            }
+            $elem.parents(".cost-section").find(".costShare").val(costShareVal.toFixed(0));
+
+
+            //update the total Cost for the section header
+            $elem.parents('.cost-section-header').find(".totalCost").each(function() {
+                totalCost_TotalVal += stringTonumber($(this).val());
+            });
+            $elem.parents('.cost-section-header').find(".totalCost-total span").text('$' + totalCost_TotalVal.toFixed(0));
+
+            //update the nyserda Cost for the section header
+            $elem.parents('.cost-section-header').find(".nyCost").each(function() {
+                nyserdaCost_TotalVal += stringTonumber($(this).val());
+            });
+            $elem.parents('.cost-section-header').find(".nyCost-total span").text('$' + nyserdaCost_TotalVal.toFixed(0));
+
+            //update the cost share for the section header
+            $elem.parents('.cost-section-header').find(".costShare").each(function() {
+                costShare_TotalVal += stringTonumber($(this).val());
+            });
+            $elem.parents('.cost-section-header').find(".costShare-total span").text('$' + costShare_TotalVal.toFixed(0));
+
+            //update grand total values
+            $('.cost-section-header').find(".totalCost").each(function() {
+                totalCost_GrandTotalVal += stringTonumber($(this).val());
+            });
+            $(".totalCost-grand-total span").text('$' + totalCost_GrandTotalVal.toFixed(0));
+
+            $('.cost-section-header').find(".nyCost").each(function() {
+                nyserdaCost_GrandTotalVal += stringTonumber($(this).val());
+            });
+            $(".nyCost-grand-total span").text('$' + nyserdaCost_GrandTotalVal.toFixed(0));
+
+            $('.cost-section-header').find(".costShare").each(function() {
+                costShare_GrandTotalVal += stringTonumber($(this).val());
+            });
+            $(".costShare-grand-total span").text('$' + costShare_GrandTotalVal.toFixed(0));
+
+        }
+
+        function setLaborBaseValue() {$(".base-field").each(function() {
+                console.log($(this).val());if ($(this).val() == null || $(this).val() == '') {
+                    $(this).val(stringTonumber($(".populateOnLabor span").text()));}
+            });
+        }
+    </script>
+</apex:page>

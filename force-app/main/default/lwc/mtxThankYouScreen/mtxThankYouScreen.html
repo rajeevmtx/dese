@@ -1,0 +1,21 @@
+<template>
+    <div class="app-container slds-grid slds-gutters slds-wrap" style="margin-top:1.5rem; ">
+        <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <div class="container">
+                <div style="padding: .75rem;">
+                    <h4>Thank you for submitting your intake form.</h4>
+                    
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+                    <c-psr-help-text help-text={travelerHelpText}></c-psr-help-text>
+                </div>
+                <div style="text-align: center;">
+                        <lightning-button variant="brand" class="slds-m-right_small slds-m-top_medium" label="Done" onclick={handleDone}>
+                            </lightning-button>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+
+</template>

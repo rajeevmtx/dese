@@ -1,0 +1,106 @@
+<template>
+
+    <lightning-card>
+        <template if:true={showSpinner}>
+            <lightning-spinner variant="brand" size="large"></lightning-spinner>
+        </template>
+        <div class="dese_signature">
+            <h1 class="header slds-m-bottom_xx-large">
+                <!-- Review and Signature -->
+                Signature
+            </h1>
+            <div class="tabset slds-m-top_medium">
+                <!-- <lightning-tabset active-tab-value="1">
+                    <lightning-tab label="Signature" value="1"> -->
+                        <!-- <div class="note-card slds-m-top_large">
+                            <div class="note_header slds-m-bottom_large">
+                                UPLOAD A SCANNED, SIGNED COPY OF THIS PAGE WITH THE DATE OF SUBMISSION TO EDGRANTS WITH
+                                THE BUDGET FOR EACH FUND CODE
+                            </div>
+                            <div class="note_body slds-m-bottom_x-large">
+                                District staff with the role of “control user” in EdGrants have been provided user
+                                log-in names and passwords and have been trained to submit a grant application via
+                                EdGrants. Provide all required application materials to your district control user with
+                                access to EdGrants to submit budgets and attachments for each fund code for which the
+                                district is applying.
+                            </div>
+                            <div class="date">
+                                <div class="date__due">
+                                    Applications Due Date
+                                </div>
+                                <div class="date__format slds-is-today ">
+                                    <lightning-formatted-date-time value={newDate} year="numeric" day="2-digit"
+                                        month="long" class="dateFormate"></lightning-formatted-date-time>
+                                </div>
+                            </div>
+                        </div> -->
+
+                        <div class="narrative-box slds-m-top_x-large">
+                            <div class="note-grid">
+                                <div class="grid-item">
+                                    <div class="head">Abby Kelley Foster Charter Public (District)</div>
+                                    <div class="body">District Name</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">04450000</div>
+                                    <div class="body">Code</div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">10 New Bond Street, Worcester, MA, 01606	</div>
+                                    <div class="body">Address
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">Aneesh Sahni</div>
+                                    <div class="body">DESE Federal Grant Liaison
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head">aneesh.sahni@doe.mass.edu</div>
+                                    <div class="body">Email
+                                    </div>
+                                </div>
+                                <div class="grid-item">
+                                    <div class="head"> 781-338-3532</div>
+                                    <div class="body">Phone number
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="narrative-box slds-m-top_x-large slds-m-bottom_x-large informationContained ">
+                            <div class="note_body slds-m-bottom_large">
+                                I certified that the information contained in this application is correct and complete;
+                                that the applicant agency has authorized me, as its representative, to file this
+                                application ; and that i understand that for any funds received through this application
+                                the agency agrees to comply with all applicable state and federal grant requirements
+                                covering both the programmatic and fiscal administration of grant funds.
+                            </div>
+                            <b class="slds-text-color_destructive">*</b><lightning-button label="Electronic Signature" class=" signature-btn" variant="brand" title="Start embedded signing session" onclick={handleClick} disabled={readonly}></lightning-button>
+                            <!-- <c-dese_intake_docusign record-id={projectId}></c-dese_intake_docusign> -->
+                            
+                        </div>
+
+                        
+                    <!-- </lightning-tab>
+                    <lightning-tab label="Review" value="2">
+                        <c-dese_intake_review project-id={projectId}></c-dese_intake_review>
+                    </lightning-tab>
+                </lightning-tabset> -->
+            </div>
+        </div>
+        <div slot="footer" class="footer">
+            <div class="button">
+                <lightning-button variant="brand-outline" label="Back" title="Primary action with lighter look"
+                    onclick={handlePrev} class="slds-m-left_x-small button__white"></lightning-button>
+                <lightning-button variant="brand" label="Submit" title="Primary action" onclick={handleSubmit}
+                    class="slds-m-left_x-small"></lightning-button>
+            </div>
+        </div>
+
+    </lightning-card>
+    <template if:true={showModal}>
+        <c-dese_intake_modal application-name={applicationName}></c-dese_intake_modal>
+
+    </template>
+</template>

@@ -1,0 +1,970 @@
+<apex:page controller="CORE_Budget_Summary_Controller" docType="html-5.0" sidebar="false">
+    <apex:composition template="CORE_TemplateBlank">
+        <apex:define name="body">
+            <style>
+                .table-default tbody > tr > td > .box {
+                    margin: 0px -11px -6px;
+                    border:0;
+                    background:white;
+                }
+                .table-striped>tbody>tr:nth-of-type(odd) > td .box {
+                    background:#f9f9f9;
+                }
+                .table-default tbody > tr > td .box > div {
+                    padding: 2px 10px;
+                    color:#888;
+                    font-weight:400;
+                }
+                .table-default tbody > tr > td.name > .box > div {
+                    padding-left:34px;
+                }
+                .table-default tbody > tr > td.name > span {
+                    display: inline-block;
+                    width: 22px;
+                    text-align: right;
+                    padding-right: 5px;
+                }
+                .table-default tbody > tr > td .box > div:nth-of-type(1) {
+                    border-top:1px solid #eee;
+                }
+                .table-default tbody > tr.total > td {
+                    padding-top:20px;
+                    padding-bottom:20px;
+                }
+            </style>
+            <apex:form >
+                <!--
+                <apex:outputPanel rendered="{!showNewButton}">
+                    There is no budget information. <a href="{!URLFOR($Page.CORE_BUDGET_NEW_Page, null, [id=projectId] ,true)}">Add a budget</a>
+                    <apex:commandButton action="{!URLFOR($Action.project__c.view, null, [id=projectid] ,true)}" value="Cancel" styleclass="btn-bs btn-lg btn-default save"/>
+                </apex:outputPanel>
+                -->
+
+
+                <div class="page">
+                    <div class="page-header">
+                        <div class="content flex sm">
+                            <div>
+                                <h2>{!project.name} - Budget Summary</h2>
+                                <apex:commandLink action="{!URLFOR($Action.project__c.view, projectid)}" value="Return to Project"
+                                    styleclass="back-button save" />
+                            </div>
+                            <a target="_blank"  href="{!URLFOR($page.CORE_Budget_Summary_PDF_Page)}?projectId={!projectid}" class="btn-bs btn-sm btn-default save">Download PDF</a>
+                        </div>
+                    </div>
+                    <div class="application">
+                        <div class="content content-body" style="margin-top:20px">
+                            <div class="budget-summary">
+                                <c:core_budget_left_navigation_component />
+                                <div class="body">
+
+                                    <table class="table table-striped table-bordered table-condensed table-default summary-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Cost Elements</th>
+                                                <th>Total Cost</th>
+                                                <th>ORG COST</th>
+                                                <th>Cost Share</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="name reset">
+                                                  <table class="heading-row">
+                                                    <thead>
+                                                      <tr>
+                                                        <th class="row-name"><span>1.</span>Direct Materials</th>
+                                                      </tr>
+                                                    </thead>
+                                                  </table>
+                                                    <div class="box">
+                                                        <apex:repeat value="{!maintable['Direct Materials'].lidetail}" var="mt">
+                                                            <div>{!mt.name}</div>
+                                                        </apex:repeat>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.DirectMaterialsTotalCost__c}" />
+                                                        </apex:outputText>
+                                                    </div><!-- /.val -->
+                                                    <div class="box">
+                                                        <apex:repeat value="{!maintable['Direct Materials'].lidetail}" var="mt">
+                                                            <div>
+                                                                <apex:outputText value="${0,number,###,###,##0}">
+                                                                    <apex:param value="{!mt.totalCost}" />
+                                                                </apex:outputText>
+                                                            </div>
+                                                        </apex:repeat>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.DirectMaterialsNYSEDRACost__c}" />
+                                                        </apex:outputText>
+                                                    </div><!-- /.val -->
+                                                    <div class="box">
+                                                        <apex:repeat value="{!maintable['Direct Materials'].lidetail}" var="mt">
+                                                            <div>
+                                                                <apex:outputText value="${0,number,###,###,##0}">
+                                                                    <apex:param value="{!mt.nysedraCost}" />
+                                                                </apex:outputText>
+                                                            </div>
+                                                        </apex:repeat>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.DirectMaterialsCostShare__c}" />
+                                                        </apex:outputText>
+                                                    </div><!-- /.val -->
+                                                    <div class="box">
+                                                        <apex:repeat value="{!maintable['Direct Materials'].lidetail}" var="mt">
+                                                           <div>
+                                                                <apex:outputText value="${0,number,###,###,##0}">
+                                                                    <apex:param value="{!mt.costsharecost}" />
+                                                                </apex:outputText>
+                                                            </div>
+                                                        </apex:repeat>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="name reset">
+                                                  <table class="heading-row">
+                                                    <thead>
+                                                      <tr>
+                                                        <th class="row-name"><span>2.</span>Materials Overhead</th>
+                                                      </tr>
+                                                    </thead>
+                                                  </table>
+
+
+                                                    <div class="box">
+                                                      <table class="data-row">
+                                                        <tbody>
+                                                          <apex:repeat value="{!maintable['Materials Overhead'].lidetail}" var="mt">
+                                                          <tr>
+                                                            <td class="data-name">{!mt.name}</td>
+                                                          </tr>
+                                                          </apex:repeat>
+                                                        </tbody>
+                                                      </table>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.MaterialsOverheadTotalCost__c}" />
+                                                        </apex:outputText>
+                                                    </div><!-- /.val -->
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Materials Overhead'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.totalCost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.MaterialsOverheadNYSERDACost__c}" />
+                                                        </apex:outputText>
+                                                    </div><!-- /.val -->
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Materials Overhead'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.nysedraCost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.MaterialsOverheadCostShare__c}" />
+                                                        </apex:outputText>
+                                                    </div><!-- /.val -->
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Materials Overhead'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.costsharecost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="name reset">
+                                                  <table class="heading-row">
+                                                    <thead>
+                                                      <tr>
+                                                        <th class="row-name"><span>3.</span>Direct Labor</th>
+                                                        <th>Rate</th>
+                                                        <th>Hours</th>
+                                                      </tr>
+                                                    </thead>
+                                                  </table>
+                                                  <div class="box">
+                                                    <table class="data-row">
+                                                      <tbody>
+                                                        <apex:repeat value="{!maintable['Direct Labor'].lidetail}" var="mt">
+                                                        <tr>
+                                                          <td class="data-name">{!mt.name}</td>
+                                                          <td>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.bcline.rate__c}" />
+                                                            </apex:outputText>
+                                                          </td>
+                                                          <td>
+                                                            <apex:outputText value="{0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.bcline.hours__c}" />
+                                                            </apex:outputText>
+                                                          </td>
+                                                        </tr>
+                                                        </apex:repeat>
+                                                      </tbody>
+                                                    </table>
+                                                  </div><!-- /.box -->
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.DirectLaborTotalCost__c}" />
+                                                        </apex:outputText>
+                                                    </div>
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Direct Labor'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.totalCost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.DirectLaborNYSERDACost__c}" />
+                                                        </apex:outputText>
+                                                    </div>
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Direct Labor'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.nysedraCost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.DirectLaborCostShare__c}" />
+                                                        </apex:outputText>
+                                                    </div>
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Direct Labor'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.costsharecost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="name reset">
+                                                  <table class="heading-row">
+                                                    <thead>
+                                                      <tr>
+                                                        <th class="row-name"><span>4.</span>Labor Overhead</th>
+                                                        <th>Rate</th>
+                                                        <th>Base</th>
+                                                      </tr>
+                                                    </thead>
+                                                  </table>
+                                                  <div class="box">
+                                                    <table class="data-row">
+                                                      <tbody>
+                                                        <apex:repeat value="{!maintable['Labor Overhead'].lidetail}" var="mt">
+                                                        <tr>
+                                                          <td class="data-name">{!mt.name}</td>
+                                                          <td>
+                                                            <apex:outputText value="{0,number,###,###,##0.00}">
+                                                                <apex:param value="{!mt.bcline.ratepercentbase__c}" />
+                                                            </apex:outputText>%
+                                                          </td>
+                                                          <td>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.bcline.base__c}" />
+                                                            </apex:outputText>
+                                                          </td>
+                                                        </tr>
+                                                        </apex:repeat>
+                                                      </tbody>
+                                                    </table>
+                                                  </div><!-- /.box -->
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.LaborOverheadTotalCost__c}" />
+                                                        </apex:outputText>
+                                                    </div>
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Labor Overhead'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.totalCost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.LaborOverheadNYSERDACost__c}" />
+                                                        </apex:outputText>
+                                                    </div>
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Labor Overhead'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.nysedraCost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.LaborOverheadCostShare__c}" />
+                                                        </apex:outputText>
+                                                    </div>
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Labor Overhead'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.costsharecost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="name reset">
+                                                  <table class="heading-row">
+                                                    <thead>
+                                                      <tr>
+                                                        <th class="row-name"><span>5.</span>Outside Special Testing</th>
+                                                      </tr>
+                                                    </thead>
+                                                  </table>
+                                                  <div class="box">
+                                                    <apex:repeat value="{!maintable['Outside Special Testing'].lidetail}" var="mt">
+                                                        <div>{!mt.name}</div>
+                                                    </apex:repeat>
+                                                  </div>
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.OutsideSpecialTestingTotalCost__c}" />
+                                                        </apex:outputText>
+                                                    </div><!-- /.val -->
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Outside Special Testing'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.totalCost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.OutsideSpecialTestingNYSERDACost__c}" />
+                                                        </apex:outputText>
+                                                    </div><!-- /.val -->
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Outside Special Testing'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.nysedraCost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.OutsideSpecialTestingCostShare__c}" />
+                                                        </apex:outputText>
+                                                    </div><!-- /.val -->
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Outside Special Testing'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.costsharecost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="name reset">
+                                                  <table class="heading-row">
+                                                    <thead>
+                                                      <tr>
+                                                        <th class="row-name"><span>6.</span>Equipment</th>
+                                                      </tr>
+                                                    </thead>
+                                                  </table>
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Equipment'].lidetail}" var="mt">
+                                                          <div>{!mt.name}</div>
+                                                      </apex:repeat>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.EquipmentTotalCost__c}" />
+                                                        </apex:outputText>
+                                                    </div><!-- /.val -->
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Equipment'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.totalCost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.EquipmentNYSERDACost__c}" />
+                                                        </apex:outputText>
+                                                    </div><!-- /.val -->
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Equipment'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.nysedraCost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.EquipmentCostShare__c}" />
+                                                        </apex:outputText>
+                                                    </div><!-- /.val -->
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Equipment'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.costsharecost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+
+
+                                                <td class="name reset">
+                                                  <table class="heading-row">
+                                                    <thead>
+                                                      <tr>
+                                                        <th class="row-name"><span>7.</span>Travel</th>
+                                                      </tr>
+                                                    </thead>
+                                                  </table>
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Travel'].lidetail}" var="mt">
+                                                          <div>{!mt.name}</div>
+                                                      </apex:repeat>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.TravelTotalCost__c}" />
+                                                        </apex:outputText>
+                                                    </div><!-- /.val -->
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Travel'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.totalCost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.TravelNYSERDACost__c}" />
+                                                        </apex:outputText>
+                                                    </div><!-- /.val -->
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Travel'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.nysedraCost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.TravelCostShare__c}" />
+                                                        </apex:outputText>
+                                                    </div><!-- /.val -->
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Travel'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.costsharecost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="name reset">
+
+                                                    <table class="heading-row">
+                                                      <thead>
+                                                        <tr>
+                                                          <th class="row-name"><span>8.</span>Other Direct Costs</th>
+                                                        </tr>
+                                                      </thead>
+                                                    </table>
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Other Direct Costs'].lidetail}" var="mt">
+                                                          <div>{!mt.name}</div>
+                                                      </apex:repeat>
+                                                    </div><!-- /.box -->
+                                                </td>
+                                                <td>
+                                                    <apex:outputText value="${0,number,###,###,##0}">
+                                                        <apex:param value="{!budgetSummary.OtherDirectCostsTotalCost__c}" />
+                                                    </apex:outputText>
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Other Direct Costs'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.totalCost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div><!-- /.box -->
+                                                </td>
+                                                <td>
+                                                    <apex:outputText value="${0,number,###,###,##0}">
+                                                        <apex:param value="{!budgetSummary.OtherDirectCostsNYSERDACost__c}" />
+                                                    </apex:outputText>
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Other Direct Costs'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.nysedraCost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div><!-- /.box -->
+                                                </td>
+                                                <td>
+                                                    <apex:outputText value="${0,number,###,###,##0}">
+                                                        <apex:param value="{!budgetSummary.OtherDirectCostsCostShare__c}" />
+                                                    </apex:outputText>
+
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Other Direct Costs'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.costsharecost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div><!-- /.box -->
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="name reset">
+
+                                                    <table class="heading-row">
+                                                      <thead>
+                                                        <tr>
+                                                          <th class="row-name"><span>9.</span>Subcontractors/Consultants</th>
+                                                        </tr>
+                                                      </thead>
+                                                    </table>
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Subcontractors/Consultants'].lidetail}" var="mt">
+                                                          <div>{!mt.name}</div>
+                                                      </apex:repeat>
+                                                    </div><!-- /.box -->
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.SubcontractorsConsultantsTotalCost__c}" />
+                                                        </apex:outputText>
+                                                    </div><!-- /.val -->
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Subcontractors/Consultants'].lidetail}" var="mt">
+                                                            <div>
+                                                                <apex:outputText value="${0,number,###,###,##0}">
+                                                                    <apex:param value="{!mt.totalCost}" />
+                                                                </apex:outputText>
+                                                            </div>
+                                                      </apex:repeat>
+                                                    </div><!-- /.box -->
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.SubcontractorsConsultantsNYSERDACost__c}" />
+                                                        </apex:outputText>
+                                                    </div><!-- /.val -->
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Subcontractors/Consultants'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.nysedraCost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div><!-- /.box -->
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.SubcontractorsConsultantsCostShare__c}" />
+                                                        </apex:outputText>
+                                                    </div><!-- /.val -->
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Subcontractors/Consultants'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.costsharecost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div><!-- /.box -->
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="name reset">
+
+                                                    <table class="heading-row">
+                                                      <thead>
+                                                        <tr>
+                                                          <th class="row-name"><span>10.</span>General &amp; Administration Expense</th>
+                                                          <th>Rate</th>
+                                                          <th>Element</th>
+                                                        </tr>
+                                                      </thead>
+                                                    </table>
+                                                    <div class="box">
+                                                      <table class="data-row">
+                                                        <tbody>
+                                                          <apex:repeat value="{!maintable['General & Administration Expense'].lidetail}" var="mt">
+                                                          <tr>
+                                                            <td class="data-name">{!mt.name}</td>
+                                                            <td>
+                                                                <apex:outputText value="{0,number,###,###,##0.00}">
+                                                                    <apex:param value="{!mt.bcline.Rate_Percent__c}" />
+                                                                </apex:outputText>%
+                                                            </td>
+                                                            <td>
+                                                                <apex:outputText value="{!mt.bcline.element_s__c}">
+                                                                </apex:outputText>
+                                                            </td>
+                                                          </tr>
+                                                          </apex:repeat>
+                                                        </tbody>
+                                                      </table>
+                                                    </div><!-- /.box -->
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.GeneralAdministrationTotalCost__c}" />
+                                                        </apex:outputText>
+                                                    </div><!-- /.val -->
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['General & Administration Expense'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.totalCost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div><!-- /.box -->
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.GeneralAdministrationExpNYSERDACost__c}" />
+                                                        </apex:outputText>
+                                                    </div><!-- /.val -->
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['General & Administration Expense'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.nysedraCost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div><!-- /.box -->
+                                                </td>
+                                                <td>
+                                                    <div class="val">
+                                                        <apex:outputText value="${0,number,###,###,##0}">
+                                                            <apex:param value="{!budgetSummary.GeneralAdministrationExpenCostShare__c}" />
+                                                        </apex:outputText>
+                                                    </div><!-- /.val -->
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['General & Administration Expense'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.costsharecost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div><!-- /.box -->
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="name reset">
+                                                    <table class="heading-row">
+                                                      <thead>
+                                                        <tr>
+                                                          <th class="row-name"><span>11.</span>Fee or Profit (if allowable)</th>
+                                                        </tr>
+                                                      </thead>
+                                                    </table>
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Fee & Profit (If Allowable)'].lidetail}" var="mt">
+                                                        <div>{!mt.name}</div>
+                                                      </apex:repeat>
+                                                    </div><!-- /.box -->
+                                                </td>
+                                                <td>
+                                                    <apex:outputText value="${0,number,###,###,##0}">
+                                                        <apex:param value="{!budgetSummary.FeeProfitTotalCost__c}" />
+                                                    </apex:outputText>
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Fee & Profit (If Allowable)'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.totalCost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div><!-- /.box -->
+                                                </td>
+                                                <td>
+                                                    <apex:outputText value="${0,number,###,###,##0}">
+                                                        <apex:param value="{!budgetSummary.FeeProfitNYSERDACost__c}" />
+                                                    </apex:outputText>
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Fee & Profit (If Allowable)'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.nysedraCost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div><!-- /.box -->
+                                                </td>
+                                                <td>
+                                                    <apex:outputText value="${0,number,###,###,##0}">
+                                                        <apex:param value="{!budgetSummary.FeeProfitCostShare__c}" />
+                                                    </apex:outputText>
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Fee & Profit (If Allowable)'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.costsharecost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div><!-- /.box -->
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="name reset">
+                                                    <table class="heading-row">
+                                                      <thead>
+                                                        <tr>
+                                                          <th class="row-name"><span>12.</span>Final Deliverable</th>
+                                                        </tr>
+                                                      </thead>
+                                                    </table>
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Final Deliverable'].lidetail}" var="mt">
+                                                        <div>{!mt.name}</div>
+                                                      </apex:repeat>
+                                                    </div><!-- /.box -->
+                                                </td>
+                                                <td>
+                                                    <apex:outputText value="${0,number,###,###,##0}">
+                                                        <apex:param value="{!budgetSummary.FinalDeliverableTotalCost__c}" />
+                                                    </apex:outputText>
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Final Deliverable'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.totalCost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div><!-- /.box -->
+                                                </td>
+                                                <td>
+                                                    <apex:outputText value="${0,number,###,###,##0}">
+                                                        <apex:param value="{!budgetSummary.FinalDeliverableNYSERDACost__c}" />
+                                                    </apex:outputText>
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Final Deliverable'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.nysedraCost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div><!-- /.box -->
+                                                </td>
+                                                <td>
+                                                    <apex:outputText value="${0,number,###,###,##0}">
+                                                        <apex:param value="{!budgetSummary.FinalDeliverableCostShare__c}" />
+                                                    </apex:outputText>
+                                                    <div class="box">
+                                                      <apex:repeat value="{!maintable['Final Deliverable'].lidetail}" var="mt">
+                                                        <div>
+                                                            <apex:outputText value="${0,number,###,###,##0}">
+                                                                <apex:param value="{!mt.costsharecost}" />
+                                                            </apex:outputText>
+                                                        </div>
+                                                      </apex:repeat>
+                                                    </div><!-- /.box -->
+                                                </td>
+                                            </tr>
+                                            <tr class="total">
+                                                <td class="name">Total Estimated Project Cost </td>
+                                                <td>
+                                                    <apex:outputText value="${0,number,###,###,##0}">
+                                                        <apex:param value="{!budgetSummary.TotalEstimatedTotalCost__c}" />
+                                                    </apex:outputText>
+                                                </td>
+                                                <td>
+                                                    <apex:outputText value="${0,number,###,###,##0}">
+                                                        <apex:param value="{!budgetSummary.TotalEstimatedNYSERDACost__c}" />
+                                                    </apex:outputText>
+                                                </td>
+                                                <td>
+                                                    <apex:outputText value="${0,number,###,###,##0}">
+                                                        <apex:param value="{!budgetSummary.TotalEstimatedCostSharecost__c}" />
+                                                    </apex:outputText>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!--<table class="table table-striped table-bordered table-condensed table-default" style="margin-top:40px">
+                                            <thead>
+                                                <tr>
+                                                    <th>Cost Elements</th>
+                                                    <th>Total Cost</th>
+                                                    <th>ORG COST</th>
+                                                    <th>Cost Share</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <apex:variable var="j" value="{!0}" />
+                                                <apex:repeat value="{!mainTable}" var="mt">
+                                                   <apex:variable var="j" value="{!j+1}" />
+                                                <tr>
+                                                    <td>{!j}. {!mt} </td>
+                                                    <td>
+                                                        <apex:outputText value="{0, number, Currency}">
+                                                            <apex:param value="{!mainTable[mt].totalCOst}" />
+                                                        </apex:outputText>
+
+                                                    </td>
+                                                    <td>
+                                                        <apex:outputText value="{0, number, Currency}">
+                                                            <apex:param value="{!mainTable[mt].nysedraCost}" />
+                                                        </apex:outputText>
+                                                    </td>
+                                                    <td>
+                                                        <apex:outputText value="{0, number, Currency}">
+                                                            <apex:param value="{!mainTable[mt].costsharecost}" />
+                                                        </apex:outputText>
+                                                    </td>
+                                                </tr>
+                                                </apex:repeat>
+                                            </tbody>
+                                        </table>-->
+                                </div>
+                                <!-- /.body -->
+                            </div>
+                            <!-- /.budget-summary -->
+                        </div>
+                    </div>
+                </div>
+					<input type="submit" value="submit" class="sr-only"/>
+            </apex:form>
+        </apex:define>
+    </apex:composition>
+    <c:treenavscript />
+
+    <script>
+	$(document).ready(function() {
+		jQuery("html").attr("lang", "en");
+		 setTimeout(function(){
+		 			$('b').remove();
+		 			$('input[class="sr-only"]').removeAttr("role");
+              		$(".brandZeronaryBgr").removeAttr("cellspacing , cellpadding , border , style");
+              		$(".outerNoSidebar").removeAttr("cellspacing , cellpadding , border , style");
+              		$('b[role="presentation"]').replaceWith("<span class='caret'></span>");
+              		$('#phSearchClearButton').html("<input type='submit' value='submit' class='sr-only'/>");
+				 }, 1000);
+        });
+
+        </script>
+</apex:page>

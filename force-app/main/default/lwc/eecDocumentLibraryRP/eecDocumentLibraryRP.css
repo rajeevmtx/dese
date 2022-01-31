@@ -1,0 +1,89 @@
+.slds-m-top_medium {
+    padding-left : 1rem;
+    padding-right : 1rem;
+  }
+  
+  .lgc-bg {
+      background-color: rgb(242, 242, 242);
+  }
+  
+  .icon-description {
+      margin-left: 0.5%;
+      margin-right: 0.5%;
+      font-size: 0.9rem;
+  }
+  
+  .icon-section {
+      padding-top: 1rem;
+  }
+  .icon-seperator {
+      margin-right: 0.5%;
+  }
+  
+  .applyFilter {
+      margin-left: 0px;
+      padding-left: 0px;
+      padding-top: 1.3rem;
+  }
+  
+  .docTypeName {
+     width : 40%;
+  }
+  
+  .generalHeader {
+     width : 12%;
+  }
+
+  .statusColumn {
+    width : 13%;
+  }
+  
+  .view-button {
+      color:#006DCC;
+      cursor: pointer;
+  }
+  
+  .view-button:hover{
+      text-decoration: underline;
+  }
+  
+  .view-upload-seperator {
+      padding-left : 0.5rem;
+      padding-right : 0.5rem;
+      color : #E8E8E8;
+  }
+  
+  .slds-modal__container {
+      max-width: 70rem !important;
+      width: 70% !important;
+  }
+  
+  .slds-table {
+      box-shadow: 1px 1px 5px 1px #888888;
+  }
+    
+  .helpText {
+      padding-left: 0.5rem;
+  }
+ 
+  th{
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+  }
+
+  tr>th{
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+  }
+
+.note {
+    padding-left: 0.5rem;
+}
+
+.table {
+    margin-top: 2rem;
+}
+
+.comboBox {
+    position: relative;
+}

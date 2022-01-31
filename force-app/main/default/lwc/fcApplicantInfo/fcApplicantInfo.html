@@ -1,0 +1,204 @@
+<template>
+
+    <div class="page-header">
+        <h1 class="page-title">Applicant Info</h1>
+    </div>
+
+    <div class="app-container slds-grid slds-gutters slds-wrap">
+        <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <c-fc-intake-form-help-text help-text={helpTextVerification}></c-fc-intake-form-help-text>
+        </div> 
+        <div class="slds-form slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="text" autocomplete="none" label="First Name" maxlength=255
+                         name="firstname" class="firstname" onchange={handleInput} style="width: 100%;" required>
+                    </lightning-input>
+                </div>
+            </div>
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="text" autocomplete="none" label="Middle Name" maxlength=255
+                        name="middlename" class="middlename" onchange={handleInput} style="width: 100%;">
+                    </lightning-input>
+                </div>
+            </div>
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="text" autocomplete="none" label="Last Name" maxlength=255
+                        name="lastname" class="lastname" onchange={handleInput} style="width: 100%;" required>
+                    </lightning-input>
+                </div>
+            </div>
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="text" autocomplete="none" label="Previous names used, if any. Include maiden name if applicable." maxlength=255
+                        name="previousname" class="previousname" onchange={handleInput} style="width: 100%;">
+                    </lightning-input>
+                </div>
+            </div>
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="email" autocomplete="none" label="Email address" maxlength=255 name="emailAddress"
+                        class="emailAddress" style="width: 100%;" onchange={handleInput} required>
+                    </lightning-input>
+                </div>
+            </div>
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="tel" autocomplete="none" label="Cell phone number" maxlength=255 name="cellphonenumer"
+                        class="cellphonenumer" onchange={handleInput} style="width: 100%;" required>
+                    </lightning-input>
+                </div>
+            </div>
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="date" autocomplete="none" label="Date of Birth" maxlength=255 name="dateofbirth"
+                        class="dateofbirth" onchange={handleInput} style="width: 100%;" required>
+                    </lightning-input>
+                </div>
+            </div>
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-radio-group name="genderStatus" label="Gender" options={genderOptions} value={value} type="radio"
+                        onchange={handleInput} required></lightning-radio-group>
+                </div>
+            </div>
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-combobox name="race" label="Race / Ethnicity" value={value} placeholder="Select Race/Ethnicity" options={raceOptions}
+                        onchange={handleRaceSelection} style="width: 100%;" required></lightning-combobox>
+                </div>
+            </div>
+
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="text" autocomplete="none" label="Driver's license number or State ID number" maxlength=255 name="licensenumber"
+                        class="licensenumber" onchange={handleInput} style="width: 100%;" required>
+                    </lightning-input>
+                </div>
+            </div>
+            
+            <div class="slds-form__row">
+            
+                <div class="slds-form__item">
+            
+                    <fieldset class="legend-shift">
+                        <legend class="text-font"><b class="required-color">* Education</b></legend>
+                        <div class="day-group">
+                            <lightning-input type="checkbox" name="eighth" class="eighth" label="Eighth grade or less"
+                                onchange={educationCheckBoxhandler}>
+                            </lightning-input>
+                            <lightning-input type="checkbox" name="highSchool" class="highSchool" label="Some high school"
+                                onchange={educationCheckBoxhandler}>
+                            </lightning-input>
+                            <lightning-input type="checkbox" name="highSchoolEquivalent" class="highSchoolEquivalent" label="High school or equivalent"
+                                onchange={educationCheckBoxhandler}>
+                            </lightning-input>
+                            <lightning-input type="checkbox" name="trainingBeyond" class="trainingBeyond" label="Technical training beyond high school"
+                                onchange={educationCheckBoxhandler}>
+                            </lightning-input>
+                            <lightning-input type="checkbox" name="collegeLevelCourse" class="collegeLevelCourse" label="Some college or college level courses"
+                                onchange={educationCheckBoxhandler}>
+                            </lightning-input>
+                            <lightning-input type="checkbox" name="collegeGraduate" class="collegeGraduate" label="College graduate"
+                                onchange={educationCheckBoxhandler}>
+                            </lightning-input>
+                            <lightning-input type="checkbox" name="postGratuation" class="postGratuation" label="Post-graduate education"
+                                onchange={educationCheckBoxhandler}>
+                            </lightning-input>
+                        </div>
+                        <span class="required-color errormsg" if:true={isEducationSelected}>Complete this field.</span>
+                    </fieldset>
+            
+                </div>
+            </div>
+
+            
+
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-radio-group name="maritalStatus" label="Are you currently married or in a domestic partnership with someone who is not an applicant?" 
+                        options={martialOptions} value={value} type="radio" onchange={handleInput} required>
+                    </lightning-radio-group>
+                </div>
+            </div>
+
+            <div if:true={isMarried} class="boxSection">
+                <div class="slds-form__row">
+                    <div class="slds-form__item">
+                        <lightning-input type="date" autocomplete="none" label="Date of marriage/domestic partnership" maxlength=255 name="dateofmarriage"
+                            class="dateofmarriage" onchange={handleInput} style="width: 100%;" required>
+                        </lightning-input>
+                    </div>
+                </div>
+
+                <div class="slds-form__row">
+                    <div class="slds-form__item">
+                        <lightning-input type="text" autocomplete="none" label="Place (city and state)"
+                            maxlength=255 name="place" class="place" onchange={handleInput} style="width: 100%;" required>
+                        </lightning-input>
+                    </div>
+                </div>
+            </div>    
+
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-radio-group name="prevMaritalStatus"
+                        label="Have you had previous marital or domestic partnerships?"
+                        options={partnershipOptions} value={value} type="radio" onchange={handleInput} required>
+                    </lightning-radio-group>
+                </div>
+            </div>
+           
+            <div if:true={isPrevMarried} class="boxSection">
+            
+                <div class="slds-form__row">
+                    <div class="slds-form__item">
+                        <lightning-input type="text" autocomplete="none" label="How many?" maxlength=255 name="howManyMarital"
+                            class="howManyMarital" style="width: 100%;" required>
+                        </lightning-input>
+                    </div>
+                </div>
+
+            </div>
+           
+
+
+
+            <!-- ------------------------------------------------------------------------------------------------------------------------- -->
+
+            <!-- <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="text" autocomplete="none" label="Street Address Line 2" maxlength=255  name="streetaddressline2" class="streetaddressline2"  style="width: 100%;">
+                    </lightning-input>
+                </div>
+            </div>
+
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="text" autocomplete="none" label="City" maxlength=255 required
+                        pattern="^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$"
+                        name="city" class="city" style="width: 100%;">
+                    </lightning-input>
+                </div>
+            </div> 
+
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input name="state" class="state" label="State" required
+                     value="" style="width: 100%;"></lightning-input>
+                </div>
+            </div>
+
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="text" class="zipcode" autocomplete="none" label="ZIP Code" maxlength=5  required
+                         name="zipcode" style="width: 100%;"
+                        pattern="^[0-9]{5}(?:-[0-9]{4})?$" >
+                    </lightning-input>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</template>

@@ -1,0 +1,30 @@
+.slds-modal__container{
+    width: 80% !important;
+    max-width: 75rem !important;
+}
+.slds-spinner_container {
+    position: fixed !important;
+ }
+
+ .messageHeader {
+    width : 55%;
+ }
+ 
+ .generalHeader {
+    width : 15%;
+ }
+
+ .slds-modal__content {
+    padding-top : 2rem;
+ }
+
+ .fileName {
+    width : 40%;
+ }
+
+ .modalHeader{
+   color: white;
+   background-color: var(--sds-c-button-brand-color-border, var(--lwc-brandAccessible,rgb(0, 112, 210)));
+   white-space: pre-wrap;
+   text-align: left !important;
+}

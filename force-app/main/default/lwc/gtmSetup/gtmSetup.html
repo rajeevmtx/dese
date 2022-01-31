@@ -1,0 +1,86 @@
+<template>
+
+
+    <template if:true={isError}>
+        <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+            <span class="slds-assistive-text">error</span>
+            <h2>{errorMessage}</h2>
+        </div>
+    </template>
+
+    
+        <lightning-button variant="brand" label="Schedule Telemedic Call" title="Schedule Telemedic Call"
+            onclick={openCreateMeetingModal} if:true={showEventCreateButton} class="slds-m-right_medium"></lightning-button> &nbsp;&nbsp;
+        <lightning-button class="slds-m-right_medium" variant="brand" label="Start Telemedic Call" title="Start Telemedic Call" onclick={startMeeting} if:true={showStartMeetingButton}>
+        </lightning-button>
+        <lightning-button variant="brand" label="Get Attendees" title="Get Attendees" onclick={fetchAttendees} if:true={showGetAttendeesButton}>
+        </lightning-button>
+
+
+
+
+    <div >
+        <!-- Create meeting modal-->
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal create-meeting-modal">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Create Meeting</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <!-- meeting type-->
+                    <!-- <lightning-combobox name="meetingType" label="Meeting Type" placeholder="Select meeting type"
+                        options={meetingOptions} onchange={createEventData}></lightning-combobox> -->
+
+                    <!-- Subject -->
+                    <!-- <lightning-input label="Subject" name='subject' onchange={createEventData}></lightning-input> -->
+
+                    <!-- Start -->
+                    <lightning-input label="Start" name="startDateTime" type="dateTime" class="meetingTime"
+                        onchange={createEventData}></lightning-input>
+
+                    <!-- End -->
+                    <lightning-input label="End" name="endDateTime" type="dateTime" class="meetingTime"
+                        onchange={createEventData}></lightning-input>
+
+                    <!-- Description-->
+                    <!-- <lightning-textarea name="description" label="Description" onchange={createEventData}>
+                    </lightning-textarea> -->
+
+                    <!-- Attendees -->
+                    <!-- <lightning-textarea name="attendees" label="Attendees(Comma seperated)" onchange={createEventData}>
+                    </lightning-textarea> -->
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={closeCreateMeetingModal}>Cancel</button>
+                    <button class="slds-button slds-button_brand" onclick={createGTMMeeting}>Save</button>
+                </footer>
+            </div>
+        </section>
+        <!--Create meeting modal ends here -->
+
+
+        <!-- Show Attendees Modal-->
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal show-attendees-modal">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">All Attendees</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+                    <lightning-datatable key-field="attendeeEmail" data={listOfAttendees} columns={columns}
+                        is-loading={tableLoadingState} onrowselection={getSelectedAttendees}>
+                    </lightning-datatable>
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={closeAttendeesModal}>Close</button>
+                    <button class="slds-button slds-button_brand" onclick={assignPoints}>Assign Points</button>
+                </footer>
+            </div>
+        </section>
+        <!-- Show Attendees Modal ends here-->
+        <div class="slds-backdrop"></div>
+    </div>
+
+</template>

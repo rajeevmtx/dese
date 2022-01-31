@@ -1,0 +1,397 @@
+<template>
+
+       <!-- Spinner -->
+
+       <div class="backdrop" if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </div>
+    </div>
+
+    <header>
+            <h1 class="page-heading">
+                Application Review
+            </h1>
+       
+    </header>
+    <main>
+        <ul class="cards-container">
+            <li class="blue-feature-card">
+                <!--  Address Information -->
+                <h2 class="card-title">Student Information</h2>
+                <div class="card-content-section">
+                    <!-- <fieldset class="slds-form-element slds-form-element_compound">
+                        <div class="slds-form-element__control">
+                            <div class="slds-form-element__row spaced-row">
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label">Name</label>
+                                        <div class="slds-form-element__control">
+                                            Paul Grover
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label">Email</label>
+                                        <div class="slds-form-element__control">
+                                            paul@grover.com
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+                            </div>
+                            <div class="slds-form-element__row spaced-row">
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label">School Name</label>
+                                        <div class="slds-form-element__control">
+                                            John F. Kennedy High School
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label">Enrollment Number</label>
+                                        <div class="slds-form-element__control">
+                                            JFKS2121
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-form-element__row spaced-row">                               
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label">Phone</label>
+                                        <div class="slds-form-element__control">
+                                            +17177123661
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset> -->
+                    <table aria-multiselectable="true"
+                    class="slds-table slds-no-cell-focus slds-table_bordered slds-table_edit slds-table_fixed-layout slds-table_resizable-cols"
+                    role="grid" style="width: 100%;">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th scope="col" class="slds-is-resizable">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate column-padding">
+                                        <div class="slds-truncate slds-text-body_medium slds-p-around_xx-small" title="Name">
+                                            STUDENT NAME
+                                        </div>
+                                    </div>
+                                </th>
+                                <th scope="col" class="slds-is-resizable">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate column-padding">
+                                        <div class="slds-truncate slds-text-body_medium slds-p-around_xx-small" title="Email">
+                                            EMAIL
+                                        </div>
+                                    </div>
+                                </th>
+                                <th scope="col" class="slds-is-resizable">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate column-padding">
+                                        <div class="slds-truncate slds-text-body_medium slds-p-around_xx-small" title="Company Name">
+                                            SCHOOL NAME
+                                        </div>
+                                    </div>
+                                </th>
+                                <th scope="col" class="slds-is-resizable">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate column-padding">
+                                        <div class="slds-truncate slds-text-body_medium slds-p-around_xx-small" title="Enrollment Number">
+                                            ENROLLMENT NUMBER
+                                        </div>
+                                    </div>
+                                </th>
+                                <!-- <th scope="col" class="slds-is-resizable" style="width:100px;">ACTION</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={data} for:item='item'>
+                                <tr class="slds-hint-parent" key={item.id}>
+                                    <td role="gridcell" style="word-break:break-word;white-space: normal;padding:0 !important">
+                                        <div class="slds-p-around_xx-small">
+                                            {item.name}
+                                        </div>
+                                    </td>
+                                    <td role="gridcell" style="word-break:break-word;white-space: normal;padding:0 !important">
+                                        <div class="slds-p-around_xx-small">
+                                            {item.email}
+                                        </div>
+                                    </td>
+                                    <td role="gridcell" style="word-break:break-word;white-space: normal;padding:0 !important">
+                                        <div class="slds-p-around_xx-small">
+                                            {item.companyName}
+                                        </div>
+                                    </td>
+                                    <td role="gridcell" style="word-break:break-word;white-space: normal;padding:0 !important">
+                                        <div class="slds-p-around_xx-small">
+                                            {item.enrollmentnumber}
+                                        </div>
+                                    </td>
+                                    <!-- <td role="gridcell" >
+                                        <span class="iconHeightWidth" data-value="edit" data-id={item.id} data-contactid={item.contactId} onclick={handleRowAction}>
+                                            <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="edit" class="svg-inline--fa fa-edit fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"></path></svg>
+                                        </span>
+                                    </td> -->
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </li>
+            <li class="blue-feature-card">
+                <!--  Address Information -->
+                <h2 class="card-title">Staff Information</h2>
+                <div class="card-content-section">
+                    <!-- <fieldset class="slds-form-element slds-form-element_compound">
+                        <div class="slds-form-element__control">
+                            <div class="slds-form-element__row spaced-row">
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label">Name</label>
+                                        <div class="slds-form-element__control">
+                                            John Smith
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label">Program Job Title</label>
+                                        <div class="slds-form-element__control">
+                                            Teacher
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-form-element__row spaced-row">
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label">Hire Date</label>
+                                        <div class="slds-form-element__control">
+                                            10/22/2004
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label">Status</label>
+                                        <div class="slds-form-element__control">
+                                            Active
+                                        </div>
+                                    </div>
+                                </div>                               
+                            </div>
+                            <div class="slds-form-element__row spaced-row">
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label">ELAR Number</label>
+                                        <div class="slds-form-element__control">
+                                            C45676
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label">UNIFORM FINANCIAL REPORT(UFR)</label>
+                                        <div class="slds-form-element__control">
+                                            Complete
+                                        </div>
+                                    </div>
+                                </div>                               
+                            </div>
+                        </div>
+                    </fieldset> -->
+                    <table aria-multiselectable="true"
+                    class="slds-table slds-no-cell-focus slds-table_bordered slds-table_edit slds-table_fixed-layout slds-table_resizable-cols"
+                    role="grid" style="width: 100%;">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th scope="col" class="slds-is-resizable">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate column-padding">
+                                        <div class="slds-truncate slds-text-body_medium slds-p-around_xx-small" title="Name">
+                                            STAFF NAME
+                                        </div>
+                                    </div>
+                                </th>
+                                <th scope="col" class="slds-is-resizable">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate column-padding">
+                                        <div class="slds-truncate slds-text-body_medium slds-p-around_xx-small" title="PROGRAM JOB TITLE">
+                                            PROGRAM JOB TITLE
+                                        </div>
+                                    </div>
+                                </th>
+                                <th scope="col" class="slds-is-resizable">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate column-padding">
+                                        <div class="slds-truncate slds-text-body_medium slds-p-around_xx-small" title="UNIFORM FINANCIAL REPORT(UFR)">
+                                            UNIFORM FINANCIAL REPORT(UFR)
+                                        </div>
+                                    </div>
+                                </th>
+                                <th scope="col" class="slds-is-resizable">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate column-padding">
+                                        <div class="slds-truncate slds-text-body_medium slds-p-around_xx-small" title="HIRE DATE">
+                                            HIRE DATE
+                                        </div>
+                                    </div>
+                                </th>
+                                <th scope="col" class="slds-is-resizable">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate column-padding">
+                                        <div class="slds-truncate slds-text-body_medium slds-p-around_xx-small" title="STATUS">
+                                            STATUS
+                                        </div>
+                                    </div>
+                                </th>
+                                <th scope="col" class="slds-is-resizable">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate column-padding">
+                                        <div class="slds-truncate slds-text-body_medium slds-p-around_xx-small" title="ELAR NUMBER">
+                                            ELAR NUMBER
+                                        </div>
+                                    </div>
+                                </th>
+                                <!-- <th scope="col" class="slds-is-resizable" style="width:100px;">ACTION</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={dataStaff} for:item='item'>
+                                <tr class="slds-hint-parent" key={item.id}>
+                                    <td role="gridcell" style="word-break:break-word;white-space: normal;padding:0 !important">
+                                        <div class="slds-p-around_xx-small">
+                                            {item.name}
+                                        </div>
+                                    </td>
+                                    <td role="gridcell" style="word-break:break-word;white-space: normal;padding:0 !important">
+                                        <div class="slds-p-around_xx-small">
+                                            {item.title}
+                                        </div>
+                                    </td>
+                                    <td role="gridcell" style="word-break:break-word;white-space: normal;padding:0 !important">
+                                        <div class="slds-p-around_xx-small">
+                                            {item.comments}
+                                        </div>
+                                    </td>
+                                    <td role="gridcell" style="word-break:break-word;white-space: normal;padding:0 !important">
+                                        <div class="slds-p-around_xx-small">
+                                            {startDate}
+                                        </div>
+                                    </td>
+                                    <td role="gridcell" style="word-break:break-word;white-space: normal;padding:0 !important">
+                                        <div class="slds-p-around_xx-small">
+                                            {item.status}
+                                        </div>
+                                    </td>
+                                    <td role="gridcell" style="word-break:break-word;white-space: normal;padding:0 !important">
+                                        <div class="slds-p-around_xx-small">
+                                            {item.elarNumber}
+                                        </div>
+                                    </td>
+                                    <!-- <td role="gridcell" >
+                                        <span class="iconHeightWidth" data-value="edit" data-id={item.id} data-contactid={item.contactId} onclick={handleRowAction}>
+                                            <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="edit" class="svg-inline--fa fa-edit fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1 0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7 0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174L402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7l-43.2-43.2c-4.1-4.1-10.8-4.1-14.8 0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"></path></svg>
+                                        </span>
+                                    </td> -->
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </li>
+            <li class="blue-feature-card">
+                <!--  Address Information -->
+                <h2 class="card-title">Assessment Review</h2>
+                <div class="card-content-section">
+                    <fieldset class="slds-form-element slds-form-element_compound">
+                        <div class="slds-form-element__control">
+                            <template for:each={questions} for:item="que">
+                            <div class="slds-form-element__row spaced-row" key={que.Id}>
+                                <div class="slds-size_1-of-1">
+                                    <div class="slds-form-element">
+                                        <div class="slds-grid slds-p-top_large" key={que.Id}>
+                                            <div class="slds-col slds-size_3-of-3 slds-p-bottom_medium">
+                                                <div if:true={que.radio}>
+                                                    <label for="fieldid5">{que.label}</label>
+                                                    <lightning-radio-group disabled value={que.value} name="question" class="horizontal-radio input-style"                        
+                                                    options={yesNoOption} type="radio" onchange={handleInput}>
+                                                    </lightning-radio-group>
+                                                </div>
+                                                <div if:true={que.text}>
+                                                    <lightning-input disabled value={que.value} label={que.label} type="text"></lightning-input>
+                                                </div>
+                                                <div if:true={que.picklist}>
+                                                    <lightning-combobox name="stageName"
+                                                        label={que.label} disabled value={que.value}
+                                                        options={pickOptions}>
+                                                    </lightning-combobox>
+                                                </div>
+                                                <div if:true={que.date}>
+                                                    <lightning-input disabled label={que.label} value={que.value} type="date" name="input1" ></lightning-input>
+                                                </div>
+                                            </div>
+                                        </div>                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                        </div>
+                    </fieldset>
+                </div>
+            </li>
+            <li class="blue-feature-card">
+                <!--  Address Information -->
+                <h2 class="card-title">Document Review</h2>
+                <div class="card-content-section">
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="DOCUMENT NAME">DOCUMENT NAME</div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="UPLOAD DOC">UPLOAD DOC</div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="STATUS">STATUS</div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="ADD/UPDATE DOCUMENT">ADD/UPDATE DOCUMENT</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={uploadedFiles} for:item="files" for:index="index">
+        
+                                <tr key={files.documentId} class="slds-hint-parent">
+                                    <td data-label="DOCUMENT NAME" scope="row">
+                                        <div class="slds-truncate" title="DOCUMENT NAME">
+                                            {files.DocumentName}
+                                        </div>
+                                    </td>
+                                    <td data-label="UPLOAD DOC" scope="row">
+                                        <template for:each={files.uploadDoc} for:item="contentdoc" for:index="index">
+                                            <a key={contentdoc.contId} data-record={contentdoc.contId}  onclick={handleFileOpen}>
+                                                <p>{contentdoc.contDocumentName}</p></a>
+                                        </template>
+                                    </td>
+                                    <td data-label="STATUS" scope="row">
+                                        <div class="slds-truncate" title="STATUS">
+                                            {files.Status}
+                                        </div>
+                                    </td>
+                                    <td data-label="UPLOAD FILES" scope="row">
+                                        <lightning-file-upload class="slds-m-bottom_small slds-float_left" label="" disabled={isReadyOnly} name="fileUploader" data-record={files.Id} record-id={files.Id}
+                                            onuploadfinished={handleUploadFinished} multiple>
+                                         </lightning-file-upload>
+                                    </td>        
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </li>
+        </ul>
+    </main>
+</template>

@@ -1,0 +1,115 @@
+<template>
+    <template if:false={showThankYouScreen}>
+        <!-- Spinner -->
+        <div class="backdrop" if:true={showSpinner}>
+            <div class="spinner">
+                <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+            </div>
+        </div>
+
+        <!-- Heading -->
+        <div class="has-shadow slds-p-vertical_medium slds-m-bottom_medium heading_header_registration">
+            <div class="container d-flex justify-space-between">
+                <h6>Adult Protective Service - Intake Form</h6>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="app-container slds-grid slds-gutters slds-wrap">
+                <div class="app-sidebar slds-col slds-size_1-of-1 slds-large-size_3-of-12" style="margin-top: 1.2rem">
+                    <!-- Flow Steps -->
+                    <c-aps_intake_flow_steps current-step={currentStep} original-step={originalStep}>
+                    </c-aps_intake_flow_steps>
+                </div>
+
+                <div class="app-content slds-size_1-of-1 slds-large-size_9-of-12 slds-m-bottom_large">
+                    <!-- Step 1 -->
+                    <div style={showInstructionsPage}>
+                        <c-aps_instructions_page></c-aps_instructions_page>
+
+                        <div class="controls">
+                            <lightning-button variant="brand" label="Next" onclick={navigateToIncidentInformation}>
+                            </lightning-button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div style={showIncidentInformation}>
+                        <c-aps_help_text help-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."></c-aps_help_text>
+
+                        <c-aps_incident_information></c-aps_incident_information>
+
+                        <div class="controls">
+                            <lightning-button label="Back" class="slds-m-right_medium" onclick={navigateToInstructionsPage}>
+                            </lightning-button>
+                            <lightning-button variant="brand" type="submit" label="Next"
+                                onclick={navigateToVictimInformation}></lightning-button>                                
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div style={showVictimInformation}>
+
+                        <c-aps_help_text help-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."></c-aps_help_text>
+
+                        <c-aps_victim_information></c-aps_victim_information>
+
+                        <div class="controls">
+                            <lightning-button label="Back" class="slds-m-right_medium"
+                                onclick={navigateToIncidentInformation}></lightning-button>
+                            <lightning-button variant="brand" type="submit" label="Next"
+                                onclick={navigateToPerpetrateInformation}></lightning-button>
+                        </div>
+
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div style={showPerpetrateInformation}>
+                        <c-aps_help_text help-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."></c-aps_help_text>
+
+                        <c-aps_perpetrate_information caseid={caseRecId}></c-aps_perpetrate_information>
+
+                        <div class="controls">
+                            <lightning-button label="Back" class="slds-m-right_medium"
+                                onclick={navigateToVictimInformation}></lightning-button>
+                            <lightning-button variant="brand" type="submit" label="Next"
+                                onclick={navigateToReportingPartiesInformation}></lightning-button>
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div style={showReportingPartiesInformation}>
+                        <c-aps_help_text help-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."></c-aps_help_text>
+
+                        <c-aps_reporting_parties_information caseid={caseRecId}></c-aps_reporting_parties_information>
+
+                        <div class="controls">
+                            <lightning-button label="Back" class="slds-m-right_medium" onclick={navigateToPerpetrateInformation}>
+                            </lightning-button>
+                            <lightning-button variant="brand" type="submit" label="Next"
+                                onclick={navigateToSubmission}></lightning-button>
+                        </div>
+                    </div>
+
+                    <!-- Step 6 -->
+                    <div style={showSubmission}>
+                        <c-aps_help_text help-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."></c-aps_help_text>
+
+                        <c-aps_submission></c-aps_submission>
+
+                        <div class="controls">
+                            <lightning-button label="Back" class="slds-m-right_medium"
+                                onclick={navigateToReportingPartiesInformation}></lightning-button>
+                            <lightning-button variant="brand" type="submit" label="Save"
+                                onclick={saveRecord}></lightning-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <div if:true={showThankYouScreen}>
+        <c-aps_thank_you_screen></c-aps_thank_you_screen>
+    </div>
+</template>

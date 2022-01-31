@@ -1,0 +1,27 @@
+<template>
+    <ol class="timeline">
+        <!-- <li class={step0CSS} if:true={isLicensedUser} value="0" steplabel="0" onclick={handleUserClicks}>License Validation</li> -->
+        <li class={step1CSS} value="1" steplabel="1" onclick={handleUserClicks}>Instructions</li>
+        <!-- <li class={step2CSS} value="2"  steplabel="2" onclick={handleUserClicks}>Address Information</li> -->
+        <!-- <li class={step3CSS} value="3"  steplabel="3" onclick={handleUserClicks}>Application Information</li> -->
+        <li class={step2CSS} value="2"  steplabel="2" onclick={handleUserClicks}>Student Information</li> 
+        <li class={step3CSS} value="3"  steplabel="3" onclick={handleUserClicks}>Staff Information</li> 
+        <li class={step4CSS} value="4"  steplabel="4" onclick={handleUserClicks}>Upload Document</li> 
+        <li class={step5CSS} value="5"  steplabel="5" onclick={handleUserClicks}>Assessment</li>
+        <li class={step6CSS} value="6"  steplabel="6" onclick={handleUserClicks}>Review Information</li> 
+        <li class={step7CSS} value="7"  steplabel="7" onclick={handleUserClicks}>Submission</li> 
+
+        <!-- <template if:true={isProvider}>
+            <li class={step6CSS} value="6"  steplabel="5" onclick={handleUserClicks}>Documents</li> 
+            <li class={step7CSS} value="7"  steplabel="6" onclick={handleUserClicks}>Payment</li> 
+            <li class={step8CSS} value="8"  steplabel="7" onclick={handleUserClicks}>Submission</li> 
+        </template>
+
+        <template if:false={isProvider}>
+            <li class={step5CSS} value="5"  steplabel="5" onclick={handleUserClicks}>Assign Work Order</li> 
+            <li class={step6CSS} value="6"  steplabel="6" onclick={handleUserClicks}>Documents</li> 
+            <li class={step7CSS} value="7"  steplabel="7" onclick={handleUserClicks}>Payment</li> 
+            <li class={step8CSS} value="8"  steplabel="8" onclick={handleUserClicks}>Submission</li> 
+        </template> -->
+    </ol>
+</template>

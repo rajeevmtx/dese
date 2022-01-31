@@ -1,0 +1,23 @@
+<template>
+    <div class="app-container slds-grid slds-gutters slds-wrap">
+        <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <c-fc-intake-form-help-text help-text={helpTextVerification}></c-fc-intake-form-help-text>
+        </div>
+        <div>
+            <h1>Please select all the applicable options for the child:</h1>
+        </div>
+        <template for:each={dataList} for:item="data" for:index="index">
+            <div class="slds-form slds-col slds-size_1-of-1 slds-large-size_12-of-12" key={data.question}>
+                <div class="slds-form__row">
+                    <div class="slds-form__item">
+                        <lightning-input type="checkbox" name="selected" checked={data.selected}
+                            autocomplete="none" label={data.question} onchange={handleInput}
+                            style="width: 100%;" data-index={index} >
+                        </lightning-input>
+                    </div>
+                </div>
+            </div>
+        </template>
+        
+    </div>
+</template>

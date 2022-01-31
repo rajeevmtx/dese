@@ -1,0 +1,34 @@
+<template>
+    <div class="app-container slds-grid slds-gutters slds-wrap">
+        <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <c-fc-intake-form-help-text help-text={helpTextVerification}></c-fc-intake-form-help-text>
+        </div>
+        <div class="slds-form slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <div class="slds-form__row">
+                <div class="slds-form__item"> 
+                    <lightning-input type="text" autocomplete="none" label="First Name" 
+                        message-when-pattern-mismatch={nameValidation} maxlength=80 required onblur={handelInput}
+                        name="firstName" style="width: 100%;">
+                    </lightning-input> 
+                </div>
+            </div>
+
+            <div class="slds-form__row"> 
+                <div class="slds-form__item">
+                    <lightning-input type="text" autocomplete="none" label="Last Name" 
+                        message-when-pattern-mismatch={nameValidation} maxlength=80 required onblur={handelInput}
+                        name="lastName" style="width: 100%;">
+                    </lightning-input>
+                </div>
+            </div>
+
+            <div class="slds-form__row"> 
+                <div class="slds-form__item">
+                    <lightning-combobox name="ageGroup" label="Child Age Group" options={ageGroupOptions} required
+                        onchange={handelInput} style="width: 100%;">
+                    </lightning-combobox>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

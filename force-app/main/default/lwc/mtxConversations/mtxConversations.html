@@ -1,0 +1,41 @@
+<template>
+    <div>
+        Last refresh on: {lastRefreshDate}
+
+        <div class="slds-float_right slds-m-bottom_small">
+            <lightning-icon icon-name="utility:refresh" alternative-text="Refresh!" title="Refresh" size=x-small onclick={refresh}></lightning-icon>
+        </div>
+    </div>
+
+    <div class="c-layoutcontainer">
+        <table if:true={conversations}>
+            <template for:each={conversations} for:item="conversation">
+                <tr key={conversation.Id}>
+                    <td>
+                        <div if:false={conversation.isInbound} class={conversation.MessageType}>
+                            {conversation.Message__c}
+                            <br />
+
+                            <span>
+                                <lightning-formatted-date-time class="c-datetime" month="short" day="2-digit"
+                                    hour="2-digit" minute="2-digit" value={conversation.CreatedDate}>
+                                </lightning-formatted-date-time>
+                            </span>
+                        </div>
+                    </td>
+                    <td>
+                        <div if:true={conversation.isInbound} class={conversation.MessageType}>
+                            {conversation.Message__c}
+                            <br />
+                            <span>
+                                <lightning-formatted-date-time class="c-datetime" month="short" day="2-digit"
+                                    hour="2-digit" minute="2-digit" value={conversation.CreatedDate}>
+                                </lightning-formatted-date-time>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+            </template>
+        </table>
+    </div>
+</template>

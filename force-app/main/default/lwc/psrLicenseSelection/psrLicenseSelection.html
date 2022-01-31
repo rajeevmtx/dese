@@ -1,0 +1,457 @@
+<template>
+    <div if:true={showSpinner}>
+        <div class="backdrop">
+            <div class="spinner">
+                <lightning-spinner alternative-text="Loading...">
+                </lightning-spinner>
+            </div>
+        </div>
+    </div>
+    <br />
+    <c-psr-sidebar selected-tab="Home" show-footer>
+        <div slot="body">
+            <div class="has-shadow slds-p-vertical_medium slds-m-bottom_x-large bg-white">
+                <div class="container d-flex justify-space-between">
+                    <div class="d-flex justify-space-between">
+                        <h4 class="header-pane-title slds-m-left_medium">Select New Application</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="container license-grid">
+                <div class="slds-grid slds-wrap slds-m-top_medium slds-gutters slds-m-left_medium slds-m-right_medium">
+                    <div
+                        class="slds-col slds-p-horizontal_small slds-size_1-of-1 slds-large-size_4-of-12 slds-p-bottom_large">
+                        <div class="slds-card is-actionable license-card margin-auto slds-p-around_small">
+                            <div class="slds-card__content">
+                                <h5 class="page-title slds-m-bottom_small text-brand card-title">
+                                    <span>
+                                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="server"
+                                            class="svg-inline--fa fa-server fa-w-16" role="img"
+                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                            <path fill="currentColor"
+                                                d="M480 160H32c-17.673 0-32-14.327-32-32V64c0-17.673 14.327-32 32-32h448c17.673 0 32 14.327 32 32v64c0 17.673-14.327 32-32 32zm-48-88c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm-64 0c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm112 248H32c-17.673 0-32-14.327-32-32v-64c0-17.673 14.327-32 32-32h448c17.673 0 32 14.327 32 32v64c0 17.673-14.327 32-32 32zm-48-88c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm-64 0c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm112 248H32c-17.673 0-32-14.327-32-32v-64c0-17.673 14.327-32 32-32h448c17.673 0 32 14.327 32 32v64c0 17.673-14.327 32-32 32zm-48-88c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm-64 0c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24z">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                    New Self-Assessment Application Form </h5>
+                                <p class="slds-m-bottom_medium">
+                                    Click Apply to Initiate your Self-Assessment Application as part of the Review process
+                                </p>
+                                <div class="controls">
+                                    <button data-permit-type="License"
+                                        class={button1Style} disabled={button1Disabled}
+                                        onclick={handleNewPermit}>Apply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="slds-col slds-p-horizontal_small slds-size_1-of-1 slds-large-size_4-of-12 slds-p-bottom_large">
+                        <div class="slds-card is-actionable license-card margin-auto slds-p-around_small">
+                            <div class="slds-card__content">
+                                <h5 class="page-title slds-m-bottom_small text-brand card-title">
+                                    <span>
+                                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="server"
+                                            class="svg-inline--fa fa-server fa-w-16" role="img"
+                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                            <path fill="currentColor"
+                                                d="M480 160H32c-17.673 0-32-14.327-32-32V64c0-17.673 14.327-32 32-32h448c17.673 0 32 14.327 32 32v64c0 17.673-14.327 32-32 32zm-48-88c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm-64 0c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm112 248H32c-17.673 0-32-14.327-32-32v-64c0-17.673 14.327-32 32-32h448c17.673 0 32 14.327 32 32v64c0 17.673-14.327 32-32 32zm-48-88c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm-64 0c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm112 248H32c-17.673 0-32-14.327-32-32v-64c0-17.673 14.327-32 32-32h448c17.673 0 32 14.327 32 32v64c0 17.673-14.327 32-32 32zm-48-88c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm-64 0c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24z">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                    Intent to apply for Initial Application</h5>
+                                <p class="slds-m-bottom_medium">
+                                    A Form must be submitted for each currently approved special education school program requesting program reconstruction.
+                                </p>
+                                <div class="controls">
+                                    <button data-permit-type="License"
+                                    class={button2Style} disabled={button2Disabled}
+                                        onclick={handleNewPermit}>Apply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="slds-col slds-p-horizontal_small slds-size_1-of-1 slds-large-size_4-of-12 slds-p-bottom_large">
+                        <div class="slds-card is-actionable license-card margin-auto slds-p-around_small">
+                            <div class="slds-card__content">
+                                <h5 class="page-title slds-m-bottom_small text-brand card-title">
+                                    <span>
+                                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="server"
+                                            class="svg-inline--fa fa-server fa-w-16" role="img"
+                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                            <path fill="currentColor"
+                                                d="M480 160H32c-17.673 0-32-14.327-32-32V64c0-17.673 14.327-32 32-32h448c17.673 0 32 14.327 32 32v64c0 17.673-14.327 32-32 32zm-48-88c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm-64 0c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm112 248H32c-17.673 0-32-14.327-32-32v-64c0-17.673 14.327-32 32-32h448c17.673 0 32 14.327 32 32v64c0 17.673-14.327 32-32 32zm-48-88c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm-64 0c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm112 248H32c-17.673 0-32-14.327-32-32v-64c0-17.673 14.327-32 32-32h448c17.673 0 32 14.327 32 32v64c0 17.673-14.327 32-32 32zm-48-88c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm-64 0c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24z">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                    Intent to apply for Reconstruction</h5>
+                                <p class="slds-m-bottom_medium">
+                                    A Form must be submitted for each currently approved special education school program requesting program reconstruction.
+                                </p>
+                                <div class="controls">
+                                    <button data-permit-type="License"
+                                    class={button2Style} disabled={button2Disabled}
+                                        onclick={handleNewPermit}>Apply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="slds-col slds-p-horizontal_small slds-size_1-of-1 slds-large-size_4-of-12 slds-p-bottom_large">
+                        <div class="slds-card is-actionable license-card margin-auto slds-p-around_small">
+                            <div class="slds-card__content">
+                                <h5 class="page-title slds-m-bottom_small text-brand card-title">
+                                    <span>
+                                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="server"
+                                            class="svg-inline--fa fa-server fa-w-16" role="img"
+                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                            <path fill="currentColor"
+                                                d="M480 160H32c-17.673 0-32-14.327-32-32V64c0-17.673 14.327-32 32-32h448c17.673 0 32 14.327 32 32v64c0 17.673-14.327 32-32 32zm-48-88c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm-64 0c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm112 248H32c-17.673 0-32-14.327-32-32v-64c0-17.673 14.327-32 32-32h448c17.673 0 32 14.327 32 32v64c0 17.673-14.327 32-32 32zm-48-88c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm-64 0c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm112 248H32c-17.673 0-32-14.327-32-32v-64c0-17.673 14.327-32 32-32h448c17.673 0 32 14.327 32 32v64c0 17.673-14.327 32-32 32zm-48-88c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm-64 0c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24z">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                    Intent to apply for Special Circumstances</h5>
+                                <p class="slds-m-bottom_medium">
+                                    A Form must be submitted for each currently approved special education school program requesting program reconstruction.
+                                </p>
+                                <div class="controls">
+                                    <button data-permit-type="License"
+                                    class={button2Style} disabled={button2Disabled}
+                                        onclick={handleNewPermit}>Apply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Foster permit begin-->
+                    <!--<div if:true={showFosterPermit}
+                        class="slds-col slds-p-horizontal_small slds-size_1-of-1 slds-large-size_4-of-12 slds-p-bottom_large">
+                        <div class="slds-card is-actionable license-card margin-auto slds-p-around_small">
+                            <div class="slds-card__content">
+                                <h5 class="page-title slds-m-bottom_small text-brand card-title">
+                                    <span>
+                                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="server"
+                                            class="svg-inline--fa fa-server fa-w-16" role="img"
+                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                            <path fill="currentColor"
+                                                d="M480 160H32c-17.673 0-32-14.327-32-32V64c0-17.673 14.327-32 32-32h448c17.673 0 32 14.327 32 32v64c0 17.673-14.327 32-32 32zm-48-88c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm-64 0c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm112 248H32c-17.673 0-32-14.327-32-32v-64c0-17.673 14.327-32 32-32h448c17.673 0 32 14.327 32 32v64c0 17.673-14.327 32-32 32zm-48-88c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm-64 0c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm112 248H32c-17.673 0-32-14.327-32-32v-64c0-17.673 14.327-32 32-32h448c17.673 0 32 14.327 32 32v64c0 17.673-14.327 32-32 32zm-48-88c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm-64 0c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24z">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                    New Foster Application</h5>
+                                <p class="slds-m-bottom_medium">
+                                    {Portal_Installation_Help_Text}
+                                </p>
+                                <div class="controls">
+                                    <button data-permit-type="License"
+                                        class="slds-button license_button slds-button_stretch"
+                                        onclick={handleFosterNewPermit}>Apply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+                    <!--Foster permit end-->
+
+
+                   <!--<div
+                        class="slds-col slds-p-horizontal_small slds-size_1-of-1 slds-large-size_4-of-12 slds-p-bottom_large">
+                        <div class="slds-card is-actionable license-card margin-auto slds-p-around_small">
+                            <div class="slds-card__content">
+                                <h5 class="page-title slds-m-bottom_small text-brand card-title">
+                                    <span>
+                                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="server"
+                                            class="svg-inline--fa fa-server fa-w-16" role="img"
+                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                            <path fill="currentColor"
+                                                d="M480 160H32c-17.673 0-32-14.327-32-32V64c0-17.673 14.327-32 32-32h448c17.673 0 32 14.327 32 32v64c0 17.673-14.327 32-32 32zm-48-88c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm-64 0c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm112 248H32c-17.673 0-32-14.327-32-32v-64c0-17.673 14.327-32 32-32h448c17.673 0 32 14.327 32 32v64c0 17.673-14.327 32-32 32zm-48-88c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm-64 0c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm112 248H32c-17.673 0-32-14.327-32-32v-64c0-17.673 14.327-32 32-32h448c17.673 0 32 14.327 32 32v64c0 17.673-14.327 32-32 32zm-48-88c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24zm-64 0c-13.255 0-24 10.745-24 24s10.745 24 24 24 24-10.745 24-24-10.745-24-24-24z">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                    New Renewal application</h5>
+                                <p class="slds-m-bottom_medium">
+                                    {Portal_Installation_Help_Text}
+                                </p>
+                                <div class="controls">
+                                    <button data-permit-type="Installation"
+                                        class="slds-button license_button slds-button_stretch license_button_disable"
+                                        onclick={handleNewPermit} disabled>Apply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+
+                    <!--Commented out for State of Arizona Licensing Demo-->
+                    <!-- <div
+                        class="slds-col slds-p-horizontal_small slds-size_1-of-1 slds-large-size_4-of-12 slds-p-bottom_large">
+                        <div class="slds-card is-actionable license-card margin-auto slds-p-around_small">
+                            <div class="slds-card__content">
+                                <h5 class="page-title slds-m-bottom_small text-brand card-title">
+                                <span>
+                                    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="puzzle-piece" class="svg-inline--fa fa-puzzle-piece fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M519.442 288.651c-41.519 0-59.5 31.593-82.058 31.593C377.409 320.244 432 144 432 144s-196.288 80-196.288-3.297c0-35.827 36.288-46.25 36.288-85.985C272 19.216 243.885 0 210.539 0c-34.654 0-66.366 18.891-66.366 56.346 0 41.364 31.711 59.277 31.711 81.75C175.885 207.719 0 166.758 0 166.758v333.237s178.635 41.047 178.635-28.662c0-22.473-40-40.107-40-81.471 0-37.456 29.25-56.346 63.577-56.346 33.673 0 61.788 19.216 61.788 54.717 0 39.735-36.288 50.158-36.288 85.985 0 60.803 129.675 25.73 181.23 25.73 0 0-34.725-120.101 25.827-120.101 35.962 0 46.423 36.152 86.308 36.152C556.712 416 576 387.99 576 354.443c0-34.199-18.962-65.792-56.558-65.792z"></path></svg>
+                                </span>New foundation application</h5>
+                                <p class="slds-m-bottom_medium">
+                                    {Portal_Foundation_Help_Text}</p>
+                                <div class="controls">
+                                    <button class="slds-button license_button_disable license_button slds-button_stretch"
+                                        onclick={handleTemporaryApplication}>Apply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="slds-col slds-p-horizontal_small slds-size_1-of-1 slds-large-size_4-of-12 slds-p-bottom_large">
+                        <div class="slds-card is-actionable license-card margin-auto slds-p-around_small">
+                            <div class="slds-card__content">
+                                <h5 class="page-title slds-m-bottom_small text-brand card-title">
+                                <span>
+                                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="cog" class="svg-inline--fa fa-cog fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M487.4 315.7l-42.6-24.6c4.3-23.2 4.3-47 0-70.2l42.6-24.6c4.9-2.8 7.1-8.6 5.5-14-11.1-35.6-30-67.8-54.7-94.6-3.8-4.1-10-5.1-14.8-2.3L380.8 110c-17.9-15.4-38.5-27.3-60.8-35.1V25.8c0-5.6-3.9-10.5-9.4-11.7-36.7-8.2-74.3-7.8-109.2 0-5.5 1.2-9.4 6.1-9.4 11.7V75c-22.2 7.9-42.8 19.8-60.8 35.1L88.7 85.5c-4.9-2.8-11-1.9-14.8 2.3-24.7 26.7-43.6 58.9-54.7 94.6-1.7 5.4.6 11.2 5.5 14L67.3 221c-4.3 23.2-4.3 47 0 70.2l-42.6 24.6c-4.9 2.8-7.1 8.6-5.5 14 11.1 35.6 30 67.8 54.7 94.6 3.8 4.1 10 5.1 14.8 2.3l42.6-24.6c17.9 15.4 38.5 27.3 60.8 35.1v49.2c0 5.6 3.9 10.5 9.4 11.7 36.7 8.2 74.3 7.8 109.2 0 5.5-1.2 9.4-6.1 9.4-11.7v-49.2c22.2-7.9 42.8-19.8 60.8-35.1l42.6 24.6c4.9 2.8 11 1.9 14.8-2.3 24.7-26.7 43.6-58.9 54.7-94.6 1.5-5.5-.7-11.3-5.6-14.1zM256 336c-44.1 0-80-35.9-80-80s35.9-80 80-80 80 35.9 80 80-35.9 80-80 80z"></path></svg>
+                                </span>    
+                                New machanical application</h5>
+                                
+                                <p class="slds-m-bottom_medium">
+                                    {Portal_Machanical_Help_Text}
+                                </p>
+                                <div class="controls">
+                                    <button class="slds-button license_button license_button_disable slds-button_stretch"
+                                        onclick={handleTemporaryApplication}>Apply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="slds-col slds-p-horizontal_small slds-size_1-of-1 slds-large-size_4-of-12 slds-p-bottom_large">
+                        <div class="slds-card is-actionable license-card margin-auto slds-p-around_small">
+                            <div class="slds-card__content">
+                                <h5 class="page-title slds-m-bottom_small text-brand card-title">
+                                <span>
+                                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="bolt" class="svg-inline--fa fa-bolt fa-w-10 icon_title" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M296 160H180.6l42.6-129.8C227.2 15 215.7 0 200 0H56C44 0 33.8 8.9 32.2 20.8l-32 240C-1.7 275.2 9.5 288 24 288h118.7L96.6 482.5c-3.6 15.2 8 29.5 23.3 29.5 8.4 0 16.4-4.4 20.8-12l176-304c9.3-15.9-2.2-36-20.7-36z"></path></svg>
+                                </span>
+                                    New electrical application</h5>
+                                <p class="slds-m-bottom_medium">
+                                    {Portal_Electrical_Help_Text}
+                                </p>
+                                <div class="controls">
+                                    <button class="slds-button license_button license_button_disable slds-button_stretch"
+                                        onclick={handleTemporaryApplication}>Apply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-p-horizontal_small slds-size_1-of-1 slds-large-size_4-of-12 slds-p-bottom_large">
+                        <div class="slds-card is-actionable license-card margin-auto slds-p-around_small">
+                            <div class="slds-card__content">
+                                <h5 class="page-title slds-m-bottom_small text-brand card-title">
+                                <span>
+                                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tools" class="svg-inline--fa fa-tools fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M501.1 395.7L384 278.6c-23.1-23.1-57.6-27.6-85.4-13.9L192 158.1V96L64 0 0 64l96 128h62.1l106.6 106.6c-13.6 27.8-9.2 62.3 13.9 85.4l117.1 117.1c14.6 14.6 38.2 14.6 52.7 0l52.7-52.7c14.5-14.6 14.5-38.2 0-52.7zM331.7 225c28.3 0 54.9 11 74.9 31l19.4 19.4c15.8-6.9 30.8-16.5 43.8-29.5 37.1-37.1 49.7-89.3 37.9-136.7-2.2-9-13.5-12.1-20.1-5.5l-74.4 74.4-67.9-11.3L334 98.9l74.4-74.4c6.6-6.6 3.4-17.9-5.7-20.2-47.4-11.7-99.6.9-136.6 37.9-28.5 28.5-41.9 66.1-41.2 103.6l82.1 82.1c8.1-1.9 16.5-2.9 24.7-2.9zm-103.9 82l-56.7-56.7L18.7 402.8c-25 25-25 65.5 0 90.5s65.5 25 90.5 0l123.6-123.6c-7.6-19.9-9.9-41.6-5-62.7zM64 472c-13.2 0-24-10.8-24-24 0-13.3 10.7-24 24-24s24 10.7 24 24c0 13.2-10.7 24-24 24z"></path></svg>
+                                </span>    
+                                New repair application</h5>
+                                <p class="slds-m-bottom_medium">{Portal_Repair_Help_Text}
+                                </p>
+                                <div class="controls">
+                                    <button class="slds-button license_button license_button_disable slds-button_stretch"
+                                        onclick={handleTemporaryApplication}>Apply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slds-col slds-p-horizontal_small slds-size_1-of-1 slds-large-size_4-of-12 slds-p-bottom_large">
+                        <div class="slds-card is-actionable license-card margin-auto slds-p-around_small">
+                            <div class="slds-card__content">
+                                <h5 class="page-title slds-m-bottom_small text-brand card-title">
+                                <span>
+                                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="sync-alt" class="svg-inline--fa fa-sync-alt fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M370.72 133.28C339.458 104.008 298.888 87.962 255.848 88c-77.458.068-144.328 53.178-162.791 126.85-1.344 5.363-6.122 9.15-11.651 9.15H24.103c-7.498 0-13.194-6.807-11.807-14.176C33.933 94.924 134.813 8 256 8c66.448 0 126.791 26.136 171.315 68.685L463.03 40.97C478.149 25.851 504 36.559 504 57.941V192c0 13.255-10.745 24-24 24H345.941c-21.382 0-32.09-25.851-16.971-40.971l41.75-41.749zM32 296h134.059c21.382 0 32.09 25.851 16.971 40.971l-41.75 41.75c31.262 29.273 71.835 45.319 114.876 45.28 77.418-.07 144.315-53.144 162.787-126.849 1.344-5.363 6.122-9.15 11.651-9.15h57.304c7.498 0 13.194 6.807 11.807 14.176C478.067 417.076 377.187 504 256 504c-66.448 0-126.791-26.136-171.315-68.685L48.97 471.03C33.851 486.149 8 475.441 8 454.059V320c0-13.255 10.745-24 24-24z"></path></svg>
+                                </span>
+                                    New refurbish application</h5>
+                                <p class="slds-m-bottom_medium">{Portal_Refurbish_Help_Text}
+                                </p>
+                                <div class="controls">
+                                    <button class="slds-button license_button license_button_disable slds-button_stretch"
+                                        onclick={handleTemporaryApplication}>Apply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                    <!--<div
+                        class="slds-col slds-p-horizontal_small slds-size_1-of-1 slds-large-size_4-of-12 slds-p-bottom_large">
+                        <div class="slds-card is-actionable license-card margin-auto slds-p-around_small">
+                            <div class="slds-card__content">
+                                <h5 class="page-title slds-m-bottom_small text-brand card-title">
+                                    <span>
+                                        <svg aria-hidden="true" focusable="false" data-prefix="fas"
+                                            data-icon="puzzle-piece" class="svg-inline--fa fa-puzzle-piece fa-w-18"
+                                            role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                            <path fill="currentColor"
+                                                d="M519.442 288.651c-41.519 0-59.5 31.593-82.058 31.593C377.409 320.244 432 144 432 144s-196.288 80-196.288-3.297c0-35.827 36.288-46.25 36.288-85.985C272 19.216 243.885 0 210.539 0c-34.654 0-66.366 18.891-66.366 56.346 0 41.364 31.711 59.277 31.711 81.75C175.885 207.719 0 166.758 0 166.758v333.237s178.635 41.047 178.635-28.662c0-22.473-40-40.107-40-81.471 0-37.456 29.25-56.346 63.577-56.346 33.673 0 61.788 19.216 61.788 54.717 0 39.735-36.288 50.158-36.288 85.985 0 60.803 129.675 25.73 181.23 25.73 0 0-34.725-120.101 25.827-120.101 35.962 0 46.423 36.152 86.308 36.152C556.712 416 576 387.99 576 354.443c0-34.199-18.962-65.792-56.558-65.792z">
+                                            </path>
+                                        </svg>
+                                    </span>Cancel Application</h5>
+                                <p class="slds-m-bottom_medium">{Portal_Cancel_Permit_Help_Text}</p>
+                                <div class="controls">
+                                    <button class="slds-button license_button slds-button_stretch"
+                                        onclick={cancelPermit}>Apply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+                    <!--<div
+                        class="slds-col slds-p-horizontal_small slds-size_1-of-1 slds-large-size_4-of-12 slds-p-bottom_large">
+                        <div class="slds-card is-actionable license-card margin-auto slds-p-around_small">
+                            <div class="slds-card__content">
+                                <h5 class="page-title slds-m-bottom_small text-brand card-title">
+                                    <span>
+                                        <svg aria-hidden="true" focusable="false" data-prefix="fas"
+                                            data-icon="puzzle-piece" class="svg-inline--fa fa-puzzle-piece fa-w-18"
+                                            role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                            <path fill="currentColor"
+                                                d="M519.442 288.651c-41.519 0-59.5 31.593-82.058 31.593C377.409 320.244 432 144 432 144s-196.288 80-196.288-3.297c0-35.827 36.288-46.25 36.288-85.985C272 19.216 243.885 0 210.539 0c-34.654 0-66.366 18.891-66.366 56.346 0 41.364 31.711 59.277 31.711 81.75C175.885 207.719 0 166.758 0 166.758v333.237s178.635 41.047 178.635-28.662c0-22.473-40-40.107-40-81.471 0-37.456 29.25-56.346 63.577-56.346 33.673 0 61.788 19.216 61.788 54.717 0 39.735-36.288 50.158-36.288 85.985 0 60.803 129.675 25.73 181.23 25.73 0 0-34.725-120.101 25.827-120.101 35.962 0 46.423 36.152 86.308 36.152C556.712 416 576 387.99 576 354.443c0-34.199-18.962-65.792-56.558-65.792z">
+                                            </path>
+                                        </svg>
+                                    </span>Request duplicate</h5>
+                                <p class="slds-m-bottom_medium">{Portal_Request_Duplicate_Permit_Help_Text}</p>
+                                <div class="controls">
+                                    <button class="slds-button license_button slds-button_stretch"
+                                        onclick={requestDuplicatePermit}>Apply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+                    <!--<div
+                        class="slds-col slds-p-horizontal_small slds-size_1-of-1 slds-large-size_4-of-12 slds-p-bottom_large">
+                        <div class="slds-card is-actionable license-card margin-auto slds-p-around_small">
+                            <div class="slds-card__content">
+                                <h5 class="page-title slds-m-bottom_small text-brand card-title">
+                                    <span>
+                                        <svg aria-hidden="true" focusable="false" data-prefix="fas"
+                                            data-icon="puzzle-piece" class="svg-inline--fa fa-puzzle-piece fa-w-18"
+                                            role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                            <path fill="currentColor"
+                                                d="M519.442 288.651c-41.519 0-59.5 31.593-82.058 31.593C377.409 320.244 432 144 432 144s-196.288 80-196.288-3.297c0-35.827 36.288-46.25 36.288-85.985C272 19.216 243.885 0 210.539 0c-34.654 0-66.366 18.891-66.366 56.346 0 41.364 31.711 59.277 31.711 81.75C175.885 207.719 0 166.758 0 166.758v333.237s178.635 41.047 178.635-28.662c0-22.473-40-40.107-40-81.471 0-37.456 29.25-56.346 63.577-56.346 33.673 0 61.788 19.216 61.788 54.717 0 39.735-36.288 50.158-36.288 85.985 0 60.803 129.675 25.73 181.23 25.73 0 0-34.725-120.101 25.827-120.101 35.962 0 46.423 36.152 86.308 36.152C556.712 416 576 387.99 576 354.443c0-34.199-18.962-65.792-56.558-65.792z">
+                                            </path>
+                                        </svg>
+                                    </span>Request change of address</h5>
+                                <p class="slds-m-bottom_medium">{Portal_Request_Change_of_Address_Help_Text}</p>
+                                <div class="controls">
+                                    <button class="slds-button license_button slds-button_stretch"
+                                        onclick={requestChangeOfAddress}>Apply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+
+                    <!--<template if:true={showTransferOL}>
+                        <div
+                            class="slds-col slds-p-horizontal_small slds-size_1-of-1 slds-large-size_4-of-12 slds-p-bottom_large">
+                            <div class="slds-card is-actionable license-card margin-auto">
+                                <div class="slds-card__content">
+                                    <h2 class="page-title slds-m-bottom_small text-brand">Transfer of alcohol</h2>
+                                    <p class="slds-m-bottom_medium">If you would like to transfer alcohol from your
+                                        business
+                                        located in one county to your business located in another county, please
+                                        submit
+                                        a
+                                        transfer request. You will receive approval shortly.</p>
+                                    <div class="controls">
+                                        <button class="slds-button slds-button_outline-brand slds-button_stretch"
+                                            onclick={handleTransferLicense}>Transfer License</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>-->
+
+                    <!--<template if:true={showMinorsOnPremisesCard}>
+                        <div
+                            class="slds-col slds-p-horizontal_small slds-size_1-of-1 slds-large-size_4-of-12 slds-p-bottom_large">
+                            <div class="slds-card is-actionable license-card margin-auto">
+                                <div class="slds-card__content">
+                                    <h2 class="page-title slds-m-bottom_small text-brand">Minors on premises request
+                                    </h2>
+                                    <p class="slds-m-bottom_medium">If you would like to have minors on your
+                                        licensed
+                                        premises,
+                                        please submit a request. You will receive approval shortly.</p>
+                                    <div class="controls">
+                                        <button class="slds-button slds-button_outline-brand slds-button_stretch"
+                                            onclick={handleShowMinorOnPremisesLicense}>Request now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                    <template if:true={showFreeSamplingCard}>
+                        <div
+                            class="slds-col slds-p-horizontal_small slds-size_1-of-1 slds-large-size_4-of-12 slds-p-bottom_large">
+                            <div class="slds-card is-actionable license-card margin-auto">
+                                <div class="slds-card__content">
+                                    <h2 class="page-title slds-m-bottom_small text-brand">Free Sampling Notice</h2>
+                                    <p class="slds-m-bottom_medium">If you would like to have a sampling event at
+                                        your
+                                        licensed
+                                        premises, please submit a sampling notice.</p>
+                                    <div class="controls">
+                                        <button class="slds-button slds-button_outline-brand slds-button_stretch"
+                                            onclick={handleFreeSampleRequestLicense}>Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>-->
+                    <!--<template if:true={showRetailCards}>
+                        <div
+                            class="slds-col slds-p-horizontal_small slds-size_1-of-1 slds-large-size_4-of-12 slds-p-bottom_large">
+                            <div class="slds-card is-actionable license-card margin-auto">
+                                <div class="slds-card__content">
+                                    <h2 class="page-title slds-m-bottom_small text-brand">Vintage Spirits Sale
+                                        Notice
+                                    </h2>
+                                    <p class="slds-m-bottom_medium">If you would like to purchase vintage spirits,
+                                        please
+                                        provide notice.</p>
+                                    <div class="controls">
+                                        <button class="slds-button slds-button_outline-brand slds-button_stretch"
+                                            onclick={handleVintageSpirit}>Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>-->
+
+                </div>
+            </div>
+        </div>
+    </c-psr-sidebar>
+
+    <!-- <template if:true={showSampleRequestLicense}>
+        <c-kyabc-free-sampling-request onclosemodal={handleCloseModal} header-text={headerText}>
+        </c-kyabc-free-sampling-request>
+    </template>
+
+<template if:true={showMinorOnPremisesLicense}>
+        <c-kyabc-minors-on-premises onclosemodal={handleCloseModal} header-text={headerText}>
+        </c-kyabc-minors-on-premises>
+    </template>
+
+<template if:true={showVintageSpirit}>
+        <c-kyabc-vintage-spirits-request onclosemodal={handleCloseModal} header-text={headerText}>
+        </c-kyabc-vintage-spirits-request>
+    </template>
+
+<template if:true={showTransferLicense}>
+        <c-kyabc-transfer-of-alcohol onclosemodal={handleCloseModal} header-text={headerText}>
+        </c-kyabc-transfer-of-alcohol>
+    </template>
+<template if:true={showInstructionAlert}>
+        <c-kyabc-instructions onclosemodal={handleCloseModal} application-type={applicationType}>
+
+        </c-kyabc-instructions>
+    </template>
+<template if:true={showTempAppError}>
+        <c-kyabc-temporary-license-app-error onclosemodal={handleCloseModal}>
+
+        </c-kyabc-temporary-license-app-error>
+    </template> -->
+</template>

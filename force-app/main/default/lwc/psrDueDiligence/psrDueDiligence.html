@@ -1,0 +1,156 @@
+<template>
+    <article class="slds-card">
+        <div class="legend-header">
+            <div>
+                <div class="legends">
+                    <div>
+                        <div  class="item">
+                            <span class="custom-auto-icon legend-icon slds-icon_container slds-icon-utility-settings slds-input__icon slds-input__icon_right">
+                                <lightning-icon icon-name="utility:settings" size="xx-small" alternative-text="Approved" variant="inverse">
+                                </lightning-icon>
+                            </span>
+                            <span class="legend-text">Automated</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div  class="item middle">
+                            <span class="custom-help-icon legend-icon slds-icon_container slds-icon-utility-info slds-input__icon slds-input__icon_right">
+                                <lightning-icon icon-name="utility:info" size="xx-small" alternative-text="Question Feed" variant="inverse">
+                                </lightning-icon>
+                            </span>
+                            <span class="legend-text">Help Text</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div  class="item" style="width: 10rem">
+                            <span class="custom-video-icon legend-icon slds-icon_container slds-icon-utility-video slds-input__icon slds-input__icon_right">
+                                <lightning-icon fill="#fff" class="custom-video" icon-name="utility:video" size="xx-small" alternative-text="video" variant="inverse">
+                                </lightning-icon>
+                            </span>
+                            <span class="legend-text">Video Instruction</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div if:true={showEdit}>
+                    <lightning-button variant="brand" label="Edit" onclick={handleEditClick} class="slds-m-left_x-small">
+                    </lightning-button>
+                </div>
+                <div if:false={showEdit}>
+                    <lightning-button label="Cancel" onclick={handleCancelClick} class="slds-m-left_x-small">
+                    </lightning-button>
+                    <lightning-button variant="brand" label="Save" onclick={handleSaveClick} class="slds-m-left_x-small">
+                    </lightning-button>
+                </div>
+            </div>
+        </div>
+        <div class="slds-card__body slds-card__body_inner">
+            <div class="slds-table_edit_container slds-is-relative">
+                <!-- Due Diligence List Start Here  -->
+                <table aria-multiselectable="true"
+                    class="slds-table slds-no-cell-focus slds-table_bordered slds-table_edit slds-table_fixed-layout slds-table_resizable-cols"
+                    role="grid" style="width: 100%;">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <template for:each={columnConfiguration} for:item="column">
+                                <th key={column.fieldApiName} scope="col" style={column.style}>
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                        <div
+                                            class="slds-truncate slds-text-body_medium slds-p-around_xx-small column-padding">
+                                            {column.heading}</div>
+                                    </div>
+                                </th>
+                            </template>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={data} for:item='item'>
+                            <tr class="slds-hint-parent" key={item.Id}>
+                                <td role="gridcell" style="word-break:break-word;white-space: normal;">
+                                    <div class="">
+                                        {item.Due_Diligence_Name__c}
+                                        <span if:true={item.Reference_Link__c}>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<a onclick={openVideoModal} data-url={item.Reference_Link__c}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="15px" focusable="false" data-prefix="fas" data-icon="video" class="svg-inline--fa fa-video fa-w-18" role="img" viewBox="0 0 576 512">
+                                                    <path fill="gray" d="M336.2 64H47.8C21.4 64 0 85.4 0 111.8v288.4C0 426.6 21.4 448 47.8 448h288.4c26.4 0 47.8-21.4 47.8-47.8V111.8c0-26.4-21.4-47.8-47.8-47.8zm189.4 37.7L416 177.3v157.4l109.6 75.5c21.2 14.6 50.4-.3 50.4-25.8V127.5c0-25.4-29.1-40.4-50.4-25.8z"></path>
+                                                </svg>
+                                            </a>
+                                        </span>
+                                        <span class="gap"></span>
+                                        <span class="custom-auto-icon legend-icon slds-icon_container slds-icon-utility-settings slds-input__icon slds-input__icon_right">
+                                            <lightning-icon icon-name="utility:settings" size="xx-small" alternative-text="Approved" variant="inverse">
+                                            </lightning-icon>
+                                        </span>
+                                        <span class="custom-help-icon legend-icon slds-icon_container slds-icon-utility-info slds-input__icon slds-input__icon_right">
+                                            <lightning-icon icon-name="utility:info" size="xx-small" alternative-text="Question Feed" variant="inverse">
+                                            </lightning-icon>
+                                        </span>
+                                        <span class="custom-video-icon legend-icon slds-icon_container slds-icon-utility-video slds-input__icon slds-input__icon_right">
+                                            <lightning-icon fill="#fff" class="custom-video" icon-name="utility:video" size="xx-small" alternative-text="video" variant="inverse">
+                                            </lightning-icon>
+                                        </span>
+
+                                    </div>
+                                </td>
+                                <td role="gridcell" style="word-break:break-word;white-space: normal;">
+                                    <div class=""> {item.Responsible_Party__c} </div>
+                                </td>
+                                <td role="gridcell" style="word-break:break-word;white-space: normal;">
+                                    <div if:true={showEdit} class=""> {item.Status__c} </div>
+                                    <div if:false={showEdit} class="">
+                                        <lightning-combobox class="status-field" data-recid={item.Id} name="status"
+                                            value={item.Status__c} options={statusOptions} onchange={handleChange}
+                                            variant="label-hidden">
+                                        </lightning-combobox>
+                                    </div>
+                                </td>
+                                <td role="gridcell" style="word-break:break-word;white-space: normal;">
+                                    <div class="">
+                                        <lightning-formatted-date-time year="numeric" month="numeric" day="numeric"
+                                            value={item.Completed_Date__c}>
+                                        </lightning-formatted-date-time>
+                                    </div>
+                                </td>
+                                <td role="gridcell" style="word-break:break-word;white-space: normal;">
+                                    <div class="">{item.LastModifiedBy.Name} </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+                <!-- Due Diligence List End Here  -->
+            </div>
+        </div>
+    </article>
+    <template if:true={openVModal}>
+        <div class="demo-only">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container modal-container modal-height">
+                    <header class="slds-modal__header">
+                       
+                        <h2 id="modal-heading-012" class="slds-text-heading_medium slds-hyphenate">Due Diligence</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium content-modal-box modal-height" id="modal-content-id-12">
+                        
+                        <div style="padding-bottom: 10px;">
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-col slds-size_3-of-3 video-iframe">
+                                    
+                                    <!-- <iframe width="100%" height="355" src="https://www.youtube.com/embed/xkO9mtXtp-A" allowfullscreen> </iframe> -->
+                                    <iframe width="100%" height="500" src={urlValue} allowfullscreen> </iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning-button label="Cancel" variant="neutral" onclick={closeVideoModal}></lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+        </template>
+
+
+</template>

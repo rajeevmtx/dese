@@ -1,0 +1,100 @@
+<template>
+
+    <div class="regContainerPage">
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_6-of-12 loginImages">
+                <img src={loginImages}/>
+                <div class="welcomeText">
+                    <h3>Welcome</h3>
+                    <p>An official website of the Massachusetts Department of  Elementary and Secondary Education</p>
+                </div>
+                <div class="powered">Powered by MTX</div>
+            </div>
+
+            <div class="slds-col slds-size_6-of-12 submitForm">
+                <h3>Register</h3>
+                <p>Register as a new user below</p>
+                <div class="clear"></div>
+                <div>
+                    <label>First Name</label>
+                    <lightning-input variant="label-stacked" label="" onchange={handleGenericChange} name="FirstName"></lightning-input>
+                </div>
+
+                <div>
+                    <label>Last Name</label>
+                    <lightning-input variant="label-stacked" label="" onchange={handleGenericChange} name="LastName"></lightning-input>
+                </div>
+
+                <div>
+                    <label>Email Id</label>
+                    <lightning-input variant="label-stacked" type="email" label="" onchange={handleGenericChange} name="Email"></lightning-input>
+                </div>
+                <div>
+                    <label>Organization Name</label>
+                    <lightning-input variant="label-stacked" label="Organization Name" onchange={handleGenericChange} name="orgName"></lightning-input>
+
+                </div>
+                <div class="clear"></div>
+                <div class="clear"></div>
+                <lightning-button variant="brand" label="Submit" onclick={handleSubmit}></lightning-button>
+                <div class="clear"></div>
+                <div class="signInText">
+                    <!-- <p><span>Sign In using</span> </p>
+                    <img src={faceBook}/>
+                    <img src={gmail}/>
+                    <img src={google}/> -->
+                    <p>Already have an account? <a href="https://desedemo-demo-lp.cs196.force.com/dese/s/login" > Login</a></p>
+                </div>
+               
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="userRegContainer">
+        <div class="formContainer">
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size_1-of-2">
+                    <lightning-input variant="label-stacked" label="First Name" onchange={handleGenericChange} name="FirstName"></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                    <lightning-input variant="label-stacked" label="Last Name" onchange={handleGenericChange} name="LastName"></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                    <lightning-input variant="label-stacked" type="email" label="Email" onchange={handleGenericChange} name="Email"></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                    <lightning-input variant="label-stacked" type="tel" label="Phone" onchange={handleGenericChange} name="Phone"></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                    <lightning-input variant="label-stacked" label="Organization Name" onchange={handleGenericChange} name="orgName"></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1">
+                    <lightning-input-address  address-label="Address"
+                            street-label="Street"
+                            city-label="City"
+                            country-label="Country"
+                            province-label="Province"
+                            postal-code-label="PostalCode"
+                            street=""
+                            city=""
+                            country=""
+                            province=""
+                            postal-code=""
+                            required
+                            field-level-help="Select Address"
+                            onchange={addressInputChange}
+                            show-address-lookup>
+                        </lightning-input-address>
+                </div>
+
+                <div class="slds-col slds-size_1-of-1">
+                    <div>
+                        <lightning-button variant="brand" label="Submit" onclick={handleSubmit}></lightning-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

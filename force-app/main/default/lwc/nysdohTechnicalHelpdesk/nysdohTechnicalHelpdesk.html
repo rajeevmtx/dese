@@ -1,0 +1,29 @@
+<template>
+    <div slot="body">
+        <div class="tab slds-m-around_large shadow-card">
+            <div class="container padding-bottom-container">
+                <div class="slds-m-bottom_x-large doh-card-heading">
+                    <h1 class="section-title">Help Desk</h1>
+                </div>
+            <c-psr-help-text help-text={Portal_Work_Order_Help_Text}></c-psr-help-text>
+            <div class="main slds-form-element">
+                <div class="slds-form-element__control">
+                    <div><span>Priority</span></div>
+                    <select class="slds-select" name = "Priority" onchange={changeHandler} >
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>  
+                    <lightning-input type="text" label="Subject" name="Subject" value={subject} id="Subject" onchange={handleFormInputChange}></lightning-input>
+                    <lightning-textarea name="Description" label="Description" value={description} id="Description" onchange={handleFormInputChange}></lightning-textarea>
+                    <lightning-button variant="brand" label="Submit" title="Submit" onclick={handleClick} class="slds-m-left_x-small right-float"></lightning-button>
+                </div> 
+            </div>
+            <div if:true={isHospital} class="license-grid">
+                <lightning-button variant="Neutral" label="New" onclick={setupNewRequest}>
+                </lightning-button>
+            </div>
+        </div>
+    </div>
+</div>
+</template>

@@ -1,0 +1,127 @@
+<apex:page standardController="Appointment__c" renderAs="pdf" showHeader="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false">
+    <head>
+        <style type="text/css">
+.tableStyle {
+  border-collapse: collapse;
+  width: 100%;
+}
+.columnStyle {
+  border: 1px solid black;
+  text-align: left;
+  padding: 4px;
+            width: 100%;
+}
+.captionStyle {
+  border: 1px solid black;
+  background-color: #2E86C1;
+}
+.secondDiv {
+  margin-top: 20px;
+}
+.floatLeft {
+  position: absolute;
+  left: 0px;
+  width: 50%; 
+  float: left; 
+}
+.floatRight {
+  position: absolute;
+  margin-left: 10px;
+  right: 0px;
+  width: 50%;	 
+  float: right; 
+}
+.container { overflow: hidden; }
+    </style>
+    </head>
+    <body>
+        <div>
+            <div class="floatLeft">
+                QR Code: <apex:outputField value="{!Appointment__c.QR_Code__c}"/>
+            </div>
+            <div class="floatRight">
+                Appointment Date: 
+            </div>
+        </div>
+        <div>
+            <h2>
+                <center>BIOREFERENCE COVID-19 REQUISITION</center>
+            </h2>
+        </div>
+        <div>   
+        	<table class="tableStyle">
+	            <caption class="captionStyle"><font color="white"><strong>PATIENT</strong></font></caption>
+	            <tbody>
+	                <tr>
+	                    <td class="columnStyle" colspan="6">Comments:</td>
+	                </tr>
+	                <tr>
+	                    <td class="columnStyle" colspan="2">Last Name:</td>
+	                    <td class="columnStyle"  colspan="2">First Name:</td>
+    	                <td class="columnStyle" colspan="2">MI: </td>
+                	</tr>
+                	<tr>
+                    	<td class="columnStyle"  colspan="3">Last Name:</td>
+                    	<td class="columnStyle"  colspan="3">First Name:</td>
+                	</tr>
+                	<tr>
+	                    <td class="columnStyle" colspane="1">City:</td>
+	                    <td class="columnStyle" colspane="1">State:</td>
+	                    <td class="columnStyle" colspane="1">ZIP:</td>
+	                    <td class="columnStyle" colspane="1">DOB:</td>
+	                    <td class="columnStyle" colspane="1">Age:</td>
+	                    <td class="columnStyle" colspane="1">Gender:</td>
+	                </tr>
+                	<tr>
+	                    <td class="columnStyle" colspan="2">Patient Phone Number:</td>
+	                    <td class="columnStyle" colspan="2">Patient Email:</td>
+	                    <td class="columnStyle" colspan="2">Collected(DATE/TIME):</td>
+	                </tr>
+	            </tbody>
+        	</table>
+        </div>
+    	<div class="secondDiv container">
+	        <div class="floatLeft">        
+        		<table class="tableStyle">
+            		<caption class="captionStyle"><font color="white"><strong>ACCOUNT</strong></font></caption>
+            		<tbody>
+                		<tr>
+                    		<td class="columnStyle"><pre>
+CV100-5
+New York State
+</pre>
+                           	</td>
+                		</tr>
+            		</tbody>
+        		</table>
+            </div>
+        	<div class="floatRight">
+        		<table class="tableStyle">
+            	<caption class="captionStyle"><font color="white"><strong>PHYSICIANS</strong></font></caption>
+            		<tbody>
+	            	    <tr>
+	                	    <td class="columnStyle"><pre>Commisioner Standing Order
+35 Weyman Ave,
+New Rochelle,
+NY 10805
+Standing order issued persuent to Executive Order 202    </pre>                   
+	                    	</td>
+    	            	</tr>
+        	    	</tbody>
+        		</table>
+            </div>
+        </div>      
+        <!--<div style="margin-top: 10px;">   
+        	<table class="tableStyle">
+	            <caption class="captionStyle"><font color="white"><strong>Nasopharynx (source)</strong></font></caption>
+	            <tbody>
+	                <tr>
+	                    <td class="columnStyle" style="text-align: center; vertical-align: middle;" colspan="6">
+		                    <input type="checkbox" name="myTextEditBox" value="checked"/>COVID-19
+	                    </td>
+	                </tr>
+	            </tbody>
+	        </table>
+        </div>-->
+    </body>
+</apex:page>

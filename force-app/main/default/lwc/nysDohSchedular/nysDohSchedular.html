@@ -1,0 +1,27 @@
+<template>
+    <div class="page-header">
+        <h1 class="section-title">Schedular</h1>
+    </div>
+
+    
+    <div class="slds-form">
+        <div class="slds-form__row">
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size_1-of-1 slds-p-right_small slds-bottom-right_small">
+                    <lightning-textarea type="text" label="Acknowledgement and Agreement" value={agreement} disabled>
+                    </lightning-textarea>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-m-top_medium slds-m-bottom_small">
+                    <lightning-input type="checkbox" name="terms" label="I agree to the above terms"
+                        onchange={handleReviewCheck} value={reviewCheck} checked={reviewCheck}></lightning-input>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <template if:true={showThankYou}>
+        <div class="thankyou slds-align_absolute-center">Thank you for submitting the application!</div>
+
+        <!-- </div> -->
+    </template>
+</template>

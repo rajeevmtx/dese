@@ -1,0 +1,22 @@
+<template>
+    <!-- <div class="page-header">
+        <h1 class="page-title">Attestation</h1>
+    </div> -->
+    <div class="slds-form">
+        <div class="slds-form__row">
+            <div class="slds-form__item">
+                <lightning-input type="checkbox" name="firstCheck"
+                    label="The report I am submitting does not require an emergency response." onchange={handleInput}
+                    style="width: 100%;" required></lightning-input>
+            </div>
+        </div>
+
+        <div class="slds-form__row">
+            <div class="slds-form__item">
+                <lightning-input type="checkbox" name="secondCheck" label="I understand that if I did not see a confirmation message that my report was submitted, I must check for errors or
+                    incomplete entries on the form. " onchange={handleInput} style="width: 100%;" required>
+                </lightning-input>
+            </div>
+        </div>
+    </div>
+</template>

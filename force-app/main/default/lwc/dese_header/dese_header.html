@@ -1,0 +1,111 @@
+<template>
+   <div class="header-container">
+      <header class="header application-header">
+         <p class="main-header">
+            An official website of the Massachusetts Department of Elementary and Secondary Education
+         </p>
+         <div class="header-nav blueColor">
+            <div class="logo">
+               <!-- <img src={headerlogo} alt="" /> -->
+               <img src={newlogo} alt="" />
+               
+            </div>
+            <div class="nav">
+               <div class="home" onclick={navigateToHome} style="cursor: pointer;">Home </div>
+               <div class="support" onclick={navigateToMonitoring} style="cursor: pointer;">Support</div>
+               <div class="line"></div>
+               <div class="notification">
+                  <lightning-icon icon-name="utility:notification"  alternative-text="Approved"
+                  title="Approved"></lightning-icon>
+                  <span ></span>
+                  
+               </div>
+               <div class="line"></div>
+               <template if:false={isGuestUser}>
+               <div class="profile userLogin">
+                  <div class="profile__avatar">
+                     <img src={avatar} alt="" />
+                  </div>
+                  <div class="profile__name">{name}</div>&nbsp;
+                  
+                  <div class="profile__vector">
+                     <!-- <img src={vector} alt="" /> -->
+                     <lightning-button-menu alternative-text="Show menu">    
+                        <lightning-menu-item value="My Profile" label="My Profile" onclick={handleMyProfile}></lightning-menu-item>
+                        <lightning-menu-item value="Settings" label="Settings"></lightning-menu-item>
+                        <lightning-menu-item value="Log Out" label="Log Out" onclick={handleLogout}></lightning-menu-item>
+                    </lightning-button-menu>&nbsp;
+                  </div>
+               </div>
+               <div class="line"></div>
+               <div class="language">
+                  <!-- <div class="language__translate">
+                    <img src={translate} alt="" /> 
+                
+                  
+                  </div> -->
+                  <div class="language__select languageSelect">
+                     <lightning-combobox variant="label-hidden" name="progress" value={value} placeholder="Eng"
+                        options={options} onchange={handleChange} class="languageSelectOptions"></lightning-combobox>
+                  </div>
+
+
+               </div>
+            </template>
+            <template if:true={isGuestUser}>
+               <div class="language">
+                  <!-- <div class="language__translate">
+                    <img src={translate} alt="" /> 
+                
+                  
+                  </div> -->
+                  <div class="language__select languageSelect">
+                     <lightning-combobox variant="label-hidden" name="progress" value={value} placeholder="Eng"
+                        options={options} onchange={handleChange} class="languageSelectOptions"></lightning-combobox>
+                  </div>
+
+
+               </div>
+               <div class="profile userLogin ">
+                  <lightning-button label="Register" class="userRegisterBtn" variant="neutral" onclick={handleRegister}></lightning-button>
+               </div>
+               <div class="language__select headerButtons">
+                  <lightning-button label="login" class="userLoginBtn"  variant="neutral" onclick={handleLogin}></lightning-button>
+               </div>
+            </template>
+            </div>
+         </div>
+         <div class="warning">
+            <div class="warning__icon">
+               <img src={warning} alt="" />
+            </div>
+            <div class="warning__text">
+               Stay informed about COVID-19 and the latest health and safety guidance for school districts.
+            </div>
+         </div>
+         <!-- <div class="header-info">
+            <div class="information">
+               <div class="info">
+                  <div class="info__main">
+                     Standard Contract Form and Application for Program Grants
+                  </div>
+                  <div class="info__sub">
+                     FY20 Consolidated Federal ESEA Programs Application
+                  </div>
+               </div>
+               <div class="date">
+                  <div class="date__due">
+                     Due Date
+                  </div>
+                  <div class="date__format slds-is-today ">
+                     <lightning-formatted-date-time value={newDate} year="numeric"
+                     day="2-digit"
+                     month="long" class="dateFormate"></lightning-formatted-date-time>
+                  </div>
+               </div>
+            </div>
+            
+         </div> -->
+      </header>
+   </div>
+</template>

@@ -1,0 +1,175 @@
+<apex:page sidebar="false" tabStyle="Application__tab" standardController="Project_Invoice__c" extensions="CORE_Invoice_Extension">
+    <head>
+        <style>
+            .required{
+                display: none;
+                color: red!important;
+                margin-left: 5px;
+            }
+
+            .has-error .required{
+                display:inline;
+            }
+
+        </style>
+    </head>
+    <apex:composition template="CORE_APPINTAKE_Template_Page">
+        <apex:define name="body">
+            <div class="page invoice">
+                <div class="page-header">
+                    <div class="content flex sm">
+                        <h1><apex:outputField value="{!invoice.Project__c}"/></h1>
+                        <div class="controls">
+                        </div>
+                    </div>
+                </div>
+                <apex:form >
+                    <div class="application">
+                        <div class="alert-container">
+                            <div id="errorText" class="alert alert-danger hidden">
+                                Please fill the missing fields.
+                            </div>
+                        </div>
+                        <div class="content content-body">
+                            <apex:repeat value="{!listOfProjectMilestones}" var="mst">
+                                <div class="box-group">
+                                    <div class="attachments">
+                                        <div class="section-head">
+                                            <div class="title">{!mst.Name} - Deliverables (Documents)</div>
+                                        </div>
+                                         <div class="section-body table-responsive">
+                                            <table class="table  table-striped table-default">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Deliverable name</th>
+                                                        <th >Recent uploaded document</th>
+                                                        <th>Upload history</th>
+                                                        <th>Status</th>
+                                                        <th>Add / update document</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <apex:repeat value="{!mst.Project_Deliverables1__r}" var="deliverable">
+                                                        <tr class="{!IF(mapOfDeliverableIdAndRequiredStatus[deliverable.id] == true && mapOfIdAndDeliverables[deliverable.Id].Project_Documents__r.size == 0,'required-row','')}">
+                                                            <td>
+                                                                <apex:outputText value="{!deliverable.Name}" />
+                                                            </td>
+                                                            <td>
+                                                                <apex:outputPanel layout="none" rendered="{!mapOfIdAndDeliverables[deliverable.Id].Project_Documents__r.size > 0}">
+                                                                    <a target="_blank" href="/servlet/servlet.FileDownload?file={!mapOfIdAndDocuments[mapOfIdAndDeliverables[deliverable.Id].Project_Documents__r[0].Id].Attachments[0].Id}">View</a>
+                                                                </apex:outputPanel>
+                                                            </td>
+                                                            <td>
+                                                                <div><a href="javascript:getHistory('{!deliverable.Id}')">Attachment<br/>History</a></div>
+                                                            </td>
+                                                            <td><apex:outputField value="{!deliverable.Status__c}"/></td>
+                                                            <td>
+                                                                <apex:inputFile styleclass="doc-body" value="{!mapOfDeliverableIdAndAttachment[deliverable.Id].Body}" fileName="{!mapOfDeliverableIdAndAttachment[deliverable.Id].Name}"/>
+                                                                <span class="required"><small>* required</small></span>
+                                                            </td>
+                                                        </tr>
+                                                    </apex:repeat>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </apex:repeat>
+                        </div>
+
+                        <apex:outputPanel id="historyModal">
+                            <div class="modal fade" id="historyPopup" role="dialog">
+                                <div class="modal-dialog modal-md">
+                                    <div class="modal-content" style="width: 150%; left: -25%;">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <apex:outputPanel >
+                                                <h4 class="modal-title">Attachment History</h4>
+                                            </apex:outputPanel>
+                                        </div>
+
+                                        <div class="modal-body table-responsive">
+                                            <table class="table  table-striped table-default">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Document Name</th>
+                                                        <th>Uploaded Attachment</th>
+                                                        <th>Version Number</th>
+                                                        <th>Created Date</th>
+                                                        <th>Created By</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <apex:repeat value="{!mapOfIdAndDeliverables[selectedDeliverabeldId].Project_Documents__r}" var="doc" rendered="{!selectedDeliverabeldId != null}">
+                                                        <tr>
+                                                            <td>{!doc.Name}</td>
+                                                            <td>
+                                                                <a href="/servlet/servlet.FileDownload?file={!mapOfIdAndDocuments[doc.Id].Attachments[0].Id}" target="_blank">{!mapOfIdAndDocuments[doc.Id].Attachments[0].Name}</a>
+                                                            </td>
+                                                            <td style="text-align:center;"> {!doc.Version__c} </td>
+                                                            <td>
+                                                                <apex:outputText value="{0, date, MM/dd/yyyy hh:mm:ss}">
+                                                                     <apex:param value="{!doc.CreatedDate}" />
+                                                                </apex:outputText>
+                                                            </td>
+                                                            <td> {!doc.CreatedBy.Name} </td>
+                                                        </tr>
+                                                    </apex:repeat>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <div class="controls">
+                                                <div class="right" id="cancelBtnDiv">
+                                                    <button id="cancelBtn" type="button" class="btn-bs btn-default" data-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+
+                    </div>
+                    <apex:actionFunction name="saveDoc" action="{!saveDocuments}"/>
+                    <apex:actionFunction name="goToMainInvoicePage" action="{!goToMainInvoicePage}" immediate="true"/>
+                    <apex:actionRegion >
+                        <apex:actionFunction name="getHistory" onComplete="openHistoryPopup();" rerender="historyModal" status="status">
+                            <apex:param value="" name="selectedDeliverabeldId" assignTo="{!selectedDeliverabeldId}" />
+                        </apex:actionFunction>
+                    </apex:actionRegion>
+                </apex:form>
+            </div>
+            <footer>
+                <div class="content flex controls">
+                    <a href="javascript:goToMainInvoicePage()" class="btn-bs btn-blank right btn-lg">Previous</a>
+                    <a href="javascript:checkRequiredDocAndSave()" class="btn-bs btn-primary btn-lg">Save</a>
+                </div>
+            </footer>
+
+        </apex:define>
+    </apex:composition>
+
+    <script>
+        function checkRequiredDocAndSave(){
+            var hasMissingFields = false;
+            $(".required-row .doc-body").each(function(){
+               if($(this).get(0).files.length === 0){
+                   $(this).closest('tr').addClass('has-error');
+                   hasMissingFields = true;
+               }
+            });
+            if(hasMissingFields == false)
+                saveDoc();
+            else
+                $("#errorText").removeClass('hidden');
+        }
+
+        function openHistoryPopup() {
+            $('#historyPopup').modal({
+                backdrop : 'static',
+                keyboard : false
+            });
+        }
+    </script>
+</apex:page>

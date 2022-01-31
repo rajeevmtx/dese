@@ -1,0 +1,191 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+        aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_x-small">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close"
+                    onclick={handleCloseModal}>
+                    <lightning-icon icon-name="utility:close" variant="inverse" alternative-text="Close" size="medium">
+                    </lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">
+                    <!-- Placement Due Diligence Checklist -->
+                    Placement Details
+                </h2>
+            </header>
+            <div class="slds-modal__content" id="modal-content-id-2">
+
+                <div class="app-container slds-grid slds-gutters slds-wrap slds-p-bottom_xx-large">
+                    <div class="slds-form slds-col slds-size_1-of-1">
+                        <div class="top_margin--large">
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_12-of-12">
+                                    <div class="search-card">
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-1 section-parts">
+                                                <div class="slds-grid slds-wrap">
+                                                    <div class="slds-col slds-size_1-of-1 user--content">
+                                                        <div class="user--name">{fosterParentDetails.Name}
+                                                        </div>
+                                                        <div class="user--address">
+                                                            {fosterParentDetails.address}</div>
+                                                        <div class="user-distance">12 mi</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-form slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+                        <div class="nh_grid-item">
+                            <div class="slds-grid slds-gutter slds-wrap">
+                                <div class="slds-col slds-size_1-of-1 slds-p-top_small model-item-list">
+                                    <span class="item-value item-value-right">Potential Placement Date: &nbsp;&nbsp;</span>
+                                    <span
+                                        class="item-value item-value-left">{today}</span>
+                                </div>
+                                <!-- <div class="slds-col slds-size_1-of-1 slds-p-top_small model-item-list">
+                                    <span class="item-value item-value-right">Employment&nbsp;:</span>
+                                    <span
+                                        class="item-value item-value-left">{fosterParentDetails.Employment_Status__c}</span>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-p-top_small model-item-list">
+                                    <span class="item-value item-value-right">Homeowner&nbsp;:</span>
+                                    <span
+                                        class="item-value item-value-left">{fosterParentDetails.Homeowner_Status__c}</span>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-p-top_small model-item-list">
+                                    <span class="item-value item-value-right">License
+                                        Status&nbsp;:</span>
+                                    <span class="item-value item-value-left">Licensed</span>
+                                </div> -->
+                                <!-- <div class="slds-col slds-size_1-of-1 model-item-list">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label"
+                                            for="checkbox-unique-id-79">Potential Placement Date:</label>
+                                        <div class="slds-form-element__control slds-p-top_xxx-small">
+                                            <span class="slds-checkbox slds-checkbox_standalone ">
+                                                <input type="checkbox" id="checkbox-unique-id-9"
+                                                    name="label" value="option" disabled
+                                                    checked={today} />
+                                                <span class="slds-checkbox_faux"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <!-- <div class="slds-col slds-size_1-of-1 model-item-list">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label"
+                                            for="checkbox-unique-id-7">BRC:</label>
+                                        <div class="slds-form-element__control slds-p-top_xxx-small">
+                                            <span class="slds-checkbox slds-checkbox_standalone">
+                                                <input type="checkbox" id="checkbox-unique-id-79"
+                                                    name="label" value="option" disabled
+                                                    checked={fosterParentDetails.backgroundCheck} />
+                                                <span class="slds-checkbox_faux"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 model-item-list">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label"
+                                            for="checkbox-unique-id-7">Financial
+                                            Stability:</label>
+                                        <div class="slds-form-element__control slds-p-top_xxx-small">
+                                            <span class="slds-checkbox slds-checkbox_standalone">
+                                                <input type="checkbox" id="checkbox-unique-id-80"
+                                                    name="label" value="option" disabled
+                                                    checked={fosterParentDetails.financialStability} />
+                                                <span class="slds-checkbox_faux"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 model-item-list">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label"
+                                            for="checkbox-unique-id-7">Licensed:</label>
+                                        <div class="slds-form-element__control slds-p-top_xxx-small">
+                                            <span class="slds-checkbox slds-checkbox_standalone">
+                                                <input type="checkbox" id="checkbox-unique-id-81"
+                                                    name="label" value="option" disabled
+                                                    checked={fosterParentDetails.licensed} />
+                                                <span class="slds-checkbox_faux"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <table class="slds-table slds-table_cell-buffer ">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="Employer Name">
+                                        Checklist Name</div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="Year">
+                                        Status
+                                    </div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="Title">Completed Date
+                                    </div>
+                                </th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={placementChecklists} for:index="index" for:item="each">
+                                <tr class="slds-hint-parent" key={each.name}>
+                                    <td data-label="Dollar Tree">
+                                        <div class="slds-truncate" title="Dollar Tree">{each.name}</div>
+                                    </td>
+                                    <td data-label="2015" class="edit-cell">
+                                        <span>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-select_container">
+                                                    <select class="slds-select" onchange={handleStatusChange}
+                                                        data-index={index}>
+                                                        <option value="Pending" selected={each.pending}>
+                                                            Pending
+                                                        </option>
+                                                        <option value="Complete" selected={each.complete}>
+                                                            Complete
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </span>
+                                        
+                                    </td>
+                                    <td data-label="Store Manager">
+                                        <div class="slds-truncate" title="Store Manager">{each.completedDate}
+                                        </div>
+                                    </td>
+                                    
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table> -->
+                </div>
+            </div>
+            <footer class="slds-modal__footer">
+                <template if:true={enableSave}>
+                    <lightning-button label="Save" class="slds-m-right_medium" variant="brand" onclick={handleSaveList}>
+                    </lightning-button>
+                </template>
+                <lightning-button label="Back" class="slds-m-right_medium" variant="neutral" onclick={handleCloseModal}>
+                </lightning-button>
+            </footer>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

@@ -1,0 +1,51 @@
+<template>
+    <div class="app-container slds-grid slds-gutters slds-wrap">
+        <div class="slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            <c-fc-intake-form-help-text help-text={helpTextVerification}></c-fc-intake-form-help-text>
+        </div>
+        <div class="slds-form slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+            
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="text" autocomplete="none" label="Street Address Line 1" maxlength=255
+                         onblur={handleInput} name="streetaddressline1" class="streetaddressline1" style="width: 100%;" required>
+                    </lightning-input>
+                </div>
+            </div>
+
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="text" autocomplete="none" label="Street Address Line 2" maxlength=255 onblur={handleInput} name="streetaddressline2" class="streetaddressline2"  style="width: 100%;">
+                    </lightning-input>
+                </div>
+            </div>
+
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="text" autocomplete="none" label="City" maxlength=255 required
+                        onblur={handleInput}  message-when-pattern-mismatch={cityValidation}
+                        pattern="^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$"
+                        name="city" class="city" style="width: 100%;">
+                    </lightning-input>
+                </div>
+            </div> 
+
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input name="state" class="state" label="State" required
+                    onchange={handleInput} value="NH" style="width: 100%;"></lightning-input>
+                </div>
+            </div>
+
+            <div class="slds-form__row">
+                <div class="slds-form__item">
+                    <lightning-input type="text" class="zipcode" autocomplete="none" label="ZIP Code" maxlength=5  required
+                        onblur={handleInput} name="zipcode" style="width: 100%;"
+                        pattern="^[0-9]{5}(?:-[0-9]{4})?$"
+                        message-when-pattern-mismatch={zipCodeValidation}>
+                    </lightning-input>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

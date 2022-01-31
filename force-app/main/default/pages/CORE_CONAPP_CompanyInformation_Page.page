@@ -1,0 +1,498 @@
+<apex:page showHeader="false" sidebar="false" controller="CORE_CONAPP_Application_Controller" standardStylesheets="false" title="Company Information" language="en"> <!-- language="{$User.LanguageLocaleKey}" -->
+    <head>
+        <style>
+            #errorMessage{
+                display: none;
+            }
+            .hideDiv {
+                display : none;
+            }
+            .labelClass{
+                font-size: 14px;
+                margin-bottom: 10px;
+                font-weight: 600;
+            }
+
+        </style>
+
+    </head>
+
+    <apex:composition template="CORE_CONAPP_Template_Page">
+        <apex:define name="body">
+            <div class="page">
+                <c:CORE_StepNav_Component pgName="{!$CurrentPage.Name}"/>
+
+                <div class="application">
+                    <apex:form id="frm">
+                        <div class="alert-container m-b-none m-t-none">
+                            <apex:pageMessages />
+                            <div class="alert alert-danger" id="errorMessage"> </div>
+                        </div>
+                        <apex:outputPanel layout="block" id="mainPanel" styleClass="content content-body">
+                            <div class="flex-row">
+                                <div class="form-group lg has-helper" >
+                                    <label for="legalBusinessName">Legal Business Name<span class="required">&nbsp;* </span></label>
+                                    <input type="text" id="legalBusinessName"
+                                           value="{!serviceProviderApp.Legal_Business_Name__c}"
+                                           class="form-control legalBusinessName"
+                                           data-toggle="popover"
+                                           data-trigger="hover"
+                                           data-placement="right"
+                                           data-content="{!$ObjectType.Contractor_Application__c.fields.Legal_Business_Name__c.inlineHelpText}"/>
+                                    <span class="icon-question" title="Field level instructions" ></span>
+
+                                </div>
+                            </div>
+
+                            <div class="flex-row">
+                                <div class="form-group lg has-helper">
+                                    <label for="businessName">Business Name / Disregarded Entity Name</label>
+                                    <input type="text" id="businessName"
+                                           value="{!serviceProviderApp.Business_Name_Disregarded_Entity_Name__c}"
+                                           class="form-control businessName"
+                                           data-toggle="popover"
+                                           data-trigger="hover"
+                                           data-placement="right"
+                                           data-content="{!$ObjectType.Contractor_Application__c.fields.Business_Name_Disregarded_Entity_Name__c.inlineHelpText}"/>
+                                    <span class="icon-question" title="Field level instructions" ></span>
+                                </div>
+                            </div>
+
+                            <div class="flex-row">
+                                <div class="form-group lg has-helper">
+                                    <label for="streetAddress">Street Address<span class="required">&nbsp;* </span></label>
+                                    <input type="text" id="streetAddress"
+                                           value="{!serviceProviderApp.Street_Address__c}"
+                                           class="form-control streetAddress"
+                                           data-toggle="popover"
+                                           data-trigger="hover"
+                                           data-placement="right"
+                                           data-content="{!$ObjectType.Contractor_Application__c.fields.Street_Address__c.inlineHelpText}"/>
+                                    <span class="icon-question" title="Field level instructions" ></span>
+                                </div>
+                            </div>
+
+                            <div class="flex-row">
+                                <div class="form-group lg">
+                                    <label for="{!$Component.city}">City<span class="required">&nbsp;* </span></label>
+                                    <apex:inputField id="city" value="{!serviceProviderApp.City__c}" onKeyDown="isAlphabateOnly(event);" styleClass="form-control city"/>
+                                </div>
+                            </div>
+
+                            <div class="flex-row">
+                                <div class="form-group md">
+                                    <label for="{!$Component.state}">State/Province<span class="required">&nbsp;* </span></label>
+                                    <apex:inputField id="state" html-placeorder="State/Province" html-aria-title="state" value="{!serviceProviderApp.State__c}" styleClass="form-control cState select2" />
+                                </div>
+
+                                <div class="form-group sm">
+                                    <label for="{!$Component.zip}">Zip Code<span class="required">&nbsp;* </span></label>
+                                    <apex:inputField id="zip" value="{!serviceProviderApp.Zip_Code__c}" onKeyDown="isNumberOnly(event);" html-maxlength="5" styleClass="form-control zip" />
+                                </div>
+                            </div>
+
+
+
+                            <div class="flex-row m-t-lg">
+                                <div class="form-group lg has-helper">
+                                    <label for="business-type">What kind of business do you have? (select all that apply)<span class="required">&nbsp;* </span></label>
+                                    <div class="field entityTypeField" data-toggle="popover" aria-label="business-type"
+                                                       data-trigger="hover"
+                                                       data-placement="right"
+                                                       data-content="{!$ObjectType.Contractor_Application__c.fields.Entity_Type__c.inlineHelpText}">
+
+                                        <!-- <apex:outputLabel value="What kind of business do you have? (select all that apply)" id="{!$Component.entityTypeSelect2}" /> -->
+                                        <label class="sr-only" for="business-type">What kind of business do you have? (select all that apply)</label>
+                                        <apex:selectList id="entityTypeSelect2"
+                                                         value="{!listOfSelectedEntityType}"
+                                                         styleClass="entityType select2-tags"
+                                                         multiselect="true"
+                                                         html-aria-label="entityTypeSelect2">
+                                            <apex:selectOptions value="{!entityTypeOptions}"/>
+                                        </apex:selectList>
+                                    </div>
+                                    <!-- /.field -->
+                                    <span class="icon-question" title="Field level instructions" ></span>
+                                </div>
+                            </div><!-- /.flex-row -->
+
+
+                            <div class="flex-row">
+                                <fieldset class="form-group">
+                                   <legend class="labelClass">Please Select if Applicable (check all that apply)</legend> <!-- Accessibility Fix -->
+                                    <div class="checkbox">
+                                        <input type="checkbox" id="nysMinority" name="applicable-business" class="nysMinority" onclick="checkForDisable()"/>
+                                        <label for="nysMinority">
+                                            <span>New York State Minority Owned Business Enterprise (MBE)</span>
+                                        </label>
+                                    </div><!-- /.checkbox -->
+                                    <div class="checkbox">
+                                        <input type="checkbox" id="nysWomen" name="applicable-business" class="nysWomen" onclick="checkForDisable()"/>
+                                        <label for="nysWomen">
+                                            <span>New York State Women Owned Business Enterprise (WBE)</span>
+                                        </label>
+                                    </div><!-- /.checkbox -->
+                                    <div class="checkbox">
+                                        <input type="checkbox" id="nysVeteran" name="applicable-business" class="nysVeteran" onclick="checkForDisable()"/>
+                                        <label for="nysVeteran">
+                                            <span>New York State Service-Disabled Veteran-Owned Business (SDVOBE)</span>
+                                        </label>
+                                    </div><!-- /.checkbox -->
+                                </fieldset><!-- /.form-group -->
+                                <div class="popover-content hide"></div><!-- /.popover-content hide -->
+                            </div><!-- /.flex-row -->
+
+                            <div id="NYSMWBEdiv">
+                                <div class="flex-row">
+                                    <div class="form-group lg has-helper">
+                                        <label for="nysMWBE">NYS MWBE or SDVOB Certification number(s)</label>
+                                        <input type="text" id="nysMWBE"
+                                               value="{!serviceProviderApp.NYS_MWBE__c}"
+                                               class="form-control nysMWBE"
+                                               data-toggle="popover"
+                                               data-trigger="hover"
+                                               data-placement="right"
+                                               data-content="{!$ObjectType.Contractor_Application__c.fields.NYS_MWBE__c.inlineHelpText}"
+                                        />
+                                        <span class="icon-question" title="Field level instructions" ></span>
+                                    </div>
+                                </div><!-- /.flex-row -->
+
+                                <div class="flex-row">
+                                    <div class="form-group lg">
+                                        <apex:outputPanel layout="none" rendered="{!isRTEMApp}">
+                                           <div class="form-note warning">
+                                               Please provide your NYS MWBE number. For more information, please refer to the 
+                                               <br/><br/><a href="http://esd.ny.gov/doing-business-ny/mwbe" target="_blank">NY State Division of Minority and Women’s Business Development</a>
+                                               <br/><br/><a href="http://www.ny.gov/services/become-certified-service-disabled-veteran-owned-small-business" target="_blank">NY State Service-Disabled Veteran-Owned Business</a>
+                                           </div>
+                                       </apex:outputPanel>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex-row">
+                                <div class="form-group lg has-helper">
+                                    <label for="exemptPayee">Exempt Payee Code</label>
+                                    <input type="text" id="exemptPayee"
+                                           value="{!serviceProviderApp.Exempt_Payee_Code__c}"
+                                           class="form-control exemptPayee"
+                                           data-toggle="popover"
+                                           data-trigger="hover"
+                                           data-placement="right"
+                                           data-content="{!$ObjectType.Contractor_Application__c.fields.Exempt_Payee_Code__c.inlineHelpText}"/>
+                                    <span class="icon-question" title="Field level instructions" ></span>
+                                </div>
+                            </div><!-- /.flex-row -->
+
+                            <div class="flex-row">
+                                <div class="form-group lg">
+                                    <apex:outputPanel layout="none" rendered="{!isRTEMApp}">
+                                       <div class="form-note warning">
+                                           If you are exempt from backup withholding and/or FATCA reporting, provide any EPC that may apply to you. For EPC and additional instructions, please refer to the instructions located on IRS Form W-9, which can be found <a href="http://www.irs.gov/Forms-&-Pubs" target="_blank">here</a>
+                                       </div>
+                                   </apex:outputPanel>
+                                </div>
+                            </div>
+
+                            <div class="flex-row">
+                                <div class="form-group lg">
+                                	<label class="m-b-sm" for="ein">Tax identification type:<span class="required">&nbsp;* </span></label>
+                                	<fieldset>
+	                                	<legend class="radio">
+	                               			<input type="radio" id="ein" name="tin" onclick="rerenderText('EIN')" value="EIN" />
+	                                        <label for="ein">
+	                                            <span>Employer Identification Number (EIN)</span>
+	                                        </label>
+		                                    <!-- /.radio -->
+	                                    </legend>
+	                                    <legend class="radio">
+	                                    	<input type="radio" id="ssn" name="tin" onclick="rerenderText('SSN')" value="SSN" />
+	                                        <label for="ssn">
+	                                            <span>Social Security Number (SSN)</span>
+	                                        </label>
+		                                    <!-- /.radio -->
+	                                    </legend>
+                            		</fieldset>
+                                </div>
+                            </div>
+
+                            <div id="einOutputPanel" class="hideDiv">
+                                <div class="form-note">
+                                    <div class="form-group md">
+                                        <label for="{!$Component.einno}">Employer Identification Number (EIN)</label>
+                                        <apex:inputField id="einno" value="{!serviceProviderApp.Employee_Identification_Number_EIN__c}" styleClass="form-control ein" onKeyDown="isNumberOnly(event);" onKeyUp="formatEINCode(this);" html-maxlength="9" />
+                                    </div>
+                                    <apex:outputText value="{!$Label.EIN}" escape="false"/>
+                                </div>
+                            </div>
+ 
+                            <div id="ssnOutputPanel" class="hideDiv">
+                                <div class="form-note warning">
+                                    <apex:outputText value="{!$Label.SSN}" escape="false"/>
+                                </div><!-- /.note -->
+                            </div> 
+                        </apex:outputPanel>
+
+                        <apex:actionFunction name="next" action="{!save}" rerender="frm">
+                            <apex:param value="" name="currentPage" assignTo="{!currentPage}" />
+                            <apex:param value="" name="tin" assignTo="{!taxIdNumber}" />
+                            <apex:param value="" name="nysMinority" assignTo="{!serviceProviderApp.NYS_Minority_Owned__c}" />
+                            <apex:param value="" name="nysWomen" assignTo="{!serviceProviderApp.NYS_Women_Owned__c}" />
+                            <apex:param value="" name="nysVeteran" assignTo="{!serviceProviderApp.NYS_Veteran_Owned__c}" />
+                            <apex:param value="" name="legalBusinessName" assignTo="{!serviceProviderApp.Legal_Business_Name__c}" />
+                            <apex:param value="" name="businessName" assignTo="{!serviceProviderApp.Business_Name_Disregarded_Entity_Name__c}" />
+                            <apex:param value="" name="streetAddress" assignTo="{!serviceProviderApp.Street_Address__c}" />
+                            <apex:param value="" name="nysMWBE" assignTo="{!serviceProviderApp.NYS_MWBE__c}" />
+                            <apex:param value="" name="exemptPayee" assignTo="{!serviceProviderApp.Exempt_Payee_Code__c}" />
+                        </apex:actionFunction>
+                    </apex:form> 
+                </div>
+            </div>
+
+            <footer class="footer-nav">
+                <div class="content flex controls sm">
+                    <div class="left"></div><!-- /.left -->
+                    <div class="right">
+                        <a href="javascript:void(0)" onclick="saveScript();" class="btn-bs btn-lg btn-primary" role="button" title="Continue here after you’ve filled out all form elements">Continue</a>
+                    </div><!-- /.right -->
+
+                </div>
+            </footer>
+        </apex:define>
+    </apex:composition>
+
+    <script>
+        function saveScript() {
+            $('#errorMessage').hide();
+            $('#errorMessage').html("");
+            //window.scrollTo(75,75); // commented by as on error, page should scroll to top
+            // #I-00883 if condition modified to if else  and hasError added by Pankaj
+            console.log($('.entityType').val());
+            console.log($('#exemptPayee').val());
+            var hasError = false;
+            if (($('.legalBusinessName').val() == null || $('.legalBusinessName').val() == '') && (!hasError)) {
+                $('#errorMessage').html("Please enter Legal Business Name");
+                hasError = true;
+            }else if (($('.streetAddress').val() == null || $('.streetAddress').val() == '' ) && (!hasError)) {
+                $('#errorMessage').html("Please enter Street Address.");
+                hasError = true;
+            }else if (($('.city').val() == null || $('.city').val() == '') && (!hasError)) {
+                $('#errorMessage').html("Please enter City");
+               hasError = true;
+            }else if (($('.cState').val() == null || $('.cState').val() == '') && (!hasError)) {
+                $('#errorMessage').html("Please select a State");
+                hasError = true;
+            }else if (($('.zip').val() == null || $('.zip').val() == '') && (!hasError)) {
+                $('#errorMessage').html("Please enter Zip Code");
+               hasError = true;
+            }else if(($('.zip').val().length > 10) && (!hasError)){
+                $('#errorMessage').html("Please enter valid Zip Code");
+                hasError = true;
+            }else if(($('.zip').val().length < 5) && (!hasError)){//#I-00883 by pankaj
+                $('#errorMessage').html("Please enter at least 5 Number zip code");
+                hasError = true;
+            }else if(($('.entityType').val() == null || $('.entityType').val() == '') && (!hasError)){//#I-01129 by Pankaj
+                $('#errorMessage').html("Please select Entity Type");
+                hasError = true;
+            }else if ((($('.nysMinority')[0].checked || $('.nysWomen')[0].checked || $('.nysVeteran')[0].checked) && ($('.nysMWBE').val() == null || $('.nysMWBE').val() == '')) && (!hasError)) {
+                $('#errorMessage').html("Please enter MWBE number");
+                hasError = true;
+            }else if ((!$('#ein')[0].checked && !$('#ssn')[0].checked) && (!hasError)) {
+                $('#errorMessage').html("Please select Tax Identification Type");
+                hasError = true;
+            }else if(($('#ein')[0].checked && $('.ein').val() == '') && (!hasError)) {
+                $('#errorMessage').html("Please enter Employee Identification Number");
+                hasError = true;
+            }else if($('#ein')[0].checked && (!hasError)) { // else part added by pankaj for issue #I-00881
+                var pattern = /^(\d{2})(\-)(\d{7})$/;
+                console.log($('.ein').val());
+                if (!pattern.test($('.ein').val())){
+                    $('#errorMessage').html("Please enter a valid 9 digit Employee Identification Number");
+                    hasError = true;
+                }
+            }
+            if(hasError){
+                $('#errorMessage').show();
+                scrollToTop();
+                return false;
+            }
+            var tin;
+            if($('#ein')[0].checked) {
+                tin = 'EIN';
+            } else {
+                tin = 'SSN';
+            }
+            //#a0036000006JlVB
+            var einNumber = $('.ein').val().replace('-','');
+            $('.ein').val(einNumber);
+            next('CORE_CONAPP_CompanyInformation_Page', tin, $('.nysMinority')[0].checked, $('.nysWomen')[0].checked, $('.nysVeteran')[0].checked, $('.legalBusinessName').val(), $('.businessName').val(), $('.streetAddress').val(), $('.nysMWBE').val(), $('.exemptPayee').val());
+        }
+
+        // format 9 digit EIN number added by pankaj #I-00881
+        function formatEINCode(elem) {
+            //$(elem).parent().find('.errorMsg').remove();
+            var s = $(elem).val();
+            var i;
+            var str='';
+            if(s.length==9){
+
+	            var pattern = /^\d{9}$/;
+	            if (pattern.test(s)) {
+
+		             for(i=0 ; i<s.length ; i++) {
+
+				          if(i==2){
+
+				        	str = str.concat('-');
+				           	str = str.concat(s[i]);
+				          }
+					      else {
+					         str=str.concat(s[i]);
+					      }
+	                 }
+            	}
+	         	$(elem).val(str);
+	        }
+        }
+
+		 $(document).ready(function() {
+
+            jQuery("html").attr("lang", "en");
+
+            if('{!serviceProviderApp.Tax_Identification_Type__c}' == 'EIN') {
+                $('#ein')[0].checked = true;
+                $('#einOutputPanel').removeClass('hideDiv');
+            } else if('{!serviceProviderApp.Tax_Identification_Type__c}' == 'SSN'){
+                $('#ssn')[0].checked = true;
+                $('#ssnOutputPanel').removeClass('hideDiv');
+            }
+
+            if({!serviceProviderApp.NYS_Minority_Owned__c}) {
+                $('.nysMinority')[0].checked = true;
+            }
+
+            if({!serviceProviderApp.NYS_Women_Owned__c}) {
+                $('.nysWomen')[0].checked = true;
+            }
+
+            if({!serviceProviderApp.NYS_Veteran_Owned__c}) {
+                $('.nysVeteran')[0].checked = true;
+            }
+
+            if({!serviceProviderApp.NYS_Women_Owned__c} == false && {!serviceProviderApp.NYS_Minority_Owned__c} == false) {
+                $('.nysMWBE').prop('disabled', true);
+            }
+            formatEINCode($('.ein'));
+
+            if ((!$('.nysMinority')[0].checked && !$('.nysWomen')[0].checked && !$('.nysVeteran')[0].checked)) {
+                $('#NYSMWBEdiv').hide();
+            } else {
+                $('#NYSMWBEdiv').show();
+            }
+
+            if('{!isRTEMApp}' == 'true'){
+                $('.sub-logo').html('VENDOR APPLICATION');
+            }
+        });
+        // call this to scroll to top of page
+        function scrollToTop() {
+            $("html, body").animate({
+                scrollTop : 0
+            }, "slow");
+        }
+
+        function rerenderText(tin) {
+            console.log(tin);
+            if(tin == 'EIN') {
+                $('#einOutputPanel').removeClass('hideDiv');
+                $('.ein').attr('placeholder','xx-xxxxxxx');
+                $('#ssnOutputPanel').addClass('hideDiv');
+            } else if(tin == 'SSN') {
+                $('#einOutputPanel').addClass('hideDiv');
+                $('#ssnOutputPanel').removeClass('hideDiv');
+            } else {
+                $('#einOutputPanel').addClass('hideDiv');
+                $('#ssnOutputPanel').addClass('hideDiv');
+            }
+        }
+
+        function checkForDisable() {
+            if ((!$('.nysMinority')[0].checked && !$('.nysWomen')[0].checked && !$('.nysVeteran')[0].checked)) {
+                $('.nysMWBE').prop('disabled', true);
+                $('.nysMWBE').val('');
+                $('#NYSMWBEdiv').hide();
+            } else {
+                $('.nysMWBE').prop('disabled', false);
+                $('#NYSMWBEdiv').show();
+            }
+        }
+
+        function isNumberOnly(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if(evt.shiftKey){
+                evt.preventDefault();
+                return false;
+            }
+            if((charCode > 47 && charCode < 58) || (charCode >= 96 && charCode <= 105) || charCode == 8 || charCode == 9 || (charCode >= 37 && charCode <= 40)) {
+                return true;
+            }
+            else{
+                evt.preventDefault();
+                return false;
+            }
+        }
+
+        $(".zip").keyup(function(event){
+            var val = $(this).val();
+            if (val.length > 10){
+                val = val.substring(0, val.length - 1);
+                $(this).val(val);
+                $(this).focus();
+                return false;
+            }
+        });
+
+        function isAlphabateOnly(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+
+            if((charCode >= 65 && charCode <= 90) || charCode == 8 || charCode == 9 || charCode == 32 || (charCode >= 37 && charCode <= 40)) {
+                return true;
+            }
+            else{
+                evt.preventDefault();
+                return false;
+            }
+        }
+
+
+        $(document).ready(function() {
+          $('.select2-search__field').attr('id', 'business-type');
+          $('.select2-search__field').attr('aria-label', 'combobox');
+        });
+ 
+        $('.zip, .city').bind('paste', function (e) {
+            e.preventDefault(); //disable cut,copy,paste
+        });
+        //$('[data-toggle="popover"]').popover();
+        //$(document).on('hover', '[data-toggle="popover"]', function () { $(this).popover('show'); });
+        $(document).on('mouseover', '[data-toggle="popover"]', function () { $(this).popover('show'); });
+
+        $('.entityTypeField').on('mouseover', function () { $(this).popover('show'); });
+        // Activate focused class for parent element of focused input
+        //$(".form-group .form-control").focus(function() {
+        //   $(this).parent().addClass("focused");
+        //}).blur(function(){
+        //  $(this).parent().removeClass("focused");
+        //});
+//
+        //$(".form-group .select2-tags").focus(function() {
+        //   $(this).parent().addClass("focused");
+        //}).blur(function(){
+        //  $(this).parent().removeClass("focused");
+        //});
+//
+        //$( "form .form-group" ).first().addClass( "focused" );
+        //$( "form .form-group input" ).first().focus();
+    </script>
+</apex:page>

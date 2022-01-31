@@ -1,0 +1,85 @@
+<template>
+    <div class="card-div">
+        <div class="slds-text-heading_small slds-text-title_bold slds-border_bottom">
+            Application Information
+        </div> <br />
+        <div class="input-check slds-form-element slds-form-element_horizontal">
+            <div class="slds-form-element_horizontal slds-form-element" ><span
+                     data-aria="true" class="slds-assistive-text"></span><label
+                     for="input-32" class="slds-form-element__label slds-no-flex">Application #</label>
+                <div class="slds-form-element__control slds-grow"><input
+                         type="text" id="input-32" name="License__c" class="slds-input"></div>
+                </div>
+        </div>
+        <div class="input-check slds-form-element slds-form-element_horizontal">
+            <div class="slds-form-element_horizontal slds-form-element" ><span
+                     data-aria="true" class="slds-assistive-text"></span><label
+                     for="input-33" class="slds-form-element__label slds-no-flex">Description</label>
+                <div class="slds-form-element__control slds-grow">
+                    <textarea id="input-33" class="slds-textarea"  rows="3"></textarea>
+                </div> 
+        </div>
+        </div>
+
+        <div
+          class="slds-text-heading_small slds-text-title_bold slds-border_bottom"
+        >
+          Address Information
+        </div>
+    
+        <c-psr-location-fetcher
+          if:false={disabledFields}
+          onfetchinglocation={locationFetched}
+        ></c-psr-location-fetcher>
+    
+        <lightning-record-edit-form
+          class="slds-p-top_large"
+          record-id={appId}
+          onsuccess={handleSuccess}
+          onsubmit={handleSubmit}
+          object-api-name="Application__c"
+        >
+          <div class="slds-grid slds-p-top_large">
+            <div class="slds-col slds-size_1-of-2">
+              <lightning-input-field
+                field-name="Site_Name__c"
+                disabled={disabledFields}
+              ></lightning-input-field>
+            </div>
+            <div class="slds-col slds-size_1-of-2">
+              <lightning-input-field
+                field-name="Street__c"
+                value={addressFromGoogle.route}
+                disabled={disabledFields}
+              ></lightning-input-field>
+            </div>
+          </div>
+          <div class="slds-grid">
+            <div class="slds-col slds-size_1-of-2">
+              <lightning-input-field
+                field-name="City__c"
+                value={addressFromGoogle.city}
+                disabled={disabledFields}
+              ></lightning-input-field>
+            </div>
+            <div class="slds-col slds-size_1-of-2">
+              <lightning-input-field
+                field-name="State__c"
+                value={addressFromGoogle.state}
+                disabled={disabledFields}
+              ></lightning-input-field>
+            </div>
+          </div>
+          <div class="slds-grid">
+            <div class="slds-col slds-size_1-of-2">
+              <lightning-input-field
+                field-name="Zip__c"
+                value={addressFromGoogle.postalCode}
+                disabled={disabledFields}
+              ></lightning-input-field>
+            </div>
+            <div class="slds-col slds-size_1-of-2"></div>
+          </div>
+        </lightning-record-edit-form>
+      </div>
+</template>
