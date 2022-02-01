@@ -1,0 +1,134 @@
+extends layouts/step-layout.jade
+
+block title
+	title Project Contacts
+
+block content
+	- var module_name = "Incentive Application"
+	- var PageName = "Site Addresses"
+
+	.page-header
+		.content.flex.sm
+			h1= module_name
+			nav.step-nav
+
+				a(href="step-01.html",class="popper complete", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 01
+				.popover-content.hide
+					.title Installer Selection
+					.status.complete
+						span.circle
+						span.copy Complete
+
+				a(href="step-02.html",class="popper complete", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 02
+				.popover-content.hide
+					.title Project Contacts
+					.status.complete
+						span.circle
+						span.copy Complete
+
+				a(class="popper active", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 03
+				.popover-content.hide
+					.title Site Addresses
+					.status.in-progress
+						span.circle
+						span.copy In progress
+
+				a(class="popper", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 04
+				.popover-content.hide
+					.title Project Site Information
+					.status.default
+						span.circle
+						span.copy Not started
+
+				a(class="popper", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 05
+				.popover-content.hide
+					.title Project Components
+					.status.default
+						span.circle
+						span.copy Not started
+
+				a(class="popper", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 06
+				.popover-content.hide
+					.title Application Review
+					.status.default
+						span.circle
+						span.copy Not started
+
+				a(class="popper", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 07
+				.popover-content.hide
+					.title Paperwork Record
+					.status.default
+						span.circle
+						span.copy Not started
+
+				a(class="popper", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 08
+				.popover-content.hide
+					.title Submit Application
+					.status.default
+						span.circle
+						span.copy Not started
+
+	.application
+		.content.content-header.has-controls
+			div
+				h2= PageName
+					span ( Step 3 of 8 )
+				.description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus, ab.
+			.controls
+				a.add-button(href="#") Add an address
+
+		.content.content-body
+			table.table.table-striped.datatable
+
+
+block footer
+	footer
+		.content.flex.controls.sm
+			a.btn-bs.btn-lg.btn-blank(href="step-02.html") Previous
+			a.btn-bs.btn-lg.btn-default(href="#") Save
+			a.btn-bs.btn-lg.btn-primary(href="step-04.html") Continue
+
+block scripts
+	script(src='bower_components/datatables.net/js/jquery.dataTables.min.js')
+	script(src='bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js')
+	script(src='bower_components/datatables-responsive/js/dataTables.responsive.js')
+	script.
+		var dataSet = [
+			[ "221 Baker Street", "Henderson", "Rhode Island", "12309", "CompanyName Rivere", "Residential" , "<div class=\"controls\"><a href=\"#\">Edit</a><a href=\"#\">Delete</a></div>"],
+			[ "451 State Route 9", "Omaha", "Montana", "13041", "Extralong Westing Company", "Residential" , "<div class=\"controls\"><a href=\"#\">Edit</a><a href=\"#\">Delete</a></div>"],
+			[ "1154A Phillidelphia Blvd", "Akron", "Arkansas", "65481", "MeeVee House", "Residential" , "<div class=\"controls\"><a href=\"#\">Edit</a><a href=\"#\">Delete</a></div>"],
+			[ "10 Oyster Shell Parkway", "Lincoln", "South Dakota", "65478", "Digitube Rainwood", "Residential" , "<div class=\"controls\"><a href=\"#\">Edit</a><a href=\"#\">Delete</a></div>"]
+		];
+
+		$(document).ready(function() {
+			$('.datatable').DataTable( {
+				responsive: true,
+				data: dataSet,
+				columns: [
+					{ title: "PV Site Address" },
+					{ title: "City" },
+					{ title: "State" },
+					{ title: "ZIP" },
+					{ title: "Electric Utility Company" },
+					{ title: "Customer Sector" },
+					{ title: "" }
+				]
+			});
+		});
+

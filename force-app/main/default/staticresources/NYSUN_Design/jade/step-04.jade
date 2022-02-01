@@ -1,0 +1,153 @@
+extends layouts/step-layout.jade
+
+block title
+	title Project Contacts
+
+block content
+	- var module_name = "Incentive Application"
+	- var PageName = "Project Site Information"
+
+	.page-header
+		.content.flex.sm
+			h1= module_name
+			nav.step-nav
+
+				a(href="step-01.html",class="popper complete", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 01
+				.popover-content.hide
+					.title Installer Selection
+					.status.complete
+						span.circle
+						span.copy Complete
+
+				a(href="step-02.html",class="popper complete", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 02
+				.popover-content.hide
+					.title Project Contacts
+					.status.complete
+						span.circle
+						span.copy Complete
+
+				a(href="step-03.html",class="popper complete", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 03
+				.popover-content.hide
+					.title Site Addresses
+					.status.complete
+						span.circle
+						span.copy Complete
+
+				a(class="popper active", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 04
+				.popover-content.hide
+					.title Project Site Information
+					.status.in-progress
+						span.circle
+						span.copy In progress
+
+				a(class="popper", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 05
+				.popover-content.hide
+					.title Project Components
+					.status.default
+						span.circle
+						span.copy Not started
+
+				a(class="popper", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 06
+				.popover-content.hide
+					.title Application Review
+					.status.default
+						span.circle
+						span.copy Not started
+
+				a(class="popper", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 07
+				.popover-content.hide
+					.title Paperwork Record
+					.status.default
+						span.circle
+						span.copy Not started
+
+				a(class="popper", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 08
+				.popover-content.hide
+					.title Submit Application
+					.status.default
+						span.circle
+						span.copy Not started
+
+	.application
+		.content.content-header.has-controls
+			div
+				h2= PageName
+					span ( Step 4 of 8 )
+				.description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus, ab.
+			.controls
+				a.add-button(href="#") Add an address
+
+		.content.content-body
+			.box-group
+				.heading Purchase Information
+				.content.box
+					.form-group
+						label(for="purchase-type") Purchase Type
+						select#purchase-type.form-control.select2.md(name="purchase-type")
+							option(selected) Lease
+							option Option 2
+				.content.box
+					.form-group.has-helper.sm
+						label(for="escalation-rate") Escalation Rate
+						.field
+							input.form-control#escalation-rate(type="text")
+							span.helper %
+			.box-group
+				.heading Expansion Information
+				.content.box
+					.form-group
+						label(for="expansion") Expansion of Completed System
+						.field
+							.input-button.inline
+								label(for="expansion-yes")
+									input(type="radio" name="expansion" id="expansion-yes", checked)
+									.wrap
+										span Yes
+										i.icm
+							.input-button.inline
+								label(for="expansion-no")
+									input(type="radio" name="expansion" id="expansion-no")
+									.wrap
+										span No
+										i.icm
+				.content.box
+					.form-group.md
+						label(for="previous-app-no") Previous Application Number
+						input.form-control#previous-app-no(type="text")
+					.form-group.sm.has-helper
+						label(for="previous-size") Previous Size
+						.field
+							input.form-control#previous-size(type="text")
+							span.helper kW
+					.form-group.sm.has-helper
+						label(for="expansion-size") Expansion Size
+						.field
+							input.form-control#expansion-size(type="text")
+							span.helper kW
+
+
+
+block footer
+	footer
+		.content.flex.controls.sm
+			a.btn-bs.btn-lg.btn-blank(href="step-03.html") Previous
+			a.btn-bs.btn-lg.btn-default(href="#") Save
+			a.btn-bs.btn-lg.btn-primary(href="step-05.html") Continue
+
+

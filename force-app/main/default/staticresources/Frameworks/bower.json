@@ -1,0 +1,18 @@
+{
+  "name": "vftwbs-sass",
+  "version": "0.2.6",
+  "author": "Tony Montemorano <tony@allusis.net>",
+  "private": true,
+  "dependencies": {
+    "twbs-bootstrap-sass": "3.3.7",
+    "bootstrap4": "4.1.2",
+    "svg4everybody": "latest",
+    "select2": "latest",
+    "select2-bootstrap-css": "latest",
+    "datatables.net-bs4": "^1.10.11",
+    "datatables-responsive": "latest",
+    "better-dateinput-polyfill": "latest",
+    "jquery": "3.3.1",
+    "popper.js": "^1.14.4"
+  }
+}

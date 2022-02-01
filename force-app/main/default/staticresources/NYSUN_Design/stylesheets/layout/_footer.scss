@@ -1,0 +1,29 @@
+$footer-height: 142px;
+
+footer.footer-nav {
+	background:#eee;
+	padding:$gap $gap 80px;
+	margin-top:$gap-lg;
+	.controls {
+		justify-content:space-between;
+		.btn-bs + .btn-bs {
+			margin-left:$gap;
+		}
+	}
+}
+
+@media (-ms-high-contrast: none), (-ms-high-contrast: active) {
+	body {
+		//margin:0 0 $footer-height;
+		display:block;
+		min-height:0;
+		height:auto;
+	}
+	footer.footer-nav {
+		//position: absolute;
+		left: 0;
+		bottom: 0;
+		height: $footer-height;
+		width: 100%;
+	}
+}

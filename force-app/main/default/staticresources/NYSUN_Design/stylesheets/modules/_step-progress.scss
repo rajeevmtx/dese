@@ -1,0 +1,46 @@
+.step-nav {
+	display:flex;
+	@media (max-width:$screen-sm-min) {
+		margin:$gap-sm 0 $gap 0;
+	}
+	.circle {
+		@media (max-width:$screen-sm-min) {
+			margin:$gap-xs;
+		}
+		@media (min-width:$screen-sm) {
+			margin-left:$gap-sm;
+			margin-right:$gap-sm;
+		}
+		border:2px solid #ccc;
+		width:$gap;
+		height:$gap;
+		background:white;
+		border-radius:50%;
+		display:block;
+	}
+	a {
+		display:block;
+		&.active {
+			.circle {
+				border-color:transparent;
+				background:$text-color;
+			}
+		}
+		&.complete {
+			.circle {
+				border-color:transparent;
+				background:#999;
+				font-size:14px;
+				display:flex;
+				align-items:center;
+				justify-content:center;
+				@include ico-moon;
+				&:before {
+					content: "\e5ca";
+					color:white;
+				}
+			}
+		}
+	}
+
+}

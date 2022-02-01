@@ -1,0 +1,20 @@
+block link
+	-var selected = '';
+	-var complete = '';
+
+-var menu = { 'Step 1': '/step-01.html', 'Step 2': '/step-02.html', 'Step 3': '/step-03.html', 'Step 4': '/step-04.html', 'Step 5': '/step-05.html', 'Step 6': '/step-06.html'  };
+
+nav.step-nav
+	each val, key in menu
+		if selected === key
+			a.active(href=val, title=key, id=key)
+				span.circle
+				span.sr-only.name=key
+		else if complete === key
+			a.complete(href=val, title=key, id=key)
+				span.circle
+				span.sr-only.name=key
+		else
+			a(href=val, title=key, id=key)
+				span.circle
+				span.sr-only.name=key

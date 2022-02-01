@@ -1,0 +1,14 @@
+{
+  "name": "vftwbs-sass",
+  "version": "0.2.5",
+  "author": "Tony Montemorano <tony@allusis.net>",
+  "private": true,
+  "dependencies": {
+    "twbs-bootstrap-sass": "3.3.6",
+    "svg4everybody": "latest",
+    "select2": "latest",
+    "select2-bootstrap-css": "latest",
+    "datatables.net-bs": "^1.10.11",
+    "datatables-responsive": "latest",
+  }
+}

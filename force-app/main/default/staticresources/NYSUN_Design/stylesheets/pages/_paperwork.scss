@@ -1,0 +1,32 @@
+.paperwork {
+	table {
+		font-size:13px;
+		border:1px solid #ddd;
+		border-spacing:0;
+		border-collapse:collapse;
+		&.table-condensed {
+			tbody > tr > td, thead > tr > th {
+				padding:5px $gap;
+			}
+		}
+		thead > tr > th {
+			background:#ddd;
+		}
+	}
+	.doc {
+		width:330px;
+	}
+	.status {
+		width:150px;
+	}
+	.uploaded-document {
+		padding-right:30px;
+		> a {
+			&:not(:last-of-type):after {
+				content:"|";
+				margin:0 5px;
+				color:#888;
+			}
+		}
+	}
+}

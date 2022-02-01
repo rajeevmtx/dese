@@ -1,0 +1,19 @@
+.badge {
+	padding:3px $gap-sm;
+	border-radius:$gap;
+	background:$border-default;
+	font-size:13px;
+	color:$text-color;
+	&.error {
+		background:$brand-danger;
+		color:white;
+	}
+	&.default {
+		background:#aaa;
+		color:white;
+	}
+	&.complete {
+		background:$text-color;
+		color:white;
+	}
+}

@@ -1,0 +1,21 @@
+{
+  "name": "better-dateinput-polyfill",
+  "version": "3.0.0",
+  "main": [
+    "dist/better-dateinput-polyfill.js"
+  ],
+  "ignore": [
+    ".*",
+    "test",
+    "src",
+    "index.html",
+    "package.json",
+    "bower.json"
+  ],
+  "keywords": [
+    "better-dom"
+  ],
+  "dependencies": {
+    "better-dom": "^4.0.0"
+  }
+}

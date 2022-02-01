@@ -1,0 +1,48 @@
+.box {
+	border:1px solid #ddd;
+	+ .box {
+		border-top:0;
+	}
+	&:nth-of-type(odd) {
+		background:#f6f6f6;
+	}
+	.form-group:last-of-type {
+		margin-bottom:0;
+	}
+}
+
+.box-group {
+	+ .box-group {
+		margin-top:$gap-lg;
+	}
+	> .heading {
+		background:$blue-dk;
+		color:white;
+		font-size:18px;
+		font-weight:600;
+		padding:$gap-sm $gap;
+		&.has-controls {
+			@media (min-width:$screen-sm) {
+				display:flex;
+				.controls {
+					display:flex;
+					align-items:center;
+					font-size:14px;
+					margin-left:auto;
+					> div {
+						margin-left:$gap-md;
+					}
+				}
+			}
+		}
+	}
+	> .content {
+		&:not(.reset) {
+			padding:$gap;
+		}
+		&.reset {
+			padding:0;
+			margin:0;
+		}
+	}
+}

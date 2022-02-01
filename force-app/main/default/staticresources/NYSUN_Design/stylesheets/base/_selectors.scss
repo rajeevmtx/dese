@@ -1,0 +1,47 @@
+*, *:before, *:after {
+	box-sizing: inherit;
+}
+
+html {
+	position:relative;
+	min-height:100%;
+	box-sizing: border-box;
+}
+
+body {
+	font-smooth:always;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	margin:0;
+	background:white;
+	font-family:$font-family-sans-serif;
+	font-size:14px;
+	display:flex;
+	flex-direction:column;
+	color:$text-color;
+	min-height:100vh;
+	@media (min-width:$screen-md) {
+		font-size:16px;
+	}
+}
+
+a {
+	cursor:pointer;
+	transition:all 0.15s ease;
+	text-decoration:none;
+	@include link($brand-primary);
+	&:hover {text-decoration:none}
+}
+
+label {
+	font-weight: $font-medium;
+}
+
+hr {
+	border:0;
+	height:1px;
+	background:$border-default;
+	margin:2rem 0;
+}
+

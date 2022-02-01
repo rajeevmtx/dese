@@ -1,0 +1,35 @@
+c-aps_intake_form .slds-radio{
+    display:inline !important;
+}
+c-aps_incident_information .slds-checkbox{
+    width: 14rem;
+    position: inherit;
+    float: left;
+}
+c-aps_victim_information .slds-checkbox{
+    width: 50%;
+    position: inherit;
+    float: left;
+}
+
+.fullWidthDateTime lightning-datepicker{
+    width: 48.5%;
+    margin-right: 1.5%;
+}
+.fullWidthDateTime lightning-timepicker{
+    width: 50%;
+}
+
+c-aps_intake_form .slds-button_brand{
+    background-color: #105ab1;
+    border-color: #2574a9;
+}
+
+
+c-aps_intake_form .slds-button_brand:hover{
+    background-color: #0c4c98;
+    border-color: #2574a9;
+}
+.hor-radio .slds-radio{
+    display: inline-block !important;
+  }

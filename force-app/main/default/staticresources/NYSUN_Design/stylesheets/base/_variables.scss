@@ -1,0 +1,91 @@
+//- Colors
+$brand-primary:             #0075CB;
+
+$brand-success:             #5cb85c;
+$brand-info:                #5bc0de;
+$brand-warning:             #f0ad4e;
+$brand-danger:              #d9534f;
+
+$brand-red:                 #d4142c;
+
+$body-bg:                   white;
+
+$text-color:                #333;
+$text-medium:               #777;
+$text-light:                #ccc;
+
+$link-color:                $brand-primary;
+
+$border-default:            #ccc;
+$border-light:              #eee;
+
+
+$blue-dk:                   #19366A;
+
+
+//-- Grid
+$grid-gutter-width:         30px;
+$max-content-width:         1160px;
+
+
+
+//--- Spacing
+$gap-xs:                    5px;
+$gap-sm:                    10px;
+$gap:                       20px;
+$gap-md:                    30px;
+$gap-lg:                    40px;
+
+
+
+//-- Font's
+$font-size-base:            14px;
+$line-height-base:          1.428571429; // 20/14
+$font-family-sans-serif:    "Proxima Nova", sans-serif;
+$font-light:                300;
+$font-medium:               600;
+$font-bold:                 800;
+
+$font-size-h1:              floor(($font-size-base * 2.6));  // ~36px
+$font-size-h2:              floor(($font-size-base * 2.15)); // ~30px
+$font-size-h3:              ceil(($font-size-base * 1.7));   // ~24px
+$font-size-h4:              ceil(($font-size-base * 1.25));  // ~18px
+$font-size-h5:              $font-size-base;
+$font-size-h6:              ceil(($font-size-base * 0.85));  // ~12px
+
+$headings-font-weight:      $font-medium;
+
+
+
+//-- Components
+$padding-base-vertical:     6px !default;
+$padding-base-horizontal:   12px !default;
+
+$padding-large-vertical:    10px !default;
+$padding-large-horizontal:  16px !default;
+
+$padding-small-vertical:    5px !default;
+$padding-small-horizontal:  10px !default;
+
+$padding-xs-vertical:       1px !default;
+$padding-xs-horizontal:     5px !default;
+
+$line-height-large:         1.3333333 !default; // extra decimals for Win 8.1 Chrome
+$line-height-small:         1.5 !default;
+
+$border-radius-base:        0px !default;
+$border-radius-large:       0px !default;
+$border-radius-small:       0px !default;
+
+
+
+//--- Footer
+$footer-bg:                 #004892;
+$footer-color:              rgba(white,0.6);
+$footer-border:             transparent;
+$footer-top-margin:         0;
+$footer-vert-padding:       20px;
+$footer-height:             80px;
+
+
+

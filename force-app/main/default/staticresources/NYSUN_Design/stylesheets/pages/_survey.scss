@@ -1,0 +1,33 @@
+.survey {
+	.question {
+		display:flex;
+		font-weight:600;
+	}
+	.number {
+		&:after {
+			content:".";
+			margin-right:$gap-xs;
+		}
+	}
+	.answer {
+		margin-bottom:$gap-md;
+	}
+	label {
+		font-weight:400;
+		margin-right: 15px;
+		margin-bottom: 0;
+	}
+	input[type="radio"], input[type="checkbox"] {
+		margin-right:8px;
+	}
+	.controls {
+		margin:$gap-md 0 60px;
+		background:#eee;
+		padding:$gap;
+		.btn-bs {
+			@media (max-width:$screen-sm-min) {
+				display:block;
+			}
+		}
+	}
+}

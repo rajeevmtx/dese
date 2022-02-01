@@ -1,0 +1,85 @@
+.input-button {
+	&:not(.inline) {
+		width:300px;
+		margin-bottom:$gap;
+	}
+	&.inline {
+		display:inline-flex;
+		margin-top:$gap-sm;
+		> label {
+			min-width:180px;
+			margin-right:$gap;
+		}
+	}
+	span {
+		display:block;
+		font-weight:600;
+		font-size:16px;
+		padding-right:$gap-md;
+		&::selection {
+			background:transparent
+		}
+	}
+	label {
+		display:block;
+	}
+	.icm {
+		color:#aaa;
+		@include ico-moon;
+		position: relative;
+	}
+	.wrap {
+		border:1px solid #ddd;
+		padding:15px;
+		display:flex;
+		justify-content:space-between;
+		align-items:center;
+		width:100%;
+		height:60px;
+	}
+	input {
+		position: absolute;
+		top: 50%;
+		left: 30%;
+		opacity: 0;
+		+ .wrap > span {
+			color:$text-color;
+			transition: all 0.1s ease;
+			+ i.icm {
+				position:relative;
+				font-size:24px;
+			}
+		}
+		&:checked {
+			+ .wrap {
+				box-shadow:inset 0 0 0 2px $brand-primary;
+				border-color:$brand-primary;
+				> span {
+					color: $brand-primary;
+					+ i.icm {
+						animation: icon-beat 0.1s ease;
+						&:before {
+							color: $brand-primary;
+						}
+					}
+				}
+			}
+		}
+	}
+	input[type="checkbox"] {
+		+ .wrap > span + i.icm:before {
+			content: "\e901";
+		}
+		&:checked + .wrap > span + i.icm:before {
+			content: "\e902";
+		}
+	}
+	input[type="radio"] {
+		+ .wrap > span + i.icm:before {
+			content: "\e90a";
+		}
+		&:checked + .wrap > span + i.icm:before {
+			content: "\e909";
+		}
+	}
+}

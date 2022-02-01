@@ -1,0 +1,134 @@
+extends layouts/step-layout.jade
+
+block title
+	title Project Contacts
+
+block content
+	- var module_name = "Incentive Application"
+	- var PageName = "Project Contacts"
+
+	.page-header
+		.content.flex.sm
+			h1= module_name
+			nav.step-nav
+
+				a(href="step-01.html",class="popper complete", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 01
+				.popover-content.hide
+					.title Installer Selection
+					.status.complete
+						span.circle
+						span.copy Complete
+
+				a(class="popper active", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 02
+				.popover-content.hide
+					.title Project Contacts
+					.status.in-progress
+						span.circle
+						span.copy In progress
+
+				a(class="popper", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 03
+				.popover-content.hide
+					.title Site Addresses
+					.status.default
+						span.circle
+						span.copy Not started
+
+				a(class="popper", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 04
+				.popover-content.hide
+					.title Project Site Information
+					.status.default
+						span.circle
+						span.copy Not started
+
+				a(class="popper", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 05
+				.popover-content.hide
+					.title Project Components
+					.status.default
+						span.circle
+						span.copy Not started
+
+				a(class="popper", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 06
+				.popover-content.hide
+					.title Application Review
+					.status.default
+						span.circle
+						span.copy Not started
+
+				a(class="popper", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 07
+				.popover-content.hide
+					.title Paperwork Record
+					.status.default
+						span.circle
+						span.copy Not started
+
+				a(class="popper", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 08
+				.popover-content.hide
+					.title Submit Application
+					.status.default
+						span.circle
+						span.copy Not started
+
+	.application
+		.content.content-header.has-controls
+			div
+				h2= PageName
+					span ( Step 2 of 8 )
+				.description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus, ab.
+			.controls
+				a.add-button(href="#") Add a contact
+
+		.content.content-body
+			table.table.table-striped.datatable
+
+
+block footer
+	footer
+		.content.flex.controls.sm
+			a.btn-bs.btn-lg.btn-blank(href="step-01.html") Previous
+			a.btn-bs.btn-lg.btn-default(href="#") Save
+			a.btn-bs.btn-lg.btn-primary(href="step-03.html") Continue
+
+block scripts
+	script(src='bower_components/datatables.net/js/jquery.dataTables.min.js')
+	script(src='bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js')
+	script(src='bower_components/datatables-responsive/js/dataTables.responsive.js')
+	script.
+		var dataSet = [
+			[ "Jack Smithsonian", "Company Name", "jsmithsonian@email.com", "(518) 313-1384", "Installer", "Yes" , "<div class=\"controls\"><a href=\"#\">Edit</a><a href=\"#\">Delete</a></div>"],
+			[ "Garrett Winters", "Winters Electric", "gwinters@winterselectric.com", "(315) 239-6167", "Installer", "No" , "<div class=\"controls\"><a href=\"#\">Edit</a><a href=\"#\">Delete</a></div>"],
+			[ "Ashton Cox", "Conscious Construction, LLC", "ashtoncox@consciousc.com", "(516) 323-2248", "Customer", "No" , "<div class=\"controls\"><a href=\"#\">Edit</a><a href=\"#\">Delete</a></div>"],
+			[ "Cedric Kelly", "Renaldo Consulting", "ckelly@ronaldoconsulting.com", "(432) 394-0384", "Contracor", "No" , "<div class=\"controls\"><a href=\"#\">Edit</a><a href=\"#\">Delete</a></div>"]
+		];
+
+		$(document).ready(function() {
+			$('.datatable').DataTable( {
+				responsive: true,
+				data: dataSet,
+				columns: [
+					{ title: "Name" },
+					{ title: "Company Name" },
+					{ title: "Email" },
+					{ title: "Phone" },
+					{ title: "Contact Role" },
+					{ title: "Primary" },
+					{ title: "" }
+				]
+			});
+		});
+

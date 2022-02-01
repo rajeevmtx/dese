@@ -1,0 +1,105 @@
+.btn-bs {
+	border-radius:0;
+	border-width:2px;
+	border-style:solid;
+	border-color:transparent;
+	min-width:80px;
+	padding:4px 12px;
+	font-weight:600;
+	text-transform:uppercase;
+	&.btn-lg {
+		font-size:18px;
+		padding:$gap-sm $gap;
+		line-height:1;
+	}
+	&.btn-primary {
+		&:hover {
+			border-color:darken($brand-primary,10%);
+		}
+	}
+	&.btn-blank {
+		color:lighten($text-color,20%);
+		&:hover {
+			color:$text-color;
+		}
+		&.primary {
+			color:$brand-primary;
+		}
+	}
+	&.btn-default {
+		//background:none;
+		border-color:#ccc;
+		color:$brand-primary;
+		&:hover {
+			background:#777;
+			border-color:#777;
+			color:white;
+		}
+	}
+	.icm {
+		font-size:20px;
+	}
+	.icm + span {
+		margin-left:$gap-sm;
+	}
+}
+
+.arrow-button {
+	width:100%;
+	border:2px solid $border-light;
+	display:block;
+	margin-bottom:$gap;
+	display:flex;
+	@media (min-width:$screen-sm) {
+		width:500px;
+	}
+	&:hover {
+		background:#f6f6f6;
+	}
+	.body {
+		padding:$gap;
+	}
+	.title {
+		font-weight:600;
+		font-size:18px;
+	}
+	.copy {
+		margin-top:$gap-xs;
+		font-size:13px;
+		color:#999;
+		font-weight:600;
+	}
+	.control-button {
+		padding:$gap;
+		font-size:28px;
+		color:#ccc;
+		display:flex;
+		align-items:center;
+		justify-content:center;
+	}
+}
+
+.add-button,.print-button {
+	display:flex;
+	align-items:center;
+	text-transform:uppercase;
+	font-weight:600;
+	font-size:13px;
+	&:before {
+		@include ico-moon;
+		margin-right:$gap-xs;
+		font-size:18px;
+		position: relative;
+		top:-2px;
+	}
+}
+.add-button {
+	&:before {
+		content: "\e900";
+	}
+}
+.print-button {
+	&:before {
+		content: "\e907";
+	}
+}

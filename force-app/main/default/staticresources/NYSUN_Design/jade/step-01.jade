@@ -1,0 +1,130 @@
+extends layouts/step-layout.jade
+
+block title
+	title Select Program
+
+block content
+	- var module_name = "Incentive Application"
+	- var PageName = "Installer Selection"
+
+	.page-header
+		.content.flex.sm
+			h1= module_name
+			nav.step-nav
+
+				a(href="#",class="popper active", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 01
+				.popover-content.hide
+					.title Installer Selection
+					.status.in-progress
+						span.circle
+						span.copy In Progress
+
+				a(class="popper", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 02
+				.popover-content.hide
+					.title Project Contacts
+					.status.default
+						span.circle
+						span.copy Not started
+
+				a(class="popper", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 03
+				.popover-content.hide
+					.title Site Addresses
+					.status.default
+						span.circle
+						span.copy Not started
+
+				a(class="popper", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 04
+				.popover-content.hide
+					.title Project Site Information
+					.status.default
+						span.circle
+						span.copy Not started
+
+				a(class="popper", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 05
+				.popover-content.hide
+					.title Project Components
+					.status.default
+						span.circle
+						span.copy Not started
+
+				a(class="popper", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 06
+				.popover-content.hide
+					.title Application Review
+					.status.default
+						span.circle
+						span.copy Not started
+
+				a(class="popper", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 07
+				.popover-content.hide
+					.title Paperwork Record
+					.status.default
+						span.circle
+						span.copy Not started
+
+				a(class="popper", data-trigger="hover", data-placement="bottom", data-toggle="popover")
+					span.circle
+					span.sr-only.name Step 08
+				.popover-content.hide
+					.title Submit Application
+					.status.default
+						span.circle
+						span.copy Not started
+
+	.application
+		.content.content-header
+			h2= PageName
+				span ( Step 1 of 8 )
+			.description Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus, ab.
+
+		.content.content-body
+			.form-row
+				label.m-b(for="select-role") Please select your role in this application.
+				.input-button
+					label(for="contractor")
+						input(type="radio" name="select-role" id="contractor")
+						.wrap
+							span Contractor
+							i.icm
+				.input-button
+					label(for="builder")
+						input(type="radio" name="select-role" id="builder")
+						.wrap
+							span Builder
+							i.icm
+				.input-button
+					label(for="both")
+						input(type="radio" name="select-role" id="both")
+						.wrap
+							span Both
+							i.icm
+			.form-row
+				label(for="select-builder") Please select a {{ role_type }}
+				select.form-control.select2.md#select-builder
+					option Company Name
+
+
+
+block footer
+	footer
+		.content.flex.controls.sm
+			a.btn-bs.btn-lg.btn-blank(href="index.html") Cancel
+			a.btn-bs.btn-lg.btn-primary(href="step-02.html") Continue
+
+block scripts
+	script(src='bower_components/datatables.net/js/jquery.dataTables.min.js')
+	script(src='bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js')
+

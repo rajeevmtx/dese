@@ -2,6 +2,7 @@
     .slds-button.slds-button_brand {
         width: fit-content;
         height: 4rem;
+        font-size: 1.4rem;
         border-radius: 8px;
     }   
 }
@@ -110,5 +111,65 @@ h4.header-pane-title {
                 padding-left: 1rem;
             }
         }
+    }
+}
+.finalReport-input {
+    .slds-form-element__label {
+        font-size: 16px;
+    }
+    .slds-input {
+        width: 50%;
+    }
+}
+.finalReport-checkbox{
+    .slds-checkbox .slds-checkbox__label .slds-form-element__label {
+        font-size: 16px;
+    }
+    .slds-checkbox [type=checkbox]:checked+.slds-checkbox__label .slds-checkbox_faux:after {
+        width: 1rem;
+        height: 0.6rem;
+    }
+    .slds-checkbox .slds-checkbox_faux {
+        width: 1.8rem;
+        height: 1.8rem;
+    }
+}
+.finalReport {
+    .header-info{
+        background:#F3F6F9!important;
+        color:#14558F!important;
+        position: fixed;
+        width: 100vw;
+        font-size: 16px;
+        z-index: 1;
+        padding: 2rem 8rem;
+      
+      }
+      .info{
+        font-weight: bold;
+    font-size: 24px;
+    line-height: 33px;
+      }
+      .date__dueD{
+        font-size: 1.6rem;
+        color: #14558F!important;
+        font-weight: normal;
+      }   
+      .date{
+        text-align: right;
+      }   
+}
+.schedule-table {
+    .column-width {
+        width:20%;
+    }
+     .slds-table_cell-buffer tr > td:last-child {
+        padding: .5rem;
+    }
+    .slds-table_bordered tbody th {
+        .slds-truncate {
+            text-align: left;
+        }
+        
     }
 }

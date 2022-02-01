@@ -481,10 +481,29 @@ header .userLoginBtn button {
         border: none;
     }
 }
-
 .slds-spinner_container{
     position: fixed;   
 }
 
-
-
+.applicationContainer{
+    padding: 1.6rem 8rem;
+    .grantContainer{
+        background: #fff!important;
+    }
+    tbody{
+        thead{
+            th{
+                background: #15558f!important;
+                color: #fff!important;
+                font-weight: normal;
+                padding: 10px;
+            }
+        }
+        td{
+            padding: 10px;
+        }
+    }
+}
+.forceCommunitySection .cb-section_column:only-child {
+    padding-top: 0 !important;
+}

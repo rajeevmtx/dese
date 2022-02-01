@@ -1,0 +1,42 @@
+extends layouts/step-layout.jade
+
+block title
+	title Choose a program
+
+block content
+	- var module_name = "Choose a program"
+
+	.application
+		.content.content-header
+			h1= module_name
+			.description  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates fugiat velit vel eius atque iure sed praesentium aut, dicta quisquam!
+
+		.content.content-body
+			a.arrow-button(href="step-01.html")
+				.body
+					.title Residential / Small Commercial
+					.copy  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum odit ratione fugiat itaque, molestiae quos nemo necessitatibus laboriosam provident blanditiis.
+				.control-button
+					span.icon-chevron-thin-right
+
+			a.arrow-button(href="step-01.html")
+				.body
+					.title Commercial and Industrial
+					.copy  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum odit ratione fugiat itaque, molestiae quos nemo necessitatibus laboriosam provident blanditiis.
+				.control-button
+					span.icon-chevron-thin-right
+
+			a.arrow-button(href="step-01.html")
+				.body
+					.title Pellet Stove
+					.copy  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum odit ratione fugiat itaque, molestiae quos nemo necessitatibus laboriosam provident blanditiis.
+				.control-button
+					span.icon-chevron-thin-right
+
+block footer
+	footer
+		.content.flex.controls
+			a.btn-bs.btn-lg.btn-blank(href="#") Cancel
+
+
+

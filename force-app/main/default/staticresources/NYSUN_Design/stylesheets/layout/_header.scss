@@ -1,0 +1,18 @@
+.agency-nav {
+	background:#0077C8;
+	color:white;
+	padding:$gap-md 0;
+	.content {
+		align-items:center;
+	}
+	a {
+		color:white;
+		margin-left:$gap;
+	}
+	.logo {
+		font-size:34px;
+		margin-right:$gap;
+		font-weight:600;
+	}
+
+}

@@ -1,0 +1,149 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --font-primary: "Noto Sans", sans-serif;
+  --white: #FFFFFF;
+  --bg-white:#F3F3F3;
+  --blue: #14558F;
+  --medium-blue:#025CAC;
+  --light-blue:#F3F6F9;
+  --black:#000000;
+  --textcolor:#222222;
+  --black-medium:#141414;
+  --yellow:#F6C51B;
+  --dark-yellow: #D9A503;
+  --light-yellow: #FFFBF0;
+  --dark-grey:#555555;
+  --background-grey: #F3F3F3;
+  --grey-medium:#EBEBEB;
+  --light-grey: #D9D9D9;
+  --lighter-grey:#E1E1E1;
+  --lightest-grey:#A9A9A9;
+  --border-grey:#DCDCDC;
+  --button-grey:#DADADA;
+  --green:#388557;
+}
+
+.monitoring-body-section {
+  font-size: 1rem;
+}
+
+.psrHeader .slds-truncate {
+  font-size: 1rem;
+}
+
+.sideBarSection svg.slds-icon.slds-icon-text-default.slds-icon_xx-small {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.sideBarSection[c-psrSidebar_psrSidebar] button[c-psrSidebar_psrSidebar] {
+  font-size: 1rem;
+}
+
+table.slds-table.slds-table_cell-buffer.slds-table_bordered.slds-table_col-bordered.program-info-table {
+  border: 1px solid rgba(20, 85, 143, 0.3);
+}
+
+h4.header-pane-title {
+  color: #105cb1;
+}
+
+.lgc-bg[c-eec_DocumentLibrary_Internal_eec_DocumentLibrary_Internal] {
+  background: #ffefc0;
+}
+
+.slds-button_brand {
+  background: #105cb1;
+}
+
+.slds-table thead th {
+  background: #105cb1;
+  color: white;
+}
+
+.fc-button-primary:disabled {
+  color: #fff;
+  background-color: #105cb1;
+  border-color: none;
+}
+
+.requiredNotification h2 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #105cb1;
+}
+.requiredNotification li {
+  margin-bottom: 16px;
+}
+
+.profile h3 {
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 33px;
+  color: #14558F;
+}
+.profile p {
+  font-size: 16px;
+  line-height: 22px;
+  color: #14558F;
+}
+.profile button.slds-button.slds-button_neutral {
+  display: flex;
+  flex-direction: row;
+  border-radius: 5px;
+  padding: 3px 30px;
+  border: 1px solid var(--blue);
+  font-size: 14px;
+  color: var(--blue);
+}
+.profile .slds-button.slds-button_brand {
+  font-size: 15px;
+  border-radius: 8px;
+  margin-left: 4rem;
+  padding: 3px 30px;
+}
+.profile .slds-form-element__label {
+  font-weight: 600;
+  font-size: 18px !important;
+  line-height: 24px;
+  color: #14558F;
+}
+.profile input {
+  background: #FFFFFF;
+  padding: 5px;
+  font-size: 14px;
+  border: 1.5px solid rgba(20, 85, 143, 0.3);
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+.profile .slds-combobox__input {
+  background: #FFFFFF;
+  padding: 5px;
+  font-size: 14px;
+  border: 1.5px solid rgba(20, 85, 143, 0.3);
+  box-sizing: border-box;
+  border-radius: 4px;
+  justify-content: left;
+}
+
+.sideBarSection .slds-nav-vertical {
+  height: calc(100vh - 50px);
+  overflow: auto;
+}
+
+.new-incident-popup .slds-form-element .slds-form-element__label {
+  font-size: 16px !important;
+  color: var(--textcolor);
+}
+
+.slds-button_outline-brand {
+  border-color: #14558F;
+  color: #14558F;
+}
+
+/*# sourceMappingURL=main.css.map */

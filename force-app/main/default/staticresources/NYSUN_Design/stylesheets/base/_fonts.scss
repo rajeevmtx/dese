@@ -1,0 +1,252 @@
+@font-face {
+  font-family: "Proxima Nova";
+  font-weight: normal;
+  font-style: normal;
+  src: url("../fonts/proximanova-regular.eot");
+  src: url("../fonts/proximanova-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/proximanova-regular.woff2") format("woff2"), url("../fonts/proximanova-regular.woff") format("woff"), url("../fonts/proximanova-regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Proxima Nova";
+  font-weight: 600;
+  font-style: normal;
+  src: url("../fonts/proximanova-semibold.eot");
+  src: url("../fonts/proximanova-semibold.eot?#iefix") format("embedded-opentype"), url("../fonts/proximanova-semibold.woff2") format("woff2"), url("../fonts/proximanova-semibold.woff") format("woff"), url("../fonts/proximanova-semibold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Proxima Nova";
+  font-weight: bold;
+  font-style: normal;
+  src: url("../fonts/proximanova-bold.eot");
+  src: url("../fonts/proximanova-bold.eot?#iefix") format("embedded-opentype"), url("../fonts/proximanova-bold.woff2") format("woff2"), url("../fonts/proximanova-bold.woff") format("woff"), url("../fonts/proximanova-bold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Proxima Nova";
+  font-weight: 800;
+  font-style: normal;
+  src: url("../fonts/proximanova-extrabold.eot");
+  src: url("../fonts/proximanova-extrabold.eot?#iefix") format("embedded-opentype"), url("../fonts/proximanova-extrabold.woff2") format("woff2"), url("../fonts/proximanova-extrabold.woff") format("woff"), url("../fonts/proximanova-extrabold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Proxima Nova";
+  font-weight: normal;
+  font-style: italic;
+  src: url("../fonts/proximanova-italic.eot");
+  src: url("../fonts/proximanova-italic.eot?#iefix") format("embedded-opentype"), url("../fonts/proximanova-italic.woff2") format("woff2"), url("../fonts/proximanova-italic.woff") format("woff"), url("../fonts/proximanova-italic.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Proxima Nova";
+  font-weight: bold;
+  font-style: italic;
+  src: url("../fonts/proximanova-bolditalic.eot");
+  src: url("../fonts/proximanova-bolditalic.eot?#iefix") format("embedded-opentype"), url("../fonts/proximanova-bolditalic.woff2") format("woff2"), url("../fonts/proximanova-bolditalic.woff") format("woff"), url("../fonts/proximanova-bolditalic.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Proxima Nova";
+  font-weight: 200;
+  font-style: normal;
+  src: url("../fonts/proximanova-light.eot");
+  src: url("../fonts/proximanova-light.eot?#iefix") format("embedded-opentype"), url("../fonts/proximanova-light.woff2") format("woff2"), url("../fonts/proximanova-light.woff") format("woff"), url("../fonts/proximanova-light.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Proxima Nova";
+  font-weight: 200;
+  font-style: italic;
+  src: url("../fonts/proximanova-lightitalic.eot");
+  src: url("../fonts/proximanova-lightitalic.eot?#iefix") format("embedded-opentype"), url("../fonts/proximanova-lightitalic.woff2") format("woff2"), url("../fonts/proximanova-lightitalic.woff") format("woff"), url("../fonts/proximanova-lightitalic.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Proxima Nova";
+  font-weight: 200;
+  font-style: italic;
+  src: url("../fonts/proximanova-lightitalic.eot");
+  src: url("../fonts/proximanova-lightitalic.eot?#iefix") format("embedded-opentype"), url("../fonts/proximanova-lightitalic.woff2") format("woff2"), url("../fonts/proximanova-lightitalic.woff") format("woff"), url("../fonts/proximanova-lightitalic.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Proxima Nova";
+  font-weight: 200;
+  font-style: italic;
+  src: url("../fonts/proximanova-lightitalic.eot");
+  src: url("../fonts/proximanova-lightitalic.eot?#iefix") format("embedded-opentype"), url("../fonts/proximanova-lightitalic.woff2") format("wo../fonts/ff2"), url("../fonts/proximanova-lightitalic.woff") format("wof../fonts/f"), url("../fonts/proximanova-lightitalic.ttf") format("true../fonts/type");
+}
+
+@mixin font-bold {
+	font-weight:600;
+}
+
+@mixin ico-moon {
+	font-family: 'icomoon' !important;
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+}
+
+h1 {
+	@media (max-width:$screen-md) {
+		font-size:1.6em;
+	}
+}
+
+
+@font-face {
+  font-family: 'icomoon';
+  src:  url('../fonts/icomoon.eot?1qa8bh');
+  src:  url('../fonts/icomoon.eot?1qa8bh#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.woff2?1qa8bh') format('woff2'),
+    url('../fonts/icomoon.ttf?1qa8bh') format('truetype'),
+    url('../fonts/icomoon.woff?1qa8bh') format('woff'),
+    url('../fonts/icomoon.svg?1qa8bh#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-envelope:before {
+  content: "\e91f";
+}
+.icon-circle-check2:before {
+  content: "\e920";
+}
+.icon-circle-check:before {
+  content: "\e916";
+}
+.icon-check:before {
+  content: "\e5ca";
+}
+.icon-help:before {
+  content: "\e887";
+}
+.icon-note:before {
+  content: "\e06f";
+}
+.icon-note_add:before {
+  content: "\e89c";
+}
+.icon-timelapse:before {
+  content: "\e422";
+}
+.icon-cancel2:before {
+  content: "\e91d";
+}
+.icon-highlight_remove:before {
+  content: "\e90c";
+}
+.icon-radio_button_checked:before {
+  content: "\e909";
+}
+.icon-radio_button_unchecked:before {
+  content: "\e90a";
+}
+.icon-add_circle:before {
+  content: "\e900";
+}
+.icon-note-list:before {
+  content: "\e91b";
+}
+.icon-documents:before {
+  content: "\e913";
+}
+.icon-checkmark:before {
+  content: "\e921";
+}
+.icon-plus-alt:before {
+  content: "\e914";
+}
+.icon-minus-alt:before {
+  content: "\e915";
+}
+.icon-enlarge2:before {
+  content: "\e91c";
+}
+.icon-shrink2:before {
+  content: "\e91e";
+}
+.icon-bin:before {
+  content: "\e925";
+}
+.icon-eye:before {
+  content: "\e910";
+}
+.icon-move-down:before {
+  content: "\e90d";
+}
+.icon-move-up:before {
+  content: "\e90e";
+}
+.icon-printer:before {
+  content: "\e907";
+}
+.icon-file-directory:before {
+  content: "\e912";
+}
+.icon-question:before {
+  content: "\e911";
+}
+.icon-pencil:before {
+  content: "\e906";
+}
+.icon-sync:before {
+  content: "\e903";
+}
+.icon-traffic-lights:before {
+  content: "\e924";
+}
+.icon-bubble:before {
+  content: "\e923";
+}
+.icon-bubble-lines:before {
+  content: "\e922";
+}
+.icon-square-right:before {
+  content: "\e918";
+}
+.icon-square-left:before {
+  content: "\e919";
+}
+.icon-checkmark-circle:before {
+  content: "\e917";
+}
+.icon-menu-open:before {
+  content: "\e90f";
+}
+.icon-checkbox-checked:before {
+  content: "\e902";
+}
+.icon-checkbox-unchecked:before {
+  content: "\e901";
+}
+.icon-sticky-note-o:before {
+  content: "\f24a";
+}
+.icon-calendar-o:before {
+  content: "\e908";
+}
+.icon-chevron-thin-left:before {
+  content: "\e91a";
+}
+.icon-chevron-thin-right:before {
+  content: "\e90b";
+}
+.icon-chevron-down:before {
+  content: "\e904";
+}
+.icon-chevron-up:before {
+  content: "\e905";
+}
+

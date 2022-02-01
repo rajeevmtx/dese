@@ -5,7 +5,7 @@
 }
 .sidebar{
     height:100vh;
-    position: fixed;
+    position: sticky;
     
     .slds-progress__item.slds-is-active .slds-progress__marker {
         background-color: var(--medium-blue);
