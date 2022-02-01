@@ -77,4 +77,8 @@ export default class Dese_header extends NavigationMixin(LightningElement) {
       handleMyProfile(){
             window.open('https://desedemo-demo-lp.cs196.force.com/dese/s/user-profile','_self');
       }
+
+      openApplication(){
+            window.open("/dese/s/grant-application?projectId=a3i030000008QfoAAE", "_self");
+      }
 }
