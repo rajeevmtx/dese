@@ -1,0 +1,18 @@
+<aura:component implements="forceCommunity:themeLayout" description="A custom theme for NYS DOH Intake Applications" access="global">
+    <ltng:require 
+        styles="{!join(',',$Resource.NYSStyles + '/main.css')}"
+    />
+    
+    <aura:attribute name="footerSection" type="Aura.Component[]" />
+
+    <div class="content-container" >
+        <div class="content" id="main-content-1">
+            {!v.body}
+        </div>
+        <div class="site-footer">
+            <!-- {!v.footerSection} -->
+            &copy; NYS DOH 2020 All Rights Reserved.
+        </div>
+    </div>
+    
+</aura:component>

@@ -99,7 +99,7 @@
                                     <div class="slds-truncate">
                                         <div if:true={application.showSubmittedFinalReportButton}>
                                             <lightning-button variant="brand" label="Final Report Submitted"
-                                                data-appid={application.Id} disabled={application.isTandDDisabled}
+                                                data-appid={application.Id} disabled=true
                                                 onclick={goToFinalReportSubmission} data-caseid={application.Id}
                                                 class="slds-m-left_x-small"></lightning-button>
                                         </div>

@@ -1,0 +1,44 @@
+<!--
+ - Created by arunm on 21-03-2020.
+ -->
+
+<aura:component description="NYSDOH_VolunteerMap"
+                implements="forceCommunity:availableForAllPageTypes"
+                controller="NYSDOH_VolunteerController"
+                access="global">
+
+    <aura:attribute name="mapMarkers" type="List"/>
+    <aura:attribute name="filteredMapMarkers" type="List"/>
+    <aura:attribute name="center" type="Map" />
+    <aura:attribute name="markersTitle" type="String" />
+    <aura:attribute name="zoomLevel" type="Integer" default="10" />
+    <aura:attribute name="showFooter" type="Boolean" default="true"/>
+
+    <aura:attribute name="countyOptions" type="List"/>
+    <aura:attribute name="selectedCounty" type="String" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.handleInit}"/>
+
+    <aura:if isTrue="{!v.mapMarkers.length > 0}" >
+
+        <lightning:layout class="container" multipleRows="true">
+
+            <lightning:layoutItem size="4">
+                <lightning:select name="countyId" label="Select County" aura:id="countyId"  onchange="{!c.handleCountyChange}" value="{!v.selectedCounty}">
+                    <aura:iteration items="{!v.countyOptions}" var="option">
+                        <option text="{!option.label}" value="{!option.value}" />
+                    </aura:iteration>
+                </lightning:select>
+            </lightning:layoutItem>
+
+            <lightning:layoutItem class="slds-p-top_medium" size="12">
+                <lightning:map mapMarkers="{!v.filteredMapMarkers}"
+                               center="{!v.center}"
+                               markersTitle="{!v.markersTitle}"
+                               zoomLevel="{!v.zoomLevel}"
+                               listView="hidden"
+                               showFooter="{!v.showFooter}" />
+            </lightning:layoutItem>
+        </lightning:layout>
+    </aura:if>
+</aura:component>

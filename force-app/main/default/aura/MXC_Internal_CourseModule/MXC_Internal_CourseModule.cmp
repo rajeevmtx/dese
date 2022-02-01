@@ -1,0 +1,6 @@
+<aura:component implements="force:appHostable,lightning:isUrlAddressable">
+<!-- <aura:component implements="force:appHostable,lightning:isUrlAddressable" extends="c:MXC_Internal_Template"> -->
+    <aura:attribute name="activeTab" description="Holds the value of active tab" type="string" default="myLearning" />
+    <!-- <aura:handler name="change" value="{!v.pageReference}" action="{!c.onPageReferenceChanged}" /> -->
+    <c:lms_course_module />
+</aura:component>

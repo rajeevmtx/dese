@@ -1,0 +1,212 @@
+<apex:component controller="EEC_NavigationController">
+    <apex:attribute name="licensetransactionrecord" type="String" description="TODO: Describe me"/>
+    <apex:attribute name="current" description="API name of the current page" type="String" assignTo="{!currentPage}" />
+    <apex:attribute name="highest" description="API name of the highest reached page" type="String" assignTo="{!highestReachedStep}"/>
+    <apex:attribute name="recordTypeDeveloperName" description="DeveloperName of the transaction record type" type="String" assignTo="{!recordTypeName}"/>
+    <apex:attribute name="providerRecordType" description="DeveloperName of the transaction record type" type="String" assignTo="{!provRecordTypeDeveloperName}"/>
+    <apex:attribute name="IsAssistantUpgradeToCertified" description="" type="Boolean" assignTo="{!IsAssistantUpgradeCertified}"/>
+    <apex:attribute name="licenseTranStatus" description="status of the license transaction" type="String" assignTo="{!licenseStatus}"/>
+    <head>
+        <style>
+            .md-button.md-raised.md-eec, 
+            .md-button.md-raised.md-eec {
+                color: rgb(250, 250, 250);
+                background-color: #853F3F;
+            }
+            .md-button.md-raised.md-eec:hover,
+            .md-button.md-raised.md-eec:hover {
+                color: rgb(250, 250, 250);
+                background-color: #703E3E;
+            }
+            .md-button.md-raised,
+            .md-button.md-raised {
+                background-color: #f7f7f7;
+            }
+            .md-button span {
+                padding: 6px;
+            }
+            .top-level-label,
+            .assistant-header-text {
+                font-weight: 600;
+                margin-right: 5px;
+                line-height: 20px;
+                color: rgba(0, 0, 0, 0.54);
+            }
+            input[type="radio"],
+            input[type="checkbox"] {
+                margin: 4px 7px 0;
+            }
+            .command-button-container {
+                position: relative;
+                top: -2px;
+            }
+            .commandBtn {
+                margin: -1px 0px -2px;
+            }
+            .transaction-info-row {
+                margin-left: 0px;
+            }
+            .eec-subhead {
+                font-size: 1.2em;
+                font-weight: 600;
+                margin-left: 0px;
+            }
+            .form-control {
+                color: rgba(0, 0, 0, .87);
+            }
+            .navigation-buttons {
+                overflow: visible;
+            }
+            .new-address a {
+                color: black;
+                text-decoration: none;
+                cursor: default;
+            }
+            .not-visible {
+                display: none;
+            }
+            textarea {
+                margin-bottom: 20px;
+            }
+            label {
+                margin-bottom: 2px;
+                font-weight: normal;
+            }
+            .requiredInput {
+                margin-left: 30px;
+            }
+            .desc-panel {
+                margin-left: 15px;
+                width: 80%;
+            }
+            .td {
+                padding-top: 2px;
+                padding-bottom: 2px;
+                padding-right: 20px;
+            }
+            .background-form-container {
+                margin-bottom: 20px;
+            }
+            thead {
+                background-color: #f5f5f5;
+                font-size: 16px;
+                color: inherit;
+            }
+            .desc-answer {
+                margin-bottom: 15px;
+            }
+            .ques {
+                margin-bottom: 10px;
+            }
+            .table>thead:first-child>tr:first-child>th {
+                border-bottom: 0px;
+                border-top: 1px solid #dddddd;
+            }
+            .col-lg-8 {
+                padding-left: 0px;
+            }
+            .table {
+                border-left: 1px solid #dddddd;
+                border-right: 1px solid #dddddd;
+                border-bottom: 1px solid #dddddd;
+            }
+            #check-box-tables>.table>tbody>tr>td {
+                border-top: 0px;
+                border-bottom: 0px;
+            }
+            #check-box-tables>.table {
+                border-left: 0px;
+                border-right: 0px;
+                border-right: 0px;
+                border-bottom: 0px;
+            }
+            .panel-title {
+                font-weight: 500;
+            }
+            @media only screen and (min-width: 0px) and (max-width: 959px) {
+                .household-form-container {
+                    margin: 0 !important;
+                    padding: 0 !important;
+                }
+                .navigation-buttons .md-button {
+                    width: 98%;
+                    btn-progress-color: "#fff";
+                    passed-btn-bg-color: "#4CAF50";
+                    btn-bg-color: "#FAFAFA";
+                    active-btn-bg-color: "#0288D1";
+                }
+                .navigation-buttons md-content {
+                    width: 100%;
+                }
+                .add-button-container {
+                    padding-right: 0;
+                    width: 100%;
+                }
+                #agreeButton:disabled {
+                    background-color: #f5f5f5;
+                    color: #bbbbbb;
+                }
+                #notAgreeButton:disabled {
+                    background-color: #f5f5f5;
+                    color: #bbbbbb;
+                }
+            }
+            body {
+                font-size: 15px;
+            }
+            @media all and (-ms-high-contrast: none),
+            (-ms-high-contrast: active) {
+                /* IE10+ CSS styles go here */
+                .wizard-header-step {
+                    width: 240px;
+                }
+            }
+            md-progress-circular .md-inner .md-left .md-half-circle,
+            md-progress-circular .md-inner .md-right .md-half-circle {
+                width: 55px;
+            }
+        </style>
+    </head>
+    <div class="wizard" layout="column" layout-padding="" layout-align="center center">
+        <div class="wizard-header col-lg-12" layout="column" layout-margin="">
+            <div class="wizard-header-step-list col-lg-12" layout="column" layout-margin="">
+                <apex:repeat value="{!listNavigationWrapper}" var="step">
+                    <div class="wizard-header-step ng-scope" layout="row" layout-align="center center" role="button" tabindex="0">
+                        <div class="step-title" layout-margin="" flex="75">
+                            <h3 class="md-caption ng-binding" style="margin-bottom:0px !important; margin-right: 5px;" onclick="doNavigate('{!step.navigateToStep}', '');">{!step.pageName}&nbsp;</h3>
+                        </div>
+                        <div class="step-button" flex="25" layout="column" layout-align="center center">
+                            <button class="md-fab wizard-button md-button md-default-theme" ng-transclude="" aria-label="step button">
+                                <div class="circle-loader-wrap ng-scope" ng-style="step.progresscircleStyle" style="background-color: rgb(255, 255, 255);">
+                                    <div class="circle-loader-wrap after" ng-style="step.wizardBtnStyle" style="background-color: {!if(step.passed == true,'rgb(76, 175, 80)', if(step.selected == true, 'rgb(2, 136, 209)', 'rgb(250,250,250)'))};">
+                                    </div>
+                                </div>
+                                <div class="wizard-step-img ng-scope">
+                                    <i onclick="doNavigate('{!step.navigateToStep}', '');" class="material-icons icon ng-binding {!if(step.selected == true, 'selected', '')} {!if(step.passed == true, 'passed','')}">{!if(step.passed == true, 'check','info_outline')}</i>
+                                </div>
+                                <md-progress-circular md-mode="determinate" md-diameter="63" value="0" aria-valuemin="0" aria-valuemax="100" role="progressbar"
+                                    class="ng-scope md-default-theme" aria-valuenow="0" style="transform: scale(1.3125);">
+                                    <div class="md-spinner-wrapper">
+                                        <div class="md-inner">
+                                            <div class="md-gap">
+                                            </div>
+                                            <div class="md-left">
+                                                <div class="md-half-circle">
+                                                </div>
+                                            </div>
+                                            <div class="md-right">
+                                                <div class="md-half-circle">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </md-progress-circular>
+                                <div class="md-ripple-container"></div>
+                            </button>
+                        </div>
+                    </div>
+                </apex:repeat>
+            </div>
+        </div>
+    </div>
+</apex:component>

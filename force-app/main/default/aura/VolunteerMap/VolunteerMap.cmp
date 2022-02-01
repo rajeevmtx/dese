@@ -1,0 +1,22 @@
+<!--
+ - Created by arunm on 21-03-2020.
+ -->
+
+<aura:component description="VolunteerMap" implements="flexipage:availableForAllPageTypes" controller="VolunteerController">
+
+    <aura:attribute name="mapMarkers" type="List"/>
+    <aura:attribute name="center" type="Map" />
+    <aura:attribute name="markersTitle" type="String" />
+    <aura:attribute name="zoomLevel" type="Integer" default="10" />
+    <aura:attribute name="showFooter" type="Boolean" default="true"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.handleInit}"/>
+
+    <aura:if isTrue="{!v.mapMarkers.length > 0}" >
+        <lightning:map mapMarkers="{!v.mapMarkers}"
+                       center="{!v.center}"
+                       markersTitle="{!v.markersTitle}"
+                       zoomLevel="{!v.zoomLevel}"
+                       showFooter="{!v.showFooter}" />
+    </aura:if>
+</aura:component>

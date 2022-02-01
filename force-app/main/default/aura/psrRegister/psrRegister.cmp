@@ -1,0 +1,144 @@
+<!-- add implements="forceCommunity:availableForAllPageTypes" to surface the component in community builder -->
+<aura:component controller="psrRegisterController" implements="forceCommunity:availableForAllPageTypes"> 
+    <aura:attribute name="accountId" type="String" required="false"
+                    description="accountId for creating the user. If not specified, it will create a PersonAccount if possible for B2C scenario. Or otherwise if it's in a community, the community's self-registration accountId will be used." />
+    <aura:attribute name="regConfirmUrl" type="String" required="true" />
+    <aura:attribute name="startUrl" type="String" required="false"
+                    description="The url you go to after a successful login" />
+    <aura:attribute name="showError" type="Boolean" required="true" description="" default="false" access="private" />
+    <aura:attribute name="errorMessage" type="String" required="false" description="" access="private" />
+    <aura:attribute name="firstnameLabel" type="String" required="false" default="First Name" />
+    <aura:attribute name="lastnameLabel" type="String" required="false" default="Last Name" />
+    <aura:attribute name="emailLabel" type="String" required="false" default="Email" />
+    <aura:attribute name="passwordLabel" type="String" required="false" default="Create Password" />
+    <aura:attribute name="confirmPasswordLabel" type="String" required="false" default="Confirm Password" />
+    <aura:attribute name="submitButtonLabel" type="String" required="false" default="Register" />
+    <aura:attribute name="includePasswordField" type="Boolean" required="false" default="false"
+                    description="Whether to include password" />
+    <aura:attribute name="checkboxChecked" type="Boolean" default="false" />
+    <aura:attribute name="showErrorMessage" type="Boolean" default="false" />
+    <aura:attribute name="extraFieldsFieldSet" type="String" required="false"
+                    description="A field set name whose fields are desired for user registration" />
+    <aura:attribute name="extraFields" type="list" required="false"
+                    description="A field set name whose fields are desired for user registration" />
+    <aura:handler name="init" value="{!this}" action="{!c.initialize}" />
+    <aura:attribute name="expid" type="String" required="false" description="The branding experience ID" />
+
+    <aura:registerevent name="sitePropagatedStartUrl" type="c:setStartUrl" />
+    <aura:handler name="init" value="{!this}" action="{!c.initialize}" />
+    <aura:dependency resource="c:setStartUrl" type="EVENT" />
+    <!-- Please uncomment
+    <aura:dependency resource="siteforce:registerQueryEventMap" type="EVENT"/>
+    -->
+    <aura:handler event="c:setStartUrl" action="{!c.setStartUrl}" />
+    <aura:handler event="c:setExpId" action="{!c.setExpId}" />
+    <aura:dependency resource="c:setExpId" type="EVENT" />
+    <aura:attribute name="accountRecordId" type="Id" />
+    <aura:attribute name="userId" type="Id" />
+    <aura:attribute name="contactId" type="Id" />
+
+    <aura:attribute name="loginUrl" type="String"></aura:attribute>
+
+    <!-- attributes for form -->
+    <aura:attribute type="String" name="firstName" />
+    <aura:attribute type="String" name="lastName" />
+    <aura:attribute type="String" name="email" />
+    <aura:attribute type="String" name="password" />
+    <aura:attribute type="String" name="confirmPassword" />
+
+
+    <div class="slds-p-horizontal_small">
+        <div class="slds-grid slds-grid--pull-padded slds-wrap">
+            <div class="slds-col slds-small-size--1-of-2 slds-medium-order_2 right_section_login">
+                <div class="slds-hide_medium mobile-header">
+                    <img src="" alt="" />
+                </div>
+                <div class="auth-wrap auth-wrap-broad has-footer">
+                    <div class="auth-container ">
+                        <div class="intro-text">
+                            <div class="title text-brand-heading">Create Account</div>
+                            <div class="description">Create an account by filling the form below.</div>
+                        </div>
+                        <div class="slds-card main_card_login">
+                            <aura:renderIf isTrue="{!v.showError}">
+                                <div class="error">
+                                    {!v.errorMessage}
+                                </div>
+                            </aura:renderIf>
+                            <div class="slds-grid slds-wrap slds-gutters ">
+                                <div class="slds-col slds-small-size_1-of-2 slds-p-bottom_large required-field">
+                                    <lightning:input value="{!v.firstName}" label="First Name" aura:id="inputField" required="true" placeholder="{!v.firstnameLabel}" onblur="{!c.onKeyUp}" messageWhenValueMissing="Please enter your first name"></lightning:input>
+                                </div>
+                                <div class="slds-col slds-small-size_1-of-2 slds-p-bottom_large required-field">
+                                    <lightning:input value="{!v.lastName}" label="Last Name" aura:id="inputField" required="true" placeholder="{!v.lastNameLabel}" onblur="{!c.onKeyUp}" messageWhenValueMissing="Please enter your last name."></lightning:input>
+                                </div>
+                            </div>
+                            <div class="slds-form-element slds-p-bottom_large required-field">
+                                <lightning:input variant="brand" value="{!v.email}" label="Email address" aura:id="inputField" required="true" placeholder="{!v.emailLabel}" onblur="{!c.onKeyUp}" messageWhenValueMissing="Please enter an email address"></lightning:input>
+                            </div>
+
+                            <aura:iteration aura:id="extraFields" items="{!v.extraFields}" var="curField" indexVar="index">
+                                <div id="sfdc_extrafield_container" class="sfdc">
+                                    <span id="sfdc_user" class="login-icon" data-icon="a"></span>
+                                    <lightning:input aura:id="{!curField.fieldPath}" name="currField" value="{!curField.value}" placeholder="{!curField.label}" onblur="{!c.onKeyUp}" />
+                                </div>
+                            </aura:iteration>
+
+                            <aura:renderIf isTrue="{!v.includePasswordField}">
+                                <div id="sfdc_password_container" class="slds-p-bottom_large required-field">
+                                    <lightning:input value="{!v.password}" aura:id="inputField" type="password" name="password" required="true" label="Password" placeholder="{!v.passwordLabel}" onblur="{!c.onKeyUp}" messageWhenValueMissing="Please enter password." />
+                                </div>
+
+                                <div id="sfdc_confirm_password_container" class="slds-p-bottom_large required-field">
+                                    <lightning:input value="{!v.confirmPassword}" aura:id="inputField" type="password" required="true" label="Confirm Password" name="confirmPassword" placeholder="{!v.confirmPasswordLabel}" onblur="{!c.onKeyUp}"  messageWhenValueMissing="Please retype password." />
+                                </div>
+                            </aura:renderIf>
+
+                            <div class="slds-form-element">
+                                <div class="slds-form-element__control small">
+                                    <lightning:input type="checkbox" checked="{!v.checkboxChecked}" value="{!v.checkboxChecked}" aura:id="acceptTerms" label="I acknowledge that I have read and accept the Terms of Use Agreement and consent to the Privacy Policy."></lightning:input>
+                                    <aura:renderIf isTrue="{!v.showErrorMessage}">
+                                        <span class="slds-form-element__help textcolor">Please acknowledge the terms and conditions.</span>
+                                    </aura:renderIf>
+                                </div>
+                            </div>
+                            <lightning:button aura:id="submitButton" label="Register" onclick="{!c.handleSelfRegister}" variant="brand" class="slds-button_stretch slds-m-top_medium"></lightning:button>
+                        </div>
+                        <!-- I-16166 by hari-->
+                        <div class="support_ticket" onclick="{!c.redirectToSupportPage}">
+                        <lightning:icon iconName="utility:prompt_edit" alternativeText="Support Ticket" variant="inverse" size="small"/><span class="ticket_label">Support Ticket</span>
+
+                        </div>
+                        <!-- I-16166 by hari-->
+                    </div>
+                </div>
+                <div class="auth-wrap sidebar mobile-register slds-hide_medium">
+                    <div class="auth-container slds-text-color_inverse ">
+                        <h2 class="slds-m-bottom_medium main-title">Already have an account?</h2>
+                        <div class="slds-m-bottom_x-large">You can login by clicking the button below. To skip this next time, you can ask us to remember your login credentails.</div>
+                        <lightning:button aura:id="registerButton" label="Log In" onclick="{!c.handleLogin}" class="slds-button slds-button_outline-secondary"></lightning:button>
+                    </div>
+                </div>
+                <footer class="small footer">
+                    <ul class="footer__list slds-grid">
+                        <li class="slds-col slds-size--1-of-3"><a href="#">&copy; 2020 MTX</a></li>
+                        <li class="slds-col slds-size--1-of-3"><a class="text-brand" href="#">Terms of Use Agreement</a></li>
+                        <li class="slds-col slds-size--1-of-3"><a class="text-brand" href="#">Privacy Policy</a></li>
+                    </ul>
+                </footer>
+            </div>
+            <div class="slds-col slds-small-size--1-of-2 slds-show_medium left_section_login" style="{! 'background-image: url('+ $Resource.mexico_bg +')' }">
+            <div class="slds-col slds-small-size--1-of-2 slds-show_medium left_section_login">
+                <div class="auth-wrap sidebar auth-wrap-broad">
+                    <div class="auth-container slds-text-color_inverse">
+                        <img class="slds-show_medium slds-m-bottom_xx-large" src="" alt="" />
+                        <h2 class="slds-m-bottom_medium main-title">Already have an account?</h2>
+                        <div class="slds-m-bottom_xx-large">You can login by clicking the button below. To skip this next time, you can ask us to remember your login credentails.</div>
+                        <lightning:button aura:id="registerButton" label="Log In" onclick="{!c.handleLogin}" class="slds-button slds-button_outline-secondary"></lightning:button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

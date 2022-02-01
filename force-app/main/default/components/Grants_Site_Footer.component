@@ -1,0 +1,86 @@
+<apex:component controller="EEC_NavBarController">
+  <style>
+    .footer-container {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .footer-container .copyright {
+      float: left;
+      margin-right: 15px;
+      align-self: center;
+      flex: 2;
+      color: #707070 !important;
+    }
+
+    .attachment-item social-buttons {
+      flex: 1;
+    }
+
+    .srOnly {
+      display: none;
+    }
+
+    .navbar-default .navbar-text {
+      color: #707070 !important;
+    }
+
+    a {
+      color: #3174AF;
+    }
+
+    .navbar-fixed-top,
+    .navbar-fixed-bottom {
+      position: -webkit-sticky !important;
+    }
+
+    .newfooter {
+      background: #526475;
+      padding: .5rem;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      margin-left: 0;
+      text-align: end;
+      color: #fff;
+      left: 0;
+      z-index: 99!important;
+    }
+
+    .newfooter p {
+      margin: 0 0 0;
+    }
+    .copyright-footer{
+      padding: 0px !important;
+    }
+  </style>
+  <div class="right newfooter">
+    <p>Copyright © 2020 Massachusetts Department of Elementary &amp; Secondary Education - All rights reserved.</p>
+  </div>
+
+  <!-- <div class="navbar navbar-default navbar-fixed-bottom">
+    <div class="footer-container">
+      <p class="copyright navbar-text"> © 2019 - MTX Group Inc 
+           <a href="https://www.mtxb2b.com/s/" >(MTX)</a>
+      </p>
+      
+      <div class="social-buttons">
+        <a onclick="window.print();" class="navbar-btn btn pull-right">
+          <i id="social" class="fa fa-print fa-3x"></i>
+          <span class="srOnly">Accessibility Fix</span>
+        </a>  
+        <a href=" " class="navbar-btn btn pull-right" target="_blank">
+          <i id="social" class="fa fa-twitter-square fa-3x"></i>
+          <span class="srOnly">Accessibility Fix</span>
+        </a>
+        <a href=" " target="_top" class="navbar-btn btn pull-right">
+          <i id="social" class="fa fa-envelope-square fa-3x"></i>
+          <span class="srOnly">Accessibility Fix</span>
+        </a>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- <c:EEC_Site_Scripts id="pageScripts"/>  -->
+</apex:component>

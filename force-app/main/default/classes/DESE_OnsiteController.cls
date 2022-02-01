@@ -96,11 +96,26 @@ public with sharing class DESE_OnsiteController {
     public static void sendEmailToUsers(String recordId){
         List<EmailTemplate> lstEmailTemplate = [SELECT Id, Body, DeveloperName, HtmlValue, Name from EmailTemplate where DeveloperName='Orientation_Email_Template'];
         Messaging.SingleEmailMessage Objemail = new Messaging.SingleEmailMessage();
-        Objemail.setToAddresses(new List<String>{'vikas.rathi@mtxb2b.com','amit.nihala@mtxb2b.com'});
+        Objemail.setToAddresses(new List<String>{'vikas.rathi@mtxb2b.com'});
         Objemail.setTemplateId(lstEmailTemplate[0].Id);
         Objemail.setTargetObjectId('00303000003HxHlAAK');
         Objemail.setWhatId(recordId);
         Objemail.setSaveAsActivity(false);
         Messaging.SendEmailResult [] rsendmailResult = Messaging.sendEmail(new Messaging.SingleEmailMessage[] {Objemail});
+
+        Id conDocument = '06903000001rVzUAAU';
+
+        List<ContentDocumentLink> contentList = [SELECT ID,ContentDocumentId FROM ContentDocumentLink WHERE LinkedEntityId = :recordId and ContentDocumentId = :conDocument];
+        if(contentList.size()>0){
+            delete contentList;
+        }
+         //Insert ContentDocumentLink
+         ContentDocumentLink cDocLink = new ContentDocumentLink();
+         cDocLink.ContentDocumentId = conDocument;//Add ContentDocumentId
+         //cDocLink.LinkedEntityId = attach.ParentId;//Add attachment parentId
+         cDocLink.LinkedEntityId = recordId;//Add attachment parentId
+         cDocLink.ShareType = 'I';//V - Viewer permission. C - Collaborator permission. I - Inferred permission.
+         cDocLink.Visibility = 'AllUsers';//AllUsers, InternalUsers, SharedUsers
+         Insert cDocLink;
     }
 }

@@ -1,0 +1,73 @@
+<apex:component controller="EEC_NavBarController" allowDML="true">
+    <style>
+        .brand {
+            margin-top: -7px;
+        }
+        .brand-subtitle {
+            font-size: 11px;
+        }
+        @media (max-width: 768px) {
+            .navbar-nav {
+                margin-top: 25px;
+            }
+        }
+        @media (max-width: 690px) {
+            #eec-header-navbar {
+                position: relative;
+            }
+        }
+    </style>
+    <apex:attribute type="string" name="providerId" description="Provider id" />
+    <apex:attribute type="string" name="accountName" description="Account Name" />
+    <apex:form >
+        <nav class="navbar navbar-default top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/EEC_PortalLandingPage">
+                        <img alt="eec_logo"  class="pull-left" style="max-width:70px; margin-top: -7px;" src="{!URLFOR($Resource.EEC_Bootstrap,'EEC_Bootstrap/img/eec-logo.png')}" />
+                        <div class="pull-left brand">LEAD 
+                            <p class="brand-subtitle">EEC Provider Licensing Portal</p>
+                        </div>
+                    </a>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#eec-header-navbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="sr-only">Toggle Menu</span>
+                    </button>
+                    <apex:outputPanel rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}">
+                        <p class="visible-xs provider-welcome" style="float: right; font-weight: bold;">
+                            <apex:outputPanel rendered="{!accountName != null}">Welcome {!accountName}</apex:outputPanel>
+                            <apex:outputPanel rendered="{!accountName == null}">Welcome {!acc.Name}</apex:outputPanel>
+                        </p>
+                    </apex:outputPanel>
+                </div>
+                <div id="eec-header-navbar" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="hidden-xs">
+                            <apex:outputPanel rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}">
+                                <p class="provider-welcome">
+                                    <apex:outputPanel rendered="{!accountName != null}">Welcome {!accountName}</apex:outputPanel>
+                                    <apex:outputPanel rendered="{!accountName == null}">Welcome {!acc.Name}</apex:outputPanel>
+                                </p>
+                            </apex:outputPanel>
+                        </li>
+                        <li>
+                            <a href="/EEC_PortalLandingPage?member={!providerId}">Home</a>
+                        </li>
+                        <li>
+                            <apex:outputText rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}" value='<a href="/eec_contactpage?ID={!$User.ContactId}&member={!providerId}">My Profile</a>'
+                             escape="false" />
+                        </li>
+                        <li>
+                            <apex:outputText rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}" value='<a href="{!$Site.Prefix}/secur/logout.jsp">Logout</a>'
+                             escape="false" />
+                            <apex:outputText rendered="{!ISPICKVAL($User.UserType,'Guest')}" value='<li><a href="/EEC_Login">Login</a>' escape="false"
+                            />
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </apex:form>
+</apex:component>

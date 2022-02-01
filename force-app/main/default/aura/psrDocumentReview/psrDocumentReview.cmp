@@ -1,0 +1,126 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction,lightning:hasPageReference,lightning:isUrlAddressable"
+    description="psr_DocumentReview" access="global" controller="psr_DocumentReviewController" extends="c.psr_Base">
+
+
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="applicationDocList" type="List" />
+    <aura:attribute name="documentList" type="List" />
+    <aura:attribute name="submitted" type="String" default="Submitted" />
+    <aura:attribute name="approved" type="String" default="Approved" />
+    <aura:attribute name="editable" type="Boolean" default="false" />
+    <aura:attribute name="isEditEnabled" type="Boolean" default="false" />
+    <aura:attribute name="options" type="List" default="[
+                                                        {'label': ' Approved', 'value': 'Approved'},
+                                                        {'label': ' Returned for Revision', 'value': 'Returned for Revision'}
+                                                        ]" />
+    <aura:attribute name="value" type="String" default="Approved" />
+    <aura:attribute name="underReview" type="String" default="Returned for Revision" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="pageReference" type="Object" />
+    <aura:handler name="change" value="{!v.pageReference}" action="{!c.doInit}" />
+    <aura:attribute name="applicationStatus" type="String" />
+    <aura:attribute name="showUnderReviewMessage" type="Boolean" default="false" />
+    <aura:attribute name="underReviewMessage" type="String" default="Application status should be under review to change the document status." />
+
+    <div class="container">
+
+        <force:recordData aura:id="forceRecord" recordId="{!v.recordId}" layoutType="FULL" recordUpdated="{!c.doInit}" />
+
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_12-of-12">
+                <div>
+                    <div class="slds-align_absolute-center">
+                        <aura:if isTrue="{!v.editable}">
+                            <lightning:button class="slds-m-bottom_large" variant="brand" label="Save" title="Save" onclick="{!c.handleSave}" />
+                            <lightning:button class="slds-m-bottom_large" variant="brand" label="Cancel" title="Cancel" onclick="{!c.handleCancel}" />
+                            <aura:set attribute="else">
+                                <lightning:button class="slds-m-bottom_small" variant="brand" label="Edit" title="Brand action" onclick="{!c.handleEdit}" disabled="{!!v.isEditEnabled}" />
+                            </aura:set>
+                        </aura:if>
+                    </div>
+                    <aura:if isTrue="{!v.showUnderReviewMessage}">
+                        <div class="error_under_review">
+                            <p>{!v.underReviewMessage}</p>
+                        </div>
+                    </aura:if>
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-no-row-hover" id="DocumentReviewTable">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="slds-is-resizable">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                        <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Document Name">DOCUMENT NAME</div>
+                                    </div>
+                                </th>
+                                <th class="slds-is-resizable">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                        <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Uploaded Document">UPLOADED DOCUMENT</div>
+                                    </div>
+                                </th>
+                                <th class="slds-is-resizable">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                        <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Status">STATUS</div>
+                                    </div>
+                                </th>
+                                <th class="slds-is-resizable">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                        <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Notes">NOTES</div>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <aura:iteration items="{!v.applicationDocList}" var="item" indexVar="index">
+
+                                <aura:if isTrue="{!or(v.submitted == item.status,or(v.approved == item.status,v.underReview == item.status))}">
+                                    <tr class="slds-hint-parent">
+                                        <td data-label="Document Name">
+                                            <div class="slds-cell-wrap slds-truncate" title="Document Name">
+                                                {!item.documentName}</div>
+                                        </td>
+                                        <td data-label="Uploaded Document">
+                                            <aura:iteration items="{!item.uploadedDocumentList}" var="doc" indexVar="docindex">
+                                                <div class="slds-border_bottom" title="Uploaded Document">
+                                                    <a data-record="{!doc.ContentDocument.Id}" onclick="{! c.handleFileOpen }">
+                                                        <p>{!doc.ContentDocument.Title}</p>
+                                                    </a>
+                                                </div>
+                                            </aura:iteration>
+                                        </td>
+                                        <td data-label="Status">
+                                            <div class="slds-truncate" title="Status">
+                                                <aura:if isTrue="{!v.editable}">
+                                                    <aura:if isTrue="{!or(v.approved == item.status,v.underReview == item.status)}">
+
+                                                        <div class="slds-truncate" title="Status">{!item.status}</div>
+                                                        <aura:set attribute="else">
+
+                                                            <lightning:radioGroup name="{!item.uploadedDocumentId}" options="{!v.options}" value="{!item.selectedValue}" type="radio" />
+                                                        </aura:set>
+                                                    </aura:if>
+                                                    <aura:set attribute="else">
+                                                        <div class="slds-truncate" title="Status">{!item.status}</div>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </div>
+                                        </td>
+                                        <td data-label="Notes">
+                                            <div class="slds-truncate" title="Notes">
+                                                <aura:if isTrue="{!v.editable}">
+                                                    <lightning:textarea name="notes" label="" placeholder="Add notes" value="{!item.notes}" />
+                                                    <aura:set attribute="else">
+                                                        <lightning:textarea name="notes" label="" placeholder="Add notes" value="{!item.notes}" disabled="true" />
+                                                    </aura:set>
+                                                </aura:if>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </aura:if>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</aura:component>

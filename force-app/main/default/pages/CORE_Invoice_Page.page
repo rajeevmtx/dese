@@ -104,6 +104,39 @@
                 vertical-align: top;
             }
 
+            .invoice .invoice-detail {
+                background: #f9f9f9;
+                padding: 4rem;
+            }
+
+            .invoice .folder-button {
+                margin: 2rem 0;
+            }
+
+            .newfooter {
+                background: #526475;
+                padding: 1rem;
+                width: 100%;
+                text-align: center !important;
+                color: #fff;
+                left: 0;
+                font-size: 10px !important;;
+                z-index: 99!important;
+                position: inherit !important;
+            }
+
+            #submitBtn{
+                margin: 2rem;
+            }
+
+            html body.sfdcBody{
+                padding: 0 !important;
+            }
+
+            .page {
+                margin-bottom: 10rem !important;
+            }
+
 
         </style>
 
@@ -454,7 +487,7 @@
 
             </div>
             <apex:outputPanel id="footerPanel">
-                <footer>
+                <div>
                     <div class="content flex controls">
                         <apex:outputPanel layout="none" rendered="{!NOT(isNew) && NOT(isLocked) && NOT(OR(isEdit))}">
                             <a id="submitBtn" href="javascript:submit()" class="btn-bs btn-primary btn-lg right">Submit</a>
@@ -470,7 +503,7 @@
                             </apex:outputPanel>
                         </apex:outputPanel>
                     </div>
-                </footer>
+                </div>
             </apex:outputPanel>
 
             <!-- CONFIRMATION POP UP -->

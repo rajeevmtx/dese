@@ -1,0 +1,11 @@
+<design:component>
+    <design:attribute name="toggleVolunteer" label="Show Volunteer as active"/>
+	<design:attribute name="toggleMap" label="Show Map as active"/>
+    <design:attribute name="toggleRegistration" label="Show registration as active"/>
+    
+    <design:attribute name="hideVolunteer" label="Hide Volunteer"/>
+	<design:attribute name="hideMap" label="Hide Map"/>
+    <design:attribute name="hideRegistration" label="Hide registration"/>
+    <design:attribute name="hideWelcomeMenu" label="Hide Welcome Menu"/>
+    <design:attribute name="showLogin" label="ShowLogin Button"/>
+</design:component>

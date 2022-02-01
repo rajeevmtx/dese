@@ -1,0 +1,463 @@
+.THIS {
+    background: #f9f9f9;
+}
+.THIS .forceCommunitySection .cb-section_column:only-child {
+    padding: 0;
+}
+
+.THIS .app-title,
+.THIS .page-title {
+    font-size: 1.5rem;
+  }
+
+  .THIS .section-title {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+  }
+.THIS .brief_card {
+    margin-top: 0 !important;
+    margin-bottom: 1rem !important;
+}
+.THIS .terms-input .slds-textarea {
+    min-height: 140px;
+}
+.THIS .app-container {
+    padding-top: 0;
+}
+.THIS .siteforceContentArea .comm-layout-column:not(:empty) {
+    padding: 0;
+}
+.THIS .slds-list_horizontal .slds-form-element + .slds-form-element {
+    margin-left: 1rem;
+}
+.THIS .controls {
+    margin: 2.5rem -1.5rem -1.5rem;
+    padding: 1.5rem;
+    border-top: 1px solid #ddd;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.THIS .page-header {
+    padding-bottom: 1rem;
+}
+.THIS .page-title {
+    font-size: 1.4rem;
+}
+.THIS .sub-title {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #888;
+}
+
+.THIS .page-content p + p {
+    padding-top: 1rem;
+}
+
+.THIS .slds-form-element .slds-form-element__label {
+    font-weight: bold;
+    color: #333;
+}
+
+.THIS .slds-form-element .slds-form-element__label abbr {
+    position: absolute;
+    margin-left: -8px;
+}
+
+.THIS .slds-form__row {
+    margin-bottom: 1rem;
+}
+
+.THIS .horizontal-radio .slds-radio__label .slds-form-element__label,
+.THIS .horizontal-radio .slds-checkbox__label .slds-form-element__label,
+.THIS .check-group .slds-checkbox__label .slds-form-element__label,
+.THIS .radio-group .slds-radio__label .slds-form-element__label {
+    font-weight: normal;
+}
+.THIS .horizontal-radio .slds-radio + .slds-radio {
+    margin-left: 1rem;
+}
+
+.THIS .horizontal-radio .slds-form-element__control {
+    display: flex;
+    flex-wrap: wrap;
+    
+}
+.THIS .alert {
+    max-width: 420px;
+    margin: 0 auto;
+    border: 2px solid #ddd;
+    padding: 2rem;
+    display: flex;
+}
+.THIS .alert svg {
+    width: 3rem;
+    height: 3rem;
+}
+.THIS .alert .text {
+    margin-left: 1.5rem;
+    flex: 1;
+}
+.THIS .alert h1 {
+    font-size: 1.25rem;
+    line-height: 1.3;
+}
+.THIS .alert .description {
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+.THIS .alert .case-no {
+    padding: 0.25rem 0.5rem;
+    display: inline-flex;
+    border: 2px solid #ffd455;
+    margin-bottom: 1rem;
+    background: #fff4d3;
+}
+
+.THIS .shadow-card { 
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+}
+
+.THIS .iframe-holder {
+    position: relative;
+    min-width: calc(100% + 4rem);
+    margin-left: -2rem;
+    margin-top: -2rem;
+    padding: 0;
+    border: 0;
+    min-height: calc(100vh - 104px);
+}
+
+.THIS .iframe-holder iframe {
+    border: 0;
+    padding: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+}
+
+
+/* New */
+@font-face{
+    font-family: 'Lato', sans-serif;
+    src: url("@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap')") format('TrueType');
+}
+/* 
+.THIS .ravi{
+    background-image: linear-gradient(to right, #FFFFFF, #DDEBFF)!important;
+
+} */
+.THIS .loginPage{
+    border:2px solid #ff0000;
+    background-image: linear-gradient(to right, #FFFFFF, #DDEBFF)!important;
+    /*height: 100vh;*/
+    display: flex;
+    align-items: center;
+    font-family: 'Lato', sans-serif;
+}
+
+.THIS .loginSection{
+    background: #FFFFFF;
+    border: 2px solid #E4E7FF;
+    box-sizing: border-box;
+    box-shadow: 18px 17px 19px rgba(167, 167, 167, 0.25);
+    border-radius: 4px;
+    padding:50px 80px;
+    margin:0px auto;
+    max-width: 500px;
+    color:#333;
+    
+
+}
+
+.THIS .loginSection h1{
+    font-size:31px;
+    text-align: center;
+}
+
+
+.THIS .loginSection p{
+    font-size:18px;
+    text-align: center;
+    font-weight: 400;
+
+}
+
+/* New */
+
+.THIS .loginpageSection{
+    padding: 4rem 8rem;
+  }
+
+  .THIS .loginBox{
+    margin-top: 9.5%;
+    backdrop-filter: blur(5px);
+    background: #F3F6F9;
+    /* padding: 4.3rem 10rem; */
+    padding:30px 60px;
+    margin-left: -1px;
+    box-shadow: 18px 17px 19px rgb(181 181 181 / 25%);
+    border: none;
+    border-radius: 0px;
+    display: flex;
+    align-items: center;
+    height: 500px;
+
+  }
+/* 
+  .THIS  .siteforceSldsOneColLayout{
+    min-width:500px;
+  } */
+
+
+  .THIS  .siteforceSldsOneColLayout p b{
+    display: block;
+    text-align: left;
+  }
+
+  .THIS  #sfdc_username_container{
+      position:relative;
+      margin-top: 20px;
+      border: none;
+      padding: 0px;
+  }
+   .THIS  #sfdc_password_container{
+    position:relative;
+    margin-top: 45px;
+    border: none;
+    padding: 0px;
+}
+
+ .THIS  #sfdc_username_container::before, .THIS  #sfdc_password_container::before {
+    content:"Username";
+    position:absolute;
+    left:0px;
+    top:-40px;
+    color:#14558F;
+    font-size: 16px;
+}
+.THIS  #sfdc_password_container::before {
+    content:"Password";
+} 
+
+.THIS .uiOutputRichText p a{
+    font-weight: bold;
+}
+.THIS .siteforceContentArea {
+    width: 90%;
+
+}
+.THIS .siteforceContentArea .error{
+    margin-top: -23px;
+    margin-bottom: 10px;
+    height: 65px;
+    display: block;
+    text-align: left;
+}
+
+.THIS  #sfdc_username_container lightning-icon, .THIS  #sfdc_password_container lightning-icon{
+    display: none;
+}
+
+.THIS .loginImg{
+    /* height: 30rem;
+    margin-top: 10%;
+    position:relative; */
+    height: 500px;
+    margin-top: 9.5%;
+    position: relative;
+    width: 100%;
+}
+
+/* .THIS .loginImg{
+    height: 33.2rem;
+    margin-top: 10%;
+    position: relative;
+} */
+
+.THIS .returningUsers{
+    background: #F3F6F9; margin-top:4rem;
+    color:#000;
+    position:relative;
+}
+.THIS .returningUsers p{
+    color: #14558F;
+}
+
+.THIS .box{
+  height: 500px;
+}
+
+.THIS .content{
+    position:relative;
+    
+}
+
+.THIS .content::before{
+    content:" ";
+    position:fixed;
+    top:0px;
+    bottom:0px;
+    right:0px;
+    background:#F3F6F9;
+    width: 100%;
+}
+
+
+
+/* New Register Page */
+
+
+.THIS .loginContainerPage{
+    position: fixed;
+    background: #f4f7fa;
+    top: 0px;
+    bottom: 0px;
+    z-index: 99;
+    right: 0px;
+    width: 100%;
+    display: flex;
+      vertical-align: middle;
+      align-items: center;
+      justify-content: center;
+  }
+  
+  .THIS  .loginContainerPage .loginImages{
+    max-width: 60%;
+    height: auto;
+    color:#fff;
+    font-size: 1.4rem;
+    position: relative;
+  }
+  
+  
+  
+  .THIS  .loginContainerPage .loginImages h3{
+    font-size: 1.8rem;
+  }
+  
+  .THIS .loginContainerPage .submitForm h3{
+    font-size: 1.8rem;
+    color:#333;
+    margin-bottom: 5px;
+    
+  }
+  .THIS  .loginContainerPage .submitForm p{
+    color:#AEAEAE;
+  }
+  
+  
+  
+  .THIS .loginContainerPage .slds-grid{
+    align-items: center;
+    justify-content: center;
+    background:#fff;
+    width: 800px;
+  
+  }
+  .THIS .loginContainerPage .welcomeText{
+    position: absolute;
+    z-index: 9;
+    top: 17%;
+    left: 10%;
+    width: 70%;
+  }
+  
+  .THIS .loginContainerPage .welcomeText p{
+    font-size: 14px;
+  }
+
+  .THIS .loginContainerPage .welcomeText h3{
+    font-size: 1.8rem;
+    display: block;
+    width: 100% ;
+    clear: both;
+    margin-bottom: 5px;
+  
+  }
+  
+  .THIS .loginContainerPage .powered{
+    position: absolute;
+    bottom: 3%;
+    text-align: center;
+    width: 100%;
+    font-size: 11px;
+    color: #333;
+  }
+  
+  
+  .THIS .loginContainerPage .submitForm{
+    padding:1.6rem 1rem 1.6rem 2rem;
+    /* font-size: 1.4rem; */
+  } 
+  .THIS .loginContainerPage .submitForm .lightning-button button{
+    background: #14558F;
+    margin: 16px 0px;
+    width:100%;
+    border-radius: 5px;
+  
+  }
+  
+  .THIS .loginContainerPage .submitForm label{
+    font-size: 1.4rem;
+    margin-top: 10px;
+    color:#14558F;
+    margin-top: 10px;
+    line-height: 36px;
+  }
+  .THIS .loginContainerPage .submitForm input{
+    padding: 6px 10px;
+    margin-top: -10px;
+    border:1px solid #B9CCDD;
+    border-radius: 4px;
+    width: 100%;
+    margin-left: 0px;
+    margin-bottom: 14px;
+  } 
+  
+  .THIS .loginContainerPage .submitForm .clear{
+    clear:both;
+    height:30px;
+  }
+  
+  .THIS .loginContainerPage .submitForm button{
+    width:100%;
+    border-radius: 5px;
+    padding: 6px;
+    font-weight: normal;
+  }
+  
+  .THIS .loginContainerPage .submitForm .slds-form-element__label{
+    display: none;
+  
+  }
+  .THIS .loginContainerPage .signInText p span{
+    color:#7B7B7B;
+  }
+  
+  .THIS .loginContainerPage .signInText p {
+    color:#000000;
+  }
+  .THIS .loginContainerPage .signInText {
+    text-align: center;
+  }
+  
+  
+  .THIS .loginContainerPage .signInText p a {
+    color:#14558F;
+    font-weight:bold;
+    padding: 0px 5px;
+  }
+  .THIS .loginContainerPage .signInText img{
+    width:40px;
+    height:40px;
+    margin:16px 10px;
+    cursor: pointer;
+  }
+
+  .THIS .loginContainerPage .forceCommunityRichText{
+      display:none
+  }

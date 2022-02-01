@@ -1,0 +1,40 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute name="toggleLogin" type="Boolean" default="false" />
+    <aura:attribute name="toggleRegistration" type="Boolean" default="false" />
+    <aura:attribute name="hideRegistration" type="Boolean" default="true" />
+    <aura:attribute name="showLogin" type="Boolean" default="true"/>
+    
+    <div class="navbar-primary">
+        
+        <div class="container">
+            <a href="/s/">
+                <img class="logo" src="{!$Resource.Oklahomalogo}" />
+            </a>
+            <nav aria-labelledby="communityNav">
+                <div class="slds-assistive-text" id="communityNav">Primary Navigation</div>
+                
+                
+                <aura:if isTrue="{! !v.hideRegistration}">
+                    <aura:if isTrue="{!v.toggleRegistration}">
+                        <a class="active" href="/s/okpc-registration">Registration</a>
+                        <aura:set attribute="else">      
+                            <a href="/s/okpc-registration">Registration</a>
+                        </aura:set>
+                    </aura:if>
+                </aura:if>
+                <aura:if isTrue="{!v.showLogin}">
+                    <aura:if isTrue="{!v.toggleLogin}">
+                        <a class="active" href="/s/okpc-login">Login</a>
+                        <aura:set attribute="else">      
+                            <a href="/s/okpc-login">Login</a>
+                        </aura:set>
+                    </aura:if>
+                </aura:if>
+                <aura:if isTrue="{! !v.showLogin}">
+                    <a href="/secur/logout.jsp">Logout</a>
+                </aura:if>
+                
+            </nav>
+        </div>
+    </div>
+</aura:component>

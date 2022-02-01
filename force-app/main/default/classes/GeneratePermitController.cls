@@ -33,7 +33,7 @@ public class GeneratePermitController {
          
          //After saved the Content Verison, get the ContentDocumentId
          Id conDocument = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =:cVersion.Id].ContentDocumentId;*/
-         Id conDocument = '06903000001rV3VAAU';
+         Id conDocument = '06903000001rW0sAAE';
          
          //Insert ContentDocumentLink
          ContentDocumentLink cDocLink = new ContentDocumentLink();

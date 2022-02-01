@@ -16,7 +16,7 @@ export default class Dese_contact_information extends LightningElement {
         { section: 'Title II', sectionLabel: 'Title II, Part A, Supporting Effective Instruction',role: 'Title II' },
         { section: 'Title III', sectionLabel: 'Title III, Part A, Support for English Learners and Immigrant  Students' ,role: 'Title III'},
         { section: 'Title IV', sectionLabel: 'Title IV, Part A, Student Support and Academic Enrichment' ,role: 'Title IV'},
-        { section: 'EdGrants', sectionLabel: 'EdGrants Control User (person responsible for uploading to EdGrants, if different person from above roles)',role: 'EdGrants',isContact:true }
+        { section: 'System', sectionLabel: 'System Control User (person responsible for uploading to System, if different person from above roles)',role: 'System',isContact:true }
     ]
 
     get options() {
@@ -79,8 +79,8 @@ export default class Dese_contact_information extends LightningElement {
             return;
         }
         if (this.activeSection == 'Title IV') {
-            this.activeSection = 'EdGrants';
-            accordion.activeSectionName = 'EdGrants';
+            this.activeSection = 'System';
+            accordion.activeSectionName = 'System';
             return;
         }*/
         console.log(JSON.parse(JSON.stringify(this.contacts)));

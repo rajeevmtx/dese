@@ -1,0 +1,596 @@
+<apex:component controller="EEC_LicensingTransactionWidgetController" allowDML="true">
+    <style>
+        .panel-header {
+            background-color: #757575; 
+            /* #7d7d7d; */ 
+            margin-bottom: 10px;
+            color: #fff;
+            padding: 5px 5px 5px 10px;
+            font-size: 18px;
+            letter-spacing: 0.5px;
+        }
+        .tab-label-panel .slds-tabs--scoped__link {
+            background-color: inherit;
+            padding-left: 0px;
+        }
+        .slds .slds-tabs--scoped__item:first-child .slds-tabs--scoped__link {
+            background-color: inherit;
+            padding-left: 0px;
+        }
+        .tab-icon {
+            float: left;
+            border-radius: 15px;
+            color: #fff;
+            background-color: #21a8de;
+            font-size: 20px;
+            width: 30px;
+            padding-left: 7px;
+            margin: 5px 5px 0px 0px;
+        }
+        .tab-label {
+            display: block;
+        }
+        .tab-label-desc {}
+        .tab-cont {
+            float: right;
+        }
+        a {
+            height: 56px;
+        }
+        .tab-content {
+            margin-top: 10px;
+        }
+        .tab-content {
+            padding: 20px;
+        }
+        .provider-lt-card {
+            margin-bottom: 5px;
+            display: flex;
+            min-height: 100px;
+            border-radius: 4px;
+            box-shadow: 1px 1px 1px 1px #888888;
+        }
+        .color-code {
+            width: 2%;
+            min-height: 100px;
+            border-radius: 4px 0 0 4px;
+        }
+        .col-lg-12 {
+            padding-top: 10px;
+        }
+        .modal-dialog {
+            margin-top: 10%;
+        }
+        .disabled {
+            pointer-events: none;
+            cursor: default;
+            color: grey;
+        }
+        .marginRghtBtn {
+            margin-right: 4%;
+        }
+        .provider-status {
+            margin-bottom: 5px;
+        }
+        .useful-link {
+            margin-bottom: 0px;
+        }
+    </style>
+    <apex:attribute type="EEC_LicenseTransactionWrapperClass[]" name="draftLT" description="Draft Licensing Transactions." />
+    <apex:attribute type="EEC_LicenseTransactionWrapperClass[]" name="submittedLT" assignTo="{!liscnTransSubmtdList}" description="Submitted Licensing Transactions."
+    />
+    <apex:attribute type="EEC_LicenseTransactionWrapperClass[]" name="inProgressLT" description="In progress Licensing Transactions." />
+    <apex:attribute type="EEC_LicenseTransactionWrapperClass[]" name="processedLT" description="Processed Licensing Transactions." />
+    <apex:attribute type="string" assignTo="{!proRecordTypeDeveloperName}" name="providerRecordTypeDeveloperName" description="Provider Record Type." />
+    <div class="panel-header">
+        <i class="fa fa-exchange" aria-hidden="true"></i>
+        <span>
+            <label for="LICENSINGTRANSACTIONS">MY LICENSING TRANSACTIONS</label>
+        </span>
+        <input type="hidden" id="LICENSINGTRANSACTIONS" class="h1Hidden" />
+        <!-- Accessiblity fix -->
+    </div>
+    <div>
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a data-toggle="tab" href="#draft">
+                    <div class="tab-icon">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </div>
+                    <div class="tab-cont">
+                        <span class="tab-label">Draft</span>
+                        <label for="UNSUBMITTED" class="tab-label-desc">
+                            <span>{!draftLT.Size}</span> UNSUBMITTED</label>
+                        <input type="hidden" id="UNSUBMITTED" class="h1Hidden" />
+                        <!-- Accessiblity fix -->
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#submitted">
+                    <div class="tab-icon" style="background-color:#3978A4;padding-left: 5px;">
+                        <i class="fa fa fa-list-ul" aria-hidden="true"></i>
+                    </div>
+                    <div class="tab-cont">
+                        <span class="tab-label">In Progress</span>
+                        <label for="SUBMITTED" class="tab-label-desc">
+                            <span>{!submittedLT.Size}</span> SUBMITTED</label>
+                        <input type="hidden" id="SUBMITTED" class="h1Hidden" />
+                        <!-- Accessiblity fix -->
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#inProgress">
+                    <div class="tab-icon" style="background-color:#fba957;padding-left: 5px;">
+                        <i class="fa fa-spinner" aria-hidden="true"></i>
+                    </div>
+                    <div class="tab-cont">
+                        <span class="tab-label">In Progress</span>
+                        <label for="UNDERREVIEW" class="tab-label-desc">
+                            <span>{!inProgressLT.Size}</span> UNDER REVIEW</label>
+                        <input type="hidden" id="UNDERREVIEW" class="h1Hidden" />
+                        <!-- Accessiblity fix -->
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#processed">
+                    <div class="tab-icon" style="background-color:#55d1c2;padding-left: 5px;">
+                        <i class="fa fa-check" aria-hidden="true"></i>
+                    </div>
+                    <div class="tab-cont">
+                        <span class="tab-label">Processed</span>
+                        <label for="CLOSED" class="tab-label-desc">
+                            <span>{!processedLT.Size}</span> CLOSED</label>
+                        <input type="hidden" id="CLOSED" class="h1Hidden" />
+                        <!-- Accessiblity fix -->
+                    </div>
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="draft" class="tab-pane fade in active">
+                <apex:repeat value="{!draftLT}" var="draft">
+                    <div class="provider-lt-card">
+                        <div class="color-code" style="background-color: #21a8de;">
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="col-lg-3">
+                                <div class="provider-status">
+                                    <a href="javascript:void(1);" id="trans-{!draft.transRec.Id}" onClick="sendToNextStep('{!draft.transRec.Id}');">
+                                        <apex:outputText styleClass="item-content" value="{!draft.transRec.Name}"></apex:outputText>
+                                    </a>
+                                    <apex:outputText styleClass="item-label" value="Transaction ID"></apex:outputText>
+                                </div>
+                                <div class="provider-status">
+                                    <apex:outputText styleClass="item-content" value="{!draft.transRec.RecordType.Name}"></apex:outputText>
+                                    <apex:outputText styleClass="item-label" value="Type of Transaction"></apex:outputText>
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="provider-status">
+                                    <apex:outputText styleClass="item-content" value="{!IF(draft.transRec.Assigned_To__r.Name != null , draft.transRec.Assigned_To__r.Name , 'N/A')}"></apex:outputText>
+                                    <apex:outputPanel rendered="{!draft.transRec.RecordType.Name =='Excempt CBC Care'}">
+                                        <apex:outputText styleClass="item-label" value="Licensor"></apex:outputText>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!draft.transRec.RecordType.Name =='Excempt CBC Care'}">
+                                        <apex:outputText styleClass="item-label" value="Monitor"></apex:outputText>
+                                    </apex:outputPanel>
+                                </div>
+                                <div class="provider-status">
+                                    <apex:outputText styleClass="item-content" value="{!IF(draft.transRec.Last_Reached_Step__c != null , draft.transRec.Last_Reached_Step__c , 'N/A')}"></apex:outputText>
+                                    <apex:outputText styleClass="item-label" value="Last Step"></apex:outputText>
+                                </div>
+                            </div>
+                            <apex:outputPanel styleClass="col-lg-4">
+                                <div class="provider-status">
+                                    <apex:outputText styleClass="item-content" value="Useful Link"></apex:outputText>
+                                </div>
+                                <div class="useful-link">
+                                    <a href="javascript:void(2);" Class="item-label" onClick="confirmDiscard('{!draft.transRec.Id}','To Submit');">Discard this application
+                                        <span class="srOnly">Accessibility Fix</span>
+                                    </a>
+                                </div>
+                            </apex:outputPanel>
+                        </div>
+                    </div>
+                </apex:repeat>
+            </div>
+            <div id="submitted" class="tab-pane fade">
+                <apex:repeat value="{!transWrapperList}" var="submitted">
+                    <div class="provider-lt-card">
+                        <div class="color-code" style="background-color:#fba957;">
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="col-lg-3">
+                                <div class="provider-status">
+                                    <a href="javascript:void(3);" id="trans-{!submitted.transRec.Id}" onClick="sendToNextStep('{!submitted.transRec.Id}');">
+                                        <apex:outputText styleClass="item-content" value="{!submitted.transRec.Name}"></apex:outputText>
+                                    </a>
+                                    <apex:outputText styleClass="item-label" value="Transaction ID"></apex:outputText>
+                                </div>
+                                <div class="provider-status">
+                                    <apex:outputText styleClass="item-content" value="{!submitted.transRec.RecordType.Name}"></apex:outputText>
+                                    <apex:outputText styleClass="item-label" value="Type of Transaction"></apex:outputText>
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="provider-status">
+                                    <apex:outputText styleClass="item-content" value="{!IF(submitted.transRec.Assigned_To__r.Name != null ,submitted.transRec.Assigned_To__r.Name, 'N/A')}"></apex:outputText>
+                                    <apex:outputPanel rendered="{!submitted.transRec.RecordType.Name =='Excempt CBC Care'}">
+                                        <apex:outputText styleClass="item-label" value="Licensor"></apex:outputText>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!submitted.transRec.RecordType.Name =='Excempt CBC Care'}">
+                                        <apex:outputText styleClass="item-label" value="Monitor"></apex:outputText>
+                                    </apex:outputPanel> 
+                                </div>
+                                <div class="provider-status">
+                                    <apex:outputText value="{0, date, MM/dd/yyyy}">
+                                        <apex:param value="{!IF(submitted.transRec.Submission_Date__c != null ,submitted.transRec.Submission_Date__c, 'N/A')}" />
+                                    </apex:outputText>
+                                    <br/>
+                                    <apex:outputText styleClass="item-label" value="Submission Date"></apex:outputText>
+                                </div>
+                            </div>
+                            <apex:outputPanel styleClass="col-lg-4">
+                                <div class="provider-status">
+                                    <apex:outputText styleClass="item-content" value="Useful Link"></apex:outputText>
+                                </div>
+                            </apex:outputPanel>
+                            <apex:outputPanel styleClass="col-lg-4">
+                                <!--                                <div class="provider-status"> -->
+                                <!--                                    <a href="/eec_licensingattachment?ltId={!submitted.transRec.Id}" Class="item-label">Upload Documents</a> -->
+                                <!--                                </div> -->
+                                <apex:outputPanel rendered="{!submitted.isfccContactShow && submitted.showAddContactsButton}">
+                                    <div class="useful-link">
+                                        <a href="/EEC_HouseholdMembers?ltId={!submitted.transRec.Id}&member={!submitted.transRec.Provider__c}" target="_blank" class="item-label">Add household members or regularly on the premises</a>
+                                    </div>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!submitted.isGSAAndRPContactShow && submitted.showAddContactsButton}">
+                                    <div class="useful-link">
+                                        <a href="/eec_ownershipadministratorinfo?ltId={!submitted.transRec.Id}&member={!submitted.transRec.Provider__c}" target="_blank"
+                                            class="item-label">Add contacts</a>
+                                    </div>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!submitted.isTaxCertfShow}">
+                                    <div class="useful-link">
+                                        <a href="javascript:void(4);" onclick="toggleLoadingIcon('show');taxCertificationNotification('{!submitted.transRec.Id}');"
+                                            class="item-label">Request Tax Certificate Notification</a>
+                                    </div>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!submitted.isbrcConsentShow}">
+                                    <div class="useful-link">
+                                        <a href="javascript:void(5);" onclick="getBrcRecordDataRecordId('{!submitted.transRec.Id}');" class="item-label">Request BRC Consent Form Notification</a>
+                                    </div>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!submitted.isfeePaymentShow}"> 
+                                    <div class="useful-link">
+                                        <a href="javascript:void(6);" onclick="toggleLoadingIcon('show');updateFeePaymentStatus('{!submitted.transRec.Id}');" class="item-label feepayment">Click to confirm: Application fee mailed to EEC
+                                            <span class="srOnly">Accessibility Fix</span>
+                                        </a>
+                                    </div>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!proRecordTypeDeveloperName != 'Public_School'
+                                        && proRecordTypeDeveloperName != 'Private_School'
+                                        && proRecordTypeDeveloperName != 'Other_Eligible_Provider'
+                                        && proRecordTypeDeveloperName != 'Summer_Camp'
+                                        && proRecordTypeDeveloperName != 'Informal_Child_Care'}">
+                                    <div class="useful-link">
+                                        <a href="/EEC_SubmitPayment?ltId={!submitted.transRec.Id}&member={!submitted.transRec.Provider__c}" class="item-label">Click to submit payment
+                                            <span class="srOnly">Accessibility Fix</span>
+                                        </a>
+                                    </div>
+                                </apex:outputPanel>
+                                <div class="useful-link">
+                                    <a href="javascript:void(7);" Class="item-label" onClick="confirmDiscard('{!submitted.transRec.Id}','Submitted');">Discard this application</a>
+                                </div>
+                            </apex:outputPanel>
+                        </div>
+                    </div>
+                </apex:repeat>
+            </div>
+            <div id="inProgress" class="tab-pane fade">
+                <apex:repeat value="{!inProgressLT}" var="progress">
+                    <div class="provider-lt-card">
+                        <div class="color-code" style="background-color:#fba957;">
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="col-lg-3">
+                                <div class="provider-status">
+                                    <a href="javascript:void(8);" id="trans-{!progress.transRec.Id}" onClick="sendToNextStep('{!progress.transRec.Id}');">
+                                        <apex:outputText styleClass="item-content" value="{!progress.transRec.Name}"></apex:outputText>
+                                    </a>
+                                    <apex:outputText styleClass="item-label" value="Transaction ID"></apex:outputText>
+                                </div>
+                                <div class="provider-status">
+                                    <apex:outputText styleClass="item-content" value="{!progress.transRec.RecordType.Name}"></apex:outputText>
+                                    <apex:outputText styleClass="item-label" value="Type of Transaction"></apex:outputText>
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="provider-status">
+                                    <apex:outputText styleClass="item-content" value="{!IF(progress.transRec.Assigned_To__r.Name != null , progress.transRec.Assigned_To__r.Name , 'N/A')}"></apex:outputText>
+                                    <apex:outputText styleClass="item-label" value="Licensor"></apex:outputText>
+                                </div>
+                                <div class="provider-status">
+                                    <apex:outputText value="{0, date, MM/dd/yyyy}">
+                                        <apex:param value="{!IF(progress.transRec.Submission_Date__c != null ,progress.transRec.Submission_Date__c, 'N/A')}" />
+                                    </apex:outputText>
+                                    <br/>
+                                    <apex:outputText styleClass="item-label" value="Submission Date"></apex:outputText>
+                                </div>
+                            </div>
+                            <apex:outputPanel styleClass="col-lg-4">
+                                <div class="provider-status">
+                                    <apex:outputText styleClass="item-content" value="Useful Link"></apex:outputText>
+                                </div>
+                            </apex:outputPanel>
+                            <apex:outputPanel styleClass="col-lg-4" 
+                                    rendered="{!proRecordTypeDeveloperName != 'Public_School'
+                                    && proRecordTypeDeveloperName != 'Private_School'
+                                    && proRecordTypeDeveloperName != 'Other_Eligible_Provider'
+                                    && proRecordTypeDeveloperName != 'Summer_Camp'
+                                    && proRecordTypeDeveloperName != 'Informal_Child_Care'}">
+                                <div class="useful-link">
+                                    <a href="/EEC_SubmitPayment?ltId={!progress.transRec.Id}&member={!progress.transRec.Provider__c}" class="item-label">Click to submit payment
+                                        <span class="srOnly">Accessibility Fix</span>
+                                    </a>
+                                </div>
+                            </apex:outputPanel>
+                            <apex:outputPanel styleClass="col-lg-4">
+                                <div class="useful-link">
+                                    <apex:outputPanel rendered="{!progress.transRec.Provider__r.Is_FCC__c && progress.showAddContactsButton}">
+                                        <div class="useful-link">
+                                            <a href="/EEC_HouseholdMembers?ltId={!progress.transRec.Id}&member={!progress.transRec.Provider__c}" target="_blank" class="item-label">Add household members or regularly on the premises</a>
+                                        </div>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!AND(OR(progress.transRec.Provider__r.Is_GSA__c || progress.transRec.Provider__r.Is_R_P__c), progress.showAddContactsButton)}">
+                                        <div class="useful-link">
+                                            <a href="/eec_ownershipadministratorinfo?ltId={!progress.transRec.Id}&member={!progress.transRec.Provider__c}" target="_blank" class="item-label">Add contacts</a>
+                                        </div>
+                                    </apex:outputPanel>
+                                </div>
+                            </apex:outputPanel>
+                        </div>
+                    </div>
+                </apex:repeat>
+            </div>
+            <div id="processed" class="tab-pane fade">
+                <apex:repeat value="{!processedLT}" var="processed">
+                    <div class="provider-lt-card">
+                        <div class="color-code" style="background-color:#fba957;">
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="col-lg-3">
+                                <div class="provider-status">
+                                    <a href="javascript:void(9);" id="trans-{!processed.transRec.Id}" onClick="sendToNextStep('{!processed.transRec.Id}');">
+                                        <apex:outputText styleClass="item-content" value="{!processed.transRec.Name}"></apex:outputText>
+                                    </a>
+                                    <apex:outputText styleClass="item-label" value="Transaction ID"></apex:outputText>
+                                </div>
+                                <div class="provider-status">
+                                    <apex:outputText styleClass="item-content" value="{!processed.transRec.RecordType.Name}"></apex:outputText>
+                                    <apex:outputText styleClass="item-label" value="Type of Transaction"></apex:outputText>
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="provider-status">
+                                    <apex:outputText styleClass="item-content" value="{!IF(processed.transRec.Assigned_To__r.Name != null , processed.transRec.Assigned_To__r.Name , 'N/A')}"></apex:outputText>
+                                    <apex:outputText styleClass="item-label" value="Licensor"></apex:outputText>
+                                </div>
+                                <div class="provider-status">
+                                    <apex:outputText value="{0, date, MM/dd/yyyy}">
+                                        <apex:param value="{!IF(processed.transRec.Submission_Date__c != null ,processed.transRec.Submission_Date__c, 'N/A')}" />
+                                    </apex:outputText>
+                                    <br/>
+                                    <apex:outputText styleClass="item-label" value="Submission Date"></apex:outputText>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </apex:repeat>
+            </div>
+        </div>
+        <!-- Trigger the modal with a button -->
+        <!-- Modal -->
+        <div class="modal fade myModalOp" id="myModal" role="dialog">
+            <div class="modal-dialog" style="width:70%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Related Contacts</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-responsive table-striped">
+                            <thead>
+                                <th>Select</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Role</th>
+                            </thead>
+                            <tbody>
+                                <apex:repeat value="{!licenseTransactionWrapperList}" var="contactRecord">
+                                    <tr>
+                                        <td>
+                                            <apex:inputCheckbox value="{!contactRecord.checked}" styleClass="myCheckboxClass" />
+                                        </td>
+                                        <td>{!contactRecord.transactionContactWrapper.First_Name__c}</td>
+                                        <td>{!contactRecord.transactionContactWrapper.Last_Name__c}</td>
+                                        <td>{!contactRecord.transactionContactWrapper.Role__c}</td>
+                                    </tr>
+                                </apex:repeat>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <md-content class="navigation-buttons nvgBtn" layout="column" layout-lg="row" layout-align="space-between center" layout-gt-lg="row"
+                            layout-align-sm="center center" layout-align-md="center center">
+                            <apex:commandLink styleClass="btn btn-primary" style="height: 34px !important;margin-left: 20px;" action="{!resetBrcRequiredField}"
+                                value="Send Notification" />
+                            <button type="button" class="btn btn-default" onclick="hideModal();">Close</button>
+                        </md-content>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Trigger the modal with a button -->
+        <!-- Modal Confirmation For Discard Transaction -->
+        <div class="modal fade" id="confirmationPopUp" role="dialog">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <apex:outputPanel id="modalForm1">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">CONFIRM</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div id="confirmMessage" class="justifyText">
+                            </div>
+                            <br/>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="row">
+                                <span id="cancelBtnDiv">
+                                    <button id="okBtn" type="button" role="button" class="btn btn-primary" onclick="confirmButtonAction();" data-dismiss="modal">OK</button>
+                                    <button id="cancelBtn" type="button" role="button" class="btn btn-default marginRghtBtn" data-dismiss="modal">Cancel</button>
+                                </span>
+                            </div>
+                        </div>
+                    </apex:outputPanel>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Confirmation For Discard Transaction -->
+        <!-- Trigger the modal with a button -->
+        <!-- Modal Confirmation For Discard Transaction -->
+        <div class="modal fade" id="discrd" role="dialog">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <apex:outputPanel id="modalForm2">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">CONFIRMATION</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div id="confirmationMesg" class="justifyText">
+                            </div>
+                            <br/>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="row">
+                                <span id="cancelBtnDiv">
+                                    <button id="cancelBtn" type="button" role="button" class="btn btn-primary marginRghtBtn" onclick="reloadCurrentPage();">Close</button>
+                                </span>
+                            </div>
+                        </div>
+                    </apex:outputPanel>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Confirmation For Discard Transaction -->
+        <apex:actionFunction action="{!sendTaxCertEmailNotification}" name="sendTaxCertNotification" onComplete="openConfirmationModal('TaxNotification');"
+            reRender="">
+            <apex:param name="navigateLicenseRecordId" value="licenseId" assignTo="{!navigateLicenseRecordId}" />
+        </apex:actionFunction>
+        <apex:actionFunction action="{!updateFeePaidDueDiligenceCheklist}" name="updateFeePaymentCheklist" reRender="" onComplete="openConfirmationModal('FeePayment');">
+            <apex:param name="navigateLicenseRecordId" value="licenseId" assignTo="{!navigateLicenseRecordId}" />
+        </apex:actionFunction>
+        <apex:actionFunction action="{!getBrcRecordData}" name="getBrcRecordData" reRender="frm" onComplete="showModal();">
+            <apex:param name="navigateLicenseRecordId" value="licenseId" assignTo="{!navigateLicenseRecordId}" />
+        </apex:actionFunction>
+        <apex:actionFunction action="{!reRouteTransactionToLastStep}" name="reRouteTransactionToLastStep" oncomplete="" reRender="">
+            <apex:param name="navigateLicenseRecordId" value="licenseId" assignTo="{!navigateLicenseRecordId}" />
+        </apex:actionFunction>
+        <apex:actionFunction action="{!discardTrans}" name="discardTrans" oncomplete="toggleLoadingIcon('hide');openConfirmationModal('Discard');"
+            reRender="">
+            <apex:param name="navigateLicenseRecordId" value="currentTransactionIdForDiscard" assignTo="{!navigateLicenseRecordId}" />
+            <apex:param name="transDiscardType" value="discardType" assignTo="{!transDiscardType}" />
+        </apex:actionFunction>
+    </div>
+    <script>
+        $(document).ready(function () {
+            disableFeepaymentLink();
+            var currentTransactionIdForDiscard;
+            var discardType;
+            var licenseId;
+        });
+        var licensenRecordId;
+        function sendToNextStep(id) {
+            licenseId = id;
+            reRouteTransactionToLastStep(licenseId);
+        }
+        function getBrcRecordDataRecordId(id) {
+            licenseId = id;
+            getBrcRecordData(licenseId);
+        }
+        function updateFeePaymentStatus(id) {
+            licenseId = id;
+            updateFeePaymentCheklist(licenseId);
+        }
+        function taxCertificationNotification(id) {
+            licenseId = id;
+            sendTaxCertNotification(licenseId);
+        }
+        function showModal() {
+            $('.myModalOp').modal('show');
+        }
+        function DiscardTransaction(id) {
+            var licenseId = id;
+            discardTrans(licenseId);
+        }
+        function hideModal() {
+            $('.myModalOp').modal('hide');
+            reloadCurrentPage();
+        }
+        function showModal1() {
+            $('#myModal1').modal('show');
+        }
+        function hideModal1() {
+            $('#myModal1').modal('hide');
+        }
+        function showModalPopUp() {
+            $('#myModalPopUp').modal('show');
+        }
+        function disableFeepaymentLink() {
+            if ('{!feePaymentChecklistStatus}' == 'Completed') {
+                $('.feepayment').addClass('disabled');
+            }
+        }
+        function reloadCurrentPage() {
+            location.reload();
+        }
+        function confirmDiscard(TransactionId, Type) {
+            $('#confirmationPopUp').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+            if (Type == 'Submitted') {
+                $('#confirmMessage').html('Are you sure that you would like to withdraw this transaction application?  If yes then you will not be able to undo this step and you will need to start the transaction application all over again.');
+            } else {
+                $('#confirmMessage').html('Are you sure that you would like to discard this transaction application?  If yes then you will not be able to undo this step and you will need to start the transaction application all over again.');
+            }
+            currentTransactionIdForDiscard = TransactionId;
+            discardType = Type;
+        }
+        function confirmButtonAction() {
+            toggleLoadingIcon('show');
+            discardTrans(currentTransactionIdForDiscard, discardType);
+        }
+        function openConfirmationModal(modalType) {
+            toggleLoadingIcon('hide');
+            $('#discrd').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+            if (modalType == 'Discard') {
+                $('#confirmationMesg').html('Your request has been completed successfully.');
+            } else if (modalType == 'FeePayment') {
+                $('#confirmationMesg').html('Thank you for the confirmation of your payment via mail.');
+            } else if (modalType == 'TaxNotification') {
+                $('#confirmationMesg').html('A Tax Certificate has been sent to your mail. Please check your inbox.');
+            }
+            //$('#discrd').modal('show');
+        }
+    </script>
+</apex:component>

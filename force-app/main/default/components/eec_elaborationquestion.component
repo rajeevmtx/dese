@@ -1,0 +1,30 @@
+<apex:component >
+    <apex:attribute name="question" type="String" description="The question that should be displayed to the user" required="true" />
+    <apex:attribute name="toggleStatus" type="String" description="The state of the toggle (either 'Yes' or 'No')" required="true" />
+    <apex:attribute name="elaboration" type="String" description="The text that user enters to elaboarate on their selection" required="true" />
+    <apex:attribute name="elaborationDescription" type="String" description="The text that is shown above the user's elaboration" required="true" />
+    <apex:attribute name="statusShouldElaboarate" type="String" description="The value of the status toggle that requires elaboaration. Defaults to 'Yes'" default="Yes" />
+    <apex:attribute name="isRequired" type="Boolean" description="Is this a required field? (Both toggle and elaboration)" required="false" default="true" />
+
+    <apex:outputpanel >
+        <apex:outputlabel style="margin-left: 0px;" styleclass="top-level-label {! IF(isRequired, 'required', '') }" value="{! question }" />
+        <apex:outputpanel rendered="{! isRequired }" styleClass="required">*</apex:outputpanel>
+        <apex:actionregion >
+            <apex:outputPanel layout="block" styleclass="{! IF(isRequired, 'requiredInput', '')}">
+                <apex:outputpanel layout="block" styleclass="{! IF(isRequired, 'requiredBlock', '')}"></apex:outputpanel>
+                <apex:selectradio required="false" value="{! toggleStatus }">
+                    <apex:actionsupport event="onchange" rerender="elaborationSection"></apex:actionsupport>
+                    <apex:selectoption itemValue="Yes" itemLabel="Yes" html-data-parsley-required="{! isRequired }"></apex:selectoption>
+                    <apex:selectoption itemvalue="No" itemlabel="No" html-data-parsley-required="{! isRequired }"></apex:selectoption>
+                </apex:selectradio>
+            </apex:outputPanel>
+        </apex:actionregion>
+    </apex:outputpanel>
+    <apex:outputpanel id="elaborationSection" styleclass="desc-panel">
+        <apex:outputpanel rendered="{! toggleStatus == statusShouldElaboarate }">
+            <apex:outputlabel styleclass="top-level-label required" value="{! elaborationDescription }" style="font-weight: bold !important;" />
+            <apex:outputpanel rendered="{! isRequired }" styleclass="required">*</apex:outputpanel>
+            <apex:inputtextarea styleclass="form-control" required="false" value="{! elaboration }" html-flex="100" html-flex-lg="75" html-flex-gt-lg="75" html-data-parsley-required="{! isRequired }" />
+        </apex:outputpanel>
+    </apex:outputpanel>
+</apex:component>

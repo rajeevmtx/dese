@@ -3,7 +3,7 @@ public without sharing class DESE_IntakeContactController {
     @AuraEnabled
     public static string saveContact(List<Contact> contacts, Id projectId){
         try {
-            List<String> roles = new List<String>{'Title I','Title II','Title III','Title IV','EdGrants'};
+            List<String> roles = new List<String>{'Title I','Title II','Title III','Title IV','System'};
             Database.UpsertResult[] srList = Database.upsert(contacts,false);
             List<Id> contactIds = new List<Id>();
             Map<String,Id> roleIdMap = new Map<String,Id>();
@@ -42,7 +42,7 @@ public without sharing class DESE_IntakeContactController {
     @AuraEnabled
     public static Map<String,Contact> fetchContacts(Id projectId){
         try {
-            List<String> roles = new List<String>{'Title I','Title II','Title III','Title IV','EdGrants'};
+            List<String> roles = new List<String>{'Title I','Title II','Title III','Title IV','System'};
             List<Project_Role__c> prs = [SELECT Contact__c,Role__c FROM Project_Role__c WHERE Project__c = :projectId and Role__c in :roles];
             Map<String, Id> roleMap = new Map<String, Id>();
             for(Project_Role__c pr:prs){

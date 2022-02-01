@@ -1,0 +1,75 @@
+.THIS .left_section_login{
+    height: 90% !important;
+    justify-content: center!important;
+    display: flex!important;
+    background-image: url(/resource/mexico_bg);
+    position: absolute;
+    display: block;
+    z-index: -1;
+    background-size: cover;
+}
+.THIS .right_section_login{
+    padding: 4rem!important;
+    top: 400px;
+    transform: translateY(-50%);
+    position: absolute;
+    right: 0;
+    display: block;
+    z-index: -1;
+}
+.THIS .text-brand-heading{
+    font-size: 2rem;
+    text-align: center;
+    padding: 0rem 2rem 2rem 2rem;
+}
+.THIS .description{
+    color: white;
+    padding: 1rem;
+    background: #526475;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    font-size: 1rem;
+}
+
+.THIS .description:hover {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+.THIS .main_card_login{
+    padding: 2rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    border-radius: 0 !important;
+    border: 0 !important;
+}
+.THIS .footer__list{
+    text-align: center;
+    padding-top: 1.5rem;
+}
+.THIS .support_ticket{
+    color: white;
+    padding: .5rem 1rem;
+    background: #526475;
+    margin-top: 1rem;
+    font-size: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+.THIS .ticket_label{
+    padding-left: .3rem;
+}
+.THIS .support_ticket {
+    cursor:pointer;
+}
+.THIS .show_para{
+    color: #C23934;
+    font-size: .75rem;
+    margin-top: .125rem;
+    display: block;
+}
+.THIS .hide_para{
+    display:none;
+}
+.THIS .borderReq{
+    box-shadow: rgb(194, 57, 52) 0 0 0 1px inset;
+}

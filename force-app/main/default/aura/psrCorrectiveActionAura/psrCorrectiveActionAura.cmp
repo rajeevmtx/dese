@@ -1,0 +1,7 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction,lightning:hasPageReference,lightning:isUrlAddressable">
+
+    <aura:html tag="style">
+        .correctiveAction-table .slds-textarea { height: 6rem; }
+
+    </aura:html>
+</aura:component>

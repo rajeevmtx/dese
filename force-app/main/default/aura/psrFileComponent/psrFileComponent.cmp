@@ -1,0 +1,6 @@
+<aura:component implements="lightning:isUrlAddressable,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" 
+                access="global" >
+    <aura:attribute name='docId' type="String"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+</aura:component>

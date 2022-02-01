@@ -82,6 +82,18 @@ export default class DeseStatusCard extends NavigationMixin(LightningElement) {
         );
     }
 
+    redirectToGrant(event){
+        console.log(
+            "redirectToPermit: " + event.currentTarget.getAttribute("data-id")
+        );
+
+        let grantId = event.currentTarget.getAttribute("data-id");
+        window.open(
+            "/dese/s/grants-detail?grantId=" +grantId,
+            "_self"
+        );
+    }
+
    
     handleCloseModal() {
         this.isChatter = false;

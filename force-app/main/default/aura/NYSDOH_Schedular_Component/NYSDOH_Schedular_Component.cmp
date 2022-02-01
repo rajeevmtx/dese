@@ -1,0 +1,4 @@
+<aura:component implements="force:appHostable">
+    <aura:attribute name="internalUse" type="Boolean" default="true" />
+    <c:nysDohIntakeRequestParent internalUse="{!v.internalUse}"></c:nysDohIntakeRequestParent>
+</aura:component>

@@ -1,0 +1,128 @@
+<apex:component controller="CORE_Budget_Left_Navigation_Controller" layout="none" allowDML="true">
+    <script>
+    $(function(){
+        var isshow = localStorage.getItem('isshow');
+        if (isshow!= null) {
+            if(isshow==1){
+
+            }else{
+                $('.btn-close').closest('.sidebar').toggleClass('hide');
+                $('.btn-close').addClass('hide');
+                $('.btn-open').removeClass('hide');
+                $('.sidebar').toggleClass('closed');
+            }
+        }
+
+        $('.btn-close').on('click',function() {
+
+            $(this).closest('.sidebar').toggleClass('hide');
+            $(this).addClass('hide');
+            $('.btn-open').removeClass('hide');
+            $('.sidebar').toggleClass('closed');
+            localStorage.setItem('isshow', 0);
+        });
+        $('.btn-open').on('click',function(){
+            $(this).next('.sidebar').toggleClass('hide');
+            $(this).addClass('hide');
+            $('.btn-close').removeClass('hide');
+            $('.sidebar').toggleClass('closed');
+            localStorage.setItem('isshow', 1);
+        });
+
+        var selectedBudget = localStorage.getItem('selectedBudget');
+        if(selectedBudget != null){
+            $('#'+selectedBudget).trigger("click");
+        }
+
+        $("li.branch").bind("click",function(){
+            localStorage.setItem('selectedBudget', $(this).attr('id'));
+        });
+    })
+    </script>
+
+	<a class="btn-sidebar btn-open hide"><span class="icon-chevron-thin-right"></span></a>
+	<div class="sidebar">
+		<apex:outputPanel rendered="{!profileAccess}" layout="none">
+			<a class="add-budget" href="{!URLFOR($Page.CORE_BUDGET_NEW_Page, null, [projectId=projectId] ,true)}">Add a budget</a>
+		</apex:outputPanel>
+		<div class="side-box">
+			<a class="btn-sidebar btn-close"><span class="icon-chevron-thin-left"></span></a>
+
+			<ul id="tree1" class="budget-tree">
+				<li>
+					<a href="{!URLFOR($page.CORE_Budget_Summary_Page, null, [projectId=projectid] ,true)}">Budget Summary</a>
+				</li>
+				<apex:repeat value="{!activeVersion}" var="av">
+					<li id="branch_{!projectId}{!av}">
+						<a href="{!URLFOR($Page.CORE_Budget_Detail_page, null, [id=activeVersion[av].id] ,true)}&projectId={!projectId}">
+							{!activeVersion[av].name}
+							<apex:outputpanel rendered="{!AND(!activeVersionToDeletableMap[av], profilerole == 'Project Manager')}">
+ 								<a href="#" onclick="openModal('{!activeVersion[av].name}', '{!activeVersion[av].id}')">&nbsp;[del]</a>
+							</apex:outputpanel>
+						</a>
+						<ul>
+							<apex:repeat value="{!mapBudgetDetail[av]}" var="mbd">
+								<li>
+									<a href="{!URLFOR($Page.CORE_Budget_Detail_page, null, [id=mbd.id] ,true)}&projectId={!projectId}">
+										v{!mbd.version__c}
+										<apex:outputPanel styleclass="icon-timelapse" rendered="{!mbd.status__c =='Pending Approval'}"/>
+										<apex:outputPanel styleclass="icon-checkmark-circle" rendered="{!AND(mbd.active__c = true,mbd.status__c=='Approved')}"/>
+										<apex:outputPanel styleclass="icon-checkmark" rendered="{!AND(mbd.active__c = false,mbd.status__c=='Approved')}"/>
+										<apex:outputPanel styleclass="icon-cancel2" rendered="{!mbd.status__c=='Cancelled'}"/>
+										<apex:outputPanel styleclass="icon-envelope" rendered="{!mbd.status__c=='Draft'}"/>
+									</a>
+								</li>
+							</apex:repeat>
+						</ul>
+					</li>
+				</apex:repeat>
+			</ul>
+		</div><!-- /.side-box -->
+		<div class="legend">
+			<ul>
+				<li><span class="icon-envelope"></span>Draft</li>
+				<li><span class="icon-timelapse"></span>Pending Approval</li>
+				<li><span class="icon-checkmark-circle"></span>Approved &amp; Active</li>
+				<li><span class="icon-checkmark"></span>Approved</li>
+				<li><span class="icon-cancel2"></span>Cancelled</li>
+			</ul>
+		</div><!-- /.legend -->
+	</div><!-- /.sidebar -->
+
+	<apex:actionFunction name="deleteBudget" action="{!deleteBudget}" status="actStatusId" rerender="form">
+      	<apex:param name="itemToDelId" value="" assignTo="{!itemToDelId}"></apex:param>
+  	</apex:actionFunction>
+
+	<div id="deleteModal" class="modal fade">
+       <div class="modal-dialog">
+           <div class="modal-content">
+               <div class="modal-header">
+                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                   <h4 class="modal-title">Delete </h4>
+               </div>
+               <div class="modal-body">
+                   <div class="form-group">
+                       Are you sure you want to delete <b><span id="budgetName"> </span></b> budget?  You can no longer recover this budget once deleted.
+                   </div>
+               </div>
+               <div class="modal-footer" style="text-align: left;">
+                   <button type="button" class="btn-bs btn-primary" data-dismiss="modal" onclick="deleteStart();">Yes</button>
+                   <button type="button" class="btn-bs btn-default" data-dismiss="modal">No</button>
+               </div>
+           </div>
+       </div>
+   </div>
+
+   	<script>
+   		var deleteBudgetId;
+   		function openModal(budgetName, budgetId) {
+   			$('#deleteModal').modal('show');
+   			deleteBudgetId = budgetId;
+   			$('#budgetName').text(budgetName);
+   		}
+
+   		function deleteStart() {
+   			deleteBudget(deleteBudgetId);
+   		}
+   	</script>
+</apex:component>

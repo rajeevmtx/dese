@@ -1,0 +1,117 @@
+<apex:component >
+    <apex:attribute name="parentId" description="It is used to store the parent id of attachment." type="String" required="true"/>
+    <apex:attribute name="parentPageFunctionName" description="It is used to call the parent page function name." type="String" default=""/>
+    <apex:attribute name="allowMultipleFile" description="It is used check the multiple file attachment." type="Boolean" default="false"/>
+    <apex:attribute name="attachmentHiddenId" description="It is used to store the input hidden id." type="String" default=""/>
+    <apex:attribute name="attachmentIdString" description="It is used to store the attachment id array." type="String" default=""/>
+    <style>
+        #errorMsgUploadFileContainer {
+            display: none;
+        }
+        #uploadAttachmenFileInput {
+            display: inline-block !important;
+        }
+    </style>
+    <div class="modal fade" id="uploadAttachmentPreviewModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" onclick="closeAttachmentModal(); return false;">&times;</button>
+                    <h4 class="modal-title">Upload</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger" id="errorMsgUploadFileContainer"></div>
+                    <apex:outputPanel rendered="{!allowMultipleFile}" layout="block">
+                        <label>Select a file: </label>
+                        <input type="file" id="uploadAttachmenFileInput" multiple="true"/>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!!allowMultipleFile}" layout="block">
+                        <label>Select a file: </label>
+                        <input type="file" id="uploadAttachmenFileInput"/>
+                    </apex:outputPanel>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-bs btn-primary" onclick="toggleLoadingIcon('show');addAttachment(); return false;">Upload</button>
+                    <button type="button" class="btn-bs btn-default" onclick="closeAttachmentModal(); return false;">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $('#uploadAttachmentPreviewModal').modal('show');
+        var __sfdcSessionId = '{!GETSESSIONID()}';
+        sforce.connection.sessionId = "{!$Api.Session_ID}";
+        function closeAttachmentModal() {
+            $('[id$="showAttachmentComponent"]').val(false);
+            $('#uploadAttachmentPreviewModal').modal('hide');
+            {!parentPageFunctionName}
+        }
+        function addAttachment() {
+            $('#errorMsgUploadFileContainer').hide();
+            getAttachmentIds().then(attachmentArray=>{
+                let result = sforce.connection.create(attachmentArray);
+                let attachmentIdArray = '{!attachmentIdString}' != '' ? JSON.parse('{!attachmentIdString}') : [];
+                for (var i=0; i<result.length; i++) {
+                    if (result[i].getBoolean("success")) {
+                        attachmentIdArray.push(result[i].id);
+                    } else {
+                        console.log("failed to create account " + result[i]);
+                    }
+                }
+                $('[id$="{!attachmentHiddenId}"]').val(JSON.stringify(attachmentIdArray));
+                $('[id$="showAttachmentComponent"]').val(false);
+                $('#uploadAttachmentPreviewModal').modal('hide');
+                {!parentPageFunctionName}
+            }).catch(err=>{
+                $('#errorMsgUploadFileContainer').html('<strong>Error! </strong>' + err);
+                $('#errorMsgUploadFileContainer').show();
+                toggleLoadingIcon('hide');
+            });
+        }
+        function getAttachmentIds() {
+            return new Promise((resolve, reject)=>{
+                let attachFile = document.getElementById('uploadAttachmenFileInput').files;
+                if(attachFile.length == 0) {
+                    reject('Attachment required to proceed.');
+                }
+                let attachmentArray = [];
+                let currentIndex = 0;
+                $(attachFile).each( function() {
+                    if($(this)[0].size > 26214400) {
+                        reject('Attachment size should not be greater than 25MB.');
+                    };
+                    currentIndex += $(this)[0].size;
+                });
+                if(currentIndex > 26214400) {
+                    reject('Attachment size should not be greater than 25MB.');
+                }
+                currentIndex = 0;
+                $(attachFile).each( function() {
+                    let reader = new FileReader();
+                    let fileData = $(this)[0];
+                    reader.file = fileData;
+                    reader.onload = function(event){
+                        currentIndex++;
+                        let attachment = new sforce.SObject("Attachment");
+                        attachment.Name = fileData.name;
+                        attachment.ContentType = fileData.type;
+                        attachment.ParentId = '{!parentId}';
+                        let binary = "";
+                        let bytes = new Uint8Array(event.target.result);
+                        let length = bytes.byteLength;
+                        for (var i = 0; i < length; i++){
+                            binary += String.fromCharCode(bytes[i]);
+                        }
+                        attachment.Body = (new sforce.Base64Binary(binary)).toString();
+                        attachmentArray.push(attachment);
+                        if(currentIndex == attachFile.length) {
+                            resolve(attachmentArray);
+                        };
+                    };
+                    reader.readAsArrayBuffer(fileData);
+                });
+            })
+        }
+    </script>
+</apex:component>

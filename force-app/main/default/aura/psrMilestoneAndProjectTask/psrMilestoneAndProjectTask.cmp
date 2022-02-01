@@ -1,0 +1,311 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction,lightning:hasPageReference,lightning:isUrlAddressable"
+    description="psr_AssessmentReview" access="global" controller="psr_DocumentReviewController" extends="c.psr_Base">
+
+
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="contenList" type="List" />
+    <aura:attribute name="contenList1" type="List" />
+    <aura:attribute name="fields" type="String[]" default="['Name','Object_Name__c','Sequence__c','Active__c']" />
+    <aura:attribute name="editable" type="Boolean" default="false" />
+    <aura:attribute name="isEditEnabled" type="Boolean" default="false" />
+    <aura:attribute name="pickOptions" type="List" />
+    <aura:attribute name="editrecordId" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="isModalOpen" type="boolean" default="false"/>
+    <aura:attribute name="isNewButton" type="boolean" default="false"/>
+   
+
+    <div class="container">
+
+        <force:recordData aura:id="forceRecord" recordId="{!v.recordId}" layoutType="FULL" recordUpdated="{!c.doInit}" />
+
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_12-of-12">
+                <div>
+                    <div class="slds-align_absolute-center">
+                        <!-- <aura:if isTrue="{!v.editable}">
+                            <lightning:button class="slds-m-bottom_large" variant="brand" label="Save" title="Save" onclick="{!c.handleSave}" />
+                            <lightning:button class="slds-m-bottom_large" variant="brand" label="Cancel" title="Cancel" onclick="{!c.handleCancel}" />
+                            <aura:set attribute="else">
+                                <lightning:button class="slds-m-bottom_small" variant="brand" label="Edit" title="Brand action" onclick="{!c.handleEdit}"/>
+                            </aura:set>
+                        </aura:if> -->
+                        <lightning:button class="slds-m-bottom_small" variant="brand" label="New" onclick="{!c.newButton}" title="Brand action"/>
+
+                    </div>
+                    <lightning:tabset>
+        <lightning:tab label="Project Milestones">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-no-row-hover" id="DocumentReviewTable">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="slds-is-resizable">
+                            <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Name">NAME</div>
+                            </div>
+                        </th>
+                        <th class="slds-is-resizable">
+                            <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Type">TYPE</div>
+                            </div>
+                        </th>
+                        <th class="slds-is-resizable">
+                            <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Sequence">SEQUENCE</div>
+                            </div>
+                        </th>
+                        <th class="slds-is-resizable">
+                            <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Active">ACTIVE</div>
+                            </div>
+                        </th>
+                        <th class="slds-is-resizable">
+                            <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Created Date">CREATED DATE</div>
+                            </div>
+                        </th>
+                        <th class="slds-is-resizable">
+                            <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Action">ACTION</div>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <aura:iteration items="{!v.contenList}" var="item" indexVar="index">
+
+                            <tr class="slds-hint-parent">
+                                <td data-label="Name" style="width: 15rem;"> 
+                                    <div class="slds-cell-wrap slds-truncate" title="Name">
+                                        {!item.Object_Name__c}</div>
+                                </td>
+                                <td data-label="Type">
+                                    <div class="" title="Type">
+                                        {!item.RecordType.Name}</div>
+                                </td>
+                                <td data-label="Type">
+                                    <div class="slds-cell-wrap slds-truncate slds-var-p-left_large" title="Type">
+                                        {!item.Sequence__c}</div>
+                                </td>
+                                <td data-label="Type">
+                                    <div class="slds-cell-wrap slds-truncate slds-var-p-left_small" title="Type">
+                                        <lightning:input type="checkbox" label="" name="input3" checked="{!item.Active__c}" disabled="true"/>
+                                        </div>
+                                </td>
+                                <td data-label="Type">
+                                    <div class="slds-cell-wrap slds-truncate" title="Type">
+                                        <lightning:formattedDateTime value="{!item.CreatedDate}" year="numeric" month="numeric" day="numeric" hour="2-digit"
+                         minute="2-digit" timeZone="UTC" timeZoneName="short" hour12="false"/></div>
+                                </td>  
+                                <td data-label="Type">
+                                    <div class="slds-cell-wrap slds-truncate slds-var-p-left_small" title="Type">
+                                        <button class="slds-button slds-button_brand"  title="Base action" id="{!item.Id}" onclick="{!c.editModal}">EDIT</button>
+                                        </div>
+                                </td>                                      
+        
+                            </tr>
+                    </aura:iteration>
+                </tbody>
+            </table>
+        </lightning:tab>
+        <lightning:tab label="Deliverables" >
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-no-row-hover" id="DocumentReviewTable">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="slds-is-resizable">
+                            <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Name">NAME</div>
+                            </div>
+                        </th>
+                        <th class="slds-is-resizable">
+                            <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Type">TYPE</div>
+                            </div>
+                        </th>
+                        <th class="slds-is-resizable">
+                            <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Sequence">SEQUENCE</div>
+                            </div>
+                        </th>
+                        <th class="slds-is-resizable">
+                            <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Active">ACTIVE</div>
+                            </div>
+                        </th>
+                        <th class="slds-is-resizable">
+                            <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Created Date">CREATED DATE</div>
+                            </div>
+                        </th>
+                        <th class="slds-is-resizable">
+                            <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Action">ACTION</div>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <aura:iteration items="{!v.contenList1}" var="item" indexVar="index">
+
+                            <tr class="slds-hint-parent">
+                                <td data-label="Name" style="width: 15rem;"> 
+                                    <div class="slds-cell-wrap slds-truncate" title="Name">
+                                        {!item.Object_Name__c}</div>
+                                </td>
+                                <td data-label="Type">
+                                    <div class="" title="Type">
+                                        {!item.RecordType.Name}</div>
+                                </td>
+                                <td data-label="Type">
+                                    <div class="slds-cell-wrap slds-truncate slds-var-p-left_large" title="Type">
+                                        {!item.Sequence__c}</div>
+                                </td>
+                                <td data-label="Type">
+                                    <div class="slds-cell-wrap slds-truncate slds-var-p-left_small" title="Type">
+                                        <lightning:input type="checkbox" label="" name="input3" checked="{!item.Active__c}" disabled="true"/>
+                                        </div>
+                                </td>
+                                <td data-label="Type">
+                                    <div class="slds-cell-wrap slds-truncate" title="Type">
+                                        <lightning:formattedDateTime value="{!item.CreatedDate}" year="numeric" month="numeric" day="numeric" hour="2-digit"
+                         minute="2-digit" timeZone="UTC" timeZoneName="short" hour12="false"/></div>
+                                </td>  
+                                <td data-label="Type">
+                                    <div class="slds-cell-wrap slds-truncate slds-var-p-left_small" title="Type">
+                                        <button class="slds-button slds-button_brand" title="Base action" id="{!item.Id}" onclick="{!c.editModal}">Edit</button>
+                                        </div>
+                                </td>                                      
+        
+                            </tr>
+                    </aura:iteration>
+                </tbody>
+            </table>
+        </lightning:tab>
+    </lightning:tabset>
+            
+                    <!-- <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-no-row-hover" id="DocumentReviewTable">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="slds-is-resizable">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                        <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Name">NAME</div>
+                                    </div>
+                                </th>
+                                <th class="slds-is-resizable">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                        <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Type">TYPE</div>
+                                    </div>
+                                </th>
+                                <th class="slds-is-resizable">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                        <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Sequence">SEQUENCE</div>
+                                    </div>
+                                </th>
+                                <th class="slds-is-resizable">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                        <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Active">ACTIVE</div>
+                                    </div>
+                                </th>
+                                <th class="slds-is-resizable">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                        <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Created Date">CREATED DATE</div>
+                                    </div>
+                                </th>
+                                <th class="slds-is-resizable">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                        <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Action">ACTION</div>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <aura:iteration items="{!v.contenList}" var="item" indexVar="index">
+
+                                    <tr class="slds-hint-parent">
+                                        <td data-label="Name" style="width: 15rem;"> 
+                                            <div class="slds-cell-wrap slds-truncate" title="Name">
+                                                {!item.Object_Name__c}</div>
+                                        </td>
+                                        <td data-label="Type">
+                                            <div class="" title="Type">
+                                                {!item.RecordType.Name}</div>
+                                        </td>
+                                        <td data-label="Type">
+                                            <div class="slds-cell-wrap slds-truncate slds-var-p-left_large" title="Type">
+                                                {!item.Sequence__c}</div>
+                                        </td>
+                                        <td data-label="Type">
+                                            <div class="slds-cell-wrap slds-truncate slds-var-p-left_small" title="Type">
+                                                <lightning:input type="checkbox" label="" name="input3" checked="{!item.Active__c}" disabled="true"/>
+                                                </div>
+                                        </td>
+                                        <td data-label="Type">
+                                            <div class="slds-cell-wrap slds-truncate" title="Type">
+                                                <lightning:formattedDateTime value="{!item.CreatedDate}" year="numeric" month="numeric" day="numeric" hour="2-digit"
+                                 minute="2-digit" timeZone="UTC" timeZoneName="short" hour12="false"/></div>
+                                        </td>  
+                                        <td data-label="Type">
+                                            <div class="slds-cell-wrap slds-truncate slds-var-p-left_small" title="Type">
+                                                <lightning:button variant="base" label="Edit" title="Base action" />
+                                                </div>
+                                        </td>                                      
+                
+                                    </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <aura:if isTrue="{!v.isModalOpen}">
+             
+            <!-- Modal/Popup Box starts here-->
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- Modal/Popup Box Header Starts here-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Modal/PopUp Box</h2>
+                    </header>
+                    <!--Modal/Popup Box Body Starts here-->
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        
+                    
+                    <aura:if isTrue="{!v.isNewButton}">
+                        <lightning:recordForm
+                                objectApiName="Program_Content__c"
+                                layoutType="Full"
+                                oncancel="{!c.closeModel}"
+                                onsuccess="{!c.closeModel}"/>
+                        <aura:set attribute="else">
+                            <lightning:recordForm
+                                recordId="{!v.editrecordId}"
+                                objectApiName="Program_Content__c"
+                                fields="{!v.fields}"
+                                mode="view" 
+                                oncancel="{!c.closeModel}"
+                                onsuccess="{!c.closeModel}"/>
+                        </aura:set>
+                    </aura:if>
+                </div>
+                    <!--Modal/Popup Box Footer Starts here-->
+                    <!-- <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral"
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeModel }"/>
+                        <lightning:button variant="brand"
+                                          label="OK"
+                                          title="OK"
+                                          onclick="{!c.submitDetails}"/>
+                    </footer> -->
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </aura:if>
+
+</aura:component>

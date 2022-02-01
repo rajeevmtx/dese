@@ -93,7 +93,7 @@ export default class PsrHeader extends LightningElement {
         window.open(`/psr`, "_self");
     }
     goToMyProfile(){
-        window.parent.location.href = this.myProfileLink;
+        window.open('/psr/s/monitoring-profile',"_self")
     }
     openNotification(){
         console.log('In Notify');

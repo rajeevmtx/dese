@@ -1,0 +1,61 @@
+<apex:component layout="none">
+  <style>
+    /* WCAG */
+    .form-note a,ul a {
+        text-decoration:underline;
+    }
+    .form-note a {
+      color:#4281e4;
+    }
+    .required {
+        font-weight: bold;
+        color: #c54545;
+        font-size: 18px;
+    }
+    legend {
+        font-size:14px;
+        border-bottom: 0px;
+        margin-bottom: 5px;
+    }
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+        color:#555;
+    }
+    .select2-container--default .select2-search--dropdown .select2-search__field:focus,
+    .select2-search__field:focus,
+    .step-nav a:focus,.select2 *:focus,
+    .select2-container *:focus {
+        outline: #0075CF solid 2px;
+        box-shadow:none;
+    }
+    .select2-selection__rendered {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        min-height: 32px;
+    }
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        display:flex;
+        align-items:center;
+        margin:0;
+    }
+    .select2-container--default .select2-selection--multiple .select2-selection__choice:not(:first-of-type) {
+      margin-left:5px;
+    }
+    .select2-container .select2-search--inline {
+        float:none;
+    }
+    .select2-results__option {
+      font-size:14px;
+    }
+    .select2-search__field {
+        min-height: 25px;
+        min-width: 30px;
+        margin-top:0;
+        font-size:14px !important;
+    }
+    .select2-search.select2-search--inline .select2-search__field {
+      margin-left:5px;
+      margin-top:0;
+    }
+  </style>
+</apex:component>

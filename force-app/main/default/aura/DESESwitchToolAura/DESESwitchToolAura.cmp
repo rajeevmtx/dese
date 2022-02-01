@@ -1,0 +1,4 @@
+<aura:component implements="force:lightningQuickAction,force:hasRecordId">
+    <aura:attribute name="recordId" type="String" />
+    <c:dese_switch_tool recordId="{!v.recordId}" mode="Switch" onrefreshcomponent="{!c.refreshComponent}"></c:dese_switch_tool>
+</aura:component>

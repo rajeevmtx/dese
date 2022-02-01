@@ -1,0 +1,16 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasSObjectName,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction,lightning:hasPageReference,lightning:isUrlAddressable,lightning:actionOverride">
+	  <aura:handler name="init" action="{!c.navigateToAppointmentCmp}" value="{!this}" />
+    <lightning:navigation aura:id="navService"/>
+    <aura:attribute name="sObjectName" type="String" />
+   <!--Declare Handlers-->
+    <aura:handler event="aura:waiting" action="{!c.handleShowSpinner}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.handleHideSpinner}"/>
+     
+    <!--Declare Attributes-->
+    <aura:attribute name="showSpinner" type="boolean" default="false"/>
+     <div class="slds-m-around--xx-large">
+    <aura:if isTrue="{!v.showSpinner}">
+        <lightning:spinner alternativeText="Loading, Please Wait..." title="Loading, Please Wait..." variant="brand" size="large"/>
+             </aura:if>
+    </div>
+</aura:component>

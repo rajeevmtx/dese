@@ -1,0 +1,249 @@
+.THIS .sidebar {
+    background-image: url(/resource/Sidebar_Logo);
+}
+.THIS .textcolor {
+    color: rgb(194, 57, 52);
+}
+.THIS .error {
+    padding: 20px;
+    background-color: #f44336; /* Red */
+    color: white;
+    margin-bottom: 15px;
+}
+@media (min-width: 768px) {
+    .THIS .sm-align-right {
+        text-align: right;
+    }
+}
+.THIS .left_section_login{
+    height: 90% !important;
+    justify-content: center!important;
+    display: flex!important;
+    padding: 5rem;
+    /* background-image: url(/resource/mexico_bg); */
+    background-image: url(/resource/loginbgimage);
+    
+    position: absolute;
+    display: block;
+    z-index: -1;
+    background-size: cover;
+}
+.THIS .right_section_login{
+    padding: 4rem!important;
+    top: 400px;
+    transform: translateY(-50%);
+    position: absolute;
+    right: 0;
+    display: block;
+    z-index: -1;
+}
+.THIS .text-brand-heading{
+    font-size: 2rem;
+    text-align: center;
+    padding: 0rem 2rem 2rem 2rem;
+}
+.THIS .description{
+    color: white;
+    padding: 1rem;
+    background: #526475;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    font-size: 1rem;
+}
+
+.THIS .description:hover {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.THIS .main_card_login{
+    padding: 2rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    border-radius: 0 !important;
+    border: 0 !important;
+}
+.THIS .footer__list{
+    text-align: center;
+    padding-top: 1.5rem;
+}
+.THIS .support_ticket{
+    color: white;
+    padding: .5rem 1rem;
+    background: #526475;
+    margin-top: 1rem;
+    font-size: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+.THIS .ticket_label{
+    padding-left: .3rem;
+}
+.THIS .support_ticket {
+    cursor:pointer;
+}
+
+
+
+
+
+/* New Login Jan 28*/
+
+
+.THIS .loginContainerPage{
+    position: fixed;
+    background: #f4f7fa;
+    top: 0px;
+    bottom: 0px;
+    z-index: 99;
+    right: 0px;
+    width: 100%;
+    display: flex;
+      vertical-align: middle;
+      align-items: center;
+      justify-content: center;
+  }
+  
+  .THIS  .loginContainerPage .loginImages{
+    max-width: 60%;
+    height: auto;
+    color:#fff;
+    font-size: 1.4rem;
+    position: relative;
+  }
+  
+  
+  
+  .THIS  .loginContainerPage .loginImages h3{
+    font-size: 1.8rem;
+  }
+  
+  .THIS .loginContainerPage .submitForm h3{
+    font-size: 1.8rem;
+    color:#333;
+    margin-bottom: 5px;
+    
+  }
+  .THIS  .loginContainerPage .submitForm p{
+    color:#AEAEAE;
+  }
+  
+  
+  
+  .THIS .loginContainerPage .slds-grid{
+    align-items: center;
+    justify-content: center;
+    background:#fff;
+    width: 800px;
+  
+  }
+  .THIS .loginContainerPage .welcomeText{
+    position: absolute;
+    z-index: 9;
+    top: 17%;
+    left: 10%;
+    width: 70%;
+  }
+  
+  .THIS .loginContainerPage .welcomeText p{
+    font-size: 14px;
+  }
+
+  .THIS .loginContainerPage .welcomeText h3{
+    font-size: 1.8rem;
+    display: block;
+    width: 100% ;
+    clear: both;
+    margin-bottom: 5px;
+  
+  }
+  
+  .THIS .loginContainerPage .powered{
+    position: absolute;
+    bottom: 3%;
+    text-align: center;
+    width: 100%;
+    font-size: 11px;
+    color: #fff;
+  }
+  
+  
+  .THIS .loginContainerPage .submitForm{
+    padding:1.6rem 1rem 1.6rem 2rem;
+    /* font-size: 1.4rem; */
+  } 
+  .THIS .loginContainerPage .submitForm .lightning-button button{
+    background: #14558F;
+    margin: 16px 0px;
+    width:100%;
+    border-radius: 5px;
+  
+  }
+  
+  .THIS .loginContainerPage .submitForm label{
+    font-size: 1.4rem;
+    margin-top: 10px;
+    color:#14558F;
+    margin-top: 10px;
+    line-height: 36px;
+  }
+  .THIS .loginContainerPage .submitForm input{
+    padding: 6px 10px;
+    margin-top: -10px;
+    border:1px solid #B9CCDD;
+    border-radius: 4px;
+    width: 100%;
+    margin-left: 0px;
+    margin-bottom: 14px;
+  } 
+  
+  .THIS .loginContainerPage .submitForm .clear{
+    clear:both;
+    height:30px;
+  }
+  
+  .THIS .loginContainerPage .submitForm button{
+    width:100%;
+    border-radius: 5px;
+    padding: 6px;
+    font-weight: normal;
+  }
+  
+  .THIS .loginContainerPage .submitForm .slds-form-element__label{
+    display: none;
+  
+  }
+  .THIS .loginContainerPage .signInText p span{
+    color:#7B7B7B;
+  }
+  
+  .THIS .loginContainerPage .signInText p {
+    color:#000000;
+  }
+  .THIS .loginContainerPage .signInText {
+    text-align: center;
+  }
+  
+  
+  .THIS .loginContainerPage .signInText p a {
+    color:#14558F;
+    font-weight:bold;
+    padding: 0px 5px;
+  }
+  .THIS .loginContainerPage .signInText img{
+    width:40px;
+    height:40px;
+    margin:16px 10px;
+    cursor: pointer;
+  }
+
+  .THIS .loginContainerPage .forceCommunityRichText{
+      display:none
+  }
+.THIS .backgroundImage{
+    width:100%;
+    height:70vh;
+}
+.THIS .slds-button_brand {
+  background:#14558F;
+}

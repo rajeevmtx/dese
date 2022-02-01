@@ -1,0 +1,7 @@
+<apex:component >
+    <apex:attribute name="date" description="Date to format" type="Date" required="true"/>
+    <apex:attribute name="style" description="Any CSS styles to apply." type="String"/>
+    <apex:outputText style="{! style }" value="{0,date,MM'/'dd'/'yyyy}">
+        <apex:param value="{! date }" />
+    </apex:outputText>
+</apex:component>

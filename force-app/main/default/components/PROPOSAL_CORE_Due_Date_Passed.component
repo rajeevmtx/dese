@@ -1,0 +1,37 @@
+<apex:component >
+	<apex:form id="frm">
+        <!-- Modal -->
+        <div class="modal fade" id="dueDatePassedModal" role="dialog">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <apex:outputPanel id="modalForm">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>                 
+                            <h4 class="modal-title" id="editModalLabel">Due Date Passed</h4>         
+                        </div>
+                        <div class="modal-body">
+                            <apex:pageMessages />
+                            <apex:outputPanel >
+                              <div class="alert alert-default">Sorry, the due date and time passed for this solicitation and we are not able to accept your changes.</div>        
+                            </apex:outputPanel>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <span id="cancelBtnDiv">
+                                <button id="cancelBtn" type="button" class="btn-bs btn-default" data-dismiss="modal" onclick="goToProject()">Close</button>
+                            </span>
+                        </div>
+                    </apex:outputPanel>
+                </div>
+            </div>
+        </div>
+    </apex:form>
+    
+    <script>
+    	function goToProject() {
+    		window.open('/apex/Core_Project_ListView_Page', '_self');
+    	}
+    </script>
+</apex:component>

@@ -1,24 +1,28 @@
 <template>
-    <header class="header">
-        <div class="header-info">
+    <div class="finalReport header">
+        <div class="  header-info">
             <div class="information">
                 <div class="info">
-                    <div class="info__main">
-                        FY 2020 Universal Pre-Kindergarden Grant (Fund Code 511)
-                    </div>
+                   <div class="info__main">
+                      Standard Contract Form and Application for Program Grants
+                   </div>
+                   <div class="info__sub">
+                      {projectName}
+                   </div>
                 </div>
                 <div class="date">
-                    <div class="date__dueD">
-                        Due Date
-                    </div>
-                    <div class="date__format slds-is-today ">
-                        <lightning-formatted-date-time value={projectDate} year="numeric" day="2-digit" month="long"
-                            class="dateFormate"></lightning-formatted-date-time>
-                    </div>
+                   <div class="date__dueD">
+                      Due Date
+                   </div>
+                   <div class="date__format slds-is-today ">
+                      <lightning-formatted-date-time value={projectDate} year="numeric"
+                      day="2-digit"
+                      month="long" class="dateFormate"></lightning-formatted-date-time>
+                   </div>
                 </div>
-            </div>
+             </div>
         </div>
-    </header>
+    </div>
     <div class="container">
         <div class="content-container ">
             <lightning-card>
@@ -86,13 +90,13 @@
                                         <div class="slds-truncate" title="Expenditure Category">Expenditure Category
                                         </div>
                                     </th>
-                                    <th class="" scope="col">
+                                    <th class="column-width" scope="col">
                                         <div class="slds-truncate" title="Approved Budget">Approved Budget</div>
                                     </th>
-                                    <th class="" scope="col">
+                                    <th class="column-width" scope="col">
                                         <div class="slds-truncate" title="Funds Expended">Funds Expended</div>
                                     </th>
-                                    <th class="" scope="col">
+                                    <th class="column-width" scope="col">
                                         <div class="slds-truncate" title="Balance Unexpended">Balance Unexpended</div>
                                     </th>
                                 </tr>
@@ -282,7 +286,7 @@
                     <lightning-input label="Check Enclosed" class="finalReport-input" placeholder="Enter Amount here" name="checkEnclosedAmount"
                         onchange={handleTableFields} value={checkEnclosedAmount} formatter="currency" type="number">
                     </lightning-input>
-                    <lightning-input type="checkbox"
+                    <lightning-input type="checkbox" class="finalReport-checkbox slds-m-bottom_medium slds-m-top_medium"
                         label="I certify that all the information contained in this final financial report is true and correct">
                     </lightning-input>
                     <c-dese_intake_docusign record-id={projectId}></c-dese_intake_docusign>

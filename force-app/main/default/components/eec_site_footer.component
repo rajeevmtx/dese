@@ -1,0 +1,55 @@
+<apex:component controller="EEC_NavBarController">
+    <style>
+        .footer-container {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+        }
+        .footer-container .copyright {
+            float: left;
+            margin-right: 15px;
+            align-self: center;
+            flex: 2;
+            color: #707070 !important;
+        }
+        .attachment-item social-buttons {
+            flex: 1;
+        }
+        .srOnly {
+            display: none;
+        }
+        .navbar-default .navbar-text {
+            color: #707070 !important;
+        }
+        .social-buttons > a {
+            color: #3174AF !important;
+            text-decoration: none !important;
+        }
+        .navbar-fixed-top,
+        .navbar-fixed-bottom {
+            position: -webkit-sticky !important;
+        }
+    </style>
+    <div class="navbar navbar-default navbar-fixed-bottom">
+        <div class="footer-container">
+            <p class="copyright navbar-text"> © 2015 - Department of Early Education &amp; Care
+                <a href="http://www.mass.gov/edu/government/departments-and-boards/department-of-early-education-and-care/">(EEC)</a>
+            </p>
+            <div class="social-buttons">
+                <a onclick="window.print();" class="navbar-btn pull-right">
+                    <i id="social" class="fa fa-print fa-2x"></i>&nbsp;&nbsp;
+                    <span class="srOnly">Accessibility Fix</span>
+                </a>
+                <a href="https://twitter.com/massearlyedcare" class="navbar-btn pull-right" target="_blank">
+                    <i id="social" class="fa fa-twitter-square fa-2x"></i>&nbsp;&nbsp;
+                    <span class="srOnly">Accessibility Fix</span>
+                </a>
+                <a href="mailto:{!licensorEmail}?Subject='EEC%20Inquiry'" target="_top" class="navbar-btn pull-right">
+                    <i id="social" class="fa fa-envelope-square fa-2x"></i>&nbsp;&nbsp;
+                    <span class="srOnly">Accessibility Fix</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <c:EEC_Site_Scripts id="pageScripts" />
+</apex:component>

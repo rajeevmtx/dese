@@ -1,0 +1,45 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global" controller="NysDohSchdulerConfigurationsController">
+    <aura:attribute name="view" type="object"/>
+    <aura:handler name="init" value="{!this}" action="{!c.loadData}"/>
+    <div class="slds-grid slds-wrap">
+        <div class="slds-col slds-size_1-of-5 slds-var-p-around_medium">
+            <lightning:select name="select1" label="Testing Site" required="true" value="{!v.view.accountId}">
+                <aura:iteration items="{!v.view.siteList}" var="item">
+                    <option value="{!item.value}">{!item.label}</option>
+                </aura:iteration>      
+            </lightning:select>
+        </div>
+        <div class="slds-col slds-size_4-of-5">
+            
+        </div>
+        <aura:iteration items="{!v.view.timeSlots}" var="item">
+            <div class="slds-col slds-size_1-of-5 slds-var-p-around_medium">
+                <lightning:input type="date" name="input1" label="Enter a date" value="{!item.scheduleDate}"/>
+            </div>
+            <div class="slds-col slds-size_1-of-5 slds-var-p-around_medium">
+                <lightning:input name="input1" label="Number Of Lane" value="{!item.lane}"/>
+            </div>
+            <div class="slds-col slds-size_1-of-5 slds-var-p-around_medium">
+                <lightning:input name="input1" label="Duration of Appointment (min)" value="{!item.duration}"/>
+            </div>
+            <div class="slds-col slds-size_1-of-5 slds-var-p-around_medium">
+                <lightning:input type="time" name="input1" label="Start Time" value="{!item.startTime}"/>
+            </div>
+            <div class="slds-col slds-size_1-of-5 slds-var-p-around_medium">
+                <lightning:input type="time" name="input1" label="End Time" value="{!item.endTime}"/>
+            </div>
+        </aura:iteration>
+        <div class="slds-col slds-size_1-of-5 slds-var-p-around_medium">
+            <lightning:button variant="base" label="Add New Row" title="Base action" onclick="{! c.addNewDate }"/>
+        </div>
+        <div class="slds-col slds-size_4-of-5 slds-var-p-around_medium">
+            
+        </div>
+        <div class="slds-col slds-size_1-of-5 slds-var-p-around_medium">
+            <lightning:button variant="brand" label="Submit" title="Brand action" onclick="{! c.saveData }" />
+        </div>
+        <div class="slds-col slds-size_4-of-5 slds-var-p-around_medium">
+            
+        </div>
+    </div>
+</aura:component>

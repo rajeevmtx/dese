@@ -970,8 +970,8 @@ public with sharing class CORE_Proposal_Review_Controller {
                                 propCategoryToRecoupmentMap.get(varloop.pro.Proposed_Proposal_Category__c)){
                             varloop.pro.Recoupment_Contract_Terms__c = 'Yes';
                         }
-                        //GS
-                    }else if(varloop.pro.Recommendation__c == Project_Helper.PROJECT_RECOMMANDATION_FUNDABLE ||
+                        //GS varloop.pro.Recommendation__c == Project_Helper.PROJECT_RECOMMANDATION_FUNDABLE ||
+                    }else if(
                              varloop.pro.Recommendation__c == Project_Helper.PROJECT_RECOMMANDATION_DO_NOT_FUND){
                         varloop.pro.Status__c = Project_Helper.PROJECT_STATUS_NOT_AWARDED;
                     }else if(varloop.pro.Recommendation__c == Project_Helper.PROJECT_RECOMMANDATION_ACCEPTED ||

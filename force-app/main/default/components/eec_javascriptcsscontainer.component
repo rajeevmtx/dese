@@ -1,0 +1,188 @@
+<apex:component >
+    <apex:attribute name="includeJquery" description="It is used to include the jquery on page." type="Boolean" default="false"/>
+    <apex:attribute name="includeBootStrap" description="It is used to include the bootstrap css on page." type="Boolean" default="false"/>
+    <apex:attribute name="includeCKEditor" description="It is used to include the ck editor on page." type="Boolean" default="false"/>
+    <apex:attribute name="includeDataTable" description="It is used to include the data table css on page." type="Boolean" default="false"/>
+    <apex:attribute name="includeBootStrapJS" description="It is used to include the bootstrap js on page." type="Boolean" default="false"/>
+    <apex:attribute name="includeSforce" description="It is used to include the sforce on page." type="Boolean" default="false"/>
+    <apex:attribute name="includeCanvasPublisher" description="It is used to include the canvas publisher js on page." type="Boolean"
+        default="false" />
+    <apex:attribute name="includeParseley" description="It is used to include the parseley js on page." type="Boolean" default="false"/>
+    <apex:attribute name="includeLightningCSS" description="It is used to include the lightning css js on page." type="Boolean"
+        default="false" />
+    <apex:attribute name="includeJqueryUI" description="It is used to include the jquery ui on page." type="Boolean" default="false"/>
+    <apex:attribute name="includeJqueryValidate" description="It is used to include the jquery validate on page." type="Boolean"
+        default="false" />
+    <apex:attribute name="includeFontAwesome" description="It is used to include the font awesome on page." type="Boolean" default="false"/>
+    <apex:attribute name="includeSelect2" description="It is used to include the select2 js on page." type="Boolean" default="false"/>
+    <apex:attribute name="includeConnectionJs" description="It is used to include the connection js on page." type="Boolean" default="false"/>
+    <apex:outputPanel rendered="{!includeJquery}">
+        <apex:includeScript value="{!$Resource.EEC_UpgradeJquery}" />
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!includeJqueryUI}">
+        <apex:includeScript value="https://code.jquery.com/ui/1.12.1/jquery-ui.js" />
+        <apex:stylesheet value="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!includeBootStrapJS}">
+        <apex:includescript value="{!URLFOR($Resource.EEC_Bootstrap, 'EEC_Bootstrap/js/bootstrap.js')}" />
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!includeDataTable}">
+        <apex:includeScript value="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js" />
+        <apex:stylesheet value="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css" />
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!includeBootStrap}">
+        <apex:stylesheet value="{!URLFOR($Resource.EEC_Bootstrap, 'EEC_Bootstrap/css/bootstrap.css')}" />
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!includeFontAwesome}">
+        <apex:stylesheet value="{!URLFOR($Resource.EEC_FontAwesome, 'font-awesome-4.1.0/css/font-awesome.min.css')}" />
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!includeJqueryValidate}">
+        <apex:includeScript value="{!URLFOR($Resource.EEC_Bootstrap, 'EEC_Bootstrap/js/jquery.validate.js')}" />
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!includeCKEditor}">
+        <apex:includeScript value="//cdn.ckeditor.com/4.7.1/standard/ckeditor.js" />
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!includeParseley}">
+        <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.0.7/parsley.js" />
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!includeCanvasPublisher}">
+        <apex:includeScript value="/canvas/sdk/js/publisher.js" />
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!includeSforce}">
+        <apex:includeScript value="/soap/ajax/32.0/connection.js" />
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!includeLightningCSS}">
+        <apex:slds />
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!includeConnectionJs}">
+        <apex:includeScript value="../../soap/ajax/40.0/connection.js" />
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!includeSelect2}">
+        <apex:stylesheet value="//cdnjs.cloudflare.com/ajax/libs/select2/3.5.1/select2.css" />
+        <apex:includeScript value="//cdnjs.cloudflare.com/ajax/libs/select2/3.5.1/select2.js" />
+    </apex:outputPanel>
+    <style>
+        .loading-spinner {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            width: 100%;
+            height: 100%;
+            background: rgba(22, 50, 92, 0.6);
+            z-index: 9002;
+        }
+        .loading-spinner-inner {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            align-content: center;
+            height: 100%;
+            color: #ffffff;
+            text-transform: uppercase;
+        }
+        .loading-spinner img {
+            max-width: 120px;
+        }
+        .eec-p-around_x-small {
+            padding: 0.5rem;
+        }
+        .eec-text-align_center {
+            text-align:center;
+        }
+        .wordBreak {
+            white-space: normal;
+            word-break: break-word;
+        }
+        .btn-bs {
+            display: inline-block !important;
+            padding: 6px 12px !important;
+            margin-bottom: 0 !important;
+            font-size: 14px !important;
+            font-weight: 400 !important;
+            line-height: 1.42857143 !important;
+            text-align: center !important;
+            white-space: nowrap !important;
+            vertical-align: middle !important;
+            -ms-touch-action: manipulation !important;
+            touch-action: manipulation !important;
+            cursor: pointer !important;
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+            background-image: none !important;
+            border: 1px solid transparent !important;
+            border-radius: 4px !important;
+        }
+        .btn-primary {
+            color: #fff !important;
+            background-color: #337ab7 !important;
+            border-color: #2e6da4 !important;
+        }
+        .btn-default {
+            color: #333 !important;
+            background-color: #ccc !important;
+            border-color: #fff !important;
+        }
+    </style>
+    <apex:actionstatus id="status">
+        <apex:facet name="start">
+            <div class="loading-spinner" data-attempts="0">
+                <div class="loading-spinner-inner">
+                    <img src="{!URLFOR($Resource.SLDS0120, 'assets/images/spinners/slds_spinner_brand.gif')}" />
+                    <p class="loading-text">Processing Request...</p>
+                </div>
+            </div>
+        </apex:facet>
+    </apex:actionstatus>
+    <apex:outputPanel rendered="{!includeJquery}">
+        <script>
+            function toggleLoadingIcon(act) {
+                if (act == 'show') {
+                    $('[id$="start"]').show();
+                } else {
+                    $('[id$="start"]').hide();
+                }
+            }
+            function scrollToTop() {
+                $("html, body").animate({
+                    scrollTop: 0
+                }, "slow");
+            }
+            function isNumberOnly(evt) {
+                var charCode = (evt.which) ? evt.which : evt.keyCode;
+                if (evt.shiftKey) { 
+                    evt.preventDefault();
+                    return false;
+                }
+                if ((charCode > 47 && charCode < 58) || (charCode >= 96 && charCode <= 105) 
+                        || charCode == 8 || charCode == 9 || (charCode >= 37 && charCode <= 40)) {
+                    return true;
+                } else {
+                    evt.preventDefault();
+                    return false;
+                }
+            }
+            function onlyAlphabets(evt) {
+                var charCode = (evt.which) ? evt.which : evt.keyCode;
+                if ((charCode > 64 && charCode < 91) 
+                        || (charCode > 96 && charCode < 123) 
+                        || (charCode == 8 || charCode == 9)) {
+                    return true;
+                } else {
+                    evt.preventDefault();
+                    return false;
+                }
+            }
+        </script>
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!includeConnectionJs}">
+        <script type="text/javascript">
+            var __sfdcSessionId = '{!GETSESSIONID()}';
+        </script>
+    </apex:outputPanel>
+</apex:component>

@@ -1,0 +1,49 @@
+<aura:component controller="UserInfoDetails" implements="forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute name="hideWelcomeMenu" type="Boolean" default="false"/>
+    <aura:attribute name="showLogin" type="Boolean" default="false"/>
+    <aura:attribute name="userName" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <div class="navbar-primary">
+        
+        <div class="container">
+            <a href="/NYSDOH/s/">
+                <img class="logo" src="{!$Resource.NYSStyles + '/NYSLogo.png'}" />
+            </a>
+            <nav aria-labelledby="communityNav">
+                <div class="slds-assistive-text" id="communityNav">Primary Navigation</div>
+                <ul class="slds-grid grid__right menu-items textcolor">
+                    <aura:if isTrue="{! !v.hideWelcomeMenu}">
+                        <li class="slds-context-bar__item slds-context-bar__label-action menu-item active txt-white">
+                            <span class="slds-truncate " title="Home">Welcome {!v.userName}</span>
+                        </li>
+                        <li
+                            class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_click  menu-item">
+                            <a onclick="{! c.openHome}" class="slds-context-bar__label-action" title="Menu Item">
+                                <span class="slds-truncate" title="Menu Item">Home</span>
+                            </a>
+                        </li>
+                        
+                        <li class="slds-context-bar__item  menu-item textcolor">
+                            <a onclick="{!c.myprofile}" class="slds-context-bar__label-action " title="Menu Item">
+                                <span class="slds-truncate" title="Menu Item">My Profile</span>
+                            </a>
+                        </li>
+                    </aura:if>
+                    <li class="slds-context-bar__item  menu-item textcolor">
+                        <a href="/NYSDOH/secur/logout.jsp" class="slds-context-bar__label-action" title="Menu Item">
+                            <span class="slds-truncate" title="Menu Item">Logout</span>
+                        </a>
+                    </li>
+                        
+                </ul> 
+            </nav>
+        </div>
+        
+    </div>
+    
+    
+    
+    
+    
+    
+</aura:component>

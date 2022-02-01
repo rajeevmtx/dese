@@ -1,0 +1,74 @@
+<!-- add implements="forceCommunity:availableForAllPageTypes" to surface the component in community builder -->
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" >
+    <aura:attribute name="contactId" type="string" description="holds contact id."/>
+    <aura:attribute name="showForm" type="Boolean" description="to reset the form" default="true"/>
+    <div class="slds-p-horizontal_small">
+        <div class="slds-grid slds-grid--pull-padded slds-wrap">
+            <div class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-medium-order_2 right_section_login">
+                <div class="slds-hide_medium mobile-header">
+                    <img src="" alt="" /> 
+                </div>
+                <div class="auth-wrap auth-wrap-broad has-footer">
+                    <div class="auth-container ">
+                        <div class="intro-text">
+                            <div class="title text-brand-heading">Support Ticket</div>
+                        </div>
+                        <div class="slds-card main_card_login">
+                            <aura:renderIf isTrue="{!v.showError}">
+                                <div class="error">{!v.errorMessage}</div>
+                            </aura:renderIf>
+                            <aura:if isTrue="{!v.showForm}" >
+                                <lightning:recordEditForm
+                                                          aura:id="caseEditForm"
+                                                          onsuccess="{!c.handleSuccess}"
+                                                          onsubmit="{!c.handleSubmit}"
+                                                          density="comfy"
+                                                          objectApiName="Case">
+                                    <lightning:messages aura:id="errorMessage"/>
+                                    
+                                    <!--START: Modified by Sajal for BI-16168-->
+                                    <lightning:inputField fieldName="First_Name__c" required="true" aura:id="firstName"/>
+                                    <p aura:id="firstNamePara" class="hide_para">Complete this field</p>
+                                    <lightning:inputField fieldName="Last_Name__c" required="true" aura:id="lastName"/>
+                                    <p aura:id='lastNamePara' class="hide_para">Complete this field</p>
+                                    <lightning:inputField fieldName="Email__c" required="true"/>
+                                    <lightning:inputField fieldName="Subject" required="true" aura:id="subject"/>
+                                    <p aura:id='subjectPara' class="hide_para">Complete this field</p>
+                                    <!--END: Modified by Sajal for BI-16168-->
+                                    
+                                    <div class="slds-form-element slds-form-element_stacked" >
+                                        <label lightning-input_input="" for="input-11" class="slds-form-element__label slds-no-flex">
+                                            <abbr lightning-input_input="" title="required" class="slds-required">*</abbr>Type
+                                        </label>
+                                        <lightning:inputField fieldName="Type" required="true" variant="label-hidden"/>
+                                    </div>
+                                    <lightning:inputField fieldName="Description" required="true"/>
+                                    <lightning:button variant="brand" type="submit" name="Submit" label="Submit" />
+                                </lightning:recordEditForm>
+                                
+                            </aura:if>
+                        </div>
+                    </div>
+                </div>
+                <footer class="small footer">
+                    <ul class="footer__list slds-grid">
+                        <li class="slds-col slds-size--1-of-3"><a href="#">&copy; 2020 MTX</a></li>
+                        <li class="slds-col slds-size--1-of-3"><a class="text-brand" href="#">Terms of Use Agreement</a></li>
+                        <li class="slds-col slds-size--1-of-3"><a class="text-brand" href="#">Privacy Policy</a></li>
+                    </ul>
+                </footer>
+            </div>
+            <div class="slds-col slds-small-size--1-of-2 slds-show_medium left_section_login" style="{! 'background-image: url('+ $Resource.mexico_bg +')' }">
+            <div class="slds-col slds-small-size--1-of-2 slds-show_medium left_section_login">
+                <div class="auth-wrap sidebar auth-wrap-broad">
+                    <div class="auth-container slds-text-color_inverse">
+                        <img class="slds-show_medium slds-m-bottom_xx-large" src="" alt="" />
+                        <h2 class="slds-m-bottom_medium main-title">Placeholder</h2>
+                        <div class="slds-m-bottom_xx-large">Some details over here...</div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

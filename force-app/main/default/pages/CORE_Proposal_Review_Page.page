@@ -504,24 +504,26 @@
                                 &nbsp;
                             </div>
 
-                            <div class="col-xs-2 w10">
-                                <apex:outputPanel rendered="{!allowProposalUpdation}">
-                                    <div class="filters">
-                                        <label for="{!$Component.saveProjBtn}">&nbsp; <span style="display:none;">Button</span></label>
-                                        <button  type="button" class="btn-bs btn-primary btn-sm mt23" id="saveProjBtn" onclick="saveRecordsJS(); return false">Save</button>
-                                    </div>
-                                </apex:outputPanel>
-                            </div>
-
                             <div class="col-xs-2">
                                 <apex:outputPanel rendered="{!proj.Status__c == 'Under Review'}">
-                                    <div class="filters">
+                                    <div class="filters text-center">
                                         <label for="{!$Component.export}">&nbsp; <span style="display:none;">export</span> </label>
                                         <a class="btn-bs btn-sm btn-default mt23" id="export" href="{!URLFOR($Page.CORE_Proposal_Review_Download_Page,null,[status=proj.Status__c,isExport=true,round=proj.Solicitation_Round__c,solicitationID=selectedProgramVersion,isConceptPaper=isConceptPaper])}" target="_blank">Export </a>
 <!--                                         <apex:commandButton action="{!URLFOR($page.CORE_Proposal_Review_Download_page,null,[status=proj.Status__c,round=proj.Solicitation_Round__c,selectedProgramVersion=selectedProgramVersion])}" value="Export" rerender="form"/> -->
                                     </div>
                                 </apex:outputPanel>
                             </div>
+
+                            <div class="col-xs-2">
+                                <apex:outputPanel rendered="{!allowProposalUpdation}">
+                                    <div class="filters text-center">
+                                        <label for="{!$Component.saveProjBtn}">&nbsp; <span style="display:none;">Button</span></label>
+                                        <button  type="button" class="btn-bs btn-primary btn-sm mt23" id="saveProjBtn" onclick="saveRecordsJS(); return false">Save</button>
+                                    </div>
+                                </apex:outputPanel>
+                            </div>
+
+                            
 
                         </div>
                     </apex:outputPanel>
@@ -799,14 +801,15 @@
                                                     <a href="/{!lpw.pro.id}" target="_blank" class="projectName{!i}">{!lpw.pro.name}</a>
                                                 </apex:outputPanel>
                                                 <apex:outputPanel rendered="{!!isProgramStaff}">
-                                                    <a href="/apex/PROPOSAL_CORE_Review_page?ProjectId={!lpw.pro.id}" target="_blank" class="projectName{!i}">{!lpw.pro.name}</a>
+                                                    <a href="#" target="_blank" class="projectName{!i}">{!lpw.pro.name}</a>
                                                 </apex:outputPanel>
                                             </td>
                                             <td style="{!IF(isConceptPaper, 'display:none', '')}" class="text-center">
                                                 <apex:image alt="checkbox" URL="{!if(lpw.isConfidential,'/img/checkbox_checked.gif','/img/checkbox_unchecked.gif')}"/>
                                             </td>
                                              <td>
-                                                   <!--  <a href="/apex/PROPOSAL_CORE_Documents_Page?ProjectId={!lpw.pro.id}" target="_blank" class="docName{!i}">
+                                                   <!-- Line :-  802 /apex/PROPOSAL_CORE_Review_page?ProjectId={!lpw.pro.id}
+                                                        <a href="/apex/PROPOSAL_CORE_Documents_Page?ProjectId={!lpw.pro.id}" target="_blank" class="docName{!i}">
                                                     Link
                                                 </a>  -->
                                                     <a href="https://desedemo-demo-lp.cs196.force.com/dese/s/grant-application?projectId={!lpw.pro.id}&currentStep=6" target="_blank" class="docName{!i}">
@@ -1280,21 +1283,23 @@
                             &nbsp;
                         </div>
 
-                        <div class="col-xs-2 w10">
-                            <apex:outputPanel rendered="{!allowProposalUpdation}">
-                                <div class="filters">
-                                    <label for="{!$Component.saveProjBtn}">&nbsp; <span style="display:none;">Button</span> </label>
-                                    <button  type="button" class="btn-bs btn-primary btn-sm mt23" id="saveProjBtn" onclick="saveRecordsJS(); return false">Save</button>
+
+
+                        <div class="col-xs-2">
+                            <apex:outputPanel rendered="{!proj.Status__c == 'Under Review'}">
+                                <div class="filters text-center">
+                                    <label for="{!$Component.btn2}">&nbsp; <span style="display:none;">Export</span> </label>
+                                    <a class="btn-bs btn-sm btn-default mt23" id="btn2" href="{!URLFOR($Page.CORE_Proposal_Review_Download_Page,null,[status=proj.Status__c,isExport=true,round=proj.Solicitation_Round__c,solicitationID=selectedProgramVersion])}" target="_blank">Export </a>
+                                    <!-- <apex:commandButton action="{!URLFOR($page.CORE_Proposal_Review_Download_page,null,[status=proj.Status__c,round=proj.Solicitation_Round__c,selectedProgramVersion=selectedProgramVersion])}" value="Export" rerender="form"/> -->
                                 </div>
                             </apex:outputPanel>
                         </div>
 
                         <div class="col-xs-2">
-                            <apex:outputPanel rendered="{!proj.Status__c == 'Under Review'}">
-                                <div class="filters">
-                                    <label for="{!$Component.btn2}">&nbsp; <span style="display:none;">Export</span> </label>
-                                    <a class="btn-bs btn-sm btn-default mt23" id="btn2" href="{!URLFOR($Page.CORE_Proposal_Review_Download_Page,null,[status=proj.Status__c,isExport=true,round=proj.Solicitation_Round__c,solicitationID=selectedProgramVersion])}" target="_blank">Export </a>
-                                    <!-- <apex:commandButton action="{!URLFOR($page.CORE_Proposal_Review_Download_page,null,[status=proj.Status__c,round=proj.Solicitation_Round__c,selectedProgramVersion=selectedProgramVersion])}" value="Export" rerender="form"/> -->
+                            <apex:outputPanel rendered="{!allowProposalUpdation}">
+                                <div class="filters text-center">
+                                    <label for="{!$Component.saveProjBtn}">&nbsp; <span style="display:none;">Button</span> </label>
+                                    <button  type="button" class="btn-bs btn-primary btn-sm mt23" id="saveProjBtn" onclick="saveRecordsJS(); return false">Save</button>
                                 </div>
                             </apex:outputPanel>
                         </div>

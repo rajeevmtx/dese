@@ -1,0 +1,31 @@
+<apex:component >
+  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.0/lodash.min.js" type="text/javascript"></script>
+    
+  <!-- Angular Dependencies -->
+  <apex:includeScript value="{!URLFOR($Resource.AngularAssets, 'AngularAssets/js/lib/angular.min.js')}"/>
+  <apex:includeScript value="{!URLFOR($Resource.AngularAssets, 'AngularAssets/js/lib/angular-animate.min.js')}"/>
+  <apex:includeScript value="{!URLFOR($Resource.AngularAssets, 'AngularAssets/js/lib/angular-aria.min.js')}"/>
+  <apex:includeScript value="{!URLFOR($Resource.AngularAssets, 'AngularAssets/js/lib/angular-messages.min.js')}"/>
+      
+  <!-- Angular Material -->
+  <apex:includeScript value="{!URLFOR($Resource.AngularAssets, 'AngularAssets/js/lib/angular-material.min.js')}"/>
+    
+  <!-- Angular 3rd Party Libraries -->
+  <script>
+    // This variable is required - but optional - for IE8/9 support of file uploads. It's also for a fallback if HTML 5 FILE API is not detected.
+    FileAPI = {
+      jsUrl: '//cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/7.0.10/FileAPI.min.js',
+      flashUrl: "//cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/7.0.10/FileAPI.flash.swf",
+      //forceLoad: true, html5: false //to debug flash in HTML5 browsers
+      //noContentTimeout: 10000 (see #528)
+    }
+  </script>    
+  <apex:includeScript value="{!URLFOR($Resource.AngularAssets, 'AngularAssets/js/lib/ng-file-upload-shim.min.js')}"/>
+  <apex:includeScript value="{!URLFOR($Resource.AngularAssets, 'AngularAssets/js/lib/ng-file-upload.min.js')}"/>
+    
+  <!-- Angular App -->
+  <apex:includeScript value="{!URLFOR($Resource.AngularAssets, 'AngularAssets/js/app.js')}"/>
+  <apex:includeScript value="{!URLFOR($Resource.AngularAssets, 'AngularAssets/js/modules/eecWizard.js')}"/>
+  <apex:includeScript value="{!URLFOR($Resource.AngularAssets, 'AngularAssets/js/modules/s3FileUpload.js')}"/>
+  <apex:includeScript value="{!URLFOR($Resource.AngularAssets, 'AngularAssets/js/services/util.js')}"/>
+</apex:component>

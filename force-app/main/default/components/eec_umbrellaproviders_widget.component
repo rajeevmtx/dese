@@ -1,0 +1,87 @@
+<apex:component >
+    <style>
+        .umbrella-provider-card{
+            display: flex;
+            min-height: 100px;
+            box-shadow: 2px 2px 5px #888888;
+            border-radius : 3px;
+            margin-bottom : 10px;
+            cursor: pointer;
+        }
+        .status{
+            position: relative;
+            text-align : center;
+            flex: 0 0 2%;
+            background-color: #43a095;
+            color: #fff;
+            border-radius : 3px 0 0 3px;
+        }
+        .current-status{
+            background-color: #43a095;
+        }
+        .non-current-status{
+            background-color: #f5a456;
+        }
+        .provider-content{
+            flex: 1;
+            padding: 20px 20px 0 20px;
+            
+            display:block;
+        }
+        .item-content{
+            text-transform: uppercase;
+            font-weight: 500;
+            font-size: 1em;
+            display:block;
+            line-height: 8px;
+        }
+        .item-label{
+            font-weight: 200;
+            font-size: 0.8em;
+        }
+        .content-wrapper{
+            margin-bottom : 15px;
+        }
+    </style>
+    <apex:attribute type="String" name="name" description="Provider name" />
+    <apex:attribute type="String" name="city" description="Provider city" />
+    <apex:attribute type="String" name="phone" description="Provider phone" />
+    <apex:attribute type="String" name="status" description="Provider status" />
+    <apex:attribute type="String" name="memberid" description="Member ID" />
+    <apex:attribute type="String" name="accountid" description="Account ID" />
+    <apex:attribute type="String" name="destination" description="Link to the portal provider page with encrypted memberID" />
+    
+    <div class="umbrella-provider-card" id="id-{!accountid}">
+        <div class="status {!IF(status == 'Current','current-status','non-current-status')}"></div>
+        <div class="provider-content">
+            <div class="col-lg-6 col-md-6">
+                <div class="content-wrapper">
+                    <apex:outputText styleClass="item-content" value="{! name }"></apex:outputText>
+                    <apex:outputText styleClass="item-label" value="Name"></apex:outputText>
+                </div>
+                <div class="content-wrapper">
+                    <apex:outputText styleClass="item-content" value="{!IF(city == null , 'N/A' , city) }"></apex:outputText>
+                    <apex:outputText styleClass="item-label" value="City"></apex:outputText>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="content-wrapper">
+                    <apex:outputText styleClass="item-content" value="{!IF(phone == null , 'N/A' , phone) }"></apex:outputText>
+                    <apex:outputText styleClass="item-label" value="Phone"></apex:outputText>
+                </div>
+                <div class="content-wrapper">
+                    <apex:outputText styleClass="item-content" value="{! status }"></apex:outputText>
+                    <apex:outputText styleClass="item-label" value="Provider Status"></apex:outputText>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        /*$('.umbrella-provider-card').on('click', function() {*/
+        $('#id-{!accountid}').click(function(e) {
+        //alert('{!destination}');
+            //window.location.replace("{!destination}");
+            window.open("/EEC_PortalLandingPage?member={!memberid}","_self");
+        });
+    </script>
+</apex:component>

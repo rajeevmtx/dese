@@ -1,0 +1,4 @@
+<design:component >
+    <design:attribute name="hideWelcomeMenu" label="Hide Welcome Menu"/>
+    <design:attribute name="showLogin" label="ShowLogin Button"/>
+</design:component>

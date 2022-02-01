@@ -1,0 +1,19 @@
+<aura:component implements="forceCommunity:themeLayout" description="Description" access="global">
+    <ltng:require styles="{!join(',',$Resource.DESE_Design + '/theme/main.css')}" />
+    <body role="main" class="content" id="main-content" tabindex="-1">
+        <header>
+            <c:dese_header></c:dese_header>
+        </header>
+        <!-- <div class="container">
+            <div class="content-container">
+                <div class="left-sidebar">
+                    <c:dese_homepage></c:dese_homepage>
+                </div>
+                <div class="main-content">
+                    {!v.body}
+                </div>
+            </div>
+        </div> -->
+        {!v.body}
+    </body>
+</aura:component>

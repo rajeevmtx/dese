@@ -1,0 +1,75 @@
+.THIS .required {
+    font-weight: normal;
+    color: inherit;
+}
+
+.THIS .input-group.floating.has-icon input {
+    position: relative;
+}
+
+.THIS .input-group.floating input {
+    transition: none;
+}
+
+.THIS .input-group.floating lightning-input:focus-within label {
+    transform: translateY(-16px);
+    opacity: .7;
+    font-size: 0.7rem;
+    z-index: 1;
+    left: 1.25rem;
+    color: #00A0FF;
+}
+
+.THIS .input-group.floating lightning-input:focus-within input {
+    padding: 28px 0 12px 1rem;
+}
+
+.THIS .input-group.floating lightning-input input::-webkit-input-placeholder {
+    font-size: 1rem;
+}
+
+.THIS .input-group.floating lightning-input:focus-within input::-webkit-input-placeholder {
+    color: transparent;
+}
+
+.THIS .input-group.floating.has-icon lightning-input:focus-within .input-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.THIS .input-group.floating.has-icon lightning-input:focus-within input {
+    padding-left: 3.6rem;
+}
+
+.THIS .input-group.floating.has-icon lightning-input:focus-within label {
+    left: 3.75rem;
+}
+
+/* Added by Mahima start */
+.THIS .horizontal-radio .slds-radio__label .slds-form-element__label,
+.THIS .horizontal-radio .slds-checkbox__label .slds-form-element__label,
+.THIS .check-group .slds-checkbox__label .slds-form-element__label,
+.THIS .radio-group .slds-radio__label .slds-form-element__label {
+    font-weight: normal;
+}
+
+.THIS .horizontal-radio .slds-radio+.slds-radio {
+    margin-left: 1rem;
+}
+
+.THIS .horizontal-radio .slds-form-element__control {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.THIS .newHeader {
+    position: sticky;
+    z-index: 10;
+    top: 0;
+}
+
+/* Added by Mahima end */

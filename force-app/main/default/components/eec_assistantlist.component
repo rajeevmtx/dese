@@ -1,0 +1,10 @@
+<apex:component >
+    <apex:attribute name="isenddatevisible" type="String" description="TODO: Describe me"/>
+    <apex:attribute name="istable" type="String" description="TODO: Describe me"/>
+    <apex:attribute name="currentaccount" type="String" description="TODO: Describe me"/>
+    <apex:attribute name="iseditible" type="String" description="TODO: Describe me"/>
+  <!-- Begin Default Content REMOVE THIS -->
+  <h1>Congratulations</h1>
+  This is your new Component: eec_assistantlist
+  <!-- End Default Content REMOVE THIS -->
+</apex:component>

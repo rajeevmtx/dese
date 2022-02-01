@@ -1,0 +1,2 @@
+<apex:component controller="EEC_VarianceListCtrl">
+  </apex:component>

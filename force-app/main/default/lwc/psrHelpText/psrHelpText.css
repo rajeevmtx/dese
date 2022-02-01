@@ -1,7 +1,8 @@
 .brief_card {
-    background: #526475;
-    font-size: 14px;
+    background: #105cb1;
+    font-size: 16px;
     color: White;
+    font-weight: 500;
 }
 
 .instructionPanel{

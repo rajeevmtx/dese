@@ -18,6 +18,7 @@ export default class Dese_user_registration extends LightningElement {
     faceBook = desetheme + '/theme/images/faceBook-Icon.jpg';
     gmail = desetheme + '/theme/images/gmail-Icon.jpg';
     google = desetheme + '/theme/images/google-icon.jpg';
+    showSpinner = false;
     handleGenericChange(event){
         let changeName = event.target.name;
 
@@ -52,6 +53,7 @@ export default class Dese_user_registration extends LightningElement {
     }
 
     handleSubmit(){
+        this.showSpinner = true;
         var wrapper = {
             firstName : this.FirstName,
             lastName : this.LastName,
@@ -93,6 +95,9 @@ export default class Dese_user_registration extends LightningElement {
                 message: error.body.message,
             });
             this.dispatchEvent(event);
+        })
+        .finally(()=>{
+            this.showSpinner = false;
         })
     }
 }

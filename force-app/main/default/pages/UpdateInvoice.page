@@ -1,6 +1,13 @@
 <apex:page standardController="Project_Invoice__c" extensions="UpdateInvoiceController" action="{!updateInvo}">
-<script>
-    alert('Payment Processed!!');
+    <script type="text/javascript">
+    window.onload = setupPage;
+    function setupPage() {
+        sforce.one.showToast({      
+            "title": "Payment Processed!!!!",    
+            "message": "Payment Processed Successfully",
+            "type": "success" 
+        });
+    }
     window.history.back();
-</script>
+    </script>
 </apex:page>

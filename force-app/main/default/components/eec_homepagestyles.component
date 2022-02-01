@@ -1,0 +1,31 @@
+<apex:component >
+    <apex:stylesheet value="{!URLFOR($Resource.EEC_Bootstrap, 'EEC_Bootstrap/css/font-awesome.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.EEC_Bootstrap, 'EEC_Bootstrap/css/bootstrap.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.EEC_Bootstrap, 'EEC_Bootstrap/css/jquery-ui.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.EEC_Bootstrap, 'EEC_Bootstrap/css/main.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.EEC_Bootstrap, 'EEC_Bootstrap/bootstrap-table-expandable/css/bootstrap-table-expandable.css')}"
+    />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.1/jquery.qtip.min.css" />
+    <apex:includescript value="{!($Resource.EEC_UpgradeJquery)}" />
+    <apex:includescript value="{!URLFOR($Resource.EEC_Bootstrap, 'EEC_Bootstrap/js/bootstrap.min.js')}" />
+    <apex:includescript value="{!URLFOR($Resource.EEC_Bootstrap, 'EEC_Bootstrap/bootstrap-table-expandable/js/bootstrap-table-expandable.js')}"
+    />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.1/jquery.qtip.min.js" type="text/javascript"></script>
+    <style>
+        .card {
+            background-color: #fff;
+            border-radius: 4px;
+            @include box-shadow(0, 1, 6, 0.75);
+        }
+        .card-transparent {
+            background-color: transparent;
+            border: 0;
+            margin-bottom: 0px;
+        }
+        .item {
+            padding: 0;
+            background-color: transparent;
+        }
+    </style>
+</apex:component>

@@ -1,0 +1,210 @@
+<apex:component controller="EEC_NavBarController" allowDML="true">
+
+  <style>
+    .brand {
+      margin-top: -7px;
+    }
+
+    .brand-subtitle {
+      font-size: 11px;
+    }
+
+    @media (max-width: 768px) {
+      .navbar-nav {
+        margin-top: 25px;
+      }
+    }
+       #eec-header-navbar {
+        right: 0;
+    position: absolute;
+    top: 50%;
+    transform: translate(0%, -50%);
+      }
+    
+
+    #noti_Container {
+        position:relative;
+        top: 18px;
+    }
+
+    #noti_Button {
+        margin:-3px 10px 0 10px;
+        cursor:pointer;
+        background-color: inherit !important;
+    }
+
+    #noti_Counter {
+        display:block;
+        position:absolute;
+        background:#E1141E;
+        color:#FFF;
+        font-size:12px;
+        font-weight:normal;
+        padding:1px 3px;
+        margin: -8px 0 0 21px;
+        border-radius:2px;
+        -moz-border-radius:2px;
+        -webkit-border-radius:2px;
+        z-index:1;
+        cursor: pointer;
+    }
+
+    #notifications {
+        display:none;
+        width:430px;
+        position:absolute;
+        top:30px;
+        left:0;
+        background:#FFF;
+        border:solid 1px rgba(100, 100, 100, .20);
+        box-shadow:0 3px 8px rgba(0, 0, 0, .20);
+        z-index: 0;
+        margin-left: -381px;
+    }
+
+    #notifications:before {
+        content: '';
+        display:block;
+        width:0;
+        height:0;
+        color:transparent;
+        border:10px solid #CCC;
+        border-color:transparent transparent #FFF;
+        margin-top:-20px;
+        margin-left:390px;
+    }
+
+    h3 {
+        display:block;
+        color:#333;
+        background:#FFF;
+        font-weight:bold;
+        font-size:13px;
+        padding:8px;
+        margin:0;
+        border-bottom:solid 1px rgba(100, 100, 100, .30);
+    }
+
+    .warning{
+        color: orange;
+    }
+
+    .error{
+        color: red;
+    }
+
+    .fa-exclamation-circle{
+        color: #5bc0de;
+    }
+
+    .list-group{
+        margin-bottom: 0px;
+    }
+    .pull-left{
+      	max-width: 170px !important;
+        margin-top: -19px !important;
+      }
+      
+    #totalNotification{
+        color: #fff;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        right: 0;
+        height: 100%;
+        border-left: 1px solid #444;
+        width: 3rem;
+    }
+    .navbar-header{
+      margin-left: 0px !important;
+    }
+  </style>
+
+  <script>
+    jQuery(document).ready(function () {
+        jQuery('#noti_Counter')
+            .css({ opacity: 0 })
+            .text('9')
+            .css({ top: '-10px' })
+            .animate({ top: '-2px', opacity: 1 }, 500);
+
+        jQuery('#noti_Button, #noti_Counter').click(function () {
+            jQuery('#notifications').fadeToggle('fast', 'linear', function () {
+                if (jQuery('#notifications').is(':hidden')) {
+                    jQuery('#noti_Button').css('background-color', '#2E467C');
+                }
+
+                else jQuery('#noti_Button').css('background-color', '#FFF');
+            });
+
+            return false;
+        });
+
+        $(document).click(function () {
+            jQuery('#notifications').hide();
+            if (jQuery('#noti_Counter').is(':hidden')) {
+                jQuery('#noti_Button').css('background-color', '#2E467C');
+            }
+        });
+
+        $('#notifications').click(function () {
+            return false;
+        });
+    });
+  </script>
+
+	<apex:attribute type="string" name="providerId" description="Provider id" />
+	<apex:attribute type="string" name="accountName" description="Account Name" />
+  <apex:form >
+
+      <nav class="navbar navbar-default top">
+
+        <div class="container">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="/PROPOSAL_CORE_Listing_Page">
+              <!--  <img class="pull-left" style="max-width:70px; margin-top: -7px;" src="{!URLFOR($Resource.Kentucky,'Kentucky/Kentucky_logo.png
+                                                                                      ')}"/>-->
+                <img class="pull-left"  src="{!URLFOR($Resource.deselogowhite)}"/> 
+                <!-- <div class="pull-left brand">LEAD <p class="brand-subtitle">EEC Provider Licensing Portal</p></div> -->
+            </a>
+
+
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#eec-header-navbar">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <apex:outputPanel rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}"><p class="visible-xs provider-welcome" style="float: right; font-weight: bold;"><apex:outputPanel rendered="{!accountName != null}">Welcome {!$User.FirstName} {!$User.LastName} </apex:outputPanel><apex:outputPanel rendered="{!accountName == null}">Welcome {!$User.FirstName} {!$User.LastName}</apex:outputPanel></p></apex:outputPanel>
+          </div>
+          <div id="eec-header-navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="hidden-xs"><apex:outputPanel rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}"><p class="provider-welcome"><apex:outputPanel rendered="{!accountName != null}">Welcome {!accountName}</apex:outputPanel><apex:outputPanel rendered="{!accountName == null}">Welcome {!$User.FirstName} {!$User.LastName}</apex:outputPanel></p></apex:outputPanel></li>
+                <li id="noti_Container">
+                  <div id="noti_Counter"></div>
+                  <i id="noti_Button" class="fa fa-lg fa-bell" aria-hidden="true"></i>
+  
+                  <div id="notifications" class="notifications">
+                      <h3>Notifications</h3>
+                      <!--<c:EEC_LMSNotifications />-->
+                  </div>
+                </li>
+                <li>
+<!--               	<a href="/EEC_PortalLandingPage?member={!providerId}">Home</a> -->
+                  <a href="https://desedemo-demo-lp.cs196.force.com/psr/s/">Home</a>
+              </li>
+              <li><apex:outputText rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}" value='<a href=" ">My Profile</a>' escape="false" /></li>
+              <!-- <li><apex:outputText rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}" value='<a href=" ">Inbox</a>' escape="false" /></li>
+              <li><apex:outputText rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}" value='<a href=" ">Calendar</a>' escape="false" /></li>
+              <li><apex:outputText rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}" value='<a href=" ">Forum</a>' escape="false" /></li>
+              -->
+              <li>
+                  <apex:outputText rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}" value='<a href="{!$Site.Prefix}/secur/logout.jsp">Logout</a>' escape="false" />
+                  <apex:outputText rendered="{!ISPICKVAL($User.UserType,'Guest')}" value='<li><a href="/EEC_Login">Login</a>' escape="false" />
+               </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </apex:form>
+</apex:component>

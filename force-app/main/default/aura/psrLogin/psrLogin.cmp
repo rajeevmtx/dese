@@ -1,0 +1,150 @@
+<!-- add implements="forceCommunity:availableForAllPageTypes" to surface the component in community builder -->
+<aura:component controller="psrLoginController" implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" >
+    <aura:attribute name="showError" type="Boolean" required="true" description="" default="false" access="private" />
+    <aura:attribute name="errorMessage" type="String" required="false" description="" access="private" />
+    <aura:attribute name="startUrl" type="String" required="false" description="The url you go to after a successful login" />
+    <aura:attribute name="usernameLabel" type="String" required="false" default="Username" />
+    <aura:attribute name="passwordLabel" type="String" required="false" default="Password" />
+    <aura:attribute name="loginButtonLabel" type="String" required="false" default="Log in" />
+    <aura:attribute name="expid" type="String" required="false" description="The branding experience ID" />
+    <aura:attribute name="forgotPasswordLabel" type="String" required="false" default="Forgot password?" />
+    <aura:attribute name="selfRegisterLabel" type="String" required="false" default="Not a member?" />
+    <aura:attribute name="forgotPasswordUrl" type="String" required="false" default="/ForgotPassword" />
+    <aura:attribute name="selfRegisterUrl" type="String" required="false" default="/SelfRegister" />
+    <aura:attribute name="isUsernamePasswordEnabled" type="Boolean" access="private" />
+    <aura:attribute name="isSelfRegistrationEnabled" type="Boolean" access="private" />
+    <aura:attribute name="communityForgotPasswordUrl" type="String" access="private" />
+    <aura:attribute name="communitySelfRegisterUrl" type="String" access="private" />
+    <aura:attribute name="showPass" type="Boolean" default="false" />
+    
+    <aura:registerevent name="sitePropagatedStartUrl" type="c:setStartUrl" />
+    <aura:handler name="init" value="{!this}" action="{!c.initialize}" />
+    <aura:dependency resource="c:setStartUrl" type="EVENT" />
+    <!-- Please uncomment
+    <aura:dependency resource="siteforce:registerQueryEventMap" type="EVENT"/>
+    -->
+    <aura:handler event="c:setStartUrl" action="{!c.setStartUrl}" />
+    <aura:handler event="c:setExpId" action="{!c.setExpId}" />
+    <aura:dependency resource="c:setExpId" type="EVENT" />
+    <aura:attribute type="String" name="username" />
+    <aura:attribute type="String" name="password" />
+    
+
+
+
+    <div class="content-container" >
+
+    <div class="loginContainerPage">
+     <div class="slds-grid slds-wrap">
+         <div class="slds-col slds-size_6-of-12 loginImages">
+             <!-- <img  src="{!v.backgroundImageURL}"></img>  -->
+
+          <img style="{! 'background-image: url('+ $Resource.loginbgimage +')' }"  class="backgroundImage"/> 
+       
+
+             <div class="welcomeText">
+                 <h3>Welcome</h3>
+                 <p>An official website of the Massachusetts Department of  Elementary and Secondary Education</p>
+             </div>
+             <!-- <div class="powered">Powered by MTX</div> -->
+         </div>
+
+         <div class="slds-col slds-size_6-of-12 submitForm">
+             <h3>Login</h3>
+             <p>Hello there, login to the screen below</p>
+             <div class="clear"></div>
+             <div class="clear"></div>
+           <div>
+         
+            <div class="auth-container ">
+                <!-- <div class="intro-text">
+                    <div class="title text-brand-heading">Welcome back</div>
+                    <div class="description">Enter your credentials below</div>
+                </div> -->
+                <div >
+                    <aura:renderIf isTrue="{!v.showError}">
+                        <div class="error">{!v.errorMessage}</div>
+                    </aura:renderIf>
+                    <div class="slds-p-bottom_medium required-field">
+                        <lightning:input variant="brand" label="E-mail address" aura:id="username" placeholder="{!v.usernameLabel}" onblur="{!c.onKeyUp}" required="true" value="{!v.username}" messageWhenValueMissing="Please enter user name."></lightning:input>
+                    </div>
+
+                    <aura:if isTrue="{!v.showPass == false}">
+                        <div id="sfdc_password_container" class="slds-p-bottom_large required-field has-helper">
+                            <lightning:input aura:id="passwordInput" type="password" name="password" label="Password" placeholder="{!v.passwordLabel}" onblur="{!c.onKeyUp}" required="true" value="{!v.password}" messageWhenValueMissing="Please enter your password." />
+                        </div>
+                    </aura:if>
+                    <aura:if isTrue="{!v.showPass == true}">
+                        <div id="sfdc_password_container" class="slds-p-bottom_large required-field has-helper">
+                            <lightning:input aura:id="passwordText" type="text" name="password" label="Password" placeholder="{!v.passwordLabel}" onblur="{!c.onKeyUp}" required="true" value="{!v.password}" messageWhenValueMissing="Please enter your password." />
+                        </div>
+                    </aura:if>
+
+
+                    <div class="slds-grid slds-wrap slds-gutters slds-p-bottom_medium" style="display: none;">
+                        <div class="slds-col slds-small-size--1-of-2 required-field">
+                            <div class="slds-form-element">
+                                <div class="slds-form-element__control small">
+                                    <lightning:input type="checkbox" value="{!v.checkboxChecked}" aura:id="remember" label="Remember me"></lightning:input>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-small-size--1-of-2 sm-align-left">
+                            <a class="small text-brand" href="{!if(v.communityForgotPasswordUrl == null, v.forgotPasswordUrl, v.communityForgotPasswordUrl)}">Forgot password?</a>
+                        </div>
+                    </div>
+                    <lightning:button aura:id="submitButton" label="LOGIN" onclick="{!c.handleLogin}" variant="brand" class="slds-button_stretch slds-button_brand slds-button slds-m-top_medium" ></lightning:button>
+                </div>
+                <!-- <div class="support_ticket" onclick="{!c.redirectToSupportPage}">
+                    <lightning:icon iconName="utility:prompt_edit" alternativeText="Support Ticket" variant="inverse" size="small"/><span class="ticket_label">Support Ticket</span>
+                </div> -->
+            </div>
+
+           </div>
+        
+      
+
+         </div>
+     </div>
+
+ </div>
+
+ </div>
+
+
+
+
+    <div class="slds-p-horizontal_small" style="display: none;" >
+        <div class="slds-grid slds-grid--pull-padded slds-wrap">
+            <div class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-medium-order_2 right_section_login">
+                <div class="slds-hide_medium mobile-header">
+                    <img src="" alt=""  /> 
+                </div>
+                <div class="auth-wrap auth-wrap-broad has-footer">
+                    
+                </div>
+                
+                <footer class="small footer">
+                    <ul class="footer__list slds-grid">
+                        <li class="slds-col slds-size--1-of-3"><a href="#">&copy; 2020 MTX</a></li>
+                        <li class="slds-col slds-size--1-of-3"><a class="text-brand" href="#">Terms of Use Agreement</a></li>
+                        <li class="slds-col slds-size--1-of-3"><a class="text-brand" href="#">Privacy Policy</a></li>
+                    </ul>
+                </footer>
+            </div>
+            <div class="slds-col slds-small-size--1-of-2 slds-show_medium left_section_login" style="{! 'background-image: url('+ $Resource.mexico_bg +')' }">
+                
+                <!-- <div class="auth-wrap sidebar auth-wrap-broad">
+                    <div class="auth-container slds-text-color_inverse">
+                        <img class="slds-show_medium slds-m-bottom_xx-large" src="" alt="" />
+                        <h2 class="slds-m-bottom_medium main-title">Don't have an account?</h2>
+                        <div class="slds-m-bottom_xx-large">
+                            <p>No problem! You can register by clicking on the button below. To skip this next time, you can ask us to remember your login credentials.</p>
+                        </div>
+                        <lightning:button aura:id="registerButton" label="Register" onclick="{!c.handleRegister}" class="slds-button slds-button_outline-secondary"></lightning:button>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</aura:component>

@@ -19,6 +19,8 @@ export default class PsrDueDiligence extends LightningElement {
             { label: 'Scheduled', value: 'Scheduled' },
             { label: 'In Process', value: 'In Process' },
             { label: 'Completed', value: 'Completed' },
+            { label: 'Follow-up for onsite plan', value: 'Follow-up for onsite plan' },
+            
         ];
     }
 

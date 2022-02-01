@@ -1,0 +1,37 @@
+<aura:component controller="ApplicationStatusChangeController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="recordId" type="String" />
+    <!-- <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> -->
+
+    <lightning:card>
+        <aura:set attribute="title">
+            <lightning:icon iconName="standard:account" size="small"/>
+            Process Payment
+        </aura:set>
+        <aura:set attribute="footer">
+            <div class="slds-m-around_small">
+                <lightning:button variant="brand" label="Proceed Payment" title="Brand action" onclick="{!c.handleClick }"/>
+            </div>
+        </aura:set>
+        <div class="slds-m-around_small">
+            <div class="slds-m-around_small">
+                <lightning:input type="text" name="name" label="Name on Card" ></lightning:input>
+            </div>
+            <div class="slds-m-around_small">
+                <lightning:input type="text" name="cardNum" label="Card Number" ></lightning:input>
+            </div>
+            <div class="slds-m-around_small">
+                <lightning:input type="text" name="expDate" label="Expiration Date" ></lightning:input>
+            </div>
+            <div class="slds-m-around_small">
+                <lightning:input type="password" name="cvvNum" label="CVV Number" ></lightning:input>
+            </div>
+            <div class="slds-m-around_small">
+                <!-- <lightning:input type="number" name="amount" disabled="true" value={!v.proposedFunding} label="Amount" ></lightning:input> -->
+                <lightning:recordViewForm recordId="{!v.recordId}" 
+                              objectApiName="Project__c">
+                    <lightning:outputField fieldName="Proposed_NYSERDA_Cost__c" />
+                </lightning:recordViewForm>
+            </div>
+        </div>
+    </lightning:card>
+</aura:component>

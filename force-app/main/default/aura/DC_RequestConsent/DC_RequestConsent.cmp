@@ -1,0 +1,6 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:hasRecordId,force:lightningQuickActionWithoutHeader" access="global" controller="DC_SendOutboundMessageController">
+    <aura:handler name = "init" action="{!c.doInit} " value="{!this}"/>
+    <aura:attribute name="recordId" type="String" />
+    
+    <div>Message sending in process...</div>
+</aura:component>

@@ -77,7 +77,7 @@ export default class DeseDashboardDuo extends NavigationMixin(
                     if (key == "Under Review")
                         this.underReviewStatus = result[key];
                     if (key == "Draft") this.createdStatus = result[key];
-                    if (key == "Approved") this.approvedStatus = result[key];
+                    if (key == "Awarded") this.approvedStatus = result[key];
                     if (key == "Pending Approval")
                         this.pendingStatus = result[key];
                 }

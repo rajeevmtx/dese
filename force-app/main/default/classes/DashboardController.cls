@@ -21,7 +21,7 @@ public with sharing class DashboardController {
     public static string getProposalRecords(String status){
         try {
             List<Project__c> projects = new List<Project__c>([
-                SELECT Id, Status__c, Name FROM Project__c WHERE Status__c =: status AND CreatedById = :userInfo.getUserId()
+                SELECT Id, Status__c, Name,Program_Version__r.Name,Program_Version__c FROM Project__c WHERE Status__c =: status AND CreatedById = :userInfo.getUserId()
                 ORDER BY CreatedDate DESC
             ]);
             return JSON.serialize(projects);

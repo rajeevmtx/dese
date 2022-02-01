@@ -1,0 +1,151 @@
+<apex:component >
+    <style>
+        .provider-status-card {
+          display: flex;
+          min-height: 100px;
+          box-shadow: 2px 2px 30px #888888;
+        }
+        .provider-badge-icon{
+            position: relative;
+            text-align : center;
+            flex: 0 0 25%;
+            background-color: #43a095;
+            color: #fff;
+        }
+        .badge-icon-wrapper{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-right: -50%;
+            transform: translate(-50%, -50%);
+        }
+        .provider-content{
+            background-color: #54cec0;
+            color : #fff;
+            width: 70%;
+            flex: 1;
+            padding: 20px 0 20px 20px;
+            display:block;
+        }
+        
+        .remaining-days-wrapper{
+            margin-left : 10px;
+            margin-top: 10%;
+        }
+        .remaining-days-number{
+            font-size: 2.8em; 
+            display: block;
+            padding-left: 23%;
+            font-size: 36px;
+        }
+        .remaining-days-wrapper.item-label{
+            text-transform: uppercase; 
+        }
+        .horizontal-line{
+            
+        }
+        .provider-status{
+            margin-bottom : 10px;
+        }
+        .item-content{
+            text-transform: uppercase;
+            font-weight: 500;
+            font-size: 1em;
+            display:block;
+            
+        }
+        .item-label{
+            font-weight: 200;
+            font-size: 0.8em;
+        }
+        div.vertical-line{
+          width: 1px; 
+          background-color: #fff; 
+          height: 100%; 
+          float: left; 
+        }
+        .current-badge-icon{
+            background-color: #d48f49;
+        }
+        .current-provider-content{
+            background-color: #f5a456;
+        }
+        @media (max-width: 415px){
+                .item-content{
+                    font-size : 1em;
+                }
+            }
+        @media (max-width: 1200px){
+            .vertical-line{
+                    display: none
+            }
+            .remaining-days-wrapper{
+                    margin-left : 0px;
+            }
+            .remaining-days-number{
+                padding-left: 0;
+            }
+        }
+    </style>
+    <apex:attribute type="Account" name="account" description="The providers details." />
+    <apex:attribute type="Boolean" name="isFccAssistant" description="Is the Account an Assistant or Provider." />
+    <apex:attribute type="Boolean" name="isRPFlow" description="Is the Account an Foster Care Agency or Temporary Shelter" />
+
+    <div class="provider-status-card">
+        <div class="provider-badge-icon {!IF(account.Provider_Status__c != 'Current','current-badge-icon','')}">
+            <div class="badge-icon-wrapper">
+                <i class="fa {!IF(account.Provider_Status__c != 'Current' , 'fa-user-times' , 'fa-user')} fa-4x"></i><br/>
+                <apex:outputLabel style="padding-left:5px; padding-right:5px;" rendered="{!!isFccAssistant}" value="Provider"></apex:outputLabel>
+                <apex:outputLabel style="padding-left:5px; padding-right:5px;" rendered="{!isFccAssistant}" value="Assistant"></apex:outputLabel>
+            </div>
+        </div>
+        <div class="item provider-content {!IF(account.Provider_Status__c != 'Current','current-provider-content','')}">
+            <div class="col-lg-8">
+                <div class="provider-status">
+                    <apex:outputText styleClass="item-content" value="{! account.Name }"></apex:outputText>
+                    <apex:outputText styleClass="item-label" value="Name"></apex:outputText>
+                </div>
+                <apex:outputPanel rendered="{!!isRPFlow}">
+                    <div>
+                        <apex:outputPanel rendered="{!account.RecordType.DeveloperName != 'Public_School'
+                        && account.RecordType.DeveloperName != 'Private_School'
+                        && account.RecordType.DeveloperName != 'Other_Eligible_Provider'
+                        && account.RecordType.DeveloperName != 'Summer_Camp'
+                        && account.RecordType.DeveloperName != 'Informal_Child_Care'}">
+                            <apex:outputText styleClass="item-content" value="{! account.Provider_Status__c }"></apex:outputText>
+                            <apex:outputText styleClass="item-label" value="Provider Status"></apex:outputText>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!account.RecordType.DeveloperName == 'Public_School'
+                        || account.RecordType.DeveloperName == 'Private_School'
+                        || account.RecordType.DeveloperName == 'Other_Eligible_Provider'
+                        || account.RecordType.DeveloperName == 'Summer_Camp'
+                        || account.RecordType.DeveloperName == 'Informal_Child_Care'}">
+                            <apex:outputText styleClass="item-content" value="{!account.Funded_Provider_Status__c }"></apex:outputText>
+                            <apex:outputText styleClass="item-label" value="Funded Provider Status"></apex:outputText>
+                        </apex:outputPanel>
+                    </div>
+                </apex:outputPanel>
+            </div>
+            <div class="col-lg-4 col-sm-4 col-xs-4 remaining-days">
+                <div>
+                    <apex:outputPanel rendered="{!account.RecordType.DeveloperName != 'Public_School'
+                        && account.RecordType.DeveloperName != 'Private_School'
+                        && account.RecordType.DeveloperName != 'Other_Eligible_Provider'
+                        && account.RecordType.DeveloperName != 'Summer_Camp'
+                        && account.RecordType.DeveloperName != 'Informal_Child_Care'}">
+                        <apex:outputText styleClass="item-content" value="{!account.License_Status__c}"></apex:outputText>
+                        <apex:outputText styleClass="item-label" value="License Status"></apex:outputText>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!account.RecordType.DeveloperName == 'Public_School'
+                        || account.RecordType.DeveloperName == 'Private_School'
+                        || account.RecordType.DeveloperName == 'Other_Eligible_Provider'
+                        || account.RecordType.DeveloperName == 'Summer_Camp'
+                        || account.RecordType.DeveloperName == 'Informal_Child_Care'}">
+                        <apex:outputText styleClass="item-content" value="{!account.Funded_Status__c}"></apex:outputText>
+                        <apex:outputText styleClass="item-label" value="Funded Status"></apex:outputText>
+                    </apex:outputPanel>
+                </div>
+            </div>
+        </div>
+    </div>
+</apex:component>

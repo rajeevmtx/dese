@@ -1,0 +1,18 @@
+<aura:component implements="forceCommunity:themeLayout" description="A custom theme for New Maxico Applications" access="global">
+    <ltng:require 
+        styles="{!join(',',$Resource.NM_FC_Styles + '/main.css')}"
+    />
+    
+    <aura:attribute name="footerSection" type="Aura.Component[]" />
+
+    <div class="content-container" >
+        <div class="content" id="main-content-1">
+            {!v.body}
+        </div>
+        <div class="site-footer"> 
+            <!-- {!v.footerSection} -->
+            <ui:outputText value="@NH 2020 All rights reserved"/><!--{!$Label.c.LABLENAME}-->
+        </div>
+    </div>
+    
+</aura:component>

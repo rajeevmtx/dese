@@ -1,0 +1,176 @@
+<apex:component controller="CORE_StepNav_Component_Controller" layout="none">
+  <style>
+    .green-bank-logo {
+      margin: 2% 0 0 40px;
+    }
+
+    .green-bank-number {
+      margin: 2% 4% 0 0;
+    }
+
+    .alert-help-text {
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+
+    .step-nav a.active .circle {
+      background: #115AB1 !important;
+    }
+
+    .step-nav a.complete .circle {
+      background: green !important;
+    }
+
+    .page-header .content {
+      padding-top: 10px !important;
+    }
+
+    .sub-heading {
+      padding-top: 0px !important;
+    }
+  </style>
+  <script>
+    //Redirect To submission page once application submission
+    if ('{!isRedirectToLastPage}' == 'true' && '{!applicationId}' != '' && window.location.href.indexOf('{!applicationLastPage}') == -1) {
+      window.location.href = '/' + '{!applicationLastPage}' + '?ApplicationId=' + '{!applicationId}&isSubmit=1';
+    }
+  </script>
+  <apex:attribute name="pgName" description="current page name" type="String" required="true" assignTo="{!currentPageName}"
+  />
+  <apex:outputPanel layout="none" rendered="{!AND(isCTenantProject, !isProposal)}">
+    <div>Application Number:&nbsp;
+      <apex:outputText value="{!applicationNumber}" />
+    </div>
+  </apex:outputPanel>
+  <apex:outputPanel layout="none" rendered="{!isProposal}">
+    <apex:outputPanel layout="none" rendered="{!greenBankLogoURL == ''}">
+      <div>Application Number:&nbsp;
+        <apex:outputText value="{!applicationNumber}" />
+      </div>
+    </apex:outputPanel>
+    <apex:outputPanel layout="none" rendered="{!greenBankLogoURL != ''}">
+      <div class="centerAlign green-bank-logo pull-left">
+        <img src="{!greenBankLogoURL}" alt="NY Green Bank" />
+      </div>
+      <div class="pull-right green-bank-number">
+        <div>Proposal Number:&nbsp;
+          <apex:outputText value="{!applicationNumber}" />
+        </div>
+      </div>
+    </apex:outputPanel>
+    
+  </apex:outputPanel>
+
+  <div class=" hiddenDiv">
+    <div>
+      <h1>
+        <apex:outputPanel rendered="{!isProposal}">
+          {!IF(isGreenBankSolicitation, currentTempPage.Wizard_Template__r.Solicitation__r.Solicitation_Number__c +': '+currentTempPage.Wizard_Template__r.Solicitation__r.Name,
+          currentTempPage.Wizard_Template__r.Solicitation__r.Name)}
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!AND(!isProposal, !CONTAINS(currentTempPage.Wizard_Template__r.Program__r.Application_Type__c, 'NY_Sun'), !CONTAINS(currentTempPage.Wizard_Template__r.Program__r.Application_Type__c, 'GSHP') )}">{!currentTempPage.Wizard_Template__r.Program__r.Name}</apex:outputPanel>
+        <apex:outputPanel rendered="{!AND(!isProposal, CONTAINS(currentTempPage.Wizard_Template__r.Program__r.Application_Type__c, 'NY_Sun'))}">NYSERDA - NY-Sun</apex:outputPanel>
+        <apex:outputPanel rendered="{!AND(!isProposal, CONTAINS(currentTempPage.Wizard_Template__r.Program__r.Application_Type__c, 'GSHP'))}">NYSERDA - Ground Source Heat Pump (GSHP) Rebate Program</apex:outputPanel>
+        <apex:outputPanel rendered="{!caseId != null}"> (Change Modification)</apex:outputPanel>
+      </h1>
+      <!-- <nav class="step-nav">
+        <apex:repeat value="{!projTempPagesList}" var="step">
+          <a href="javascript:handleOpenPage('{!step.Page_Name__c}', {!step.Status__c == 'Complete'}, {!step.Sequence__c == currentStepNumber})" data-trigger="hover" data-placement="bottom" data-toggle="popover" aria-describedby="Step{!step.Sequence__c}" class="popper {!IF(currentStepNumber == step.Sequence__c,'active',IF(step.Status__c == 'Complete','complete',''))} ">
+            <span class="circle"></span>
+            <span class="sr-only name">Step {!step.Sequence__c}</span>
+          </a>
+          <div class="popover-content hide" id="Step{!step.Sequence__c}">
+            <div class="title">{!step.Name}</div>
+            <div class="status {!IF(currentStepNumber == step.Sequence__c,'in-progress',IF(step.Status__c == 'Complete','complete','default'))}">
+              <span class="circle"></span>
+              <span class="copy"><apex:outputText value="{!step.Status__c}" escape="false" /></span>
+            </div>
+          </div>
+          <apex:outputPanel layout="none" rendered="{!currentStepNumber == 1}">
+            <div class="helper" rel="popover" data-style="help-popover" data-placement="bottom" data-content="Hover over progress indicators for details, and to view the status of each section."></div>
+          </apex:outputPanel>
+        </apex:repeat>
+      </nav> -->
+    </div>
+  </div>
+
+  <!-- <div class="content content-header hiddenDiv">
+    <h2>{!currentTempPage.Name}<span>(Step {!currentTempPage.Sequence__c} of {!projTempPagesList.size})</span></h2>
+    <apex:outputPanel layout="block" styleclass="alert-container alert-help-text" rendered="{!currentTempPage.Page_Description__c != ''}">
+        <div class="alert alert-info">
+          <apex:outputText escape="false" value="{!currentTempPage.Page_Description__c}" />
+        </div>
+    </apex:outputPanel>
+  </div> -->
+
+
+
+  <apex:outputPanel rendered="{!isNoRecordFoundError}">
+    <div class="alert-container">
+      <div class="alert alert-warning">
+        <strong>Sorry, we are unable to locate this record.</strong>
+      </div>
+    </div>
+  </apex:outputPanel>
+
+  <!--
+  <apex:outputPanel rendered="{!isReadOnlyProposalApplicationWizard}">
+    <div class="alert-container">
+      <div class="alert alert-warning">
+        <strong>{!$Label.CORE_Application_Wizard_Project_Error_Message}</strong>
+      </div>
+    </div>
+  </apex:outputPanel>
+ -->
+
+  <apex:outputPanel rendered="{!AND(projectObj.Status__c=='Unsubmitted',projectobj.Eligible_for_Reserved_Incentive__c)}">
+    <div class="alert-container">
+      <div class="alert alert-info">
+        <strong>{!projectObj.Feedback_Rebate_reserved__c}</strong>
+      </div>
+    </div>
+  </apex:outputPanel>
+
+
+  <apex:form id="stepNavForm">
+    <apex:actionFunction name="openPage" action="{!openPage}" status="status" reRender="stepNavForm">
+      <apex:param value="" name="currentPageName" assignTo="{!currentPageName}" />
+    </apex:actionFunction>
+  </apex:form>
+  <script>
+
+    $(window).load(function () {
+      $("#helper").popover('show');
+      if ('{!isPayeeApp}' == 'true') {
+        $("div.logo").html(function () {
+          return "Payee Registration";
+        });
+      }
+
+      //If no record found then display error message and hide entire page informtion
+      if ('{!isNoRecordFoundError}' == 'true') {
+        $('.page-header').css('display', 'none');
+        $('.content-header').css('display', 'none');
+        $('.application').css('display', 'none');
+        $('footer.footer-nav .controls').css('display', 'none');
+      }
+
+      // Proposer should not be able to see their proposal after it is Submitted or due date is passed
+      // Update: do not hide
+      if ('{!isReadOnlyProposalApplicationWizard}' == 'true') {
+        // $('.page-header').css('display','none');
+        // $('.content-header').css('display','none');
+        // $('.application').css('display','none');
+        // $('footer.footer-nav .controls').css('display','none');
+      }
+
+
+    });
+
+    function handleOpenPage(sName, isComplete, isCurrentStep) {
+      if (isComplete && !isCurrentStep) {
+        openPage(sName);
+      }
+    }
+  </script>
+</apex:component>

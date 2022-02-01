@@ -1,0 +1,44 @@
+.THIS .app-content {
+padding: 1.5rem !important;
+-webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+-webkit-box-flex: 1;
+    -ms-flex: 1;
+        flex: 1;
+background: white;
+margin-bottom: 3rem;
+}
+
+
+
+.THIS .container {
+    margin: 0 auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.THIS .app-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+}
+
+.THIS .app-sidebar {
+min-width: 14rem;
+}
+
+.THIS .app-title,
+.THIS .page-title {
+    font-size: 1.5rem;
+  }
+
+  .THIS .section-title {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+  }
+
+  .THIS .terms-input .slds-textarea {
+    min-height: 140px;
+}

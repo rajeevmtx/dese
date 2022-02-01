@@ -1,0 +1,50 @@
+<aura:component implements="forceCommunity:themeLayout" description="A custom theme for University of north texas"
+    access="global">
+    <aura:attribute name="newHeader" type="Aura.Component[]" />
+    <aura:attribute name="newFooter" type="Aura.Component[]" />
+    <aura:attribute name="backgroundImageURL" type="String" default="" />
+    <aura:handler name="init" value="{!this}" action="{!c.initialize}" />
+
+    <div class="content-container" >
+
+       <div class="loginContainerPage">
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_6-of-12 loginImages">
+               <img  src="{!v.backgroundImageURL}"></img> 
+                <div class="welcomeText">
+                    <h3>Welcome</h3>
+                    <p>An official website of the Massachusetts Department of  Elementary and Secondary Education</p>
+                </div>
+                <!-- <div class="powered">Powered by MTX</div> -->
+            </div>
+
+            <div class="slds-col slds-size_6-of-12 submitForm">
+                <h3>Login</h3>
+                <p>Hello there, login to the screen below</p>
+                <div class="clear"></div>
+                <div class="clear"></div>
+              <div>
+                {!v.body}
+              </div>
+           
+                <div class="clear"></div>
+                <div class="signInText">
+                    <!-- <p><span>or Sign In using</span> </p>
+                    <img />
+                    <img />
+                    <img /> -->
+                    <p> No account? &nbsp;&nbsp; <a href="https://desedemo-demo-lp.cs196.force.com/dese/s/user-registration" > Register</a></p>
+                </div>
+               
+
+            </div>
+        </div>
+
+    </div>
+
+    </div>
+
+
+
+    
+</aura:component>

@@ -1,0 +1,12 @@
+<aura:component  implements="force:lightningQuickAction,force:hasRecordId">
+    <aura:html tag="style">
+      .slds-modal__container { 
+        width : 80%; max-width : 80%; 
+      } 
+      .cMtxScheduleAppt .slds-modal__container { 
+        width : 100% !important; max-width : 100% !important; 
+      } 
+    </aura:html>    
+    
+    <c:mtxScheduleAppointment onclose="{!c.closeModal}" recordid="{!v.recordId}"></c:mtxScheduleAppointment>
+</aura:component>

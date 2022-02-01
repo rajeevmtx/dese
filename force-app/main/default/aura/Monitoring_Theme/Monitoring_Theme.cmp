@@ -1,0 +1,11 @@
+<aura:component implements="forceCommunity:themeLayout" description="Description" access="global">
+    <ltng:require styles="{!join(',',$Resource.Monitoring_Design + '/theme/main.css')}" />
+    <header>
+        <c:psrHeader></c:psrHeader>
+    </header>
+    
+    <body role="main" class="content" id="main-content" tabindex="-1">
+       
+        {!v.body}
+    </body>
+</aura:component>

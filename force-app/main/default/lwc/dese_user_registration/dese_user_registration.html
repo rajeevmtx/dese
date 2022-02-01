@@ -1,5 +1,7 @@
 <template>
-
+    <template if:true={showSpinner}>
+        <lightning-spinner size="medium"></lightning-spinner>
+    </template>
     <div class="regContainerPage">
         <div class="slds-grid slds-wrap">
             <div class="slds-col slds-size_6-of-12 loginImages">
@@ -8,7 +10,7 @@
                     <h3>Welcome</h3>
                     <p>An official website of the Massachusetts Department of  Elementary and Secondary Education</p>
                 </div>
-                <div class="powered">Powered by MTX</div>
+                <!-- <div class="powered">Powered by MTX</div> -->
             </div>
 
             <div class="slds-col slds-size_6-of-12 submitForm">

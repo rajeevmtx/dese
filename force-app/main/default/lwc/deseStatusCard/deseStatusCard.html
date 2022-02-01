@@ -27,6 +27,22 @@
                             <p class="card_detail_section"><b>{ecrRecord.Street}, {ecrRecord.City}</b><br /><span>Site
                                     Address</span></p> -->
                         </div>
+                        <div class="slds-col slds-size_5-of-12 ">
+                            <!--<div if:false={isChatterLogo}>-->
+                            <p class="card_detail_section"><b><a data-id={ecrRecord.Program_Version__c}
+                                        onclick={redirectToGrant}>{ecrRecord.Program_Version__r.Name}</a></b><br /><span>Grant Name
+                                    </span></p>
+                            <!-- <p if:true={ecrRecord.isNotDraft} class="card_detail_section">
+                                <b>{ecrRecord.submmisionDate}</b><br /><span>Submission Date</span>
+                            </p> -->
+                            <!--</div>-->
+                            <!--<div if:true={isChatterLogo}>-->
+                            <!--<p>Application Number:{ecrRecord.Name}</p>-->
+                            <!--</div>-->
+                            <!-- <p class="card_detail_section"><b>{ecrRecord.SiteName}</b><br /><span>Site Name</span></p>
+                            <p class="card_detail_section"><b>{ecrRecord.Street}, {ecrRecord.City}</b><br /><span>Site
+                                    Address</span></p> -->
+                        </div>
                         <!-- <div class="slds-col slds-size_5-of-12 ">
                             <p class="card_detail_section"><b>{ecrRecord.ownerName}</b><br /><span>Name</span></p>
 
@@ -78,6 +94,7 @@
                             <!--</div>-->
                             <!--</div>-->
                         </div>
+                        
                     </div>
                 </div>
             </div>

@@ -1,0 +1,88 @@
+<apex:component >
+    <style>
+    .datePanel{
+        margin-bottom: 7px;
+        margin-top: 1px;
+    }
+    
+    .remaining-days-wrapper{
+        text-align: center;
+        margin-left: 0px !important;
+        margin-top: 12% !important;
+    }
+    
+    .remaining-days-number{
+         padding-left: 0px !important;
+    }
+    
+    </style>
+    
+    <apex:attribute type="String" name="licenseType" description="The providers license type." />
+    <apex:attribute type="String" name="capacity" description="The providers capacity" />
+    <apex:attribute type="Date" name="issueDate" description="The last date the license was issued" />
+    <apex:attribute type="Date" name="expDate" description="License expiration date." />
+    <apex:attribute type="String" name="remDays" description="Number of days remaining to the expiration date." />
+    <apex:attribute type="String" name="daysFromRenewalDue" description="Number of days remaining to the expiration date." />
+    <apex:attribute type="String" name="certified" description="What is the FCC assistant certified as." />
+    <apex:attribute type="Boolean" name="isFccAssistant" description="Is the Account an Assistant or Provider." />
+    
+    <div class="provider-status-card">
+        <div class="provider-badge-icon">
+            <div class="badge-icon-wrapper">
+                <i class="fa fa-certificate fa-4x"></i><br/>
+                <apex:outputLabel rendered="{!isFccAssistant}" value="Certificate"></apex:outputLabel>
+                <apex:outputLabel rendered="{!!isFccAssistant}" value="License"></apex:outputLabel>
+            </div>    
+        </div>
+        <div class="item provider-content">
+          <div class="col-lg-3">
+              <div class="provider-status">
+                    <apex:outputText styleClass="item-content" value="{!IF(licenseType == null , 'N/A' , licenseType) }"></apex:outputText>
+                    <apex:outputText styleClass="item-label" value="License Type"></apex:outputText>
+              </div>
+              <apex:outputPanel rendered="{!!isFccAssistant}">
+                  <div>
+                    <apex:outputText styleClass="item-content" value="{!IF(capacity == null , 'N/A' , capacity) }"></apex:outputText>
+                    <apex:outputText styleClass="item-label" value="Capacity"></apex:outputText>
+                  </div>
+              </apex:outputPanel>
+              <apex:outputPanel rendered="{!isFccAssistant}">
+                  <div class="provider-status">
+                    <apex:outputText styleClass="item-content" value="{!IF(certified == null , 'N/A' , certified) }"></apex:outputText>
+                    <apex:outputText styleClass="item-label" value="Certificate"></apex:outputText>
+                  </div>
+              </apex:outputPanel>    
+          </div>
+          <div class="col-lg-3">
+              <div class="datePanel">
+                <apex:outputText styleClass="item-content" rendered="{!issueDate != null}" value="{0,date,MMMM' 'dd','yyyy}">
+                    <apex:param value="{! issueDate }" />  
+                </apex:outputText>
+                <apex:outputText styleClass="item-content" rendered="{!issueDate == null}" value="N/A"></apex:outputText>   
+                <apex:outputText styleClass="item-label" value="Last Issue Date"></apex:outputText>
+              </div>
+              <div>
+                <apex:outputText styleClass="item-content" rendered="{!expDate != null}" value="{0,date,MMMM' 'dd','yyyy}">
+                    <apex:param value="{! expDate }"/>
+                </apex:outputText>
+                <apex:outputText styleClass="item-content" rendered="{!expDate == null}" value="N/A"></apex:outputText> 
+                <apex:outputText styleClass="item-label" value="Expiration Date"></apex:outputText>
+              </div>
+          </div>
+          <div class="col-lg-3 col-sm-3 col-xs-3 remaining-days">
+            <div class="vertical-line" style="height: 128px;" />
+             <div class="remaining-days-wrapper">
+                <apex:outputText styleClass="remaining-days-number" value="{!IF(remDays == null , 'N/A' , remDays) }"></apex:outputText>
+                <apex:outputText styleClass="item-label" value="Days Remaining"></apex:outputText> 
+             </div> 
+          </div> 
+          <div class="col-lg-3 col-sm-3 col-xs-3 remaining-days">
+            <div class="vertical-line" style="height: 128px;" />
+             <div class="remaining-days-wrapper">
+                <apex:outputText styleClass="remaining-days-number" value="{!IF(daysFromRenewalDue == null , 'N/A' , daysFromRenewalDue) }"></apex:outputText>
+                <apex:outputText styleClass="item-label" value="Days Remaining For Application Renewal Due Date"></apex:outputText> 
+             </div> 
+          </div>  
+        </div>
+    </div>
+</apex:component>

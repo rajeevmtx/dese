@@ -1,0 +1,48 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute name="toggleVolunteer" type="Boolean" default="false" />
+    <aura:attribute name="toggleMap" type="Boolean" default="false" />
+    <aura:attribute name="toggleRegistration" type="Boolean" default="false" />
+    <aura:attribute name="hideVolunteer" type="Boolean" default="true" />
+    <aura:attribute name="hideMap" type="Boolean" default="true" />
+    <aura:attribute name="hideRegistration" type="Boolean" default="true" />
+    <aura:attribute name="hideWelcomeMenu" type="Boolean" default="false"/>
+    <aura:attribute name="showLogin" type="Boolean" default="true"/>
+    
+    <div class="navbar-primary">
+        
+        <div class="container">
+            <a href="/NYSDOH/s/">
+                <img class="logo" src="{!$Resource.NYSStyles + '/NYSLogo.png'}" />
+            </a>
+            <nav aria-labelledby="communityNav">
+                <div class="slds-assistive-text" id="communityNav">Primary Navigation</div>
+                <aura:if isTrue="{! !v.hideVolunteer}">
+                    <aura:if isTrue="{!v.toggleVolunteer}">
+                        <a class="active" href="/NYSDOH/s/">Volunteer Home</a>
+                        <aura:set attribute="else">      
+                            <a href="/NYSDOH/s/">Volunteer Home</a>
+                        </aura:set>
+                    </aura:if>
+                </aura:if>
+                
+                <aura:if isTrue="{! !v.hideRegistration}">
+                    <aura:if isTrue="{!v.toggleRegistration}">
+                        <a class="active" href="/NYSDOH/s/volunteer-registration#-1">Registration</a>
+                        <aura:set attribute="else">      
+                            <a href="/NYSDOH/s/volunteer-registration#-1">Registration</a>
+                        </aura:set>
+                    </aura:if>
+                </aura:if>
+                <aura:if isTrue="{! !v.hideMap}">
+                    <aura:if isTrue="{!v.toggleMap}">
+                        <a class="active" href="/NYSDOH/s/volunteer-locations">Volunteer Locations</a>
+                        <aura:set attribute="else">
+                            <a href="/NYSDOH/s/volunteer-locations">Volunteer Locations</a>
+                        </aura:set>
+                    </aura:if>
+                </aura:if>
+                        <a href="/NYSDOH/s/user-login">Login</a>
+            </nav>
+        </div>
+    </div>
+</aura:component>

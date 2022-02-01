@@ -1,0 +1,25 @@
+.THIS {}
+
+.THIS #DocumentReviewTable tr.slds-hint-parent td:first-child>div {
+    max-width: 15rem;
+}
+
+
+.THIS #DocumentReviewTable tr.slds-hint-parent td:nth-child(2)>div {
+    max-width: 5rem;
+}
+
+.THIS .error_under_review {
+    display: block;
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    position: relative;
+    padding: 10px 10px;
+    margin-bottom: 10px;
+    border: 2px solid transparent;
+}
+
+.THIS .slds-show {
+    display: inherit !important;
+}

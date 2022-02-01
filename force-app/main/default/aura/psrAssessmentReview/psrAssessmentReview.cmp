@@ -1,0 +1,95 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction,lightning:hasPageReference,lightning:isUrlAddressable"
+    description="psr_AssessmentReview" access="global" controller="psr_DocumentReviewController" extends="c.psr_Base">
+
+
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="questionList" type="List" />
+    <aura:attribute name="editable" type="Boolean" default="false" />
+    <aura:attribute name="isEditEnabled" type="Boolean" default="false" />
+    <aura:attribute name="pickOptions" type="List" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+   
+
+    <div class="container">
+
+        <force:recordData aura:id="forceRecord" recordId="{!v.recordId}" layoutType="FULL" recordUpdated="{!c.doInit}" />
+
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_12-of-12">
+                <div>
+                    <div class="slds-align_absolute-center">
+                        <aura:if isTrue="{!v.editable}">
+                            <lightning:button class="slds-m-bottom_large" variant="brand" label="Save" title="Save" onclick="{!c.handleSave}" />
+                            <lightning:button class="slds-m-bottom_large" variant="brand" label="Cancel" title="Cancel" onclick="{!c.handleCancel}" />
+                            <aura:set attribute="else">
+                                <lightning:button class="slds-m-bottom_small" variant="brand" label="Edit" title="Brand action" onclick="{!c.handleEdit}"/>
+                            </aura:set>
+                        </aura:if>
+                    </div>
+            
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-no-row-hover" id="DocumentReviewTable">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="slds-is-resizable">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                        <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Question">QUESTION</div>
+                                    </div>
+                                </th>
+                                <th class="slds-is-resizable">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                        <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Answer">ANSWER</div>
+                                    </div>
+                                </th>
+                                <th class="slds-is-resizable">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                        <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Status">STATUS</div>
+                                    </div>
+                                </th>
+                                <th class="slds-is-resizable">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                        <div class="slds-truncate slds-align_absolute-left slds-text-body_medium slds-p-around_xx-small" title="Notes">NOTES</div>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <aura:iteration items="{!v.questionList}" var="item" indexVar="index">
+
+                                    <tr class="slds-hint-parent">
+                                        <td data-label="Question">
+                                            <div class="slds-cell-wrap slds-truncate" title="Question">
+                                                {!item.question}</div>
+                                        </td>
+                                        <td data-label="Answer">
+                                            <div class="slds-cell-wrap slds-truncate slds-var-p-left_medium" title="Answer">
+                                                {!item.answer}</div>
+                                        </td>
+                                        <td>
+                                            <div class="slds-truncate" title="Status">
+                                                <lightning:select name="select" label="" disabled="{!!v.editable}">
+                                                    <aura:iteration items="{!v.pickOptions}" var="option">
+                                                            <option text="{!option.label}" value="{!option.value}" selected="{!option.selected}"></option>
+                                                        </aura:iteration>
+                                                </lightning:select>
+                                            </div>
+                                        </td>
+                                        <td data-label="Notes">
+                                            <div class="slds-truncate" title="Notes">
+                                                <aura:if isTrue="{!v.editable}">
+                                                    <lightning:textarea name="notes" label="" placeholder="Add notes" value="{!item.notes}" />
+                                                    <aura:set attribute="else">
+                                                        <lightning:textarea name="notes" label="" placeholder="Add notes" value="{!item.notes}" disabled="true" />
+                                                    </aura:set>
+                                                </aura:if>
+                                            </div>
+                                        </td>
+                                    </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</aura:component>

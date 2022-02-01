@@ -1,0 +1,39 @@
+<apex:component layout="none">
+  <Style>
+    .sub-logo{
+         font-size: 15px !important;
+         color: #000;
+     }
+     .sub-agency-nav{
+         background: #EEE;
+         padding: 12px 0;
+     }
+  </style>  
+  <div class="agency-nav">
+    <div class="content flex sm">
+      <div class="logo">MTX Grants and Proposals</div>
+    </div>
+  </div>
+  
+  <apex:outputPanel layout="none" rendered="{!NOT(OR($CurrentPage.Parameters.programName == 'Commercial_Real_Time_Energy_Management',
+                                                         $CurrentPage.Parameters.retPage == 'RTEM_CONAPP_References_Page',
+                                                         CONTAINS($CurrentPage.URL, 'CORE_Solicitation_Detail_Page'),
+                                                         CONTAINS($CurrentPage.URL, 'CORE_Solicitation_Login_Page'),
+                                                         CONTAINS($CurrentPage.URL, 'PROPOSAL_CORE_Listing_Page')))}">
+    <div class="agency-nav sub-agency-nav">
+        <div class="content flex sm">
+            <div class="logo sub-logo">CONTRACTOR APPLICATION</div>
+        </div>
+    </div>                                                       
+  </apex:outputPanel> 
+  
+  <apex:outputPanel layout="none" rendered="{!OR($CurrentPage.Parameters.programName == 'Commercial_Real_Time_Energy_Management',
+                                                     $CurrentPage.Parameters.retPage == 'RTEM_CONAPP_References_Page')}">
+    <div class="agency-nav sub-agency-nav">
+        <div class="content flex sm">
+            <div class="logo sub-logo">VENDOR APPLICATION</div>
+        </div>
+    </div>                                                       
+  </apex:outputPanel>  
+                                                        
+</apex:component>

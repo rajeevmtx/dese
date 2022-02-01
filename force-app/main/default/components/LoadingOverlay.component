@@ -1,0 +1,10 @@
+<apex:component layout="none">
+	<apex:actionStatus id="status">
+		<apex:facet name="start">
+			<div class="loading">
+				<div class="icon"></div>
+				<div class="overlay"></div>
+			</div>
+		</apex:facet>
+	</apex:actionStatus>
+</apex:component>
