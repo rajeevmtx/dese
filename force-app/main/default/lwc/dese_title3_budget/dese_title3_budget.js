@@ -8,20 +8,24 @@ export default class Dese_title3_budget extends LightningElement {
     @api projectId;
     @track clickedButtonLabel = 'READ MORE';
     @track readMore = false;
+     @track showSpinner = false;
 
 
     @track totalAllocation = 0;
     @track totalReservation = 0;
 
     connectedCallback(){
+        this.showSpinner = true;
         getAllocationReservation({proposalId: this.projectId})
             .then(data => {
                 console.log('Response for Budget ',data);
                 this.totalAllocation = data.tile3Allocation;
-                this.totalReservation = data.tile3Reservation + data.tile3Reservation3;
+                this.totalReservation = data.tile3Reservation && data.tile3Reservation3 ? data.tile3Reservation + data.tile3Reservation3 : 0;
+                 this.showSpinner = false;
             })
             .catch(error => {
                 console.log(JSON.stringify(error));
+                 this.showSpinner = false;
             })
     }
 

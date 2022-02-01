@@ -125,6 +125,7 @@ export default class Dese_districtwide_startegy_and_planning extends LightningEl
        this.showModal = true;
     }
     connectedCallback(){
+        window.scrollTo(0, 0);
         this.fetchInitiative();
         getDistrictWideStrategiesDetails({
             proposalId : this.projectId

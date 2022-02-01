@@ -243,15 +243,19 @@
     <lightning-input name="formalAgreement" type="checkbox" label="Formal Agreement" onchange={handleCheckboxChange}
         disabled={readOnly}>
     </lightning-input>
+    <div class="attachAgreement">
     <template if:true={showAgreementUpload}>
         <lightning-file-upload label="Attach Agreement" name="agreementUpload" accept={acceptedFormats}
             record-id={projectId} onuploadfinished={handleUploaFinished} multiple></lightning-file-upload>
     </template>
+</div>
     <lightning-input name="budget" type="checkbox" label="Budget showing how Title I Part D-2 funds will be spent"
         onchange={handleCheckboxChange} disabled={readOnly}></lightning-input>
     <template if:true={showBudgetUpload}>
+        <div class="attachAgreement">
         <lightning-file-upload label="Attach Budget" name="budgetUpload" accept={acceptedFormats} record-id={projectId}
             onuploadfinished={handleUploaFinished} multiple></lightning-file-upload>
+            </div>
     </template>
     <template if:true={isLoading}>
         <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>

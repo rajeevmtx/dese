@@ -30,7 +30,7 @@
                     <div class=" instructions-section slds-box slds-m-bottom_medium">
                         
                         <div class="table-header slds-m-bottom_small">
-                            <div class="small-header"><h3 class="instructions slds-m-bottom_medium">Instructions</h3></div>
+                            <div class="small-header"><h3 class="instructions slds-m-bottom_medium">Instructions to Complete the Final Financial Report Form</h3></div>
                             <div class="resource-icon">
                                 <img src={notebook} />
                                 <div class="resources">
@@ -39,13 +39,11 @@
                             </div>
                         </div>
                         <div class="instructions__data">
-                            All Grantees must submit a Financial Report at the close of the grant period for each
-                            indiviual grant they have received for the current fiscal year. One report is to be
-                            submitted for each individual grant to EEC withing sixty days of the close of the grant.
+                            All Grantees must submit a Final Financial Report at the close of the grant period for each individual grant they have received for the current fiscal year. One report is to be submitted for each individual grant to EEC within sixty days of the close of the grant.
                         </div>
                     </div>
                     <!-- Detail -->
-                    <div class="note-grid slds-m-top_large slds-m-bottom_large">
+                    <div class="report-grid slds-m-top_large slds-m-bottom_large">
                         <div class="grid-item">
                             <div class="head">Lorem ipsum</div>
                             <div class="body">Lead Agency</div>
@@ -77,7 +75,7 @@
                     </div>
                     <div class="table-header slds-m-bottom_small">
                         <div class="small-header">Administrators</div>
-                        <div class="slds-text-body_medium slds-text_align-right">Budget Submission Date: 5/16/2019</div>
+                        <div class=" paragraph slds-text-body_medium slds-text_align-right">Budget Submission Date: 5/16/2019</div>
                     </div>
                     <div class="schedule-table">
                         <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered"
@@ -267,7 +265,7 @@
                     <lightning-radio-group name="radioGroup" label="Check either of below for Total Unexpended Funds"
                         options={options} value={value} type="radio" onchange={handleToggleChange} disabled={readOnly}>
                     </lightning-radio-group>
-                    <div class="note-grid slds-m-top_large slds-m-bottom_large">
+                    <div class="report-grid slds-m-top_large slds-m-bottom_large">
                         <div class="grid-item">
                             <div class="head">${approvedBudgetSubTotal}</div>
                             <div class="body">Total Funds Awarded</div>
@@ -281,7 +279,7 @@
                             <div class="body">Total Unexpended Funds</div>
                         </div>
                     </div>
-                    <lightning-input label="Check Enclosed" placeholder="Enter Amount here" name="checkEnclosedAmount"
+                    <lightning-input label="Check Enclosed" class="finalReport-input" placeholder="Enter Amount here" name="checkEnclosedAmount"
                         onchange={handleTableFields} value={checkEnclosedAmount} formatter="currency" type="number">
                     </lightning-input>
                     <lightning-input type="checkbox"

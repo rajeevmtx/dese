@@ -30,3 +30,16 @@
 .tableContainer{
     font-size: 16px;
 }
+
+.backButton{
+    margin: 5% 0px;
+    color:#000;
+    font-size: 20px;
+    --sds-c-icon-color-foreground-default: #000;
+    width: 92%;
+    margin: 2% auto;
+}
+
+.backButton span{
+    cursor: pointer;
+}

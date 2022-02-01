@@ -64,6 +64,7 @@ export default class Dese_allocation extends LightningElement {
     }
 
     connectedCallback(){
+        window.scrollTo(0, 0);
         getAllocationAndFlexingDetails({
             proposalId : this.projectId
         })

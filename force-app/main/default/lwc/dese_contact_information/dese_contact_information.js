@@ -30,6 +30,7 @@ export default class Dese_contact_information extends LightningElement {
 
 
     connectedCallback() {
+        window.scrollTo(0, 0);
         console.log(this.projectId);
         fetchContacts({ projectId: this.projectId }).
             then( result => {

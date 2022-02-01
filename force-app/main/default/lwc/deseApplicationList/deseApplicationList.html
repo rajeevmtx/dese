@@ -8,7 +8,10 @@
 
         <div class="slds-grid slds-wrap slds-p-around_medium">
             <div class="slds-col slds-size_3-of-12">
-
+                <div class="slds-float_left backButton">
+                    <span onclick={handleback}><lightning-icon icon-name="utility:back"  alternative-text="Approved"
+                        title="Approved"></lightning-icon>  Back</span>
+                </div>
             </div>
             <div class="slds-col slds-size_9-of-12">
                 <div class="slds-float_right">
@@ -100,7 +103,7 @@
                                                 onclick={goToFinalReportSubmission} data-caseid={application.Id}
                                                 class="slds-m-left_x-small"></lightning-button>
                                         </div>
-                                        <div if:false={applicaton.showSubmittedFinalReportButton}>
+                                        <div if:false={application.showSubmittedFinalReportButton}>
                                             <div if:true={application.showSubmitButton}>
                                                 <lightning-button variant="brand" label="Submit Final Report"
                                                     data-appid={application.Id} disabled={application.isTandDDisabled}

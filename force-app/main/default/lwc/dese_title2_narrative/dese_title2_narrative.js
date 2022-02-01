@@ -11,6 +11,9 @@ export default class Dese_title2_narrative extends LightningElement {
             { label: "No", value: "No" },
         ];
     }
+    connectedCallback() {
+        window.scrollTo(0, 0);
+    }
 
     handleNext() {
         this.dispatchEvent(new CustomEvent("next"));

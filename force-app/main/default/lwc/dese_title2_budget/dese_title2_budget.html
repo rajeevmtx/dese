@@ -1,4 +1,9 @@
 <template>
+    <template if:true={showSpinner}>
+        <lightning-spinner variant="brand" size="large"></lightning-spinner>
+    </template>
+
+    <template if:false={showSpinner}>
     <div class="narrative-box">
         <div class="slds-grid slds-gutters">
             <div class="slds-col sample-box slds-size_1-of-2">
@@ -2177,8 +2182,5 @@
             </div>
         </lightning-accordion-section>
     </lightning-accordion>
-
-
-
-
+    </template>
 </template>

@@ -17,6 +17,10 @@ export default class Dese_title_narrative extends LightningElement {
         ];
     }
 
+    connectedCallback() {
+        window.scrollTo(0, 0);
+    }
+
     handleNext() {
         this.dispatchEvent(new CustomEvent("next"));
         this.template.querySelector("c-dese_titlepart_ad").submitRecord();

@@ -117,11 +117,10 @@ export default class DeseApplicationList extends LightningElement {
                         } else {
                             row.showSubmitButton = false;
                         }
+                        row.showSubmittedFinalReportButton = false;
                         if (proposalToFinalReport[row.Id] != "") {
                             row.showSubmitButton = false;
                             row.showSubmittedFinalReportButton = true;
-                        } else {
-                            row.showSubmittedFinalReportButton = false;
                         }
 
                         //return row;
@@ -151,5 +150,9 @@ export default class DeseApplicationList extends LightningElement {
 
     closeModal() {
         this.taskAndDeliverable = false;
+    }
+
+    handleback(){
+        window.history.back();
     }
 }

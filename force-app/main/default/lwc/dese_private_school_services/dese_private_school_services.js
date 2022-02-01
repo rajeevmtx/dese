@@ -146,6 +146,7 @@ export default class Dese_private_school_services extends LightningElement {
     }
 
     connectedCallback() {
+        window.scrollTo(0, 0);
         this.fetchSchools();
         getPSSDetails({projectId: this.projectId})
             .then(data => {

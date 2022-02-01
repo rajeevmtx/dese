@@ -13,6 +13,10 @@ export default class Dese_title3_narrative extends LightningElement {
         ];
     }
 
+    connectedCallback() {
+        window.scrollTo(0, 0);
+    }
+
     handleNext() {
         this.dispatchEvent(new CustomEvent("next"));
     }

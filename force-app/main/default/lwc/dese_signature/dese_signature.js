@@ -24,6 +24,10 @@ export default class Dese_signature extends LightningElement {
        }
     }
 
+    connectedCallback() {
+        window.scrollTo(0, 0);
+    }
+
     handleClick() {
         this.showSpinner = true;
         console.log(this.projectId)

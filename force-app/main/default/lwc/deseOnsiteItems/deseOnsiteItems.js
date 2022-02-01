@@ -265,6 +265,13 @@ export default class DeseOnsiteItems extends LightningElement {
         this.showSpinner = true;
         sendEmailToUsers({recordId:this.recordId}).then(result=>{
             this.showSpinner = false;
+            const event = new ShowToastEvent({
+                title: 'Success',
+                message: 'Orientation Agenda Generated Successfully and Emailed Successfully',
+                variant: 'success',
+                mode: 'dismissable'
+            });
+            this.dispatchEvent(event);
             this.showGenerateAgendaModal = false;
         }).catch(error=>{
             this.showSpinner = false;

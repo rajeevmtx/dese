@@ -10,6 +10,10 @@ export default class Dese_title4_narrative extends LightningElement {
     @api readOnly;
     @api projectId;
 
+    connectedCallback() {
+        window.scrollTo(0, 0);
+    }
+
     handleClick(event) {
         const label = event.target.label;
         if (label === 'READ MORE') {
