@@ -159,6 +159,7 @@ export default class DeseOnsiteItems extends LightningElement {
         .then(data=>{
             var response  = data;
             response.forEach(row=>{
+                row.redirectLink = '/'+row.Id;
                 if(row.Status__c == 'Submitted For Approval' || row.Status__c == 'Approved' || row.Status__c == 'Rejected'){
                     row.StatusDisabled = true;
                     row.statusOptions = this.statusOptions1;
@@ -234,6 +235,7 @@ export default class DeseOnsiteItems extends LightningElement {
     sendToSupervisor(){
         var dataList = [];
         this.data.forEach(row=>{
+            if(row.Status__c != 'Approved' && row.Status__c != 'Rejected')
             dataList.push({Id : row.Id, Status__c: 'Submit For Approval', Visitation__c: row.Visitation__c, Follow_up_notes__c:row.Follow_up_notes__c});
         })
         this.showSpinner = true;

@@ -1,0 +1,463 @@
+<template>
+    <div class="backdrop" if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </div>
+    </div>
+
+    <c-dese-dashboard-duo-sidebar selected-tab="Home" show-footer>
+        <div slot="body">
+            <div class="has-shadow slds-p-vertical_medium slds-m-bottom_x-large bg-white" style="margin-bottom: 0px;">
+                <div class="container d-flex justify-space-between">
+                    <div class="d-flex justify-space-between ">
+                        <h4 class="header-pane-title">Incidents</h4>
+                    </div>
+                </div>
+            </div>
+
+            <c-psr-help-text help-text={Portal_Helpdesk_Help_Text}></c-psr-help-text>
+
+            <div class="container license-grid">
+                <lightning-button variant="brand" label="New" onclick={openModalIncident}>
+                </lightning-button>
+            </div>
+
+            <table style="margin-top: 20px;" class="slds-table">
+                <tr class="table_header_brand slds-line-height_reset">
+                    <td><b>Summary / Type of Case</b></td>
+                    <td><b>Injury Category</b></td>
+                    <td><b>Description</b></td>
+                    <td><b>Child transported for medical attention</b></td>
+                    <td><b>Discussions</b></td>
+                    <td><b>Created Date</b></td>
+                </tr>
+                <tr class="slds-hint-parent">
+                    <td>
+                        <div class="slds-truncate" title="A">
+                            &nbsp;<p
+                                style="border: solid #115AB1;border-width: 0 3px 3px 0;display: inline-block;padding: 3px;transform:rotate(45deg);-webkit-transform:rotate(45deg);">
+                            </p>
+                            <a type="show1" onclick={viewDiv1}> Health and Safety</a>
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="slds-truncate" title="Prospecting">Serious Injury</div>
+                    </td>
+                    <td>
+                        <div class="slds-truncate" title="Prospecting">
+                            A review of documentation and student records indicated<br>
+                            that the policy on Immediate Notification Regarding <br>
+                            Serious Incidents met the current requirements and <br>
+                            included notification to appropriate parties of such<br>
+                            incidents, as well as the person responsible for oversight. <br>
+                            A review of student records showed that the program<br>
+                            maintains copies of all incidents regarding students.<br>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="slds-truncate" title="Prospecting">Yes</div>
+                    </td>
+                    <td>
+                        <div class="slds-truncate" title="Prospecting"><a onclick={openModalChatter}>Link</a></div>
+                    </td>
+                    <td>
+                        <div class="slds-truncate" title="Prospecting">
+                            <lightning-formatted-date-time value={fetchTodayDate} time-zone="UTC">
+                            </lightning-formatted-date-time>
+                        </div>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <template if:true={show1}><br>
+                            <div style="display:block;">
+                                <b>Communications:</b><br>
+                                <table class="slds-table slds-table_cell-buffer slds-table_bordered"
+                                    style="width: 100%; ">
+                                    <thead>
+                                        <tr>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Opportunity Name"> Subject</div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Account Name"> Message</div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Close Date"> Activity Date</div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Stage"> Created By</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="slds-truncate" title="A">
+                                                    Missing Student Information
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate" title="A">
+                                                    Provide More information about missing student.
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate" title="A">
+                                                    09/12/2020 17:25 PM
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate" title="A">
+                                                    09/12/2020 17:25 PM
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div><br>
+                            <lightning-button variant="brand" label="Email" title="Primary action"
+                                onclick={openModalEmail} class="slds-m-left_x-small"></lightning-button>
+                        </template>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="slds-truncate" title="Prospecting">
+                            &nbsp;<p
+                                style="border: solid #115AB1;border-width: 0 3px 3px 0;display: inline-block;padding: 3px;transform:rotate(45deg);-webkit-transform:rotate(45deg);">
+                            </p>
+                            <a type="show2" onclick={viewDiv1}> Supervision concern</a>
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="slds-truncate" title="Prospecting">Child Injury/Minor</div>
+                    </td>
+                    <td>
+                        <div class="slds-truncate" title="Prospecting">A review of student records showed that the
+                            program<br>
+                            maintains copies of all incidents regarding students.</div>
+                    </td>
+                    <td>
+                        <div class="slds-truncate" title="Prospecting">Yes</div>
+                    </td>
+                    <td>
+                        <div class="slds-truncate" title="Prospecting"><a onclick={openModalChatter}>Link</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="slds-truncate" title="Prospecting">
+                            <lightning-formatted-date-time value={fetchTodayDate} time-zone="UTC">
+                            </lightning-formatted-date-time>
+                        </div>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <template if:true={show2}><br>
+                            <div style="display:block;">
+                                <b>Communications:</b><br>
+                                <table class="slds-table slds-table_cell-buffer slds-table_bordered"
+                                    style="width: 100%; ">
+                                    <thead>
+                                        <tr>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Opportunity Name"> Subject</div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Account Name"> Message</div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Close Date"> Activity Date</div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Stage"> Created By</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="slds-truncate" title="A">
+                                                    Missing Student Information
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate" title="A">
+                                                    Provide More information about missing student.
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate" title="A">
+                                                    09/12/2020 17:25 PM
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate" title="A">
+                                                    09/12/2020 17:25 PM
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div><br>
+                            <lightning-button variant="brand" label="Email" title="Primary action"
+                                onclick={openModalEmail} class="slds-m-left_x-small"></lightning-button>
+                        </template>
+                    </td>
+                </tr>
+                <template for:each={cases} for:item="item">
+                    <tr key={item.Id}>
+                        <td>
+                            <div class="slds-truncate" title="Prospecting">
+                                &nbsp;<p
+                                    style="border: solid #115AB1;border-width: 0 3px 3px 0;display: inline-block;padding: 3px;transform:rotate(45deg);-webkit-transform:rotate(45deg);">
+                                </p>
+                                <a type={item.Id} onclick={viewDiv1}> {item.TypeOfCase}</a>
+                            </div>
+
+                        </td>
+                        <td>
+                            <div class="slds-truncate" title="Prospecting">{item.InjuryCategory}</div>
+                        </td>
+                        <td>
+                            <div class="slds-truncate" title="Prospecting">{item.Description}</div>
+                        </td>
+                        <td>
+                            <div class="slds-truncate" title="Prospecting">{item.Transported}</div>
+                        </td>
+                        <td><a onclick={openModalChatter}>Link</a></td>
+                        <td>
+                            <div class="slds-truncate" title="Prospecting">
+                                <lightning-formatted-date-time value={item.CreatedDate} time-zone="UTC">
+                                </lightning-formatted-date-time>
+                            </div>
+
+                        </td>
+                    </tr>
+                    <tr key={item.Id}>
+                        <td colspan="6">
+                            <template if:true={item.Show}><br>
+                                <div style="display:block;">
+                                    <b>Communications:</b><br>
+                                    <table class="slds-table slds-table_cell-buffer slds-table_bordered"
+                                        style="width: 100%; ">
+                                        <thead>
+                                            <tr>
+                                                <th class="" scope="col">
+                                                    <div class="slds-truncate" title="Opportunity Name"> Subject</div>
+                                                </th>
+                                                <th class="" scope="col">
+                                                    <div class="slds-truncate" title="Account Name"> Message</div>
+                                                </th>
+                                                <th class="" scope="col">
+                                                    <div class="slds-truncate" title="Close Date"> Activity Date</div>
+                                                </th>
+                                                <th class="" scope="col">
+                                                    <div class="slds-truncate" title="Stage"> Created By</div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="slds-truncate" title="A">
+                                                        Missing Student Information
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="slds-truncate" title="A">
+                                                        Provide More information about missing student.
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="slds-truncate" title="A">
+                                                        09/12/2020 17:25 PM
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="slds-truncate" title="A">
+                                                        09/12/2020 17:25 PM
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div><br>
+                                <lightning-button variant="brand" label="Email" title="Primary action"
+                                    onclick={openModalEmail} class="slds-m-left_x-small"></lightning-button>
+                            </template>
+                        </td>
+                    </tr>
+
+                </template>
+            </table>
+        </div>
+    </c-dese-dashboard-duo-sidebar>
+
+    <template if:true={isIncidentOpen}>
+        <section aria-hidden="false" role="dialog" tabindex="-1" aria-labelledby="modal-heading-02" aria-modal="true"
+            aria-describedby="modal-content-id-2" class="slds-modal slds-fade-in-open slds-modal_medium">
+            <div class="slds-modal__container new-incident-popup">
+                <!-- Modal/Popup Box LWC header here -->
+                <div class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close" onclick={closeModalIncident}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                            size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h4 class="header-pane-title">Report an Injury</h4>
+                  
+                </div>
+                <!-- Modal/Popup Box LWC body starts here -->
+                <div class="grantsModal slds-modal__content slds-p-around_medium">
+                    <div class="slds-form slds-col slds-size_1-of-1 slds-large-size_12-of-12">
+
+                        <div class="slds-form__row">
+                            <div class="slds-form__item">
+                                <lightning-input name="TypeOfCase" onchange={handleInputChange} class="input_width"
+                                    type="text" label="Summary/Type of Case"></lightning-input>
+                            </div>
+                            <div class="slds-form__item">
+                                <lightning-combobox name="InjuryCategory" label="Injury Category"
+                                    placeholder="" options={InjuryCategoryPicklistValues}
+                                    onchange={handleInputChange} class="input_width">
+                                </lightning-combobox>
+                            </div>
+                        </div>
+                        <div class="slds-form__row">
+                            <div class="slds-form__item">
+                                <lightning-textarea style="width:100%" name="input3"
+                                    label="Where did the Injury occur?"></lightning-textarea>
+                            </div>
+                            <div class="slds-form__item">
+                                <lightning-textarea style="width:100%" name="input3"
+                                    label="What happened? (If applicable, describe any equipment involved including its location and condition)">
+                                </lightning-textarea>
+                            </div>
+                        </div>
+                        <div class="slds-form__row">
+                            <div class="slds-form__item">
+                                <lightning-textarea onchange={handleInputChange} style="width:100%" name="Description"
+                                    label="Description of any corrective action taken to prevent similar occurence">
+                                </lightning-textarea>
+                            </div>
+                            <div class="slds-form__item">
+                                <lightning-combobox name="Transported"
+                                    label="Was the child transported for medical attention?" placeholder=""
+                                    options={YesNoPicklistValues} onchange={handleInputChange} class="input_width">
+                                </lightning-combobox>
+                            </div>
+                        </div>
+                        <div class="slds-form__row">
+                            <div class="slds-form__item">
+                                <lightning-combobox name="Case_Role__c"
+                                    label="Was this information shared with the child's parent/guardian?"
+                                    placeholder="" options={YesNoPicklistValues} class="input_width">
+                                </lightning-combobox>
+                            </div>
+                            <div class="slds-form__item">
+                                <lightning-combobox name="Case_Role__c" label="Was anyone else notified?"
+                                    placeholder="" options={YesNoPicklistValues} class="input_width">
+                                </lightning-combobox>
+                            </div>
+                        </div>
+
+                        <div class="slds-form__row">
+                            <div class="slds-form__item">
+                                <lightning-file-upload label="Upload" name="fileUploader"
+                                    onuploadfinished={handleUploadFinished} multiple>
+                                </lightning-file-upload>
+
+                            </div>
+                            <div class="slds-form__item">
+                                <template if:true={uploadedFileNames}>
+                                    <label class="slds-form-element__label" for="horizontal-input-id-02">Files Attached:
+                                        <b> {uploadedFileNames} </b></label>
+                                </template>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- Modal/Popup Box LWC footer starts here -->
+                <div class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={closeModalIncident}
+                        title="Cancel">Cancel</button>
+                    <button class="slds-button slds-button_brand" onclick={submitDetailsIncident}
+                        title="OK">Save</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open">
+        </div>
+    </template>
+
+    <template if:true={isChatterOpen}>
+        <lightning-card title="">
+
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-03" aria-modal="true"
+                aria-describedby="modal-content-id-3" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <div class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                            title="Close" onclick={closeModalChatter}>
+                            <lightning-icon icon-name="utility:close" variant="inverse" alternative-text="Close"
+                                size="medium">
+                            </lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 class="slds-text-heading_medium slds-hyphenate">
+                            Discussion</h2>
+                        </div>
+                    <div class="slds-modal__content slds-p-around_medium">
+
+                        <div class="slds-m-around_medium">
+                            <iframe width="600" height="400" frameborder="0" src={fullUrl}></iframe>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+
+        </lightning-card>
+    </template>
+
+    <template if:true={isEmailOpen}>
+        <section aria-hidden="false" role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open ">
+            <div class="slds-modal__container">
+                <!-- Modal/Popup Box LWC header here -->
+                <div class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close" onclick={closeModalEmail}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                            size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading_medium slds-hyphenate">Email</h2>
+                </div>
+                <!-- Modal/Popup Box LWC body starts here -->
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-input type="text" label="To" placeholder="Email Address here..."></lightning-input>
+                    <lightning-input type="text" label="Subject" placeholder="Subject here..."></lightning-input>
+                    <label class="slds-form-element__label" for="horizontal-input-id-02">Body</label>
+                    <textarea rows=12 class="slds-textarea" placeholder="Body here..."></textarea>
+                </div>
+                <!-- Modal/Popup Box LWC footer starts here -->
+                <div class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={closeModalEmail}
+                        title="Cancel">Cancel</button>
+                    <button class="slds-button slds-button_brand" onclick={submitDetailsEmail} title="OK">OK</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open">
+        </div>
+    </template>
+</template>

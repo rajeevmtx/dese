@@ -26,7 +26,7 @@
                     <table style="margin-top: 20px;" class="slds-table">
                         <tr class="table_header_brand slds-line-height_reset">
                             <td><b>Summary / Type of Case</b></td>
-                            <td><b>Injury Category</b></td>                            
+                            <td><b>Incident Category</b></td>                            
                             <td><b>Description</b></td>                            
                             <td><b>Child transported for medical attention</b></td>
                             <td><b>Discussions</b></td>
@@ -41,7 +41,7 @@
                                 
                             </td>
                             <td>
-                                <div class="slds-truncate" title="Prospecting">Serious Injury</div>
+                                <div class="slds-truncate" title="Prospecting">Serious Incident</div>
                             </td>                            
                             <td>
                                 <div class="slds-truncate" title="Prospecting">
@@ -129,7 +129,7 @@
                                
                             </td>
                             <td>
-                                <div class="slds-truncate" title="Prospecting">Child Injury/Minor</div>
+                                <div class="slds-truncate" title="Prospecting">Child Incident/Minor</div>
                                 </td>                            
                             <td>
                                 <div class="slds-truncate" title="Prospecting">A review of student records showed that the program<br>
@@ -291,7 +291,7 @@
     <section aria-hidden="false" role="dialog" tabindex="-1" aria-labelledby="modal-heading-02" aria-modal="true" aria-describedby="modal-content-id-2" class="slds-modal slds-fade-in-open slds-modal_medium">
       <div class="slds-modal__container new-incident-popup">
           <!-- Modal/Popup Box LWC header here -->
-          <header class="slds-modal__header">
+          <div class="slds-modal__header">
               <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModalIncident}>
                   <lightning-icon icon-name="utility:close"
                       alternative-text="close"
@@ -299,8 +299,8 @@
                       size="small" ></lightning-icon>
                   <span class="slds-assistive-text">Close</span>
               </button>
-              <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">Report an Injury</h2>
-          </header>
+              <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">Report an Incident</h2>
+            </div>
           <!-- Modal/Popup Box LWC body starts here -->
           <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
             <div class="slds-form slds-col slds-size_1-of-1 slds-large-size_12-of-12">
@@ -310,15 +310,15 @@
                         <lightning-input name="TypeOfCase" onchange={handleInputChange} class="input_width" type="text" label="Summary/Type of Case" ></lightning-input>
                     </div>
                     <div class="slds-form__item">
-                        <lightning-combobox  name="InjuryCategory" label="Injury Category"
-                        placeholder="Injury Category" options={InjuryCategoryPicklistValues}
+                        <lightning-combobox  name="InjuryCategory" label="Incident Category"
+                        placeholder="Incident Category" options={InjuryCategoryPicklistValues}
                         onchange={handleInputChange} class="input_width">
                         </lightning-combobox>
                     </div>
                 </div>
                 <div class="slds-form__row">
                     <div class="slds-form__item">
-                        <lightning-textarea style="width:100%" name="input3" label="Where did the Injury occur?" ></lightning-textarea>
+                        <lightning-textarea style="width:100%" name="input3" label="Where did the Incident occur?" ></lightning-textarea>
                     </div>
                     <div class="slds-form__item">
                         <lightning-textarea style="width:100%" name="input3" label="What happened? (If applicable, describe any equipment involved including its location and condition)" ></lightning-textarea>
@@ -370,10 +370,10 @@
             </div>
           </div>
           <!-- Modal/Popup Box LWC footer starts here -->
-          <footer class="slds-modal__footer">
+          <div class="slds-modal__footer">
               <button class="slds-button slds-button_outline-brand" onclick={closeModalIncident} title="Cancel">Cancel</button>
               <button class="slds-button slds-button_brand" onclick={submitDetailsIncident} title="OK">Save</button>
-          </footer>
+          </div>
       </div>
     </section>
     <div  class="slds-backdrop slds-backdrop_open" >
@@ -386,7 +386,7 @@
             <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-03" aria-modal="true"
                 aria-describedby="modal-content-id-3" class="slds-modal slds-fade-in-open">
                 <div class="slds-modal__container">
-                    <header class="slds-modal__header">
+                    <div class="slds-modal__header">
                         <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
                             title="Close" onclick={closeModalChatter}>
                             <lightning-icon icon-name="utility:close" variant="inverse" alternative-text="Close"
@@ -396,7 +396,7 @@
                         </button>
                         <h2 id="modal-heading-03" class="slds-text-heading_medium slds-hyphenate"> 
                             Discussion</h2>
-                    </header>
+                        </div>
                     <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-3">
 
                         <div class="slds-m-around_medium">
@@ -414,7 +414,7 @@
         <section aria-hidden="false" role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open ">
           <div class="slds-modal__container">
               <!-- Modal/Popup Box LWC header here -->
-              <header class="slds-modal__header">
+              <div class="slds-modal__header">
                   <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModalEmail}>
                       <lightning-icon icon-name="utility:close"
                           alternative-text="close"
@@ -423,7 +423,7 @@
                       <span class="slds-assistive-text">Close</span>
                   </button>
                   <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Email</h2>
-              </header>
+                </div>
               <!-- Modal/Popup Box LWC body starts here -->
               <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
                 <lightning-input type="text" label="To" placeholder="Email Address here..."></lightning-input>
@@ -432,10 +432,10 @@
                 <textarea id="textarea-id-01" rows=12 class="slds-textarea" placeholder="Body here..."></textarea>
               </div>
               <!-- Modal/Popup Box LWC footer starts here -->
-              <footer class="slds-modal__footer">
+              <div class="slds-modal__footer">
                   <button class="slds-button slds-button_neutral" onclick={closeModalEmail} title="Cancel">Cancel</button>
                   <button class="slds-button slds-button_brand" onclick={submitDetailsEmail} title="OK">OK</button>
-              </footer>
+              </div>
           </div>
         </section>
         <div  class="slds-backdrop slds-backdrop_open" >

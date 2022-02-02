@@ -37,6 +37,37 @@ export default class psrNewContact extends LightningElement {
             : "Edit Staff Details";
     }
 
+    roleOptions=[
+        {
+            label:'Teacher',
+            value:'Teacher'
+        },
+        {
+            label : 'Executive Director',
+            value : 'Executive Director'
+        },
+        {
+            label : 'Director',
+            value : 'Director'
+        },
+        {
+            label : 'Program Coordinator',
+            value : 'Program Coordinator'
+        },
+        {
+            label : 'Program Administrator',
+            value : 'Program Administrator'
+        },
+        {
+            label : 'Licensee',
+            value : 'Licensee'
+        }
+    ];
+
+    handleRoleChange(event){
+        this.contact.Role = event.detail.value;
+    }
+
     connectedCallback() {
         this.applicationId = utility.getUrlParam("appId");
         if (!this.checkBlank(this.applicationContactId)) {
@@ -58,7 +89,7 @@ export default class psrNewContact extends LightningElement {
                         this.contact.comments = result.comments;
                         this.contact.elarNumber = result.elarNumber;
                         this.contact.hireDate = result.hireDate;
-                        //this.contact.
+                        this.contact.Role = result.Role;
                         console.log(result.type);
                     }
                 })
@@ -162,6 +193,8 @@ export default class psrNewContact extends LightningElement {
         this.contact.title = fields.Title;
         this.contact.elarNumber = fields.Prof_Qualification_Reg_Number__c;
         this.contact.status = fields.Status__c;
+        //this.contact.Role = fields.Role__c;
+        //alert(this.contact.Role);
         if (this.contact.comments != "12345") {
             alert("Fill Fields correctly");
             return;

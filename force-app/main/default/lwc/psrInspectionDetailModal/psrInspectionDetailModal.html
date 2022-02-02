@@ -6,7 +6,7 @@
     class="slds-modal slds-fade-in-open"
   >
     <div class="slds-modal__container">
-      <header class="slds-modal__header">
+      <div class="slds-modal__header">
         <button
           class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
           title="Close"
@@ -22,7 +22,7 @@
           <span class="slds-assistive-text">Close</span>
         </button>
         <h2 class="slds-text-heading_small">Inspection Details</h2>
-      </header>
+      </div>
       <div class="slds-modal__content">
         <div class="slds-p-around_x-small">
           <table
@@ -354,13 +354,13 @@
           </table>
         </div>
       </div>
-      <footer class="slds-modal__footer">
+      <div class="slds-modal__footer">
         <lightning-button
           class="slds-m-top_small"
           label="Close"
           onclick={handleCloseModal}
         ></lightning-button>
-      </footer>
+      </div>
     </div>
   </section>
   <div class="slds-backdrop slds-backdrop_open"></div>

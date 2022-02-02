@@ -9,7 +9,7 @@
         <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
             aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
             <div class="slds-modal__container" style="width: 80%;">
-                <header class="slds-modal__header">
+                <div class="slds-modal__header">
                     <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
                         title="Close" onclick={handleCloseModal}>
                         <lightning-icon icon-name="utility:close" variant="inverse" alternative-text="Close"
@@ -22,7 +22,7 @@
                     <h2 if:true={isStaff} id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">
                         {headerStaff}</h2>
 
-                </header>
+                    </div>
                 <div class="slds-modal__content" id="modal-content-id-1">
                     <div class="padding-horizontal slds-m-around_small">
                         <c-psr-help-text help-text={Portal_Add_New_Contact_Help_Text}></c-psr-help-text>
@@ -158,12 +158,12 @@
                                     </table>
                                 </div>
                             </div>
-                            <footer class="slds-modal__footer">
+                            <div class="slds-modal__footer">
                                 <lightning-button class="slds-m-top_small" label="Cancel" onclick={handleCloseModal}>
                                 </lightning-button>
                                 <lightning-button class="slds-m-top_small slds-p-left_small" variant="brand"
                                     type="submit" label="Save"></lightning-button>
-                            </footer>
+                            </div>
                         </lightning-record-edit-form>
                     </div>
                     <div if:true={isStaff}>
@@ -208,18 +208,13 @@
                                         value={contact.title}></lightning-input-field>
                                 </div>
                                 <div class="slds-col slds-size_1-of-2">
-                                    <label for="fieldid4"
-                                        style="padding-right: 16%;padding-top: 2%;margin-left:1%">Uniform Financial
-                                        Report (UFR) <b class="slds-text-color_destructive">*</b></label>
-                                    <!-- <lightning-input-field field-name="Comments__c" variant="label-hidden"
-                                        value={contact.comments} pattern="^[1]{1}[2]{1}[3]{1}[4]{1}[5]{1}$" ^(?<!12345)$
-                                        message-when-pattern-mismatch="This UFR number does not match to the UFR number of other Devereaux program. Please correct before you can proceed"
-                                        required></lightning-input-field> -->
-                                    <lightning-input name="Comments__c" variant="label-hidden" required
-                                        value={contact.comments} pattern="^12345$" onchange={handleChangeNew}
-                                        message-when-pattern-mismatch="This UFR number does not match to the UFR number of other Devereaux program. Please correct before you can proceed">
-                                    </lightning-input>
+                                    <label for="fieldid7" style="padding-right: 16%;padding-top: 2%;margin-left:1%">Role
+                                        </label>
+                                    <!-- <lightning-input-field field-name="Role__c"
+                                        value={contact.Role} variant="label-hidden"></lightning-input-field> -->
+                                    <lightning-combobox label="Role" variant="label-hidden" value={contact.Role} options={roleOptions} onchange={handleRoleChange}></lightning-combobox>
                                 </div>
+                                
                             </div>
                             <div class="slds-grid slds-p-bottom_small">
                                 <div class="slds-col slds-size_1-of-2">
@@ -243,8 +238,21 @@
                                     <lightning-input-field field-name="Prof_Qualification_Reg_Number__c"
                                         value={contact.elarNumber} variant="label-hidden"></lightning-input-field>
                                 </div>
-                                <div class="slds-col slds-size_1-of-2">
+                                <!-- <div class="slds-col slds-size_1-of-2"> -->
                                     <!-- <lightning-input-field field-name="Disability_Type__c"></lightning-input-field> -->
+                                <!-- </div> -->
+                                <div class="slds-col slds-size_1-of-2">
+                                    <label for="fieldid4"
+                                        style="padding-right: 16%;padding-top: 2%;margin-left:1%">Uniform Financial
+                                        Report (UFR) <b class="slds-text-color_destructive">*</b></label>
+                                    <!-- <lightning-input-field field-name="Comments__c" variant="label-hidden"
+                                        value={contact.comments} pattern="^[1]{1}[2]{1}[3]{1}[4]{1}[5]{1}$" ^(?<!12345)$
+                                        message-when-pattern-mismatch="This UFR number does not match to the UFR number of other Devereaux program. Please correct before you can proceed"
+                                        required></lightning-input-field> -->
+                                    <lightning-input name="Comments__c" variant="label-hidden" required
+                                        value={contact.comments} pattern="^12345$" onchange={handleChangeNew}
+                                        message-when-pattern-mismatch="This UFR number does not match to the UFR number of other Devereaux program. Please correct before you can proceed">
+                                    </lightning-input>
                                 </div>
                             </div>
                             <!-- <div class="slds-grid">
@@ -255,12 +263,12 @@
                                         <lightning-input-field field-name="Home_Language_Not_English__c"></lightning-input-field>
                                     </div>
                                 </div>                                -->
-                            <footer class="slds-modal__footer">
+                            <div class="slds-modal__footer">
                                 <lightning-button class="slds-m-top_small" label="Cancel" onclick={handleCloseModal}>
                                 </lightning-button>
                                 <lightning-button class="slds-m-top_small slds-p-left_small" variant="brand"
                                     type="submit" label="Save"></lightning-button>
-                            </footer>
+                            </div>
                         </lightning-record-edit-form>
                     </div>
                 </div>

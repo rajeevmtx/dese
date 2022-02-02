@@ -35,7 +35,7 @@
                         
                         <div class="table-header slds-m-bottom_small">
                             <div class="small-header"><h3 class="instructions slds-m-bottom_medium">Instructions to Complete the Final Financial Report Form</h3></div>
-                            <div class="resource-icon">
+                            <div class="resource-icon"  onclick={redirectToInfo}>
                                 <img src={notebook} />
                                 <div class="resources">
                                     View Detailed Instructions
@@ -289,15 +289,17 @@
                     <lightning-input type="checkbox" class="finalReport-checkbox slds-m-bottom_medium slds-m-top_medium"
                         label="I certify that all the information contained in this final financial report is true and correct">
                     </lightning-input>
-                    <c-dese_intake_docusign record-id={projectId}></c-dese_intake_docusign>
+                    <!-- <c-dese_intake_docusign record-id={projectId}></c-dese_intake_docusign> -->
+                    <lightning-button label="Electronic Signature" class=" signature-btn" variant="brand"
+                            title="Start embedded signing session" onclick={handleSubmit}></lightning-button>
                 </div>
                 <div slot="footer" if:false={readOnly}>
                     <div class="button">
                         <lightning-button variant="brand-outline" label="Cancel"
                             title="Primary action with lighter look" onclick={handleCancel}
                             class="slds-m-left_x-small button__white"></lightning-button>
-                        <lightning-button variant="brand" label="Submit" title="Primary action" onclick={handleSubmit}
-                            class="slds-m-left_x-small"></lightning-button>
+                        <lightning-button variant="brand" label="Submit" title="Primary action" onclick={handleFinalSubmit}
+                            disabled={disableSubmit} class="slds-m-left_x-small"></lightning-button>
                     </div>
                 </div>
             </lightning-card>

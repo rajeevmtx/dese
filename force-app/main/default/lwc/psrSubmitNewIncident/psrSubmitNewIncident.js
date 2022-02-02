@@ -41,10 +41,10 @@ export default class PsrSubmitNewIncident extends LightningElement {
       }
     get InjuryCategoryPicklistValues() {
         return [
-        { label: 'Child Injury/Minor', value: 'Child Injury/Minor' },
-        { label: 'Child Injury/Major', value: 'Child Injury/Major' },
+        { label: 'Child Incident/Minor', value: 'Child Injury/Minor' },
+        { label: 'Child Incident/Major', value: 'Child Injury/Major' },
         { label: 'Hospital or Ambulance Call', value: 'Hospital or Ambulance Call' },
-        { label: 'Serious Injury', value: 'Serious Injury' },
+        { label: 'Serious Incident', value: 'Serious Injury' },
     ];
 }
 

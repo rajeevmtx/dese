@@ -3,20 +3,20 @@
         <div role="dialog" tabindex="0" aria-labelledby="modal-heading-01" aria-modal="true"
           aria-describedby="modal-content-id-1" class={classes}>
             <div class="slds-modal__container mobileHeightAuto" style={modalStyle}>
-                <header class={headerclass} if:false={hideHeader}>
+                <div class={headerclass} if:false={hideHeader}>
                     <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
                         <!-- Header Slot -->
                         <slot name="header"></slot>
                     </h2>
-                </header>
+                </div>
                 <div class={bodyclass}>
                     <!-- Body Slot -->
                     <slot name="body"></slot>
                 </div>
-                <footer class={footerclass} if:false={hideFooter}>
+                <div class={footerclass} if:false={hideFooter}>
                     <!-- Footer Slot Slot -->
                     <slot name="footer"></slot>
-                </footer>
+                </div>
             </div>
         </div>
         <div class={backdropClass}></div>

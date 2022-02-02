@@ -70,7 +70,13 @@ export default class Dese_my_profile extends LightningElement {
     }
 
     handleCancel(){
-        window.open('/dese/s/','_self');
+        //console.log(window.location.href);
+        if(window.location.href == 'https://desedemo-demo-lp.cs196.force.com/psr/s/monitoring-profile'){
+            window.open('/psr/s/','_self');
+        } else{
+            window.open('/dese/s/','_self');
+        }
+        //window.open('/dese/s/','_self');
     }
     handleSave(){
         this.showSpinner = true;

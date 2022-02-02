@@ -48,13 +48,17 @@
   .notification{
     --sds-c-icon-color-foreground-default: #fff!important;
     position:relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
   }
 
   .notification span{
     --sds-c-icon-color-foreground-default: #fff!important;
     position: absolute;
-    top: 8px;
-    right: -1px;
+    top: 10px;
+    right: 18px;
     width: 8px;
     height: 8px;
     background: green;

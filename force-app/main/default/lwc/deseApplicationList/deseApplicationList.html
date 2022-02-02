@@ -108,13 +108,13 @@
                                                 <lightning-button variant="brand" label="Submit Final Report"
                                                     data-appid={application.Id} disabled={application.isTandDDisabled}
                                                     onclick={goToFinalReportSubmission} data-caseid={application.Id}
-                                                    class="slds-m-left_x-small"></lightning-button>
+                                                    class="slds-m-left_x-small applicationButton"></lightning-button>
                                             </div>
                                             <div if:false={application.showSubmitButton}>
                                                 <lightning-button variant="brand" label="Task and Deliverables"
                                                     data-appid={application.Id} disabled={application.isTandDDisabled}
                                                     onclick={openTandD} data-caseid={application.Id}
-                                                    class="slds-m-left_x-small"></lightning-button>
+                                                    class="slds-m-left_x-small applicationButton"></lightning-button>
                                             </div>
                                         </div>
 

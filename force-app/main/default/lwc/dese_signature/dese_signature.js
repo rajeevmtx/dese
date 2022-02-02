@@ -14,12 +14,14 @@ export default class Dese_signature extends LightningElement {
     description = 'Embedded Signing';
     currentPageReference = null;
     readonly = false;
+    disabledSubmit = true;
 
     @wire(CurrentPageReference)
     getStateParameters(currentPageReference) {
        if (currentPageReference) {
           if(currentPageReference.state.event  == 'signing_complete'){
               this.readonly = true;
+              this.disabledSubmit = false;
           }
        }
     }

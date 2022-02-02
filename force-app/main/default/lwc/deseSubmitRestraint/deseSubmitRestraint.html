@@ -1,0 +1,405 @@
+<template>
+    <div class="backdrop" if:true={showSpinner}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+        </div>
+    </div>
+
+    <c-dese-dashboard-duo-sidebar selected-tab="Home" show-footer>
+        <div slot="body">
+            <div class="slds-card submitRestraint">
+                
+                    <div class="">
+                        <h4 class=" header-pane-title ">New Restraint Report</h4>
+                    </div>
+                    <!-- <hr> -->
+               
+                <div class="slds-card__body slds-card__body_inner">
+                    <div class="slds-card">
+                       
+                            <div class="slds-card__header">
+                                <h3 class="slds-card__header-title slds-text_weak">Restraint Report</h3>
+                            </div>
+                       
+                        <div class="slds-card__body slds-card__body_inner">
+                            <p><strong>Provider: </strong>Wayside Edgell House</p>
+                            <br>
+                            <p><strong>Restraint Method: </strong>TCI</p>
+                            <br>
+                            <p><strong>Calendar Year: </strong></p>
+                            <lightning-input variant="label-hidden"></lightning-input>
+                            <br>
+                            <label><strong>Quarter: </strong></label>
+                            <lightning-combobox name="progress" placeholder="" options={options} onchange={handleChange} class="input_width"
+                                variant="label-hidden"></lightning-combobox>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="slds-card">
+                       
+                            <div class="slds-card__header">
+                                <h3 class="slds-card__header-title slds-text_weak">Position/Minutes</h3>
+                            </div>
+                       
+                        <div class="slds-card__body slds-card__body_inner">
+                            <div class="schedule-table">
+                                <table
+                                    class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered"
+                                    aria-label="Example default base table of Opportunities">
+                                    <thead>
+                                        <tr class="slds-line-height_reset">
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title=""></div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Title II, Part A">0-5</div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Title III, Part A">6-10</div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Title IV, Part A">11-20</div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Title IV, Part A">21-30</div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Title IV, Part A">31-40</div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Title IV, Part A">41-50</div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Title IV, Part A">51-60</div>
+                                            </th>
+                                            <th class="" scope="col">
+                                                <div class="slds-truncate" title="Title IV, Part A">>60</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="slds-hint-parent">
+                                            <th data-label="" scope="row">
+                                                <div class="slds-truncate" title="">
+                                                    Standing
+                                                </div>
+                                            </th>
+                                            <td data-label="Title II, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+
+                                            </td>
+                                            <td data-label="Title III, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="slds-hint-parent">
+                                            <th data-label="" scope="row">
+                                                <div class="slds-truncate" title="">
+                                                    Sitting
+                                                </div>
+                                            </th>
+                                            <td data-label="Title II, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+
+                                            </td>
+                                            <td data-label="Title III, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="slds-hint-parent">
+                                            <th data-label="" scope="row">
+                                                <div class="slds-truncate" title="">
+                                                    Floor(Supine)
+                                                </div>
+                                            </th>
+                                            <td data-label="Title II, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+
+                                            </td>
+                                            <td data-label="Title III, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="slds-hint-parent">
+                                            <th data-label="" scope="row">
+                                                <div class="slds-truncate" title="">
+                                                    Floor(Prone)
+                                                </div>
+                                            </th>
+                                            <td data-label="Title II, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+
+                                            </td>
+                                            <td data-label="Title III, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="slds-hint-parent">
+                                            <th data-label="" scope="row">
+                                                <div class="slds-truncate" title="">
+                                                    Floor(Both Prone and Supine)
+                                                </div>
+                                            </th>
+                                            <td data-label="Title II, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+
+                                            </td>
+                                            <td data-label="Title III, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                            <td data-label="Title IV, Part A">
+                                                <div class="combobox">
+                                                    <lightning-input variant="label-hidden"></lightning-input>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="slds-card">
+                       
+                            <div class="slds-card__header">
+                                <h3 class="slds-card__header-title slds-text_weak">Injury Information</h3>
+                            </div>
+                       
+                        <div class="slds-card__body slds-card__body_inner">
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-col">
+                                    <div>
+                                        <label>Injured Residents (Minor Injury):</label>
+                                        <lightning-input variant="label-hidden" class="slds-m-top_x-small"></lightning-input>
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <label>Injured Residents (Serious Injury):</label>
+                                        <lightning-input variant="label-hidden" class="slds-m-top_x-small"></lightning-input>
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <label>Injured Staff (Minor Injury):</label>
+                                        <lightning-input variant="label-hidden" class="slds-m-top_x-small"></lightning-input>
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <label>Injured Staff (Serious Injury):</label>
+                                        <lightning-input variant="label-hidden" class="slds-m-top_x-small"></lightning-input>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-card">
+                       
+                            <div class="slds-card__header">
+                                <h3 class="slds-card__header-title slds-text_weak">Other Restraints Information</h3>
+                            </div>
+                       
+                        <div class="slds-card__body slds-card__body_inner">
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-col">
+                                    <div>
+                                        <label>Number of Restraints Leading to Resident Injury:</label>
+                                        <lightning-input variant="label-hidden" class="slds-m-top_x-small"></lightning-input>
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <label>Number of Restraints Leading to Staff Injury:</label>
+                                        <lightning-input variant="label-hidden" class="slds-m-top_x-small"></lightning-input>
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <label>Total Bed Days Utilized this Quarter:</label>
+                                        <lightning-input variant="label-hidden" class="slds-m-top_x-small"></lightning-input>
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <label>Unduplicated Count of Residents Restrained:</label>
+                                        <lightning-input variant="label-hidden" class="slds-m-top_x-small"></lightning-input>
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <label>Unduplicated Count of Residents Served:</label>
+                                        <lightning-input variant="label-hidden" class="slds-m-top_x-small"></lightning-input>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <footer class="slds-card__footer">
+                        <button class="slds-button slds-button_outline-brand" onclick={goToHome}>Cancel</button>
+                        <button class="slds-button slds-button_brand" onclick={goToHome}>SUBMIT</button>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </c-dese-dashboard-duo-sidebar>
+</template>

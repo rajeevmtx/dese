@@ -13,29 +13,32 @@
             <div class="nav">
                <div class="home" onclick={navigateToHome} style="cursor: pointer;">Home </div>
                <div class="support" style="cursor: pointer;">Support</div>
-               <div class="line"></div>
+               
                <!-- <div class="notification">
                   <lightning-icon icon-name="utility:notification"  alternative-text="Approved"
                   title="Approved"></lightning-icon>
                   <span ></span>
-                  
                </div> -->
-               <div class="line"></div>
+              
                <template if:false={isGuestUser}>
                   <div class="notification">
-                     <lightning-icon icon-name="utility:notification" alternative-text="Approved" title="Approved">
-                     </lightning-icon>
-                     <lightning-button-menu alternative-text="Show menu">
-                        <lightning-menu-item
-                           value="Complete your final report for application 0000000167 within 60 days"
-                           label="Complete your final report for application 0000000167 within 60 days">
-                        </lightning-menu-item>
-                        </lightning-menu-item>
-                        <lightning-menu-item value="Status of your application has been changed to under review"
-                           label="Status of your application has been changed to under review"
-                           onclick={openApplication}>
-                        </lightning-menu-item>
-                     </lightning-button-menu>&nbsp;
+                     <div class="line"></div>
+                     <div>
+                        <lightning-icon icon-name="utility:notification" alternative-text="Approved" title="Approved">
+                        </lightning-icon><span ></span>
+                        <lightning-button-menu class="notificationMenu" alternative-text="Show menu">
+                           <lightning-menu-item
+                              value="Complete your final report for application 0000000167 within 60 days"
+                              label="Complete your final report for application 0000000167 within 60 days" onclick={handleSubmitReport}>
+                           </lightning-menu-item>
+                           <lightning-menu-item value="Status of your application has been changed to under review"
+                              label="Status of your application has been changed to under review"
+                              onclick={openApplication}>
+                           </lightning-menu-item>
+                        </lightning-button-menu> 
+                     </div>
+                     
+                     <div class="line"></div>&nbsp;
                   </div>
                   <div class="profile userLogin">
                      <div class="profile__avatar">

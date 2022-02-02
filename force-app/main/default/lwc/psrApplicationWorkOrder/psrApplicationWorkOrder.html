@@ -158,14 +158,14 @@
         <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
             aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
             <div class="slds-modal__container">
-                <header class="slds-modal__header">
+                <div class="slds-modal__header">
                     <template if:true={isEditModal}>
                         <h2 class="slds-text-heading_small">Edit Application Work Order</h2>
                     </template>
                     <template if:false={isEditModal}>
                         <h2 class="slds-text-heading_small">New Application Work Order</h2>
                     </template>
-                </header>
+                </div>
                 <div class="slds-modal__content" id="modal-content-id-1">
                     <div class="padding-horizontal  slds-m-around_small">
                         <c-psr-help-text help-text={Portal_Add_New_Work_Order_Help_Text} ></c-psr-help-text>
@@ -206,12 +206,12 @@
                                     </lightning-input-field>
                                 </div>
                             </div>
-                            <footer class="slds-modal__footer">
+                            <div class="slds-modal__footer">
                                 <lightning-button class="slds-m-top_small" label="Cancel" onclick={closeEditModal}>
                                 </lightning-button>
                                 <lightning-button class="slds-m-top_small slds-p-left_small" variant="brand"
                                     type="submit" label="Save"></lightning-button>
-                            </footer>
+                            </div>
                         </lightning-record-edit-form>
                     </div>
                 </div>

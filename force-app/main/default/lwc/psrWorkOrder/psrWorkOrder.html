@@ -2,9 +2,9 @@
     <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
         aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
         <div class="slds-modal__container">
-            <header class="slds-modal__header">
+            <div class="slds-modal__header">
                 {headingLabel} Work Order
-            </header>
+            </div>
             <div class="slds-modal__content " id="modal-content-id-1">
                 <div slot="body">
                     <div class="padding-horizontal slds-m-around_small">
@@ -37,12 +37,12 @@
                                     </lightning-input-field>
                                 </div>
                             </div>
-                            <footer class="slds-modal__footer">
+                            <div class="slds-modal__footer">
                                 <lightning-button class="slds-m-top_small" label="Cancel" onclick={closeModal}>
                                 </lightning-button>
                                 <lightning-button class="slds-m-top_small slds-p-left_small" variant="brand"
                                     type="submit" label="Save"></lightning-button>
-                            </footer>
+                            </div>
                         </div>
                     </lightning-record-edit-form>
                 </div>

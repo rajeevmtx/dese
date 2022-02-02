@@ -347,7 +347,11 @@ export default class Eec_DocumentLibrary_Internal extends LightningElement {
 
 
     get fullUrl() {
-        return 'https://mtxlicensingpermit--desedemo--c.visualforce.com/apex/PsrChatterPage?id=' + this.currentEvId
+        if(window.location.href.includes('mtxlicensingpermit')){
+            return 'https://mtxlicensingpermit--desedemo--c.visualforce.com/apex/PsrChatterPage?id=' + this.currentEvId
+        }else {
+            return '/psr/apex/PsrChatterPage?id='  + this.currentEvId;
+        }
     }
     renderedCallback() {
         if (console.log("rendred callback called" + this.theIframe),

@@ -10,7 +10,7 @@
     <br />
     <c-psr-sidebar selected-tab="Home" show-footer>
         <div slot="body">
-            <div class="slds-card">
+            <div class="slds-card submitRestraint">
                 <header>
                     <div class="slds-card__header">
                         <h4 class=" header-pane-title ">New Restraint Report</h4>
@@ -29,10 +29,10 @@
                             <br>
                             <p><strong>Restraint Method: </strong>TCI</p>
                             <br>
-                            <p><strong>Calendar Year: </strong></p>
+                            <p>Calendar Year: </p>
                             <lightning-input variant="label-hidden"></lightning-input>
                             <br>
-                            <label><strong>Quarter: </strong></label>
+                            <label>Quarter: </label>
                             <lightning-combobox name="progress" placeholder="" options={options} onchange={handleChange}
                                 variant="label-hidden"></lightning-combobox>
                         </div>
@@ -84,7 +84,7 @@
                                         <tr class="slds-hint-parent">
                                             <th data-label="" scope="row">
                                                 <div class="slds-truncate" title="">
-                                                    <b>Standing</b>
+                                                    Standing
                                                 </div>
                                             </th>
                                             <td data-label="Title II, Part A">
@@ -132,7 +132,7 @@
                                         <tr class="slds-hint-parent">
                                             <th data-label="" scope="row">
                                                 <div class="slds-truncate" title="">
-                                                    <b>Sitting</b>
+                                                    Sitting
                                                 </div>
                                             </th>
                                             <td data-label="Title II, Part A">
@@ -180,7 +180,7 @@
                                         <tr class="slds-hint-parent">
                                             <th data-label="" scope="row">
                                                 <div class="slds-truncate" title="">
-                                                    <b>Floor(Supine)</b>
+                                                    Floor(Supine)
                                                 </div>
                                             </th>
                                             <td data-label="Title II, Part A">
@@ -228,7 +228,7 @@
                                         <tr class="slds-hint-parent">
                                             <th data-label="" scope="row">
                                                 <div class="slds-truncate" title="">
-                                                    <b>Floor(Prone)</b>
+                                                    Floor(Prone)
                                                 </div>
                                             </th>
                                             <td data-label="Title II, Part A">
@@ -276,7 +276,7 @@
                                         <tr class="slds-hint-parent">
                                             <th data-label="" scope="row">
                                                 <div class="slds-truncate" title="">
-                                                    <b>Floor(Both Prone and Supine)</b>
+                                                    Floor(Both Prone and Supine)
                                                 </div>
                                             </th>
                                             <td data-label="Title II, Part A">
@@ -337,23 +337,23 @@
                             <div class="slds-grid slds-gutters">
                                 <div class="slds-col">
                                     <div>
-                                        <label><strong>Injured Residents (Minor Injury):</strong></label>
-                                        <lightning-input variant="label-hidden"></lightning-input>
+                                        <label>Injured Residents (Minor Injury):</label>
+                                        <lightning-input variant="label-hidden" class="slds-m-top_x-small"></lightning-input>
                                     </div>
                                     <br>
                                     <div>
-                                        <label><strong>Injured Residents (Serious Injury):</strong></label>
-                                        <lightning-input variant="label-hidden"></lightning-input>
+                                        <label>Injured Residents (Serious Injury):</label>
+                                        <lightning-input variant="label-hidden" class="slds-m-top_x-small"></lightning-input>
                                     </div>
                                     <br>
                                     <div>
-                                        <label><strong>Injured Staff (Minor Injury):</strong></label>
-                                        <lightning-input variant="label-hidden"></lightning-input>
+                                        <label>Injured Staff (Minor Injury):</label>
+                                        <lightning-input variant="label-hidden" class="slds-m-top_x-small"></lightning-input>
                                     </div>
                                     <br>
                                     <div>
-                                        <label><strong>Injured Staff (Serious Injury):</strong></label>
-                                        <lightning-input variant="label-hidden"></lightning-input>
+                                        <label>Injured Staff (Serious Injury):</label>
+                                        <lightning-input variant="label-hidden" class="slds-m-top_x-small"></lightning-input>
                                     </div>
                                 </div>
                             </div>
@@ -369,28 +369,28 @@
                             <div class="slds-grid slds-gutters">
                                 <div class="slds-col">
                                     <div>
-                                        <label><strong>Number of Restraints Leading to Resident Injury:</strong></label>
-                                        <lightning-input variant="label-hidden"></lightning-input>
+                                        <label>Number of Restraints Leading to Resident Injury:</label>
+                                        <lightning-input variant="label-hidden" class="slds-m-top_x-small"></lightning-input>
                                     </div>
                                     <br>
                                     <div>
-                                        <label><strong>Number of Restraints Leading to Staff Injury:</strong></label>
-                                        <lightning-input variant="label-hidden"></lightning-input>
+                                        <label>Number of Restraints Leading to Staff Injury:</label>
+                                        <lightning-input variant="label-hidden" class="slds-m-top_x-small"></lightning-input>
                                     </div>
                                     <br>
                                     <div>
-                                        <label><strong>Total Bed Days Utilized this Quarter:</strong></label>
-                                        <lightning-input variant="label-hidden"></lightning-input>
+                                        <label>Total Bed Days Utilized this Quarter:</label>
+                                        <lightning-input variant="label-hidden" class="slds-m-top_x-small"></lightning-input>
                                     </div>
                                     <br>
                                     <div>
-                                        <label><strong>Unduplicated Count of Residents Restrained:</strong></label>
-                                        <lightning-input variant="label-hidden"></lightning-input>
+                                        <label>Unduplicated Count of Residents Restrained:</label>
+                                        <lightning-input variant="label-hidden" class="slds-m-top_x-small"></lightning-input>
                                     </div>
                                     <br>
                                     <div>
-                                        <label><strong>Unduplicated Count of Residents Served:</strong></label>
-                                        <lightning-input variant="label-hidden"></lightning-input>
+                                        <label>Unduplicated Count of Residents Served:</label>
+                                        <lightning-input variant="label-hidden" class="slds-m-top_x-small"></lightning-input>
                                     </div>
                                 </div>
                             </div>

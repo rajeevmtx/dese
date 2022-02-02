@@ -18,13 +18,16 @@
 
 
     <div class="slds-grid slds-wrap dashboardDetailsCard" >
-        <div  class="slds-size_2-of-12 dueDate">Due Date: <strong >{grant.Due_Date__c}</strong></div>
-        <div class="slds-col slds-wrap slds-size_2-of-12">
+        <!-- <div  class="slds-size_2-of-12 dueDate">Due Date: <strong >{grant.Due_Date__c}</strong></div> -->
+        <div class="slds-col slds-wrap slds-align_absolute-center slds-size_2-of-12">
             <img src={grantsdashboard}  />
             <!-- <img src={grantsdashboard} /> -->
         </div>
         <div class="slds-col slds-wrap slds-size_10-of-12">
-            <p style="font-size:1.7em;"> {grantName}</p>
+            <div class="row">
+                <span class="grants-name">{grant.Name}</span>
+                <span class="dueDate">Due Date: <strong>{grant.Due_Date__c}</strong></span>
+        </div>
             <!-- <b  >Description</b> -->
             <lightning-formatted-rich-text value={grant.Description__c} ></lightning-formatted-rich-text>
 

@@ -11,14 +11,14 @@
         <div class="createInspection">
             <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
                 <div class="slds-modal__container">
-                    <header class="slds-modal__header">
+                    <div class="slds-modal__header">
                         <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
                             <lightning-icon icon-name="utility:close" variant="inverse" alternative-text="Close" size="medium">
                             </lightning-icon>
                             <span class="slds-assistive-text">Close</span>
                         </button>
                         <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Schedule Visitation</h2>
-                    </header>
+                    </div>
                     <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
                       <template if:true={inspectionObj}>
 
@@ -40,10 +40,10 @@
                         </div>
                         </template>
                     </div>
-                    <footer class="slds-modal__footer">
+                    <div class="slds-modal__footer">
                         <lightning-button label="Cancel" variant="neutral" onclick={closeModal}></lightning-button>&nbsp;&nbsp;&nbsp;&nbsp;
                         <lightning-button label="Save" variant="brand" onclick={scheduleInspection}></lightning-button>
-                    </footer>
+                    </div>
                 </div>
             </section>
             <div class="slds-backdrop slds-backdrop_open"></div>
@@ -54,14 +54,14 @@
             <div class="detailInspectionModal">
                 <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
                     <div class="slds-modal__container inspectionDetail">
-                        <header class="slds-modal__header">
+                        <div class="slds-modal__header">
                             <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeDetailModal}>
                                 <lightning-icon icon-name="utility:close" variant="inverse" alternative-text="Close" size="medium">
                                 </lightning-icon>
                                 <span class="slds-assistive-text">Close</span>
                             </button>
                             <h2 id="detail-modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Inspection Detail</h2>
-                        </header>
+                        </div>
                         <div class="slds-modal__content slds-p-around_medium" id="deatil-modal-content-id-1">
                           <template if:true={inspectionDetail}>
 
@@ -94,9 +94,9 @@
                             
                             </template>
                         </div>
-                        <footer class="slds-modal__footer">
+                        <div class="slds-modal__footer">
                             <lightning-button label="Cancel" variant="neutral" onclick={closeDetailModal}></lightning-button>    
-                        </footer>
+                        </div>
                     </div>
                 </section>
                 <div class="slds-backdrop slds-backdrop_open"></div>

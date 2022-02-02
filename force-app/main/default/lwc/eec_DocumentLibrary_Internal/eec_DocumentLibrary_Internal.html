@@ -50,7 +50,7 @@
                                 <lightning-icon variant="success" key={doctype.categoryName} size="small" icon-name="utility:success"></lightning-icon>
                             </template>
                             <template if:false={doctype.isAllDocsReviewed}>
-                                <lightning-icon key={doctype.categoryName} size="small" icon-name="utility:routing_offline"></lightning-icon>
+                                <!-- <lightning-icon key={doctype.categoryName} size="small" icon-name="utility:routing_offline"></lightning-icon> -->
                             </template>
                             <span key={doctype.categoryName} class="slds-text-heading_medium slds-m-bottom_medium categoryName">
                                 <b>{doctype.categoryName}</b>
@@ -307,8 +307,8 @@
                         </header>
                         <div class="slds-modal__content slds-p-around_medium">
 
-                            <div class="slds-m-around_medium">
-                                <iframe width="700" height="400" frameborder="0" src={fullUrl}></iframe>
+                            <div class="slds-m-around_medium slds-align_absolute-center">
+                                <iframe width="900" height="400" frameborder="0" src={fullUrl}></iframe>
                             </div>
                         </div>
                     </div>

@@ -1128,7 +1128,7 @@
       <section aria-hidden="false" role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
         <div class="slds-modal__container">
             <!-- Modal/Popup Box LWC header here -->
-            <header class="slds-modal__header">
+            <div class="slds-modal__header">
                 <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModalManageDocument}>
                     <lightning-icon icon-name="utility:close"
                         alternative-text="close"
@@ -1137,7 +1137,7 @@
                     <span class="slds-assistive-text">Close</span>
                 </button>
                 <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Documents</h2>
-            </header>
+              </div>
             <!-- Modal/Popup Box LWC body starts here -->
             <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
               <label class="slds-form-element__label" for="horizontal-input-id-02">Name: </label> <b> Progress Reports and content </b><br><br>
@@ -1153,10 +1153,10 @@
     
             </div>
             <!-- Modal/Popup Box LWC footer starts here -->
-            <footer class="slds-modal__footer">
+            <div class="slds-modal__footer">
                 <button class="slds-button slds-button_neutral" onclick={closeModalManageDocument} title="Cancel">Cancel</button>
                 <button class="slds-button slds-button_brand" onclick={submitDetailsManageDocument} title="OK">OK</button>
-            </footer>
+            </div>
         </div>
       </section>
       <div  class="slds-backdrop slds-backdrop_open" >
@@ -1167,7 +1167,7 @@
       <section aria-hidden="false" role="dialog" tabindex="-1" aria-labelledby="modal-heading-02" aria-modal="true" aria-describedby="modal-content-id-2" class="slds-modal slds-fade-in-open ">
         <div class="slds-modal__container">
             <!-- Modal/Popup Box LWC header here -->
-            <header class="slds-modal__header">
+            <div class="slds-modal__header">
                 <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModalEmail}>
                     <lightning-icon icon-name="utility:close"
                         alternative-text="close"
@@ -1176,7 +1176,7 @@
                     <span class="slds-assistive-text">Close</span>
                 </button>
                 <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">Email</h2>
-            </header>
+              </div>
             <!-- Modal/Popup Box LWC body starts here -->
             <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
               <lightning-input type="text" label="To" placeholder="Email Address here..."></lightning-input>
@@ -1185,10 +1185,10 @@
               <textarea id="textarea-id-01" rows=12 class="slds-textarea" placeholder="Body here..."></textarea>
             </div>
             <!-- Modal/Popup Box LWC footer starts here -->
-            <footer class="slds-modal__footer">
+            <div class="slds-modal__footer">
                 <button class="slds-button slds-button_neutral" onclick={closeModalEmail} title="Cancel">Cancel</button>
                 <button class="slds-button slds-button_brand" onclick={submitDetailsEmail} title="OK">OK</button>
-            </footer>
+            </div>
         </div>
       </section>
       <div  class="slds-backdrop slds-backdrop_open" >
@@ -1201,7 +1201,7 @@
               <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-03" aria-modal="true"
                   aria-describedby="modal-content-id-3" class="slds-modal slds-fade-in-open">
                   <div class="slds-modal__container">
-                      <header class="slds-modal__header">
+                      <div class="slds-modal__header">
                           <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
                               title="Close" onclick={closeModalChatter}>
                               <lightning-icon icon-name="utility:close" variant="inverse" alternative-text="Close"
@@ -1211,7 +1211,7 @@
                           </button>
                           <h2 id="modal-heading-03" class="slds-text-heading_medium slds-hyphenate"> 
                               Discussion</h2>
-                      </header>
+                          </div>
                       <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-3">
 
                           <div class="slds-m-around_medium">
